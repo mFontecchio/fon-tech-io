@@ -61,6 +61,7 @@
   transition: all 0.2s ease-in-out;
   white-space: nowrap;
   min-width: fit-content;
+  z-index: 1; /* Ensure text is above indicator */
 }
 
 .ui-tabs--sm .ui-tab-button {
@@ -146,6 +147,7 @@
   position: absolute;
   background-color: var(--semantic-brand-primary);
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 0; /* Keep indicator behind text */
 }
 
 .ui-tabs--horizontal .ui-tabs-indicator {
