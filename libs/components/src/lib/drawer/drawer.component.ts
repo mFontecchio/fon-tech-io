@@ -107,6 +107,14 @@ export class DrawerComponent {
   }
 
   /**
+   * Cleanup on destroy
+   */
+  ngOnDestroy(): void {
+    // Ensure body overflow is reset
+    document.body.style.overflow = '';
+  }
+
+  /**
    * Close drawer
    */
   protected close(): void {

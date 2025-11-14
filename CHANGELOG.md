@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Slider component handles now visible (removed opacity: 0, added proper -webkit-appearance: none)
+- Slider native track properly hidden with transparent background for both webkit and mozilla
+- Range slider functionality properly manages both start and end values with reactive state
+- Range slider handles can now move freely across full range with automatic constraint enforcement
+- Range slider no longer restricts handle movement via min/max attributes (now software-enforced)
+- Range slider uses pointer-events CSS to allow only thumb interaction, preventing track interference
+- Range slider z-index management via CSS classes (start: 3, end: 4, active: 5)
+- Range slider both handles independently clickable and draggable without interference
+- Range slider constraints prevent handles from swapping or bypassing each other
+- Range slider proper event cleanup on mouseup/touchend to reset active state
+- Drawer component properly resets body overflow on close and component destroy
+- Modal component includes cleanup in ngOnDestroy to prevent scroll lock issues
+- Drawer openChange event properly wired in showcase
+- Skeleton component now properly applies CSS classes to inner elements instead of host
+- Skeleton component has minimum height and width of 1rem for visibility
+- Skeleton component background changed to --semantic-border-default for better visibility
+
 ### Added
 
 - Initial Nx workspace setup with Angular 20+ support

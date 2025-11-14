@@ -21,9 +21,6 @@ export type SkeletonVariant = 'text' | 'circular' | 'rectangular' | 'rounded';
   templateUrl: './skeleton.component.html',
   styleUrl: './skeleton.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    '[class]': 'hostClasses()',
-  },
 })
 export class SkeletonComponent {
   /**
@@ -59,16 +56,6 @@ export class SkeletonComponent {
     [`ui-skeleton--${this.variant()}`]: true,
     'ui-skeleton--no-animation': this.noAnimation(),
   }));
-
-  /**
-   * Computed host classes
-   */
-  protected readonly hostClasses = computed(() => {
-    return Object.entries(this.skeletonClasses())
-      .filter(([, value]) => value)
-      .map(([key]) => key)
-      .join(' ');
-  });
 
   /**
    * Computed inline styles

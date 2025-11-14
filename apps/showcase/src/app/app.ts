@@ -1,177 +1,233 @@
 import { Component, signal, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import {
+  // Form Components
   ButtonComponent,
   InputComponent,
   TextareaComponent,
-  CardComponent,
   CheckboxComponent,
   RadioComponent,
   SwitchComponent,
-  BadgeComponent,
-  AlertComponent,
-  SpinnerComponent,
-  ModalComponent,
   SelectComponent,
   SelectOption,
   MultiSelectComponent,
   MultiSelectOption,
+  SliderComponent,
+  DatePickerComponent,
+  FileUploadComponent,
+  
+  // Layout Components
+  CardComponent,
+  ModalComponent,
+  DrawerComponent,
+  AccordionComponent,
+  AccordionItemComponent,
   TabsComponent,
   TabComponent,
-  TooltipComponent,
+  DividerComponent,
+  StackComponent,
+  GridComponent,
+  
+  // Data Display Components
+  BadgeComponent,
   AvatarComponent,
+  TooltipComponent,
+  ChipComponent,
+  PopoverComponent,
+  PaginationComponent,
+  TableComponent,
+  TableColumn,
+  ListComponent,
+  ListItem,
+  
+  // Feedback Components
+  AlertComponent,
+  SpinnerComponent,
   ProgressComponent,
+  SkeletonComponent,
+  ToastContainerComponent,
+  ToastService,
+  
+  // Navigation Components
+  BreadcrumbComponent,
+  BreadcrumbItem,
+  MenuComponent,
+  MenuItem,
+  NavbarComponent,
+  NavbarLink,
+  StepperComponent,
+  Step,
 } from '@ui-suite/components';
 import { ThemeService } from '@ui-suite/theming';
 
 @Component({
   imports: [
     RouterModule,
+    CommonModule,
+    // Form
     ButtonComponent,
     InputComponent,
     TextareaComponent,
-    CardComponent,
     CheckboxComponent,
     RadioComponent,
     SwitchComponent,
-    BadgeComponent,
-    AlertComponent,
-    SpinnerComponent,
-    ModalComponent,
     SelectComponent,
     MultiSelectComponent,
+    SliderComponent,
+    DatePickerComponent,
+    FileUploadComponent,
+    // Layout
+    CardComponent,
+    ModalComponent,
+    DrawerComponent,
+    AccordionComponent,
+    AccordionItemComponent,
     TabsComponent,
     TabComponent,
-    TooltipComponent,
+    DividerComponent,
+    StackComponent,
+    GridComponent,
+    // Data Display
+    BadgeComponent,
     AvatarComponent,
+    TooltipComponent,
+    ChipComponent,
+    PopoverComponent,
+    PaginationComponent,
+    TableComponent,
+    ListComponent,
+    // Feedback
+    AlertComponent,
+    SpinnerComponent,
     ProgressComponent,
+    SkeletonComponent,
+    ToastContainerComponent,
+    // Navigation
+    BreadcrumbComponent,
+    MenuComponent,
+    NavbarComponent,
+    StepperComponent,
   ],
   selector: 'app-root',
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
 export class App {
-  protected title = 'UI Component Suite - Showcase';
+  protected title = 'UI Component Suite - All 36 Components';
   
-  // Inject theme service
+  // Services
   protected themeService = inject(ThemeService);
+  protected toastService = inject(ToastService);
   
-  // Demo state
+  // Form state
   protected inputValue = signal('');
   protected textareaValue = signal('');
   protected buttonClicks = signal(0);
   protected checkboxChecked = signal(false);
-  protected checkboxIndeterminate = signal(false);
   protected radioValue = signal('option1');
   protected switchChecked = signal(false);
-  protected modalOpen = signal(false);
-  protected showAlert = signal(true);
-  protected loading = signal(false);
-  
-  // New component state
   protected selectValue = signal<string | undefined>(undefined);
   protected multiSelectValue = signal<string[]>([]);
+  protected sliderValue = signal(50);
+  protected sliderRangeStart = signal(25);
+  protected sliderRangeEnd = signal(75);
+  protected dateValue = signal<string | undefined>(undefined);
+  protected uploadedFiles = signal<File[]>([]);
+  
+  // Layout state
+  protected modalOpen = signal(false);
+  protected drawerOpen = signal(false);
   protected activeTabIndex = signal(0);
+  protected expandedAccordionItems = signal<string[]>([]);
+  
+  // Data Display state
+  protected currentPage = signal(1);
+  protected itemsPerPage = signal(10);
+  protected tableData = signal([
+    { id: 1, name: 'John Doe', email: 'john@example.com', status: 'Active' },
+    { id: 2, name: 'Jane Smith', email: 'jane@example.com', status: 'Active' },
+    { id: 3, name: 'Bob Johnson', email: 'bob@example.com', status: 'Inactive' },
+  ]);
+  protected tableColumns: TableColumn[] = [
+    { key: 'id', label: 'ID', sortable: true, width: '80px' },
+    { key: 'name', label: 'Name', sortable: true },
+    { key: 'email', label: 'Email', sortable: true },
+    { key: 'status', label: 'Status', sortable: true },
+  ];
+  
+  // Feedback state
+  protected loading = signal(false);
   protected progressValue = signal(0);
   protected progressInterval?: number;
-
-  // Select options
+  protected showSkeleton = signal(true);
+  
+  // Navigation state
+  protected activeStep = signal(0);
+  protected menuOpen = signal(false);
+  
+  // Options data
   protected fruitOptions: SelectOption[] = [
     { value: 'apple', label: 'Apple' },
     { value: 'banana', label: 'Banana' },
     { value: 'orange', label: 'Orange' },
-    { value: 'grape', label: 'Grape' },
-    { value: 'mango', label: 'Mango' },
   ];
-
-  protected groupedOptions: SelectOption[] = [
-    { value: 'apple', label: 'Apple', group: 'Fruits' },
-    { value: 'banana', label: 'Banana', group: 'Fruits' },
-    { value: 'carrot', label: 'Carrot', group: 'Vegetables' },
-    { value: 'broccoli', label: 'Broccoli', group: 'Vegetables' },
-    { value: 'chicken', label: 'Chicken', group: 'Proteins' },
-    { value: 'beef', label: 'Beef', group: 'Proteins' },
-  ];
-
-  // Multi-select options
+  
   protected multiSelectOptions: MultiSelectOption[] = [
     { value: 'react', label: 'React' },
     { value: 'angular', label: 'Angular' },
     { value: 'vue', label: 'Vue.js' },
-    { value: 'svelte', label: 'Svelte' },
-    { value: 'solid', label: 'Solid.js' },
-    { value: 'next', label: 'Next.js' },
-    { value: 'nuxt', label: 'Nuxt.js' },
   ];
-
-  protected onButtonClick() {
-    this.buttonClicks.update(count => count + 1);
-  }
-
+  
+  protected listItems: ListItem[] = [
+    { id: '1', label: 'Item 1', description: 'Description for item 1', icon: '📄' },
+    { id: '2', label: 'Item 2', description: 'Description for item 2', icon: '📁' },
+    { id: '3', label: 'Item 3', description: 'Description for item 3', icon: '📊' },
+  ];
+  
+  protected breadcrumbs: BreadcrumbItem[] = [
+    { label: 'Home', href: '/' },
+    { label: 'Components', href: '/components' },
+    { label: 'Showcase', href: '/showcase' },
+  ];
+  
+  protected menuItems: MenuItem[] = [
+    { id: '1', label: 'Profile', icon: '👤' },
+    { id: '2', label: 'Settings', icon: '⚙️' },
+    { id: '3', label: '', divider: true },
+    { id: '4', label: 'Logout', icon: '🚪' },
+  ];
+  
+  protected navLinks: NavbarLink[] = [
+    { id: '1', label: 'Home', href: '/', active: true },
+    { id: '2', label: 'Components', href: '/components' },
+    { id: '3', label: 'Documentation', href: '/docs' },
+  ];
+  
+  protected steps: Step[] = [
+    { id: '1', label: 'Account', description: 'Create your account' },
+    { id: '2', label: 'Profile', description: 'Setup your profile' },
+    { id: '3', label: 'Preferences', description: 'Configure preferences' },
+    { id: '4', label: 'Complete', description: 'Finish setup' },
+  ];
+  
+  // Methods
   protected toggleTheme() {
     this.themeService.toggleDarkMode();
   }
-
-  protected onInputChange(value: string) {
-    this.inputValue.set(value);
+  
+  protected onButtonClick() {
+    this.buttonClicks.update(count => count + 1);
   }
-
-  protected onTextareaChange(value: string) {
-    this.textareaValue.set(value);
+  
+  protected showToast(variant: 'success' | 'info' | 'warning' | 'error') {
+    this.toastService.show(
+      `This is a ${variant} toast notification!`,
+      variant,
+      3000
+    );
   }
-
-  protected onCheckboxChange(checked: boolean) {
-    this.checkboxChecked.set(checked);
-    if (checked) {
-      this.checkboxIndeterminate.set(false);
-    }
-  }
-
-  protected toggleIndeterminate() {
-    this.checkboxIndeterminate.update(val => !val);
-    if (!this.checkboxIndeterminate()) {
-      this.checkboxChecked.set(false);
-    }
-  }
-
-  protected onRadioChange(value: string) {
-    this.radioValue.set(value);
-  }
-
-  protected onSwitchChange(checked: boolean) {
-    this.switchChecked.set(checked);
-  }
-
-  protected openModal() {
-    this.modalOpen.set(true);
-  }
-
-  protected closeModal() {
-    this.modalOpen.set(false);
-  }
-
-  protected simulateLoading() {
-    this.loading.set(true);
-    setTimeout(() => this.loading.set(false), 3000);
-  }
-
-  protected onSelectChange(value: string) {
-    this.selectValue.set(value);
-  }
-
-  protected onMultiSelectChange(values: string[]) {
-    this.multiSelectValue.set(values);
-  }
-
-  protected onOptionCreated(option: MultiSelectOption) {
-    // Add the new option to the list
-    this.multiSelectOptions = [...this.multiSelectOptions, option];
-  }
-
-  protected onTabChange(index: number) {
-    this.activeTabIndex.set(index);
-  }
-
+  
   protected startProgress() {
     this.progressValue.set(0);
     this.progressInterval = window.setInterval(() => {
@@ -184,16 +240,23 @@ export class App {
       });
     }, 500);
   }
-
+  
   protected stopProgress() {
     if (this.progressInterval) {
       window.clearInterval(this.progressInterval);
       this.progressInterval = undefined;
     }
   }
-
+  
   protected resetProgress() {
     this.stopProgress();
     this.progressValue.set(0);
+  }
+  
+  protected toggleSkeleton() {
+    this.showSkeleton.update(val => !val);
+    if (!this.showSkeleton()) {
+      setTimeout(() => this.showSkeleton.set(true), 2000);
+    }
   }
 }

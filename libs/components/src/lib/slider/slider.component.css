@@ -74,8 +74,11 @@
   height: 100%;
   margin: 0;
   padding: 0;
-  opacity: 0;
+  background: transparent;
+  -webkit-appearance: none;
+  appearance: none;
   cursor: pointer;
+  pointer-events: none; /* Default: no pointer events */
   z-index: 2;
 }
 
@@ -83,8 +86,51 @@
   cursor: not-allowed;
 }
 
-.ui-slider-input--end {
+/* Enable pointer events for specific parts */
+.ui-slider-input::-webkit-slider-thumb {
+  pointer-events: auto;
+  cursor: grab;
+}
+
+.ui-slider-input::-moz-range-thumb {
+  pointer-events: auto;
+  cursor: grab;
+}
+
+.ui-slider-input:active::-webkit-slider-thumb {
+  cursor: grabbing;
+}
+
+.ui-slider-input:active::-moz-range-thumb {
+  cursor: grabbing;
+}
+
+/* Start handle in range mode - lower z-index */
+.ui-slider-input--start {
   z-index: 3;
+}
+
+/* End handle - higher z-index by default */
+.ui-slider-input--end {
+  z-index: 4;
+}
+
+/* Active handle gets highest z-index */
+.ui-slider-input--active {
+  z-index: 5 !important;
+}
+
+/* Hide default track */
+.ui-slider-input::-webkit-slider-runnable-track {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  border: none;
+}
+
+.ui-slider-input::-moz-range-track {
+  background: transparent;
+  border: none;
 }
 
 /* Thumb (styled via pseudo-elements) */

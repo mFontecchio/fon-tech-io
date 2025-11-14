@@ -117,6 +117,11 @@ export class SliderComponent {
   protected readonly internalValueEnd = signal<number | undefined>(undefined);
 
   /**
+   * Active handle (for z-index management)
+   */
+  protected readonly activeHandle = signal<'start' | 'end' | null>(null);
+
+  /**
    * Is range/dual handle mode
    */
   protected readonly isRange = computed(() => this.valueEnd() !== undefined);
@@ -191,6 +196,18 @@ export class SliderComponent {
    * Handle value change
    */
   protected handleValueChange(value: number): void {
+    // Ensure value is within min/max bounds
+    value = Math.max(this.min(), Math.min(this.max(), value));
+    
+    // In range mode, ensure start doesn't exceed end
+    if (this.isRange()) {
+      const endValue = this.internalValueEnd();
+      if (endValue !== undefined && value > endValue) {
+        // Clamp to end value (handles can't swap)
+        value = endValue;
+      }
+    }
+    
     this.internalValue.set(value);
     this.valueChange.emit(value);
   }
@@ -199,8 +216,51 @@ export class SliderComponent {
    * Handle end value change (dual handle)
    */
   protected handleValueEndChange(value: number): void {
+    // Ensure value is within min/max bounds
+    value = Math.max(this.min(), Math.min(this.max(), value));
+    
+    // Ensure end doesn't go below start (handles can't swap)
+    const startValue = this.internalValue();
+    if (value < startValue) {
+      value = startValue;
+    }
+    
     this.internalValueEnd.set(value);
     this.valueEndChange.emit(value);
+  }
+
+  /**
+   * Handle start handle mouse/touch down
+   */
+  protected onStartHandleMouseDown(event: MouseEvent | TouchEvent): void {
+    event.stopPropagation();
+    this.activeHandle.set('start');
+    
+    // Reset on mouse/touch up
+    const resetHandle = () => {
+      this.activeHandle.set(null);
+      document.removeEventListener('mouseup', resetHandle);
+      document.removeEventListener('touchend', resetHandle);
+    };
+    document.addEventListener('mouseup', resetHandle);
+    document.addEventListener('touchend', resetHandle);
+  }
+
+  /**
+   * Handle end handle mouse/touch down
+   */
+  protected onEndHandleMouseDown(event: MouseEvent | TouchEvent): void {
+    event.stopPropagation();
+    this.activeHandle.set('end');
+    
+    // Reset on mouse/touch up
+    const resetHandle = () => {
+      this.activeHandle.set(null);
+      document.removeEventListener('mouseup', resetHandle);
+      document.removeEventListener('touchend', resetHandle);
+    };
+    document.addEventListener('mouseup', resetHandle);
+    document.addEventListener('touchend', resetHandle);
   }
 }
 

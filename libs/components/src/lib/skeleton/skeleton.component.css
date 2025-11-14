@@ -4,9 +4,11 @@
 
 .ui-skeleton {
   display: block;
-  background-color: var(--semantic-surface-subtle);
+  background-color: var(--semantic-border-default);
   position: relative;
   overflow: hidden;
+  min-height: 1rem;
+  min-width: 1rem;
 }
 
 /* Shimmer animation */

@@ -5,25 +5,27 @@
     </label>
   }
 
-  <div class="ui-slider-control">
-    <div [ngClass]="sliderClasses()">
-      <!-- Visual track -->
-      <div class="ui-slider-track">
-        @if (isRange()) {
-          <div class="ui-slider-fill ui-slider-fill--range" [ngStyle]="rangeFillStyle()"></div>
-        } @else {
-          <div class="ui-slider-fill" [style.width.%]="fillPercentage()"></div>
-        }
-      </div>
+    <div class="ui-slider-control">
+      <div [ngClass]="sliderClasses()">
+        <!-- Visual track -->
+        <div class="ui-slider-track">
+          @if (isRange()) {
+            <div class="ui-slider-fill ui-slider-fill--range" [ngStyle]="rangeFillStyle()"></div>
+          } @else {
+            <div class="ui-slider-fill" [style.width.%]="fillPercentage()"></div>
+          }
+        </div>
 
       <!-- Single handle or start handle -->
       <input
         type="range"
         class="ui-slider-input"
+        [class.ui-slider-input--start]="isRange()"
+        [class.ui-slider-input--active]="activeHandle() === 'start'"
         [id]="sliderId()"
         [name]="name()"
         [min]="min()"
-        [max]="isRange() ? (internalValueEnd() || max()) : max()"
+        [max]="max()"
         [step]="step()"
         [value]="internalValue()"
         [disabled]="disabled()"
@@ -32,6 +34,8 @@
         [attr.aria-valuemax]="max()"
         [attr.aria-valuenow]="internalValue()"
         (input)="handleValueChange(+$any($event.target).value)"
+        (mousedown)="onStartHandleMouseDown($event)"
+        (touchstart)="onStartHandleMouseDown($event)"
       />
 
       <!-- End handle (for range mode) -->
@@ -39,7 +43,8 @@
         <input
           type="range"
           class="ui-slider-input ui-slider-input--end"
-          [min]="internalValue()"
+          [class.ui-slider-input--active]="activeHandle() === 'end'"
+          [min]="min()"
           [max]="max()"
           [step]="step()"
           [value]="internalValueEnd()"
@@ -49,6 +54,8 @@
           [attr.aria-valuemax]="max()"
           [attr.aria-valuenow]="internalValueEnd()"
           (input)="handleValueEndChange(+$any($event.target).value)"
+          (mousedown)="onEndHandleMouseDown($event)"
+          (touchstart)="onEndHandleMouseDown($event)"
         />
       }
     </div>
