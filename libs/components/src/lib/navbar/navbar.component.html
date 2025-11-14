@@ -1,0 +1,78 @@
+<nav [ngClass]="navbarClasses()" [attr.aria-label]="'Main navigation'">
+  <div class="ui-navbar-container">
+    <!-- Brand/Logo -->
+    <div class="ui-navbar-brand">
+      @if (brandText()) {
+        <a href="/" class="ui-navbar-brand-link">
+          <ng-content select="[brand-logo]"></ng-content>
+          <span class="ui-navbar-brand-text">{{ brandText() }}</span>
+        </a>
+      } @else {
+        <ng-content select="[brand]"></ng-content>
+      }
+    </div>
+
+    <!-- Desktop Navigation -->
+    <div class="ui-navbar-nav">
+      @for (link of links(); track link.id) {
+        <a
+          [href]="link.href || '#'"
+          class="ui-navbar-link"
+          [class.ui-navbar-link--active]="link.active"
+          [class.ui-navbar-link--disabled]="link.disabled"
+          [attr.aria-current]="link.active ? 'page' : null"
+          [attr.aria-disabled]="link.disabled"
+          (click)="handleLinkClick(link, $event)"
+        >
+          {{ link.label }}
+        </a>
+      }
+    </div>
+
+    <!-- Actions slot -->
+    <div class="ui-navbar-actions">
+      <ng-content select="[actions]"></ng-content>
+
+      <!-- Mobile menu toggle -->
+      @if (showMobileToggle()) {
+        <button
+          type="button"
+          class="ui-navbar-mobile-toggle"
+          [attr.aria-label]="mobileMenuOpen() ? 'Close menu' : 'Open menu'"
+          [attr.aria-expanded]="mobileMenuOpen()"
+          (click)="toggleMobileMenu()"
+        >
+          @if (mobileMenuOpen()) {
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M6 18L18 6M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          } @else {
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          }
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  @if (mobileMenuOpen()) {
+    <div class="ui-navbar-mobile-menu">
+      @for (link of links(); track link.id) {
+        <a
+          [href]="link.href || '#'"
+          class="ui-navbar-mobile-link"
+          [class.ui-navbar-mobile-link--active]="link.active"
+          [class.ui-navbar-mobile-link--disabled]="link.disabled"
+          [attr.aria-current]="link.active ? 'page' : null"
+          [attr.aria-disabled]="link.disabled"
+          (click)="handleLinkClick(link, $event)"
+        >
+          {{ link.label }}
+        </a>
+      }
+    </div>
+  }
+</nav>
+

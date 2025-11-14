@@ -1,0 +1,63 @@
+<div class="ui-date-picker-container">
+  @if (label()) {
+    <label [for]="datePickerId()" class="ui-date-picker-label">
+      {{ label() }}
+      @if (required()) {
+        <span class="ui-date-picker-required-indicator" aria-label="required">*</span>
+      }
+    </label>
+  }
+
+  <div class="ui-date-picker-control">
+    <input
+      type="date"
+      [id]="datePickerId()"
+      [name]="name()"
+      [ngClass]="datePickerClasses()"
+      [value]="internalValue() || ''"
+      [placeholder]="placeholder()"
+      [disabled]="disabled()"
+      [required]="required()"
+      [attr.min]="min()"
+      [attr.max]="max()"
+      [attr.aria-label]="ariaLabel() || label()"
+      [attr.aria-describedby]="computedAriaDescribedBy()"
+      [attr.aria-invalid]="hasError()"
+      (change)="handleChange($any($event.target).value)"
+    />
+
+    @if (internalValue() && !disabled()) {
+      <button
+        type="button"
+        class="ui-date-picker-clear"
+        aria-label="Clear date"
+        (click)="clear()"
+      >
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M12 4L4 12M4 4L12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    }
+  </div>
+
+  @if (helperText() && !hasError()) {
+    <div 
+      [id]="helperTextId()" 
+      class="ui-date-picker-helper-text"
+    >
+      {{ helperText() }}
+    </div>
+  }
+
+  @if (hasError()) {
+    <div 
+      [id]="errorId()" 
+      class="ui-date-picker-error-message"
+      role="alert"
+      aria-live="polite"
+    >
+      {{ errorMessage() }}
+    </div>
+  }
+</div>
+

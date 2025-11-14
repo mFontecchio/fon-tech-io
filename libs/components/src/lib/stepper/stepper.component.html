@@ -1,0 +1,52 @@
+<div [ngClass]="stepperClasses()">
+  @for (step of steps(); track step.id; let index = $index; let isLast = $last) {
+    <div
+      class="ui-stepper-step"
+      [class.ui-stepper-step--active]="isStepActive(index)"
+      [class.ui-stepper-step--completed]="isStepCompleted(step, index)"
+      [class.ui-stepper-step--error]="step.error"
+      [class.ui-stepper-step--disabled]="step.disabled"
+      [class.ui-stepper-step--clickable]="isStepClickable(step, index)"
+    >
+      <!-- Step header -->
+      <button
+        type="button"
+        class="ui-stepper-step-button"
+        [disabled]="!isStepClickable(step, index)"
+        [attr.aria-current]="isStepActive(index) ? 'step' : null"
+        [attr.aria-disabled]="step.disabled"
+        (click)="handleStepClick(step, index)"
+      >
+        <!-- Icon/Number -->
+        <div class="ui-stepper-step-icon-container">
+          <div class="ui-stepper-step-icon">
+            @if (step.error) {
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M10 6V10M10 14H10.01M18 10C18 14.4183 14.4183 18 10 18C5.58172 18 2 14.4183 2 10C2 5.58172 5.58172 2 10 2C14.4183 2 18 5.58172 18 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            } @else if (isStepCompleted(step, index)) {
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            } @else {
+              <span class="ui-stepper-step-number">{{ index + 1 }}</span>
+            }
+          </div>
+
+          @if (!isLast) {
+            <div class="ui-stepper-step-connector"></div>
+          }
+        </div>
+
+        <!-- Content -->
+        <div class="ui-stepper-step-content">
+          <span class="ui-stepper-step-label">{{ step.label }}</span>
+          @if (step.description) {
+            <span class="ui-stepper-step-description">{{ step.description }}</span>
+          }
+        </div>
+      </button>
+    </div>
+  }
+</div>
+

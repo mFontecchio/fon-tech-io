@@ -68,7 +68,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Menu component with dropdown, nested submenus, keyboard navigation, and dynamic positioning
 - Stack layout component with vertical/horizontal direction, flexible spacing and alignment
 - Grid layout component with responsive columns, auto-fit, and customizable gaps
-- Working showcase application with live demos for all 32 components
+- Date Picker component with native HTML5 input, min/max constraints, and clear functionality
+- File Upload component with drag-drop, image preview, file validation, and progress tracking
+- Navbar component with responsive design, mobile menu, and sticky/fixed positioning
+- Stepper component with linear/non-linear modes, horizontal/vertical orientation, and step states
+- Working showcase application with live demos for all 36 components
 - Theme switching functionality verified across all components
 - TypeScript 5.8.3 (Angular 20.3 compatibility)
 - Updated dependencies (@types/node, @swc/core)

@@ -8,6 +8,8 @@ export * from './lib/switch/switch.component';
 export * from './lib/select/select.component';
 export * from './lib/multi-select/multi-select.component';
 export * from './lib/slider/slider.component';
+export * from './lib/date-picker/date-picker.component';
+export * from './lib/file-upload/file-upload.component';
 
 // Layout Components
 export * from './lib/card/card.component';
@@ -43,5 +45,5 @@ export * from './lib/toast/toast.service';
 // Navigation Components
 export * from './lib/breadcrumb/breadcrumb.component';
 export * from './lib/menu/menu.component';
-
-// More components will be exported as they are implemented
+export * from './lib/navbar/navbar.component';
+export * from './lib/stepper/stepper.component';

@@ -1,0 +1,179 @@
+/**
+ * Date Picker Component Styles
+ */
+
+.ui-date-picker-wrapper {
+  display: inline-block;
+}
+
+.ui-date-picker-wrapper--full-width {
+  display: block;
+  width: 100%;
+}
+
+.ui-date-picker-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-spacing-2);
+}
+
+/* Label */
+
+.ui-date-picker-label {
+  display: block;
+  font-size: var(--primitive-font-size-sm);
+  font-weight: var(--primitive-font-weight-medium);
+  color: var(--semantic-text-primary);
+  line-height: var(--primitive-line-height-normal);
+}
+
+.ui-date-picker-required-indicator {
+  color: var(--semantic-feedback-error);
+  margin-left: var(--primitive-spacing-1);
+}
+
+/* Control wrapper */
+
+.ui-date-picker-control {
+  position: relative;
+  width: 100%;
+}
+
+/* Date picker input */
+
+.ui-date-picker {
+  width: 100%;
+  padding: var(--primitive-spacing-3) var(--primitive-spacing-4);
+  font-size: var(--primitive-font-size-base);
+  font-family: inherit;
+  color: var(--semantic-text-primary);
+  background-color: var(--semantic-surface-card);
+  border: 1px solid var(--semantic-border-default);
+  border-radius: var(--primitive-border-radius-md);
+  outline: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.ui-date-picker::placeholder {
+  color: var(--semantic-text-placeholder);
+}
+
+/* Calendar icon from browser */
+.ui-date-picker::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  color: var(--semantic-text-secondary);
+  opacity: 0.8;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.ui-date-picker::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* States */
+
+.ui-date-picker:hover:not(:disabled) {
+  border-color: var(--semantic-border-strong);
+}
+
+.ui-date-picker:focus {
+  border-color: var(--semantic-state-focus-ring);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.ui-date-picker--error {
+  border-color: var(--semantic-border-error);
+}
+
+.ui-date-picker--error:focus {
+  border-color: var(--semantic-border-error);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.ui-date-picker--disabled {
+  background-color: var(--semantic-state-disabled);
+  border-color: var(--semantic-border-subtle);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Sizes */
+
+.ui-date-picker--sm {
+  padding: var(--primitive-spacing-2) var(--primitive-spacing-3);
+  font-size: var(--primitive-font-size-sm);
+}
+
+.ui-date-picker--lg {
+  padding: var(--primitive-spacing-4) var(--primitive-spacing-5);
+  font-size: var(--primitive-font-size-lg);
+}
+
+/* Clear button */
+
+.ui-date-picker-clear {
+  position: absolute;
+  right: 2.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--semantic-text-secondary);
+  border-radius: var(--primitive-border-radius-sm);
+  transition: all 0.2s ease-in-out;
+}
+
+.ui-date-picker-clear:hover {
+  color: var(--semantic-text-primary);
+  background-color: var(--semantic-surface-subtle);
+}
+
+.ui-date-picker-clear:focus-visible {
+  outline: 2px solid var(--semantic-state-focus-ring);
+  outline-offset: 2px;
+}
+
+/* Helper text */
+
+.ui-date-picker-helper-text {
+  font-size: var(--primitive-font-size-sm);
+  color: var(--semantic-text-secondary);
+  line-height: var(--primitive-line-height-normal);
+}
+
+/* Error message */
+
+.ui-date-picker-error-message {
+  font-size: var(--primitive-font-size-sm);
+  color: var(--semantic-text-error);
+  line-height: var(--primitive-line-height-normal);
+}
+
+/* Reduced motion support */
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-date-picker,
+  .ui-date-picker-clear,
+  .ui-date-picker::-webkit-calendar-picker-indicator {
+    transition: none;
+  }
+}
+
+/* High contrast mode support */
+
+@media (prefers-contrast: more) {
+  .ui-date-picker {
+    border-width: 2px;
+  }
+
+  .ui-date-picker:focus {
+    outline: 2px solid var(--semantic-state-focus-ring);
+    outline-offset: 2px;
+  }
+}
+
