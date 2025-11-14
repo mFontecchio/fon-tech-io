@@ -2,7 +2,6 @@
   <div class="ui-tabs-list">
     @for (tab of tabs(); track $index) {
       <button
-        #tabButton
         type="button"
         class="ui-tab-button"
         [class.ui-tab-button--active]="$index === internalActiveIndex()"
@@ -26,12 +25,10 @@
       </button>
     }
     <div 
-      class="ui-tabs-indicator"
-      [style.transform]="orientation() === 'horizontal' 
-        ? 'translateX(' + indicatorLeft() + 'px)' 
-        : 'translateY(' + indicatorTop() + 'px)'"
-      [style.width]="orientation() === 'horizontal' ? indicatorWidth() + 'px' : ''"
-      [style.height]="orientation() === 'vertical' ? indicatorHeight() + 'px' : ''"
+      class="ui-tabs-indicator" 
+      [style.transform]="'translate' + (orientation() === 'horizontal' ? 'X' : 'Y') + '(' + (internalActiveIndex() * 100) + '%)'"
+      [style.width]="orientation() === 'horizontal' ? (100 / tabs().length) + '%' : '100%'"
+      [style.height]="orientation() === 'vertical' ? (100 / tabs().length) + '%' : ''"
     ></div>
   </div>
 

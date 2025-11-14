@@ -1,6 +1,6 @@
 /**
  * Tabs Component
- *
+ * 
  * A themable tabs component with keyboard navigation and ARIA support.
  * Supports horizontal and vertical orientations.
  */
@@ -13,10 +13,7 @@ import {
   output,
   signal,
   contentChildren,
-  viewChildren,
   effect,
-  AfterViewInit,
-  ElementRef,
 } from '@angular/core';
 import { CommonModule, NgTemplateOutlet } from '@angular/common';
 import { TabComponent } from './tab.component';
@@ -36,7 +33,7 @@ export type TabsSize = 'sm' | 'md' | 'lg';
     '[attr.aria-orientation]': 'orientation()',
   },
 })
-export class TabsComponent implements AfterViewInit {
+export class TabsComponent {
   /**
    * Active tab index
    */
@@ -68,22 +65,9 @@ export class TabsComponent implements AfterViewInit {
   protected readonly tabs = contentChildren(TabComponent);
 
   /**
-   * Tab button elements
-   */
-  private readonly tabButtons = viewChildren<ElementRef<HTMLButtonElement>>('tabButton');
-
-  /**
    * Internal active index
    */
   protected readonly internalActiveIndex = signal(0);
-
-  /**
-   * Indicator position and size signals
-   */
-  protected readonly indicatorLeft = signal(0);
-  protected readonly indicatorTop = signal(0);
-  protected readonly indicatorWidth = signal(0);
-  protected readonly indicatorHeight = signal(0);
 
   /**
    * Computed CSS classes
@@ -115,56 +99,12 @@ export class TabsComponent implements AfterViewInit {
     effect(() => {
       const activeIdx = this.internalActiveIndex();
       const tabsList = this.tabs();
-
+      
       tabsList.forEach((tab, index) => {
         tab.setActive(index === activeIdx);
         tab.setIndex(index);
       });
     });
-
-    // Update indicator position when active index changes
-    effect(() => {
-      this.internalActiveIndex(); // Track changes
-      setTimeout(() => this.updateIndicatorPosition(), 0);
-    });
-
-    // Update indicator when tab buttons change
-    effect(() => {
-      this.tabButtons(); // Track changes
-      setTimeout(() => this.updateIndicatorPosition(), 0);
-    });
-  }
-
-  ngAfterViewInit(): void {
-    // Initial indicator position
-    this.updateIndicatorPosition();
-  }
-
-  /**
-   * Update indicator position and size based on active tab button
-   */
-  private updateIndicatorPosition(): void {
-    const activeIndex = this.internalActiveIndex();
-    const buttons = this.tabButtons();
-
-    if (!buttons || buttons.length === 0 || activeIndex < 0 || activeIndex >= buttons.length) {
-      return;
-    }
-
-    const activeButton = buttons[activeIndex]?.nativeElement;
-    if (!activeButton) {
-      return;
-    }
-
-    const isHorizontal = this.orientation() === 'horizontal';
-
-    if (isHorizontal) {
-      this.indicatorLeft.set(activeButton.offsetLeft);
-      this.indicatorWidth.set(activeButton.offsetWidth);
-    } else {
-      this.indicatorTop.set(activeButton.offsetTop);
-      this.indicatorHeight.set(activeButton.offsetHeight);
-    }
   }
 
   /**
@@ -173,7 +113,7 @@ export class TabsComponent implements AfterViewInit {
   protected selectTab(index: number): void {
     const tabsList = this.tabs();
     const tab = tabsList[index];
-
+    
     if (tab && !tab.disabled()) {
       this.internalActiveIndex.set(index);
       this.activeIndexChange.emit(index);
@@ -287,3 +227,4 @@ export class TabsComponent implements AfterViewInit {
     return tabsList.length - 1;
   }
 }
+
