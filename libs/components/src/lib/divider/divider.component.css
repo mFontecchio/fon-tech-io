@@ -1,0 +1,134 @@
+/**
+ * Divider Component Styles
+ */
+
+.ui-divider {
+  display: flex;
+  align-items: center;
+  border: none;
+  margin: 0;
+}
+
+/* Horizontal */
+
+.ui-divider--horizontal {
+  width: 100%;
+  height: 1px;
+  background-color: var(--semantic-border-subtle);
+  margin: var(--primitive-spacing-4) 0;
+}
+
+.ui-divider--horizontal.ui-divider--with-label {
+  height: auto;
+  background-color: transparent;
+  gap: var(--primitive-spacing-3);
+}
+
+/* Vertical */
+
+.ui-divider--vertical {
+  width: 1px;
+  height: 100%;
+  min-height: 1rem;
+  background-color: var(--semantic-border-subtle);
+  margin: 0 var(--primitive-spacing-4);
+  align-self: stretch;
+}
+
+/* Dashed style */
+
+.ui-divider--dashed {
+  background-image: linear-gradient(
+    to right,
+    var(--semantic-border-subtle) 50%,
+    transparent 50%
+  );
+  background-size: 8px 1px;
+  background-repeat: repeat-x;
+  background-color: transparent;
+}
+
+.ui-divider--vertical.ui-divider--dashed {
+  background-image: linear-gradient(
+    to bottom,
+    var(--semantic-border-subtle) 50%,
+    transparent 50%
+  );
+  background-size: 1px 8px;
+  background-repeat: repeat-y;
+}
+
+/* Label */
+
+.ui-divider-label {
+  flex-shrink: 0;
+  font-size: var(--primitive-font-size-sm);
+  color: var(--semantic-text-secondary);
+  font-weight: var(--primitive-font-weight-medium);
+  white-space: nowrap;
+}
+
+/* Lines (when label present) */
+
+.ui-divider-line {
+  flex: 1;
+  height: 1px;
+  background-color: var(--semantic-border-subtle);
+}
+
+.ui-divider--dashed .ui-divider-line {
+  background-image: linear-gradient(
+    to right,
+    var(--semantic-border-subtle) 50%,
+    transparent 50%
+  );
+  background-size: 8px 1px;
+  background-repeat: repeat-x;
+  background-color: transparent;
+}
+
+/* Alignment */
+
+.ui-divider--left .ui-divider-line:first-child {
+  flex: 0 0 5%;
+}
+
+.ui-divider--left .ui-divider-line:last-child {
+  flex: 1;
+}
+
+.ui-divider--right .ui-divider-line:first-child {
+  flex: 1;
+}
+
+.ui-divider--right .ui-divider-line:last-child {
+  flex: 0 0 5%;
+}
+
+.ui-divider--center .ui-divider-line:first-child,
+.ui-divider--center .ui-divider-line:last-child {
+  flex: 1;
+}
+
+/* High contrast mode support */
+
+@media (prefers-contrast: more) {
+  .ui-divider--horizontal,
+  .ui-divider--vertical,
+  .ui-divider-line {
+    background-color: var(--semantic-border-default);
+  }
+
+  .ui-divider--horizontal {
+    height: 2px;
+  }
+
+  .ui-divider--vertical {
+    width: 2px;
+  }
+
+  .ui-divider-line {
+    height: 2px;
+  }
+}
+

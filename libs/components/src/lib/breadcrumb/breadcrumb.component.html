@@ -1,0 +1,43 @@
+<nav [ngClass]="breadcrumbClasses()">
+  <ol class="ui-breadcrumb-list">
+    @for (item of displayedItems(); track $index) {
+      <li class="ui-breadcrumb-item">
+        @if (isLastItem($index)) {
+          <span 
+            class="ui-breadcrumb-link ui-breadcrumb-link--current"
+            [attr.aria-current]="'page'"
+          >
+            {{ item.label }}
+          </span>
+        } @else if (item.href) {
+          <a
+            [href]="item.href"
+            class="ui-breadcrumb-link"
+            [class.ui-breadcrumb-link--disabled]="item.disabled"
+            [attr.aria-disabled]="item.disabled"
+            (click)="handleItemClick(item, $index, $event)"
+          >
+            {{ item.label }}
+          </a>
+        } @else {
+          <button
+            type="button"
+            class="ui-breadcrumb-link ui-breadcrumb-link--button"
+            [class.ui-breadcrumb-link--disabled]="item.disabled"
+            [disabled]="item.disabled"
+            (click)="handleItemClick(item, $index, $event)"
+          >
+            {{ item.label }}
+          </button>
+        }
+
+        @if (!isLastItem($index)) {
+          <span class="ui-breadcrumb-separator" aria-hidden="true">
+            {{ separator() }}
+          </span>
+        }
+      </li>
+    }
+  </ol>
+</nav>
+

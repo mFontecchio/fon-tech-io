@@ -52,7 +52,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Tooltip component with 4 positions, hover/focus triggers
 - Avatar component with image/initials/icon modes, status indicators, 6 sizes
 - Card component with elevated, outlined, and filled variants
-- Working showcase application with live demos for all 16 components
+- MultiSelect component with search, filtering, tag creation, and max selections
+- Chip component with removable tags, avatars, and clickable variants
+- Accordion component with single/multiple expand modes
+- Skeleton component with shimmer effect for loading states (text, circular, rectangular, rounded)
+- Breadcrumb component with overflow handling and custom separators
+- Divider component with horizontal/vertical orientation and labels
+- Working showcase application with live demos for all 22 components
 - Theme switching functionality verified across all components
 - TypeScript 5.8.3 (Angular 20.3 compatibility)
 - Updated dependencies (@types/node, @swc/core)
@@ -60,4 +66,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Design system documentation
 - Implementation status tracking
 - Testing guide for developers
+
+### Fixed
+
+- Tooltip positioning now uses fixed positioning to prevent container clipping
+- Tooltip always visible on top with z-index 9999
+- Input and Textarea components use correct attribute bindings for HTML validation
 

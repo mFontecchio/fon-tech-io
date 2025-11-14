@@ -1,0 +1,116 @@
+/**
+ * Breadcrumb Component Styles
+ */
+
+.ui-breadcrumb {
+  display: block;
+}
+
+.ui-breadcrumb-list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--primitive-spacing-2);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Item */
+
+.ui-breadcrumb-item {
+  display: flex;
+  align-items: center;
+  gap: var(--primitive-spacing-2);
+}
+
+/* Link/Button */
+
+.ui-breadcrumb-link {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--primitive-font-size-sm);
+  color: var(--semantic-text-secondary);
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+  border-radius: var(--primitive-border-radius-sm);
+  padding: 0.125rem 0.25rem;
+  margin: -0.125rem -0.25rem;
+}
+
+.ui-breadcrumb-link--button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.ui-breadcrumb-link:hover:not(.ui-breadcrumb-link--current):not(.ui-breadcrumb-link--disabled) {
+  color: var(--semantic-text-primary);
+  background-color: var(--semantic-surface-subtle);
+}
+
+.ui-breadcrumb-link:focus-visible {
+  outline: 2px solid var(--semantic-state-focus-ring);
+  outline-offset: 2px;
+}
+
+.ui-breadcrumb-link--current {
+  color: var(--semantic-text-primary);
+  font-weight: var(--primitive-font-weight-medium);
+  cursor: default;
+}
+
+.ui-breadcrumb-link--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Separator */
+
+.ui-breadcrumb-separator {
+  display: inline-flex;
+  color: var(--semantic-text-disabled);
+  font-size: var(--primitive-font-size-sm);
+  user-select: none;
+}
+
+/* Sizes */
+
+.ui-breadcrumb--sm .ui-breadcrumb-link {
+  font-size: var(--primitive-font-size-xs);
+}
+
+.ui-breadcrumb--sm .ui-breadcrumb-separator {
+  font-size: var(--primitive-font-size-xs);
+}
+
+.ui-breadcrumb--lg .ui-breadcrumb-link {
+  font-size: var(--primitive-font-size-base);
+}
+
+.ui-breadcrumb--lg .ui-breadcrumb-separator {
+  font-size: var(--primitive-font-size-base);
+}
+
+/* Reduced motion support */
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-breadcrumb-link {
+    transition: none;
+  }
+}
+
+/* High contrast mode support */
+
+@media (prefers-contrast: more) {
+  .ui-breadcrumb-link--current {
+    text-decoration: underline;
+  }
+
+  .ui-breadcrumb-link:focus-visible {
+    outline-width: 3px;
+  }
+}
+

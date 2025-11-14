@@ -1,0 +1,216 @@
+/**
+ * Chip Component Styles
+ */
+
+.ui-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--primitive-spacing-1-5);
+  border-radius: var(--primitive-border-radius-full);
+  font-weight: var(--primitive-font-weight-medium);
+  transition: all 0.2s ease-in-out;
+  white-space: nowrap;
+  vertical-align: middle;
+  user-select: none;
+}
+
+/* Sizes */
+
+.ui-chip--sm {
+  padding: 0.25rem 0.5rem;
+  font-size: var(--primitive-font-size-xs);
+  line-height: var(--primitive-line-height-tight);
+  min-height: 1.25rem;
+  gap: var(--primitive-spacing-1);
+}
+
+.ui-chip--md {
+  padding: 0.375rem 0.75rem;
+  font-size: var(--primitive-font-size-sm);
+  line-height: var(--primitive-line-height-tight);
+  min-height: 1.75rem;
+}
+
+.ui-chip--lg {
+  padding: 0.5rem 1rem;
+  font-size: var(--primitive-font-size-base);
+  line-height: var(--primitive-line-height-tight);
+  min-height: 2.25rem;
+  gap: var(--primitive-spacing-2);
+}
+
+/* Variants */
+
+.ui-chip--default {
+  background-color: var(--semantic-surface-subtle);
+  color: var(--semantic-text-primary);
+  border: 1px solid var(--semantic-border-default);
+}
+
+.ui-chip--primary {
+  background-color: var(--semantic-brand-primary);
+  color: var(--semantic-text-inverse);
+}
+
+.ui-chip--success {
+  background-color: var(--semantic-feedback-success);
+  color: var(--semantic-text-inverse);
+}
+
+.ui-chip--warning {
+  background-color: var(--semantic-feedback-warning);
+  color: var(--semantic-text-primary);
+}
+
+.ui-chip--error {
+  background-color: var(--semantic-feedback-error);
+  color: var(--semantic-text-inverse);
+}
+
+.ui-chip--info {
+  background-color: var(--semantic-feedback-info);
+  color: var(--semantic-text-inverse);
+}
+
+/* Clickable state */
+
+.ui-chip--clickable {
+  cursor: pointer;
+}
+
+.ui-chip--clickable:hover:not(.ui-chip--disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: var(--primitive-shadow-sm);
+}
+
+.ui-chip--clickable:active:not(.ui-chip--disabled) {
+  transform: translateY(0);
+}
+
+.ui-chip--clickable:focus-visible {
+  outline: 2px solid var(--semantic-state-focus-ring);
+  outline-offset: 2px;
+}
+
+/* Disabled state */
+
+.ui-chip--disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Avatar */
+
+.ui-chip-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: var(--primitive-border-radius-full);
+  background-color: rgba(255, 255, 255, 0.2);
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+.ui-chip--sm .ui-chip-avatar {
+  width: 1rem;
+  height: 1rem;
+  font-size: 0.625rem;
+}
+
+.ui-chip--lg .ui-chip-avatar {
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 0.875rem;
+}
+
+/* Label */
+
+.ui-chip-label {
+  display: inline-block;
+}
+
+/* Remove button */
+
+.ui-chip-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.125rem;
+  margin-right: -0.25rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: currentColor;
+  border-radius: var(--primitive-border-radius-full);
+  transition: all 0.2s ease-in-out;
+  flex-shrink: 0;
+}
+
+.ui-chip--sm .ui-chip-remove {
+  margin-right: -0.125rem;
+}
+
+.ui-chip--lg .ui-chip-remove {
+  margin-right: -0.375rem;
+}
+
+.ui-chip-remove:hover:not(:disabled) {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.ui-chip--primary .ui-chip-remove:hover:not(:disabled),
+.ui-chip--success .ui-chip-remove:hover:not(:disabled),
+.ui-chip--error .ui-chip-remove:hover:not(:disabled),
+.ui-chip--info .ui-chip-remove:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.ui-chip-remove:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 1px;
+}
+
+.ui-chip-remove:disabled {
+  cursor: not-allowed;
+}
+
+.ui-chip-remove svg {
+  display: block;
+  pointer-events: none;
+}
+
+/* Reduced motion support */
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-chip,
+  .ui-chip-remove {
+    transition: none;
+  }
+
+  .ui-chip--clickable:hover {
+    transform: none;
+  }
+}
+
+/* High contrast mode support */
+
+@media (prefers-contrast: more) {
+  .ui-chip {
+    border-width: 2px;
+  }
+
+  .ui-chip--primary,
+  .ui-chip--success,
+  .ui-chip--error,
+  .ui-chip--info {
+    border: 2px solid currentColor;
+  }
+
+  .ui-chip--clickable:focus-visible {
+    outline-width: 3px;
+  }
+}
+
