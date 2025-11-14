@@ -1,0 +1,72 @@
+<div class="ui-textarea-container">
+  @if (label()) {
+    <label 
+      [for]="textareaId()" 
+      class="ui-textarea-label"
+      [class.ui-textarea-label--required]="required()"
+      [class.ui-textarea-label--disabled]="disabled()"
+    >
+      {{ label() }}
+      @if (required()) {
+        <span class="ui-textarea-required-indicator" aria-label="required">*</span>
+      }
+    </label>
+  }
+
+  <div class="ui-textarea-field-wrapper">
+    <textarea
+      #textarea
+      [id]="textareaId()"
+      [name]="name()"
+      [value]="internalValue()"
+      [placeholder]="placeholder()"
+      [disabled]="disabled()"
+      [readonly]="readonly()"
+      [required]="required()"
+      [attr.maxlength]="maxLength()"
+      [attr.minlength]="minLength()"
+      [rows]="rows()"
+      [attr.aria-label]="ariaLabel() || label()"
+      [attr.aria-describedby]="computedAriaDescribedBy()"
+      [attr.aria-invalid]="hasError()"
+      [attr.aria-required]="required()"
+      [ngClass]="textareaClasses()"
+      (input)="handleInput($event)"
+      (focus)="handleFocus($event)"
+      (blur)="handleBlur($event)"
+    ></textarea>
+  </div>
+
+  <div class="ui-textarea-footer">
+    <div class="ui-textarea-messages">
+      @if (helperText() && !hasError()) {
+        <div 
+          [id]="helperTextId()" 
+          class="ui-textarea-helper-text"
+        >
+          {{ helperText() }}
+        </div>
+      }
+
+      @if (hasError()) {
+        <div 
+          [id]="errorId()" 
+          class="ui-textarea-error-message"
+          role="alert"
+          aria-live="polite"
+        >
+          {{ errorMessage() }}
+        </div>
+      }
+    </div>
+
+    @if (showCharacterCount()) {
+      <div class="ui-textarea-character-count" aria-live="polite">
+        {{ characterCount() }}@if (maxLength()) {
+          <span> / {{ maxLength() }}</span>
+        }
+      </div>
+    }
+  </div>
+</div>
+

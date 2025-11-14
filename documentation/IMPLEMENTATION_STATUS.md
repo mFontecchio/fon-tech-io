@@ -49,10 +49,10 @@ This document tracks the implementation status of the UI Component Suite project
 
 ## Phase 3: Core Component Library 🚧 IN PROGRESS
 
-### 3.1 Form Components (1/10 completed)
+### 3.1 Form Components (3/10 completed)
 - [x] Button (filled, outlined, text variants; sm, md, lg sizes)
-- [ ] Input (text, email, tel, url, number types)
-- [ ] Textarea (auto-resize, character count)
+- [x] Input (text, email, tel, url, number types; prefix/suffix slots)
+- [x] Textarea (auto-resize, character count)
 - [ ] Select (native enhanced, searchable variant)
 - [ ] Checkbox (single, group, indeterminate)
 - [ ] Radio (group with keyboard navigation)
@@ -61,8 +61,8 @@ This document tracks the implementation status of the UI Component Suite project
 - [ ] Date Picker (native fallback, custom calendar)
 - [ ] File Upload (drag-drop, preview, progress)
 
-### 3.2 Layout Components (0/8)
-- [ ] Card (header, body, footer slots)
+### 3.2 Layout Components (1/8)
+- [x] Card (header, body, footer slots; elevated, outlined, filled variants)
 - [ ] Modal/Dialog (backdrop, focus trap)
 - [ ] Drawer/Sidebar (slide-in directions)
 - [ ] Accordion (single/multi-expand)
@@ -94,7 +94,7 @@ This document tracks the implementation status of the UI Component Suite project
 - [ ] Navbar (responsive, mobile menu)
 - [ ] Stepper (linear/non-linear)
 
-**Component Progress**: 1/35 (3%)
+**Component Progress**: 4/35 (11%)
 
 ## Phase 4: Theme Builder UI ⏳ NOT STARTED
 
@@ -207,14 +207,14 @@ All features in this phase are planned for post-MVP.
 |-------|--------|------------|
 | 1. Foundation Setup | ✅ Complete | 100% |
 | 2. Design System & Theming | ✅ Complete | 100% |
-| 3. Core Components | 🚧 In Progress | 3% |
+| 3. Core Components | 🚧 In Progress | 11% |
 | 4. Theme Builder UI | ⏳ Not Started | 0% |
 | 5. Showcase Site | ⏳ Not Started | 0% |
 | 6. Accessibility | 🚧 In Progress | 30% |
 | 7. Developer Experience | 🚧 In Progress | 30% |
 | 8. Future Enhancements | ⏳ Not Started | 0% |
 
-**Total Project Completion**: ~25%
+**Total Project Completion**: ~27%
 
 ## What's Working Now
 

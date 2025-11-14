@@ -1,1 +1,81 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global styles */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--primitive-font-family-sans);
+  font-size: 16px;
+  line-height: var(--primitive-line-height-normal);
+}
+
+body {
+  background-color: var(--semantic-surface-background);
+  color: var(--semantic-text-primary);
+}
+
+/* Typography system - Responsive fluid typography */
+:root {
+  /* Display text (hero sections) */
+  --font-size-display1: clamp(3rem, 2.2222rem + 3.8889vw, 6rem);
+  --line-height-display1: 1.2;
+  --letter-spacing-display1: -0.05em;
+
+  --font-size-display2: clamp(2.5rem, 1.8889rem + 3.0556vw, 4.5rem);
+  --line-height-display2: 1.2;
+  --letter-spacing-display2: -0.05em;
+
+  --font-size-display3: clamp(2rem, 1.5556rem + 2.2222vw, 3.75rem);
+  --line-height-display3: 1.2;
+  --letter-spacing-display3: -0.025em;
+
+  /* Headings */
+  --font-size-h1: clamp(2rem, 1.5556rem + 2.2222vw, 3rem);
+  --line-height-h1: 1.3;
+  --letter-spacing-h1: -0.025em;
+
+  --font-size-h2: clamp(1.75rem, 1.4167rem + 1.6667vw, 2.5rem);
+  --line-height-h2: 1.3;
+  --letter-spacing-h2: -0.025em;
+
+  --font-size-h3: clamp(1.5rem, 1.2778rem + 1.1111vw, 2rem);
+  --line-height-h3: 1.4;
+  --letter-spacing-h3: 0;
+
+  --font-size-h4: clamp(1.25rem, 1.1111rem + 0.6944vw, 1.5rem);
+  --line-height-h4: 1.4;
+  --letter-spacing-h4: 0;
+
+  --font-size-h5: clamp(1.125rem, 1.0278rem + 0.4861vw, 1.25rem);
+  --line-height-h5: 1.5;
+  --letter-spacing-h5: 0;
+
+  --font-size-h6: clamp(1rem, 0.9444rem + 0.2778vw, 1.125rem);
+  --line-height-h6: 1.5;
+  --letter-spacing-h6: 0;
+
+  /* Body text */
+  --font-size-body: clamp(1rem, 0.9444rem + 0.2778vw, 1.125rem);
+  --line-height-body: 1.6;
+  --letter-spacing-body: 0;
+
+  --font-size-body-small: clamp(0.875rem, 0.8194rem + 0.2778vw, 1rem);
+  --line-height-body-small: 1.6;
+  --letter-spacing-body-small: 0.025em;
+
+  --font-size-caption: clamp(0.75rem, 0.6944rem + 0.2778vw, 0.875rem);
+  --line-height-caption: 1.6;
+  --letter-spacing-caption: 0.05em;
+
+  /* Labels and UI */
+  --font-size-label: clamp(0.875rem, 0.8194rem + 0.2778vw, 1rem);
+  --line-height-label: 1.5;
+  --letter-spacing-label: 0.025em;
+
+  --font-size-label-small: clamp(0.75rem, 0.6944rem + 0.2778vw, 0.875rem);
+  --line-height-label-small: 1.5;
+  --letter-spacing-label-small: 0.05em;
+}

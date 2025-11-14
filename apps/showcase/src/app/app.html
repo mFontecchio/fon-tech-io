@@ -1,2 +1,218 @@
-<app-nx-welcome></app-nx-welcome>
+<div class="showcase-container">
+  <header class="showcase-header">
+    <h1>{{ title }}</h1>
+    <ui-button 
+      variant="outlined" 
+      size="sm"
+      (clicked)="toggleTheme()"
+    >
+      Toggle Theme
+    </ui-button>
+  </header>
+
+  <main class="showcase-content">
+    <!-- Button Examples -->
+    <section class="component-section">
+      <h2>Buttons</h2>
+      <ui-card>
+        <div header class="card-header">
+          <h3>Button Variants & Sizes</h3>
+        </div>
+
+        <div class="demo-group">
+          <h4>Filled Buttons</h4>
+          <div class="button-row">
+            <ui-button variant="filled" size="sm">Small</ui-button>
+            <ui-button variant="filled" size="md">Medium</ui-button>
+            <ui-button variant="filled" size="lg">Large</ui-button>
+            <ui-button variant="filled" size="md" [disabled]="true">Disabled</ui-button>
+            <ui-button variant="filled" size="md" [loading]="true">Loading</ui-button>
+          </div>
+        </div>
+
+        <div class="demo-group">
+          <h4>Outlined Buttons</h4>
+          <div class="button-row">
+            <ui-button variant="outlined" size="sm">Small</ui-button>
+            <ui-button variant="outlined" size="md">Medium</ui-button>
+            <ui-button variant="outlined" size="lg">Large</ui-button>
+          </div>
+        </div>
+
+        <div class="demo-group">
+          <h4>Text Buttons</h4>
+          <div class="button-row">
+            <ui-button variant="text" size="sm">Small</ui-button>
+            <ui-button variant="text" size="md">Medium</ui-button>
+            <ui-button variant="text" size="lg">Large</ui-button>
+          </div>
+        </div>
+
+        <div class="demo-group">
+          <h4>Interactive Example</h4>
+          <ui-button variant="filled" (clicked)="onButtonClick()">
+            Clicked {{ buttonClicks() }} times
+          </ui-button>
+        </div>
+      </ui-card>
+    </section>
+
+    <!-- Input Examples -->
+    <section class="component-section">
+      <h2>Inputs</h2>
+      <ui-card>
+        <div header class="card-header">
+          <h3>Input Component</h3>
+        </div>
+
+        <div class="demo-group">
+          <ui-input
+            label="Text Input"
+            placeholder="Enter some text..."
+            helperText="This is helper text"
+            [fullWidth]="true"
+            (valueChange)="onInputChange($event)"
+          />
+          <p class="value-display">Current value: {{ inputValue() }}</p>
+        </div>
+
+        <div class="demo-group">
+          <ui-input
+            type="email"
+            label="Email Input"
+            placeholder="your@email.com"
+            helperText="Enter a valid email address"
+            [fullWidth]="true"
+          />
+        </div>
+
+        <div class="demo-group">
+          <ui-input
+            type="password"
+            label="Password Input"
+            placeholder="Enter password"
+            [required]="true"
+            [fullWidth]="true"
+          />
+        </div>
+
+        <div class="demo-group">
+          <ui-input
+            label="Input with Error"
+            placeholder="This has an error"
+            errorMessage="This field is required"
+            [fullWidth]="true"
+          />
+        </div>
+
+        <div class="demo-group">
+          <ui-input
+            label="Disabled Input"
+            placeholder="Cannot edit"
+            [disabled]="true"
+            [fullWidth]="true"
+          />
+        </div>
+      </ui-card>
+    </section>
+
+    <!-- Textarea Examples -->
+    <section class="component-section">
+      <h2>Textarea</h2>
+      <ui-card>
+        <div header class="card-header">
+          <h3>Textarea Component</h3>
+        </div>
+
+        <div class="demo-group">
+          <ui-textarea
+            label="Standard Textarea"
+            placeholder="Enter multiple lines of text..."
+            helperText="Basic textarea with 3 rows"
+            [rows]="3"
+            [fullWidth]="true"
+            (valueChange)="onTextareaChange($event)"
+          />
+          <p class="value-display">Characters: {{ textareaValue().length }}</p>
+        </div>
+
+        <div class="demo-group">
+          <ui-textarea
+            label="Auto-resize Textarea"
+            placeholder="This textarea grows as you type..."
+            [autoResize]="true"
+            [fullWidth]="true"
+          />
+        </div>
+
+        <div class="demo-group">
+          <ui-textarea
+            label="With Character Count"
+            placeholder="Max 200 characters"
+            [maxLength]="200"
+            [showCharacterCount]="true"
+            [fullWidth]="true"
+          />
+        </div>
+
+        <div class="demo-group">
+          <ui-textarea
+            label="Textarea with Error"
+            placeholder="This has an error"
+            errorMessage="Content is too short"
+            [fullWidth]="true"
+          />
+        </div>
+      </ui-card>
+    </section>
+
+    <!-- Card Examples -->
+    <section class="component-section">
+      <h2>Cards</h2>
+      
+      <div class="cards-grid">
+        <ui-card variant="elevated">
+          <div header class="card-header">
+            <h3>Elevated Card</h3>
+          </div>
+          <p>This card has a shadow effect (elevated variant).</p>
+          <div footer class="card-footer">
+            <ui-button variant="text" size="sm">Action</ui-button>
+          </div>
+        </ui-card>
+
+        <ui-card variant="outlined">
+          <div header class="card-header">
+            <h3>Outlined Card</h3>
+          </div>
+          <p>This card has a border (outlined variant).</p>
+          <div footer class="card-footer">
+            <ui-button variant="text" size="sm">Action</ui-button>
+          </div>
+        </ui-card>
+
+        <ui-card variant="filled">
+          <div header class="card-header">
+            <h3>Filled Card</h3>
+          </div>
+          <p>This card has a filled background (filled variant).</p>
+          <div footer class="card-footer">
+            <ui-button variant="text" size="sm">Action</ui-button>
+          </div>
+        </ui-card>
+
+        <ui-card variant="elevated" [interactive]="true">
+          <div header class="card-header">
+            <h3>Interactive Card</h3>
+          </div>
+          <p>Hover over this card to see the interactive effect!</p>
+        </ui-card>
+      </div>
+    </section>
+  </main>
+
+  <footer class="showcase-footer">
+    <p>UI Component Suite - Angular 20 Component Library</p>
+  </footer>
+</div>
 <router-outlet></router-outlet>

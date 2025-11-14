@@ -1,0 +1,218 @@
+/**
+ * Input Component Styles
+ * 
+ * Uses design tokens from the theming system
+ */
+
+.ui-input-wrapper {
+  display: inline-block;
+  width: auto;
+}
+
+.ui-input-wrapper--full-width {
+  display: block;
+  width: 100%;
+}
+
+.ui-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-spacing-2);
+}
+
+/* Label */
+
+.ui-input-label {
+  display: block;
+  font-size: var(--primitive-font-size-sm);
+  font-weight: var(--primitive-font-weight-medium);
+  color: var(--semantic-text-primary);
+  line-height: var(--primitive-line-height-tight);
+}
+
+.ui-input-label--disabled {
+  color: var(--semantic-text-disabled);
+}
+
+.ui-input-required-indicator {
+  color: var(--semantic-feedback-error);
+  margin-left: var(--primitive-spacing-1);
+}
+
+/* Input field wrapper */
+
+.ui-input-field-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--primitive-spacing-2);
+}
+
+/* Input element */
+
+.ui-input {
+  width: 100%;
+  padding: var(--component-input-padding-y) var(--component-input-padding-x);
+  font-size: var(--component-input-font-size);
+  font-family: var(--primitive-font-family-sans);
+  line-height: var(--primitive-line-height-normal);
+  color: var(--component-input-default-text);
+  background-color: var(--component-input-default-background);
+  border: var(--component-input-border-width) solid var(--component-input-default-border);
+  border-radius: var(--component-input-border-radius);
+  outline: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.ui-input::placeholder {
+  color: var(--component-input-default-placeholder);
+  opacity: 1;
+}
+
+/* Hover state */
+
+.ui-input:hover:not(:disabled):not(:focus) {
+  border-color: var(--component-input-hover-border);
+}
+
+/* Focus state */
+
+.ui-input:focus,
+.ui-input--focused {
+  border-color: var(--component-input-focus-border);
+  box-shadow: 0 0 0 var(--component-input-focus-ring-width) var(--component-input-focus-ring);
+}
+
+/* Error state */
+
+.ui-input--error,
+.ui-input--error:hover,
+.ui-input--error:focus {
+  border-color: var(--component-input-error-border);
+}
+
+.ui-input--error:focus {
+  box-shadow: 0 0 0 var(--component-input-focus-ring-width) var(--semantic-border-error);
+}
+
+/* Disabled state */
+
+.ui-input:disabled,
+.ui-input--disabled {
+  background-color: var(--component-input-disabled-background);
+  color: var(--component-input-disabled-text);
+  border-color: var(--component-input-disabled-border);
+  opacity: var(--component-input-disabled-opacity);
+  cursor: not-allowed;
+}
+
+/* Readonly state */
+
+.ui-input:read-only {
+  background-color: var(--semantic-surface-background-secondary);
+  cursor: default;
+}
+
+/* Helper text */
+
+.ui-input-helper-text {
+  font-size: var(--primitive-font-size-sm);
+  color: var(--semantic-text-secondary);
+  line-height: var(--primitive-line-height-normal);
+}
+
+/* Error message */
+
+.ui-input-error-message {
+  font-size: var(--primitive-font-size-sm);
+  color: var(--component-input-error-text);
+  line-height: var(--primitive-line-height-normal);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--primitive-spacing-1);
+}
+
+/* Full width */
+
+.ui-input-wrapper--full-width .ui-input {
+  width: 100%;
+}
+
+/* Prefix and suffix slots */
+
+.ui-input-field-wrapper ::ng-deep [prefix],
+.ui-input-field-wrapper ::ng-deep [suffix] {
+  display: flex;
+  align-items: center;
+  color: var(--semantic-text-secondary);
+  font-size: var(--primitive-font-size-sm);
+  flex-shrink: 0;
+}
+
+.ui-input-field-wrapper ::ng-deep [prefix] {
+  padding-left: var(--primitive-spacing-2);
+}
+
+.ui-input-field-wrapper ::ng-deep [suffix] {
+  padding-right: var(--primitive-spacing-2);
+}
+
+/* Number input - hide spinners */
+
+.ui-input[type="number"]::-webkit-inner-spin-button,
+.ui-input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.ui-input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Search input - custom clear button */
+
+.ui-input[type="search"]::-webkit-search-decoration,
+.ui-input[type="search"]::-webkit-search-cancel-button,
+.ui-input[type="search"]::-webkit-search-results-button,
+.ui-input[type="search"]::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+}
+
+/* Password input */
+
+.ui-input[type="password"] {
+  font-family: var(--primitive-font-family-mono);
+  letter-spacing: 0.1em;
+}
+
+/* Autofill styles */
+
+.ui-input:-webkit-autofill,
+.ui-input:-webkit-autofill:hover,
+.ui-input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--component-input-default-text);
+  -webkit-box-shadow: 0 0 0 1000px var(--component-input-default-background) inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Reduced motion support */
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-input {
+    transition: none;
+  }
+}
+
+/* High contrast mode support */
+
+@media (prefers-contrast: more) {
+  .ui-input {
+    border-width: 2px;
+  }
+
+  .ui-input:focus {
+    outline: 2px solid var(--component-input-focus-border);
+    outline-offset: 2px;
+  }
+}
+

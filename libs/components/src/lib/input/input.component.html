@@ -1,0 +1,66 @@
+<div class="ui-input-container">
+  @if (label()) {
+    <label 
+      [for]="inputId()" 
+      class="ui-input-label"
+      [class.ui-input-label--required]="required()"
+      [class.ui-input-label--disabled]="disabled()"
+    >
+      {{ label() }}
+      @if (required()) {
+        <span class="ui-input-required-indicator" aria-label="required">*</span>
+      }
+    </label>
+  }
+
+  <div class="ui-input-field-wrapper">
+    <ng-content select="[prefix]" />
+    
+    <input
+      #input
+      [type]="type()"
+      [id]="inputId()"
+      [name]="name()"
+      [value]="internalValue()"
+      [placeholder]="placeholder()"
+      [disabled]="disabled()"
+      [readonly]="readonly()"
+      [required]="required()"
+      [attr.maxlength]="maxLength()"
+      [attr.minlength]="minLength()"
+      [attr.pattern]="pattern()"
+      [attr.autocomplete]="autocomplete()"
+      [attr.aria-label]="ariaLabel() || label()"
+      [attr.aria-describedby]="computedAriaDescribedBy()"
+      [attr.aria-invalid]="hasError()"
+      [attr.aria-required]="required()"
+      [ngClass]="inputClasses()"
+      (input)="handleInput($event)"
+      (focus)="handleFocus($event)"
+      (blur)="handleBlur($event)"
+    />
+    
+    <ng-content select="[suffix]" />
+  </div>
+
+  @if (helperText() && !hasError()) {
+    <div 
+      [id]="helperTextId()" 
+      class="ui-input-helper-text"
+    >
+      {{ helperText() }}
+    </div>
+  }
+
+  @if (hasError()) {
+    <div 
+      [id]="errorId()" 
+      class="ui-input-error-message"
+      role="alert"
+      aria-live="polite"
+    >
+      {{ errorMessage() }}
+    </div>
+  }
+</div>
+

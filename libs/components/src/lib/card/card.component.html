@@ -1,0 +1,19 @@
+<article 
+  [ngClass]="cardClasses()"
+  [attr.aria-label]="ariaLabel()"
+  [attr.aria-labelledby]="ariaLabelledBy()"
+  role="region"
+>
+  <div class="ui-card__header">
+    <ng-content select="[header]" />
+  </div>
+
+  <div class="ui-card__body">
+    <ng-content />
+  </div>
+
+  <div class="ui-card__footer">
+    <ng-content select="[footer]" />
+  </div>
+</article>
+

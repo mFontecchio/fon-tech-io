@@ -37,6 +37,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Button component with filled, outlined, and text variants
 - Button sizes (sm, md, lg) and states (disabled, loading)
 - Full ARIA support and keyboard navigation for Button
+- Input component with validation states, prefix/suffix slots
+- Textarea component with auto-resize and character count
+- Card component with elevated, outlined, and filled variants
 - Comprehensive architecture documentation
 - Design system documentation
 - Implementation status tracking
