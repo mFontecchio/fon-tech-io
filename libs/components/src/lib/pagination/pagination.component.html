@@ -1,0 +1,109 @@
+<nav [ngClass]="paginationClasses()" aria-label="Pagination">
+  <ul class="ui-pagination-list">
+    <!-- First button -->
+    @if (showFirstLast()) {
+      <li>
+        <button
+          type="button"
+          class="ui-pagination-button ui-pagination-button--nav"
+          [disabled]="disabled() || !hasPrevious()"
+          [attr.aria-label]="'Go to first page'"
+          (click)="goToFirst()"
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M11 12L7 8L11 4M5 12L5 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </li>
+    }
+
+    <!-- Previous button -->
+    <li>
+      <button
+        type="button"
+        class="ui-pagination-button ui-pagination-button--nav"
+        [disabled]="disabled() || !hasPrevious()"
+        [attr.aria-label]="'Go to previous page'"
+        (click)="goToPrevious()"
+      >
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </li>
+
+    <!-- Page numbers -->
+    @for (page of displayedPages(); track page) {
+      <li>
+        @if (isEllipsis(page)) {
+          <span class="ui-pagination-ellipsis" aria-hidden="true">...</span>
+        } @else {
+          <button
+            type="button"
+            class="ui-pagination-button ui-pagination-button--page"
+            [class.ui-pagination-button--active]="isCurrentPage(page)"
+            [disabled]="disabled()"
+            [attr.aria-label]="'Go to page ' + page"
+            [attr.aria-current]="isCurrentPage(page) ? 'page' : null"
+            (click)="goToPage(+page)"
+          >
+            {{ page }}
+          </button>
+        }
+      </li>
+    }
+
+    <!-- Next button -->
+    <li>
+      <button
+        type="button"
+        class="ui-pagination-button ui-pagination-button--nav"
+        [disabled]="disabled() || !hasNext()"
+        [attr.aria-label]="'Go to next page'"
+        (click)="goToNext()"
+      >
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </li>
+
+    <!-- Last button -->
+    @if (showFirstLast()) {
+      <li>
+        <button
+          type="button"
+          class="ui-pagination-button ui-pagination-button--nav"
+          [disabled]="disabled() || !hasNext()"
+          [attr.aria-label]="'Go to last page'"
+          (click)="goToLast()"
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M5 4L9 8L5 12M11 4L11 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </li>
+    }
+  </ul>
+
+  <!-- Page size selector -->
+  @if (showPageSize()) {
+    <div class="ui-pagination-page-size">
+      <label for="pagination-page-size" class="ui-pagination-page-size-label">
+        Items per page:
+      </label>
+      <select
+        id="pagination-page-size"
+        class="ui-pagination-page-size-select"
+        [value]="internalPageSize()"
+        [disabled]="disabled()"
+        (change)="handlePageSizeChange(+$any($event.target).value)"
+      >
+        @for (option of pageSizeOptions(); track option) {
+          <option [value]="option">{{ option }}</option>
+        }
+      </select>
+    </div>
+  }
+</nav>
+

@@ -1,0 +1,11 @@
+<div [ngClass]="containerClasses()">
+  @for (toast of toasts(); track toast.id) {
+    <ui-toast
+      [message]="toast.message"
+      [variant]="toast.variant"
+      [dismissible]="toast.dismissible || false"
+      (dismissed)="dismissToast(toast.id)"
+    />
+  }
+</div>
+

@@ -1,0 +1,202 @@
+/**
+ * Popover Component Styles
+ */
+
+.ui-popover-wrapper {
+  display: inline-block;
+}
+
+.ui-popover-container {
+  position: relative;
+  display: inline-block;
+}
+
+/* Trigger */
+
+.ui-popover-trigger {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.ui-popover-trigger:focus-visible {
+  outline: 2px solid var(--semantic-state-focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--primitive-border-radius-sm);
+}
+
+/* Popover */
+
+.ui-popover {
+  position: fixed;
+  z-index: 9999;
+  max-width: 20rem;
+  background-color: var(--semantic-surface-card);
+  border: 1px solid var(--semantic-border-default);
+  border-radius: var(--primitive-border-radius-md);
+  box-shadow: var(--primitive-shadow-lg);
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+  pointer-events: none;
+}
+
+.ui-popover[hidden] {
+  display: none;
+}
+
+.ui-popover--visible {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+/* Arrow */
+
+.ui-popover-arrow {
+  position: absolute;
+  width: 0.75rem;
+  height: 0.75rem;
+  background-color: var(--semantic-surface-card);
+  border: 1px solid var(--semantic-border-default);
+  transform: rotate(45deg);
+}
+
+.ui-popover--top .ui-popover-arrow {
+  bottom: -0.4rem;
+  left: 50%;
+  margin-left: -0.375rem;
+  border-top: none;
+  border-left: none;
+}
+
+.ui-popover--bottom .ui-popover-arrow {
+  top: -0.4rem;
+  left: 50%;
+  margin-left: -0.375rem;
+  border-bottom: none;
+  border-right: none;
+}
+
+.ui-popover--left .ui-popover-arrow {
+  right: -0.4rem;
+  top: 50%;
+  margin-top: -0.375rem;
+  border-left: none;
+  border-bottom: none;
+}
+
+.ui-popover--right .ui-popover-arrow {
+  left: -0.4rem;
+  top: 50%;
+  margin-top: -0.375rem;
+  border-right: none;
+  border-top: none;
+}
+
+/* Content wrapper */
+
+.ui-popover-content-wrapper {
+  position: relative;
+  z-index: 1;
+}
+
+/* Header */
+
+.ui-popover-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--primitive-spacing-3) var(--primitive-spacing-4);
+  border-bottom: 1px solid var(--semantic-border-subtle);
+}
+
+.ui-popover-title {
+  font-size: var(--primitive-font-size-base);
+  font-weight: var(--primitive-font-weight-semibold);
+  color: var(--semantic-text-primary);
+  margin: 0;
+}
+
+.ui-popover-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--semantic-text-secondary);
+  border-radius: var(--primitive-border-radius-sm);
+  transition: all 0.2s ease-in-out;
+}
+
+.ui-popover-close:hover {
+  background-color: var(--semantic-surface-subtle);
+  color: var(--semantic-text-primary);
+}
+
+.ui-popover-close:focus-visible {
+  outline: 2px solid var(--semantic-state-focus-ring);
+  outline-offset: 1px;
+}
+
+/* Content */
+
+.ui-popover-content {
+  padding: var(--primitive-spacing-4);
+  color: var(--semantic-text-primary);
+  font-size: var(--primitive-font-size-sm);
+  line-height: var(--primitive-line-height-relaxed);
+  max-height: 20rem;
+  overflow-y: auto;
+}
+
+.ui-popover-content::-webkit-scrollbar {
+  width: 0.375rem;
+}
+
+.ui-popover-content::-webkit-scrollbar-track {
+  background: var(--semantic-surface-subtle);
+}
+
+.ui-popover-content::-webkit-scrollbar-thumb {
+  background: var(--semantic-border-default);
+  border-radius: var(--primitive-border-radius-full);
+}
+
+.ui-popover-content::-webkit-scrollbar-thumb:hover {
+  background: var(--semantic-border-strong);
+}
+
+/* Responsive */
+
+@media (max-width: 640px) {
+  .ui-popover {
+    max-width: calc(100vw - 2rem);
+  }
+}
+
+/* Reduced motion support */
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-popover {
+    transition: none;
+  }
+}
+
+/* High contrast mode support */
+
+@media (prefers-contrast: more) {
+  .ui-popover {
+    border-width: 2px;
+  }
+
+  .ui-popover-arrow {
+    border-width: 2px;
+  }
+
+  .ui-popover-header {
+    border-bottom-width: 2px;
+  }
+}
+

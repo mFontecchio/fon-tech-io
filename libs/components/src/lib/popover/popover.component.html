@@ -1,0 +1,52 @@
+<div class="ui-popover-container">
+  <!-- Trigger -->
+  <div
+    class="ui-popover-trigger"
+    [attr.aria-haspopup]="true"
+    [attr.aria-expanded]="isOpen()"
+    [attr.tabindex]="disabled() ? -1 : 0"
+    (click)="handleTriggerClick()"
+    (mouseenter)="handleTriggerMouseEnter()"
+    (mouseleave)="handleTriggerMouseLeave()"
+    (keydown.enter)="handleTriggerClick()"
+    (keydown.space)="$event.preventDefault(); handleTriggerClick()"
+  >
+    <ng-content select="[trigger]"></ng-content>
+  </div>
+
+  <!-- Popover content -->
+  <div
+    [ngClass]="popoverClasses()"
+    [ngStyle]="popoverStyles()"
+    [attr.role]="'dialog'"
+    [attr.aria-modal]="false"
+    [attr.hidden]="!isOpen() ? true : null"
+  >
+    @if (showArrow()) {
+      <div class="ui-popover-arrow"></div>
+    }
+
+    <div class="ui-popover-content-wrapper">
+      @if (title()) {
+        <div class="ui-popover-header">
+          <h3 class="ui-popover-title">{{ title() }}</h3>
+          <button
+            type="button"
+            class="ui-popover-close"
+            aria-label="Close popover"
+            (click)="close()"
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M12 4L4 12M4 4L12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+      }
+
+      <div class="ui-popover-content">
+        <ng-content></ng-content>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -58,7 +58,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Skeleton component with shimmer effect for loading states (text, circular, rectangular, rounded)
 - Breadcrumb component with overflow handling and custom separators
 - Divider component with horizontal/vertical orientation and labels
-- Working showcase application with live demos for all 22 components
+- Slider component with single/dual handle, range selection, and custom steps
+- Drawer component with 4 positions (left, right, top, bottom) and 5 sizes
+- Popover component with click/hover triggers, positioning, and rich content
+- Pagination component with ellipsis, page size selector, and first/last navigation
+- Toast/Snackbar component with service-based notifications and auto-dismiss
+- Working showcase application with live demos for all 27 components
 - Theme switching functionality verified across all components
 - TypeScript 5.8.3 (Angular 20.3 compatibility)
 - Updated dependencies (@types/node, @swc/core)

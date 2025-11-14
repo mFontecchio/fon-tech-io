@@ -1,0 +1,77 @@
+<div class="ui-slider-container">
+  @if (label()) {
+    <label [for]="sliderId()" class="ui-slider-label">
+      {{ label() }}
+    </label>
+  }
+
+  <div class="ui-slider-control">
+    <div [ngClass]="sliderClasses()">
+      <!-- Visual track -->
+      <div class="ui-slider-track">
+        @if (isRange()) {
+          <div class="ui-slider-fill ui-slider-fill--range" [ngStyle]="rangeFillStyle()"></div>
+        } @else {
+          <div class="ui-slider-fill" [style.width.%]="fillPercentage()"></div>
+        }
+      </div>
+
+      <!-- Single handle or start handle -->
+      <input
+        type="range"
+        class="ui-slider-input"
+        [id]="sliderId()"
+        [name]="name()"
+        [min]="min()"
+        [max]="isRange() ? (internalValueEnd() || max()) : max()"
+        [step]="step()"
+        [value]="internalValue()"
+        [disabled]="disabled()"
+        [attr.aria-label]="ariaLabel() || label() || 'Slider'"
+        [attr.aria-valuemin]="min()"
+        [attr.aria-valuemax]="max()"
+        [attr.aria-valuenow]="internalValue()"
+        (input)="handleValueChange(+$any($event.target).value)"
+      />
+
+      <!-- End handle (for range mode) -->
+      @if (isRange()) {
+        <input
+          type="range"
+          class="ui-slider-input ui-slider-input--end"
+          [min]="internalValue()"
+          [max]="max()"
+          [step]="step()"
+          [value]="internalValueEnd()"
+          [disabled]="disabled()"
+          [attr.aria-label]="(ariaLabel() || label() || 'Slider') + ' end'"
+          [attr.aria-valuemin]="min()"
+          [attr.aria-valuemax]="max()"
+          [attr.aria-valuenow]="internalValueEnd()"
+          (input)="handleValueEndChange(+$any($event.target).value)"
+        />
+      }
+    </div>
+
+    @if (showMinMax() || showValue()) {
+      <div class="ui-slider-labels">
+        @if (showMinMax()) {
+          <span class="ui-slider-label-min">{{ min() }}</span>
+        }
+        @if (showValue()) {
+          <span class="ui-slider-value">
+            @if (isRange()) {
+              {{ internalValue() }} - {{ internalValueEnd() }}
+            } @else {
+              {{ internalValue() }}
+            }
+          </span>
+        }
+        @if (showMinMax()) {
+          <span class="ui-slider-label-max">{{ max() }}</span>
+        }
+      </div>
+    }
+  </div>
+</div>
+
