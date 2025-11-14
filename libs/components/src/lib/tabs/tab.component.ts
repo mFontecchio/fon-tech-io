@@ -10,22 +10,15 @@ import {
   Component,
   input,
   signal,
-  TemplateRef,
-  ViewChild,
-  AfterViewInit,
 } from '@angular/core';
 
 @Component({
   selector: 'ui-tab',
-  template: '<ng-template><ng-content /></ng-template>',
+  template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  host: {
-    '[style.display]': '"none"',
-  },
 })
-export class TabComponent implements AfterViewInit {
-  @ViewChild(TemplateRef, { static: true }) contentTemplate?: TemplateRef<any>;
+export class TabComponent {
   /**
    * Tab label
    */
@@ -75,10 +68,6 @@ export class TabComponent implements AfterViewInit {
    */
   public active(): boolean {
     return this.isActive();
-  }
-
-  ngAfterViewInit(): void {
-    // Template ref is set via ViewChild
   }
 }
 
