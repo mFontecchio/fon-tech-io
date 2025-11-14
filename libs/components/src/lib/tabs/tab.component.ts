@@ -14,7 +14,33 @@ import {
 
 @Component({
   selector: 'ui-tab',
-  template: '',
+  template: `
+    <div 
+      class="ui-tab-panel"
+      [class.ui-tab-panel--active]="isActive()"
+      [attr.role]="'tabpanel'"
+      [attr.aria-labelledby]="'ui-tab-' + index()"
+      [attr.id]="'ui-tab-panel-' + index()"
+      [attr.hidden]="!isActive() ? true : null"
+      [style.display]="isActive() ? 'block' : 'none'"
+    >
+      <ng-content />
+    </div>
+  `,
+  styles: [`
+    .ui-tab-panel {
+      animation: fadeIn 0.2s ease-in;
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  `],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
