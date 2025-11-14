@@ -1,0 +1,203 @@
+/**
+ * Button Component Styles
+ * 
+ * Uses design tokens from the theming system
+ */
+
+.ui-button-wrapper {
+  display: inline-block;
+}
+
+.ui-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--primitive-spacing-2);
+  font-family: var(--primitive-font-family-sans);
+  font-weight: var(--component-button-font-weight);
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  border: var(--component-button-border-width) solid transparent;
+  border-radius: var(--component-button-border-radius);
+  transition: all 0.2s ease-in-out;
+  outline: none;
+}
+
+.ui-button:focus-visible {
+  outline: 2px solid var(--semantic-state-focus-ring);
+  outline-offset: 2px;
+}
+
+/* Variants */
+
+.ui-button--filled {
+  background-color: var(--component-button-filled-background);
+  color: var(--component-button-filled-text);
+  border-color: var(--component-button-filled-border);
+}
+
+.ui-button--filled:hover:not(:disabled) {
+  background-color: var(--component-button-filled-background-hover);
+}
+
+.ui-button--filled:active:not(:disabled) {
+  background-color: var(--component-button-filled-background-active);
+  transform: translateY(1px);
+}
+
+.ui-button--outlined {
+  background-color: var(--component-button-outlined-background);
+  color: var(--component-button-outlined-text);
+  border-color: var(--component-button-outlined-border);
+}
+
+.ui-button--outlined:hover:not(:disabled) {
+  background-color: var(--component-button-outlined-background-hover);
+  border-color: var(--component-button-outlined-border-hover);
+}
+
+.ui-button--outlined:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.ui-button--text {
+  background-color: var(--component-button-text-background);
+  color: var(--component-button-text-text);
+  border-color: transparent;
+}
+
+.ui-button--text:hover:not(:disabled) {
+  background-color: var(--component-button-text-background-hover);
+}
+
+.ui-button--text:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+/* Sizes */
+
+.ui-button--sm {
+  padding: var(--component-button-sizes-sm-padding-y) var(--component-button-sizes-sm-padding-x);
+  font-size: var(--component-button-sizes-sm-font-size);
+  line-height: var(--primitive-line-height-tight);
+}
+
+.ui-button--md {
+  padding: var(--component-button-sizes-md-padding-y) var(--component-button-sizes-md-padding-x);
+  font-size: var(--component-button-sizes-md-font-size);
+  line-height: var(--primitive-line-height-tight);
+}
+
+.ui-button--lg {
+  padding: var(--component-button-sizes-lg-padding-y) var(--component-button-sizes-lg-padding-x);
+  font-size: var(--component-button-sizes-lg-font-size);
+  line-height: var(--primitive-line-height-tight);
+}
+
+/* States */
+
+.ui-button--disabled,
+.ui-button:disabled {
+  background-color: var(--component-button-disabled-background);
+  color: var(--component-button-disabled-text);
+  border-color: var(--component-button-disabled-border);
+  opacity: var(--component-button-disabled-opacity);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.ui-button--loading {
+  cursor: wait;
+  pointer-events: none;
+}
+
+/* Full width */
+
+.ui-button--full-width {
+  width: 100%;
+  display: flex;
+}
+
+/* Icon only */
+
+.ui-button--icon-only {
+  padding: var(--primitive-spacing-2);
+  aspect-ratio: 1;
+}
+
+.ui-button--icon-only.ui-button--sm {
+  padding: var(--primitive-spacing-1);
+}
+
+.ui-button--icon-only.ui-button--lg {
+  padding: var(--primitive-spacing-3);
+}
+
+/* Button content */
+
+.ui-button__content {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--primitive-spacing-2);
+  transition: opacity 0.2s ease-in-out;
+}
+
+.ui-button__content--loading {
+  opacity: 0.5;
+}
+
+/* Loading spinner */
+
+.ui-button__loader {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ui-button__spinner {
+  animation: ui-button-spin 1s linear infinite;
+}
+
+@keyframes ui-button-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Reduced motion support */
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-button {
+    transition: none;
+  }
+
+  .ui-button:active:not(:disabled) {
+    transform: none;
+  }
+
+  .ui-button__spinner {
+    animation: none;
+  }
+}
+
+/* High contrast mode support */
+
+@media (prefers-contrast: more) {
+  .ui-button {
+    border-width: 2px;
+  }
+
+  .ui-button:focus-visible {
+    outline-width: 3px;
+  }
+}
+

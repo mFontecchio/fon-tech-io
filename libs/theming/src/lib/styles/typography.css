@@ -1,0 +1,179 @@
+/**
+ * Responsive Typography System
+ * 
+ * Fluid typography using clamp() for smooth scaling across breakpoints
+ */
+
+:root {
+  /* Display text (hero sections) */
+  --font-size-display1: clamp(3rem, 2.2222rem + 3.8889vw, 6rem);
+  --line-height-display1: 1.2;
+  --letter-spacing-display1: -0.05em;
+
+  --font-size-display2: clamp(2.5rem, 1.8889rem + 3.0556vw, 4.5rem);
+  --line-height-display2: 1.2;
+  --letter-spacing-display2: -0.05em;
+
+  --font-size-display3: clamp(2rem, 1.5556rem + 2.2222vw, 3.75rem);
+  --line-height-display3: 1.2;
+  --letter-spacing-display3: -0.025em;
+
+  /* Headings */
+  --font-size-h1: clamp(2rem, 1.5556rem + 2.2222vw, 3rem);
+  --line-height-h1: 1.3;
+  --letter-spacing-h1: -0.025em;
+
+  --font-size-h2: clamp(1.75rem, 1.4167rem + 1.6667vw, 2.5rem);
+  --line-height-h2: 1.3;
+  --letter-spacing-h2: -0.025em;
+
+  --font-size-h3: clamp(1.5rem, 1.2778rem + 1.1111vw, 2rem);
+  --line-height-h3: 1.4;
+  --letter-spacing-h3: 0;
+
+  --font-size-h4: clamp(1.25rem, 1.1111rem + 0.6944vw, 1.5rem);
+  --line-height-h4: 1.4;
+  --letter-spacing-h4: 0;
+
+  --font-size-h5: clamp(1.125rem, 1.0278rem + 0.4861vw, 1.25rem);
+  --line-height-h5: 1.5;
+  --letter-spacing-h5: 0;
+
+  --font-size-h6: clamp(1rem, 0.9444rem + 0.2778vw, 1.125rem);
+  --line-height-h6: 1.5;
+  --letter-spacing-h6: 0;
+
+  /* Body text */
+  --font-size-body: clamp(1rem, 0.9444rem + 0.2778vw, 1.125rem);
+  --line-height-body: 1.6;
+  --letter-spacing-body: 0;
+
+  --font-size-body-small: clamp(0.875rem, 0.8194rem + 0.2778vw, 1rem);
+  --line-height-body-small: 1.6;
+  --letter-spacing-body-small: 0.025em;
+
+  --font-size-caption: clamp(0.75rem, 0.6944rem + 0.2778vw, 0.875rem);
+  --line-height-caption: 1.6;
+  --letter-spacing-caption: 0.05em;
+
+  /* Labels and UI */
+  --font-size-label: clamp(0.875rem, 0.8194rem + 0.2778vw, 1rem);
+  --line-height-label: 1.5;
+  --letter-spacing-label: 0.025em;
+
+  --font-size-label-small: clamp(0.75rem, 0.6944rem + 0.2778vw, 0.875rem);
+  --line-height-label-small: 1.5;
+  --letter-spacing-label-small: 0.05em;
+}
+
+/* Typography utility classes */
+.typography-display1 {
+  font-size: var(--font-size-display1);
+  line-height: var(--line-height-display1);
+  letter-spacing: var(--letter-spacing-display1);
+}
+
+.typography-display2 {
+  font-size: var(--font-size-display2);
+  line-height: var(--line-height-display2);
+  letter-spacing: var(--letter-spacing-display2);
+}
+
+.typography-display3 {
+  font-size: var(--font-size-display3);
+  line-height: var(--line-height-display3);
+  letter-spacing: var(--letter-spacing-display3);
+}
+
+.typography-h1 {
+  font-size: var(--font-size-h1);
+  line-height: var(--line-height-h1);
+  letter-spacing: var(--letter-spacing-h1);
+}
+
+.typography-h2 {
+  font-size: var(--font-size-h2);
+  line-height: var(--line-height-h2);
+  letter-spacing: var(--letter-spacing-h2);
+}
+
+.typography-h3 {
+  font-size: var(--font-size-h3);
+  line-height: var(--line-height-h3);
+  letter-spacing: var(--letter-spacing-h3);
+}
+
+.typography-h4 {
+  font-size: var(--font-size-h4);
+  line-height: var(--line-height-h4);
+  letter-spacing: var(--letter-spacing-h4);
+}
+
+.typography-h5 {
+  font-size: var(--font-size-h5);
+  line-height: var(--line-height-h5);
+  letter-spacing: var(--letter-spacing-h5);
+}
+
+.typography-h6 {
+  font-size: var(--font-size-h6);
+  line-height: var(--line-height-h6);
+  letter-spacing: var(--letter-spacing-h6);
+}
+
+.typography-body {
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  letter-spacing: var(--letter-spacing-body);
+}
+
+.typography-body-small {
+  font-size: var(--font-size-body-small);
+  line-height: var(--line-height-body-small);
+  letter-spacing: var(--letter-spacing-body-small);
+}
+
+.typography-caption {
+  font-size: var(--font-size-caption);
+  line-height: var(--line-height-caption);
+  letter-spacing: var(--letter-spacing-caption);
+}
+
+.typography-label {
+  font-size: var(--font-size-label);
+  line-height: var(--line-height-label);
+  letter-spacing: var(--letter-spacing-label);
+}
+
+.typography-label-small {
+  font-size: var(--font-size-label-small);
+  line-height: var(--line-height-label-small);
+  letter-spacing: var(--letter-spacing-label-small);
+}
+
+/* Readable line length container */
+.typography-container {
+  max-width: 65ch; /* ~65 characters per line for optimal readability */
+}
+
+.typography-container-narrow {
+  max-width: 55ch;
+}
+
+.typography-container-wide {
+  max-width: 75ch;
+}
+
+/* Responsive text alignment */
+@media (max-width: 767px) {
+  .typography-responsive-center {
+    text-align: center;
+  }
+}
+
+@media (min-width: 768px) {
+  .typography-responsive-center {
+    text-align: left;
+  }
+}
+
