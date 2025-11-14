@@ -42,12 +42,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Checkbox component with indeterminate state support
 - Radio component with proper group behavior  
 - Switch/Toggle component with ON/OFF labels
+- Select component with native HTML select, option groups, and validation
 - Badge component with variants, dots, and count display
 - Alert component with dismissible support and 4 variants (info, success, warning, error)
 - Spinner/Loader component with 5 sizes and loading labels
+- Progress Bar component with determinate/indeterminate modes, striped patterns
 - Modal/Dialog component using HTML dialog element with backdrop
+- Tabs component with keyboard navigation, horizontal/vertical orientation
+- Tooltip component with 4 positions, hover/focus triggers
+- Avatar component with image/initials/icon modes, status indicators, 6 sizes
 - Card component with elevated, outlined, and filled variants
-- Working showcase application with live demos for all 11 components
+- Working showcase application with live demos for all 16 components
 - Theme switching functionality verified across all components
 - TypeScript 5.8.3 (Angular 20.3 compatibility)
 - Updated dependencies (@types/node, @swc/core)

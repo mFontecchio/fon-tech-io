@@ -1,0 +1,22 @@
+<div class="ui-progress-container">
+  @if (label()) {
+    <div class="ui-progress-label">
+      <span>{{ label() }}</span>
+      @if (showValue() && !indeterminate()) {
+        <span class="ui-progress-value">{{ displayValue() }}</span>
+      }
+    </div>
+  }
+
+  <div [ngClass]="progressClasses()">
+    <div 
+      [ngClass]="barClasses()"
+      [style.width]="barWidth()"
+    >
+      @if (showValue() && !indeterminate() && !label()) {
+        <span class="ui-progress-value-inline">{{ displayValue() }}</span>
+      }
+    </div>
+  </div>
+</div>
+

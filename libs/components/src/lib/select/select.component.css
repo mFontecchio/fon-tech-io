@@ -1,0 +1,202 @@
+/**
+ * Select Component Styles
+ */
+
+.ui-select-wrapper {
+  display: inline-block;
+}
+
+.ui-select-wrapper--full-width {
+  display: block;
+  width: 100%;
+}
+
+.ui-select-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-spacing-2);
+}
+
+/* Label */
+
+.ui-select-label {
+  display: block;
+  font-size: var(--primitive-font-size-sm);
+  font-weight: var(--primitive-font-weight-medium);
+  color: var(--semantic-text-primary);
+  line-height: var(--primitive-line-height-normal);
+}
+
+.ui-select-required-indicator {
+  color: var(--semantic-feedback-error);
+  margin-left: var(--primitive-spacing-1);
+}
+
+/* Input wrapper with icon */
+
+.ui-select-input-wrapper {
+  position: relative;
+  display: inline-flex;
+  width: 100%;
+}
+
+/* Select element */
+
+.ui-select {
+  appearance: none;
+  width: 100%;
+  padding: var(--primitive-spacing-3) var(--primitive-spacing-4);
+  padding-right: calc(var(--primitive-spacing-4) + 2rem);
+  font-size: var(--primitive-font-size-base);
+  font-family: inherit;
+  line-height: var(--primitive-line-height-normal);
+  color: var(--semantic-text-primary);
+  background-color: var(--semantic-surface-card);
+  border: 1px solid var(--semantic-border-default);
+  border-radius: var(--primitive-border-radius-md);
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+/* Placeholder state */
+
+.ui-select option[value=""][disabled] {
+  color: var(--semantic-text-placeholder);
+}
+
+/* Sizes */
+
+.ui-select--sm {
+  padding: var(--primitive-spacing-2) var(--primitive-spacing-3);
+  padding-right: calc(var(--primitive-spacing-3) + 1.75rem);
+  font-size: var(--primitive-font-size-sm);
+}
+
+.ui-select--lg {
+  padding: var(--primitive-spacing-4) var(--primitive-spacing-5);
+  padding-right: calc(var(--primitive-spacing-5) + 2.25rem);
+  font-size: var(--primitive-font-size-lg);
+}
+
+/* Hover state */
+
+.ui-select:hover:not(:disabled) {
+  border-color: var(--semantic-border-strong);
+}
+
+/* Focus state */
+
+.ui-select:focus {
+  outline: none;
+  border-color: var(--semantic-state-focus-ring);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Error state */
+
+.ui-select--error {
+  border-color: var(--semantic-border-error);
+}
+
+.ui-select--error:focus {
+  border-color: var(--semantic-border-error);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+/* Disabled state */
+
+.ui-select--disabled,
+.ui-select:disabled {
+  background-color: var(--semantic-state-disabled);
+  color: var(--semantic-text-disabled);
+  border-color: var(--semantic-border-subtle);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Dropdown icon */
+
+.ui-select-icon {
+  position: absolute;
+  right: var(--primitive-spacing-3);
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--semantic-text-secondary);
+  transition: color 0.2s ease-in-out;
+}
+
+.ui-select--sm ~ .ui-select-icon {
+  width: 16px;
+  height: 16px;
+  right: var(--primitive-spacing-2);
+}
+
+.ui-select--lg ~ .ui-select-icon {
+  width: 24px;
+  height: 24px;
+  right: var(--primitive-spacing-4);
+}
+
+.ui-select:hover:not(:disabled) ~ .ui-select-icon {
+  color: var(--semantic-text-primary);
+}
+
+.ui-select--disabled ~ .ui-select-icon {
+  color: var(--semantic-text-disabled);
+}
+
+/* Option groups */
+
+.ui-select optgroup {
+  font-weight: var(--primitive-font-weight-semibold);
+  color: var(--semantic-text-primary);
+}
+
+.ui-select option {
+  padding: var(--primitive-spacing-2);
+  color: var(--semantic-text-primary);
+}
+
+.ui-select option:disabled {
+  color: var(--semantic-text-disabled);
+}
+
+/* Helper text */
+
+.ui-select-helper-text {
+  font-size: var(--primitive-font-size-sm);
+  color: var(--semantic-text-secondary);
+  line-height: var(--primitive-line-height-normal);
+}
+
+/* Error message */
+
+.ui-select-error-message {
+  font-size: var(--primitive-font-size-sm);
+  color: var(--semantic-text-error);
+  line-height: var(--primitive-line-height-normal);
+}
+
+/* Reduced motion support */
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-select,
+  .ui-select-icon {
+    transition: none;
+  }
+}
+
+/* High contrast mode support */
+
+@media (prefers-contrast: more) {
+  .ui-select {
+    border-width: 2px;
+  }
+
+  .ui-select:focus {
+    outline: 2px solid var(--semantic-state-focus-ring);
+    outline-offset: 2px;
+  }
+}
+

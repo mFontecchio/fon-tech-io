@@ -1,0 +1,16 @@
+<div class="ui-tooltip-trigger">
+  <ng-content></ng-content>
+  
+  <div 
+    [ngClass]="tooltipClasses()"
+    [ngStyle]="tooltipStyles()"
+    role="tooltip"
+    [attr.aria-hidden]="!isVisible()"
+  >
+    <div class="ui-tooltip-content">
+      {{ text() }}
+    </div>
+    <div class="ui-tooltip-arrow"></div>
+  </div>
+</div>
+

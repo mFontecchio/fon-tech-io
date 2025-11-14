@@ -1,0 +1,47 @@
+<div 
+  [ngClass]="avatarClasses()"
+  [ngStyle]="inlineStyles()"
+  [attr.role]="'img'"
+  [attr.aria-label]="alt()"
+>
+  @switch (displayMode()) {
+    @case ('image') {
+      <img 
+        [src]="src()" 
+        [alt]="alt()"
+        class="ui-avatar-image"
+        (error)="handleImageError()"
+      />
+    }
+    @case ('initials') {
+      <span class="ui-avatar-initials">{{ computedInitials() }}</span>
+    }
+    @case ('icon') {
+      <span class="ui-avatar-icon">{{ icon() }}</span>
+    }
+    @case ('fallback') {
+      <svg 
+        class="ui-avatar-fallback-icon"
+        viewBox="0 0 24 24" 
+        fill="none" 
+        stroke="currentColor"
+        aria-hidden="true"
+      >
+        <path 
+          stroke-linecap="round" 
+          stroke-linejoin="round" 
+          stroke-width="2" 
+          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+        />
+      </svg>
+    }
+  }
+
+  @if (showStatus() && status()) {
+    <span 
+      [ngClass]="statusClasses()"
+      [attr.aria-label]="status()"
+    ></span>
+  }
+</div>
+

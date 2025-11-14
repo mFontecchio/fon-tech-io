@@ -1,0 +1,50 @@
+<div [ngClass]="tabsClasses()">
+  <div class="ui-tabs-list">
+    @for (tab of tabs(); track $index) {
+      <button
+        type="button"
+        class="ui-tab-button"
+        [class.ui-tab-button--active]="$index === internalActiveIndex()"
+        [class.ui-tab-button--disabled]="tab.disabled()"
+        [attr.role]="'tab'"
+        [attr.aria-selected]="$index === internalActiveIndex()"
+        [attr.aria-controls]="'ui-tab-panel-' + $index"
+        [attr.id]="'ui-tab-' + $index"
+        [attr.tabindex]="$index === internalActiveIndex() ? 0 : -1"
+        [disabled]="tab.disabled()"
+        (click)="selectTab($index)"
+        (keydown)="handleKeyDown($event, $index)"
+      >
+        @if (tab.icon()) {
+          <span class="ui-tab-icon">{{ tab.icon() }}</span>
+        }
+        <span class="ui-tab-label">{{ tab.label() }}</span>
+        @if (tab.badge()) {
+          <span class="ui-tab-badge">{{ tab.badge() }}</span>
+        }
+      </button>
+    }
+    <div 
+      class="ui-tabs-indicator" 
+      [style.transform]="'translate' + (orientation() === 'horizontal' ? 'X' : 'Y') + '(' + (internalActiveIndex() * 100) + '%)'"
+      [style.width]="orientation() === 'horizontal' ? (100 / tabs().length) + '%' : '100%'"
+      [style.height]="orientation() === 'vertical' ? (100 / tabs().length) + '%' : ''"
+    ></div>
+  </div>
+
+  <div class="ui-tabs-panels">
+    @for (tab of tabs(); track $index) {
+      <div
+        class="ui-tab-panel"
+        [class.ui-tab-panel--active]="$index === internalActiveIndex()"
+        [attr.role]="'tabpanel'"
+        [attr.aria-labelledby]="'ui-tab-' + $index"
+        [attr.id]="'ui-tab-panel-' + $index"
+        [attr.hidden]="$index !== internalActiveIndex() ? true : null"
+      >
+        <ng-content select="[tab]"></ng-content>
+      </div>
+    }
+  </div>
+</div>
+

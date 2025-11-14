@@ -439,6 +439,370 @@
       </ui-card>
     </section>
 
+    <!-- Select Examples -->
+    <section class="component-section">
+      <h2>Select Dropdowns</h2>
+      <ui-card>
+        <div header class="card-header">
+          <h3>Select Component</h3>
+        </div>
+
+        <div class="demo-group">
+          <ui-select
+            label="Choose a fruit"
+            placeholder="Select..."
+            [options]="fruitOptions"
+            [value]="selectValue()"
+            [fullWidth]="true"
+            (valueChange)="onSelectChange($event)"
+          />
+          <p class="value-display">Selected: {{ selectValue() || 'None' }}</p>
+        </div>
+
+        <div class="demo-group">
+          <ui-select
+            label="Choose food (with groups)"
+            placeholder="Select..."
+            [options]="groupedOptions"
+            [fullWidth]="true"
+            helperText="Options are organized by category"
+          />
+        </div>
+
+        <div class="demo-group">
+          <h4>Sizes</h4>
+          <div style="display: flex; flex-direction: column; gap: 1rem;">
+            <ui-select
+              label="Small select"
+              size="sm"
+              [options]="fruitOptions"
+              [fullWidth]="true"
+            />
+            <ui-select
+              label="Medium select"
+              size="md"
+              [options]="fruitOptions"
+              [fullWidth]="true"
+            />
+            <ui-select
+              label="Large select"
+              size="lg"
+              [options]="fruitOptions"
+              [fullWidth]="true"
+            />
+          </div>
+        </div>
+
+        <div class="demo-group">
+          <ui-select
+            label="Disabled select"
+            [options]="fruitOptions"
+            [disabled]="true"
+            [fullWidth]="true"
+          />
+        </div>
+      </ui-card>
+    </section>
+
+    <!-- MultiSelect Examples -->
+    <section class="component-section">
+      <h2>Multi-Select with Search & Tags</h2>
+      <ui-card>
+        <div header class="card-header">
+          <h3>MultiSelect Component</h3>
+        </div>
+
+        <div class="demo-group">
+          <h4>Basic Multi-Select</h4>
+          <ui-multi-select
+            label="Choose your frameworks"
+            placeholder="Select multiple..."
+            [options]="multiSelectOptions"
+            [value]="multiSelectValue()"
+            [fullWidth]="true"
+            [searchable]="true"
+            (valueChange)="onMultiSelectChange($event)"
+            helperText="Select multiple options, search to filter, or create new tags"
+          />
+          <p class="value-display">Selected ({{ multiSelectValue().length }}): {{ multiSelectValue().join(', ') || 'None' }}</p>
+        </div>
+
+        <div class="demo-group">
+          <h4>With Tag Creation</h4>
+          <ui-multi-select
+            label="Skills (create custom tags)"
+            placeholder="Type to search or create..."
+            [options]="multiSelectOptions"
+            [fullWidth]="true"
+            [searchable]="true"
+            [allowCreate]="true"
+            (optionCreated)="onOptionCreated($event)"
+            helperText="Type a new skill and press enter to create a tag"
+          />
+        </div>
+
+        <div class="demo-group">
+          <h4>With Max Selections</h4>
+          <ui-multi-select
+            label="Top 3 favorites (max 3)"
+            placeholder="Select up to 3..."
+            [options]="multiSelectOptions"
+            [fullWidth]="true"
+            [maxSelections]="3"
+            helperText="Limited to 3 selections"
+          />
+        </div>
+
+        <div class="demo-group">
+          <h4>Sizes</h4>
+          <div style="display: flex; flex-direction: column; gap: 1rem;">
+            <ui-multi-select
+              label="Small"
+              size="sm"
+              [options]="multiSelectOptions"
+              [fullWidth]="true"
+            />
+            <ui-multi-select
+              label="Medium"
+              size="md"
+              [options]="multiSelectOptions"
+              [fullWidth]="true"
+            />
+            <ui-multi-select
+              label="Large"
+              size="lg"
+              [options]="multiSelectOptions"
+              [fullWidth]="true"
+            />
+          </div>
+        </div>
+
+        <div class="demo-group">
+          <p style="font-size: var(--primitive-font-size-sm); color: var(--semantic-text-secondary);">
+            💡 Features: Multi-selection, search/filter, tag creation, keyboard navigation, and accessibility support!
+          </p>
+        </div>
+      </ui-card>
+    </section>
+
+    <!-- Tabs Examples -->
+    <section class="component-section">
+      <h2>Tabs</h2>
+      <ui-card>
+        <div header class="card-header">
+          <h3>Tabs Component</h3>
+        </div>
+
+        <div class="demo-group">
+          <h4>Horizontal Tabs</h4>
+          <ui-tabs [activeIndex]="activeTabIndex()" (activeIndexChange)="onTabChange($event)">
+            <ui-tab label="Profile" icon="👤">
+              <div tab>
+                <h4>Profile Information</h4>
+                <p>This is the profile tab content. You can put any content here.</p>
+                <ui-input label="Full Name" [fullWidth]="true" />
+                <ui-input label="Email" type="email" [fullWidth]="true" />
+              </div>
+            </ui-tab>
+            <ui-tab label="Settings" icon="⚙️">
+              <div tab>
+                <h4>Settings</h4>
+                <p>Configure your preferences here.</p>
+                <ui-switch label="Enable notifications" />
+                <ui-switch label="Dark mode" />
+              </div>
+            </ui-tab>
+            <ui-tab label="Messages" icon="📧" badge="3">
+              <div tab>
+                <h4>Messages</h4>
+                <p>You have 3 unread messages.</p>
+                <ui-alert variant="info" title="New Message">
+                  You received a new message from John.
+                </ui-alert>
+              </div>
+            </ui-tab>
+            <ui-tab label="Disabled" [disabled]="true">
+              <div tab>
+                <p>This tab is disabled.</p>
+              </div>
+            </ui-tab>
+          </ui-tabs>
+        </div>
+
+        <div class="demo-group">
+          <p class="value-display">Active tab index: {{ activeTabIndex() }}</p>
+          <p style="font-size: var(--primitive-font-size-sm); color: var(--semantic-text-secondary);">
+            💡 Try using Arrow keys to navigate between tabs!
+          </p>
+        </div>
+      </ui-card>
+    </section>
+
+    <!-- Tooltip Examples -->
+    <section class="component-section">
+      <h2>Tooltips</h2>
+      <ui-card>
+        <div header class="card-header">
+          <h3>Tooltip Component</h3>
+        </div>
+
+        <div class="demo-group">
+          <h4>Positions</h4>
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+            <ui-tooltip text="Tooltip on top" position="top">
+              <ui-button variant="outlined">Hover Top</ui-button>
+            </ui-tooltip>
+            <ui-tooltip text="Tooltip on right" position="right">
+              <ui-button variant="outlined">Hover Right</ui-button>
+            </ui-tooltip>
+            <ui-tooltip text="Tooltip on bottom" position="bottom">
+              <ui-button variant="outlined">Hover Bottom</ui-button>
+            </ui-tooltip>
+            <ui-tooltip text="Tooltip on left" position="left">
+              <ui-button variant="outlined">Hover Left</ui-button>
+            </ui-tooltip>
+          </div>
+        </div>
+
+        <div class="demo-group">
+          <h4>Sizes & Delays</h4>
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+            <ui-tooltip text="Small tooltip" size="sm">
+              <ui-badge variant="primary" label="Small" />
+            </ui-tooltip>
+            <ui-tooltip text="Medium tooltip with more text content" size="md">
+              <ui-badge variant="success" label="Medium" />
+            </ui-tooltip>
+            <ui-tooltip text="Large tooltip with even more content that can wrap to multiple lines if needed" size="lg">
+              <ui-badge variant="info" label="Large" />
+            </ui-tooltip>
+            <ui-tooltip text="Instant tooltip" [showDelay]="0">
+              <ui-badge variant="warning" label="No Delay" />
+            </ui-tooltip>
+          </div>
+        </div>
+
+        <div class="demo-group">
+          <p style="font-size: var(--primitive-font-size-sm); color: var(--semantic-text-secondary);">
+            💡 Tooltips also appear on keyboard focus for accessibility!
+          </p>
+        </div>
+      </ui-card>
+    </section>
+
+    <!-- Avatar Examples -->
+    <section class="component-section">
+      <h2>Avatars</h2>
+      <ui-card>
+        <div header class="card-header">
+          <h3>Avatar Component</h3>
+        </div>
+
+        <div class="demo-group">
+          <h4>Sizes</h4>
+          <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+            <ui-avatar size="xs" initials="XS" />
+            <ui-avatar size="sm" initials="SM" />
+            <ui-avatar size="md" initials="MD" />
+            <ui-avatar size="lg" initials="LG" />
+            <ui-avatar size="xl" initials="XL" />
+            <ui-avatar size="2xl" initials="2X" />
+          </div>
+        </div>
+
+        <div class="demo-group">
+          <h4>Initials</h4>
+          <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+            <ui-avatar initials="JD" backgroundColor="#3b82f6" textColor="#ffffff" />
+            <ui-avatar initials="AB" backgroundColor="#10b981" textColor="#ffffff" />
+            <ui-avatar initials="CD" backgroundColor="#f59e0b" textColor="#ffffff" />
+            <ui-avatar initials="EF" backgroundColor="#ef4444" textColor="#ffffff" />
+          </div>
+        </div>
+
+        <div class="demo-group">
+          <h4>Icons & Fallback</h4>
+          <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+            <ui-avatar icon="👤" />
+            <ui-avatar icon="🎨" />
+            <ui-avatar icon="🚀" />
+            <ui-avatar />
+          </div>
+        </div>
+
+        <div class="demo-group">
+          <h4>Status Indicators</h4>
+          <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+            <ui-avatar initials="ON" [showStatus]="true" status="online" />
+            <ui-avatar initials="OF" [showStatus]="true" status="offline" />
+            <ui-avatar initials="AW" [showStatus]="true" status="away" />
+            <ui-avatar initials="BY" [showStatus]="true" status="busy" />
+          </div>
+        </div>
+
+        <div class="demo-group">
+          <h4>Shapes</h4>
+          <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+            <ui-avatar initials="CR" shape="circle" size="lg" />
+            <ui-avatar initials="SQ" shape="square" size="lg" />
+          </div>
+        </div>
+      </ui-card>
+    </section>
+
+    <!-- Progress Examples -->
+    <section class="component-section">
+      <h2>Progress Bars</h2>
+      <ui-card>
+        <div header class="card-header">
+          <h3>Progress Component</h3>
+        </div>
+
+        <div class="demo-group">
+          <h4>Interactive Progress</h4>
+          <ui-progress
+            label="Upload Progress"
+            [value]="progressValue()"
+            [showValue]="true"
+          />
+          <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+            <ui-button variant="filled" size="sm" (clicked)="startProgress()">Start</ui-button>
+            <ui-button variant="outlined" size="sm" (clicked)="stopProgress()">Stop</ui-button>
+            <ui-button variant="text" size="sm" (clicked)="resetProgress()">Reset</ui-button>
+          </div>
+        </div>
+
+        <div class="demo-group">
+          <h4>Variants</h4>
+          <div style="display: flex; flex-direction: column; gap: 1rem;">
+            <ui-progress label="Default" variant="default" [value]="75" [showValue]="true" />
+            <ui-progress label="Success" variant="success" [value]="100" [showValue]="true" />
+            <ui-progress label="Warning" variant="warning" [value]="60" [showValue]="true" />
+            <ui-progress label="Error" variant="error" [value]="30" [showValue]="true" />
+            <ui-progress label="Info" variant="info" [value]="45" [showValue]="true" />
+          </div>
+        </div>
+
+        <div class="demo-group">
+          <h4>Sizes</h4>
+          <div style="display: flex; flex-direction: column; gap: 1rem;">
+            <ui-progress size="sm" [value]="50" />
+            <ui-progress size="md" [value]="50" />
+            <ui-progress size="lg" [value]="50" />
+          </div>
+        </div>
+
+        <div class="demo-group">
+          <h4>Indeterminate & Styles</h4>
+          <div style="display: flex; flex-direction: column; gap: 1rem;">
+            <ui-progress label="Loading..." [indeterminate]="true" />
+            <ui-progress label="Striped" [value]="70" [striped]="true" />
+            <ui-progress label="Animated Stripes" [value]="80" [animated]="true" />
+          </div>
+        </div>
+      </ui-card>
+    </section>
+
     <!-- Card Examples -->
     <section class="component-section">
       <h2>Cards</h2>

@@ -1,0 +1,136 @@
+/**
+ * Tooltip Component Styles
+ */
+
+.ui-tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.ui-tooltip-trigger {
+  position: relative;
+  display: inline-block;
+}
+
+/* Tooltip */
+
+.ui-tooltip {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+  will-change: transform, opacity;
+}
+
+.ui-tooltip--visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Positioning handled dynamically via inline styles */
+
+/* Tooltip content */
+
+.ui-tooltip-content {
+  padding: var(--primitive-spacing-2) var(--primitive-spacing-3);
+  background-color: var(--semantic-text-primary);
+  color: var(--semantic-text-inverse);
+  font-size: var(--primitive-font-size-sm);
+  line-height: var(--primitive-line-height-normal);
+  border-radius: var(--primitive-border-radius-md);
+  white-space: nowrap;
+  max-width: 20rem;
+  box-shadow: var(--primitive-shadow-lg);
+}
+
+/* Sizes */
+
+.ui-tooltip--sm .ui-tooltip-content {
+  padding: var(--primitive-spacing-1) var(--primitive-spacing-2);
+  font-size: var(--primitive-font-size-xs);
+  max-width: 15rem;
+}
+
+.ui-tooltip--lg .ui-tooltip-content {
+  padding: var(--primitive-spacing-3) var(--primitive-spacing-4);
+  font-size: var(--primitive-font-size-base);
+  max-width: 25rem;
+  white-space: normal;
+}
+
+/* Arrow */
+
+.ui-tooltip-arrow {
+  position: absolute;
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: var(--semantic-text-primary);
+  transform: rotate(45deg);
+}
+
+.ui-tooltip--top .ui-tooltip-arrow {
+  bottom: -0.25rem;
+  left: 50%;
+  margin-left: -0.25rem;
+}
+
+.ui-tooltip--bottom .ui-tooltip-arrow {
+  top: -0.25rem;
+  left: 50%;
+  margin-left: -0.25rem;
+}
+
+.ui-tooltip--left .ui-tooltip-arrow {
+  right: -0.25rem;
+  top: 50%;
+  margin-top: -0.25rem;
+}
+
+.ui-tooltip--right .ui-tooltip-arrow {
+  left: -0.25rem;
+  top: 50%;
+  margin-top: -0.25rem;
+}
+
+/* Reduced motion support */
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-tooltip {
+    transition: opacity 0.1s ease-in-out;
+    transform: scale(1) !important;
+  }
+
+  .ui-tooltip--top,
+  .ui-tooltip--bottom {
+    transform: translateX(-50%) !important;
+  }
+
+  .ui-tooltip--left,
+  .ui-tooltip--right {
+    transform: translateY(-50%) !important;
+  }
+}
+
+/* High contrast mode support */
+
+@media (prefers-contrast: more) {
+  .ui-tooltip-content {
+    border: 2px solid var(--semantic-border-strong);
+  }
+}
+
+/* Dark mode adjustments */
+
+@media (prefers-color-scheme: dark) {
+  .ui-tooltip-content {
+    background-color: rgba(255, 255, 255, 0.95);
+    color: var(--semantic-text-primary);
+  }
+
+  .ui-tooltip-arrow {
+    background-color: rgba(255, 255, 255, 0.95);
+  }
+}
+

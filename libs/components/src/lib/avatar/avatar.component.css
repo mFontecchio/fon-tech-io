@@ -1,0 +1,158 @@
+/**
+ * Avatar Component Styles
+ */
+
+.ui-avatar {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  background-color: var(--semantic-surface-subtle);
+  color: var(--semantic-text-primary);
+  font-weight: var(--primitive-font-weight-medium);
+  user-select: none;
+}
+
+/* Sizes */
+
+.ui-avatar--xs {
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: var(--primitive-font-size-xs);
+}
+
+.ui-avatar--sm {
+  width: 2rem;
+  height: 2rem;
+  font-size: var(--primitive-font-size-sm);
+}
+
+.ui-avatar--md {
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: var(--primitive-font-size-base);
+}
+
+.ui-avatar--lg {
+  width: 3rem;
+  height: 3rem;
+  font-size: var(--primitive-font-size-lg);
+}
+
+.ui-avatar--xl {
+  width: 4rem;
+  height: 4rem;
+  font-size: var(--primitive-font-size-xl);
+}
+
+.ui-avatar--2xl {
+  width: 5rem;
+  height: 5rem;
+  font-size: var(--primitive-font-size-2xl);
+}
+
+/* Shapes */
+
+.ui-avatar--circle {
+  border-radius: var(--primitive-border-radius-full);
+}
+
+.ui-avatar--square {
+  border-radius: var(--primitive-border-radius-md);
+}
+
+/* Image */
+
+.ui-avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Initials */
+
+.ui-avatar-initials {
+  display: inline-block;
+  line-height: 1;
+}
+
+/* Icon */
+
+.ui-avatar-icon {
+  display: inline-flex;
+  font-size: 1.5em;
+}
+
+/* Fallback icon */
+
+.ui-avatar-fallback-icon {
+  width: 60%;
+  height: 60%;
+  color: var(--semantic-text-secondary);
+}
+
+/* Status indicator */
+
+.ui-avatar-status {
+  position: absolute;
+  border: 2px solid var(--semantic-surface-card);
+  border-radius: var(--primitive-border-radius-full);
+}
+
+.ui-avatar--xs .ui-avatar-status,
+.ui-avatar--sm .ui-avatar-status {
+  width: 0.5rem;
+  height: 0.5rem;
+  bottom: 0;
+  right: 0;
+}
+
+.ui-avatar--md .ui-avatar-status {
+  width: 0.625rem;
+  height: 0.625rem;
+  bottom: 0;
+  right: 0;
+}
+
+.ui-avatar--lg .ui-avatar-status,
+.ui-avatar--xl .ui-avatar-status,
+.ui-avatar--2xl .ui-avatar-status {
+  width: 0.75rem;
+  height: 0.75rem;
+  bottom: 0.125rem;
+  right: 0.125rem;
+}
+
+/* Status colors */
+
+.ui-avatar-status--online {
+  background-color: var(--semantic-feedback-success);
+}
+
+.ui-avatar-status--offline {
+  background-color: var(--semantic-text-disabled);
+}
+
+.ui-avatar-status--away {
+  background-color: var(--semantic-feedback-warning);
+}
+
+.ui-avatar-status--busy {
+  background-color: var(--semantic-feedback-error);
+}
+
+/* High contrast mode support */
+
+@media (prefers-contrast: more) {
+  .ui-avatar {
+    border: 2px solid var(--semantic-border-strong);
+  }
+
+  .ui-avatar-status {
+    border-width: 3px;
+  }
+}
+

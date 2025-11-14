@@ -1,0 +1,231 @@
+/**
+ * Tabs Component Styles
+ */
+
+.ui-tabs {
+  display: flex;
+  width: 100%;
+}
+
+.ui-tabs--horizontal {
+  flex-direction: column;
+}
+
+.ui-tabs--vertical {
+  flex-direction: row;
+}
+
+/* Tabs list */
+
+.ui-tabs-list {
+  position: relative;
+  display: flex;
+  background-color: var(--semantic-surface-card);
+  border-bottom: 1px solid var(--semantic-border-subtle);
+}
+
+.ui-tabs--horizontal .ui-tabs-list {
+  flex-direction: row;
+}
+
+.ui-tabs--vertical .ui-tabs-list {
+  flex-direction: column;
+  border-bottom: none;
+  border-right: 1px solid var(--semantic-border-subtle);
+  min-width: 200px;
+}
+
+.ui-tabs--full-width .ui-tabs-list {
+  width: 100%;
+}
+
+.ui-tabs--full-width .ui-tab-button {
+  flex: 1;
+}
+
+/* Tab button */
+
+.ui-tab-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--primitive-spacing-2);
+  padding: var(--primitive-spacing-3) var(--primitive-spacing-4);
+  font-size: var(--primitive-font-size-base);
+  font-weight: var(--primitive-font-weight-medium);
+  color: var(--semantic-text-secondary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  white-space: nowrap;
+  min-width: fit-content;
+}
+
+.ui-tabs--sm .ui-tab-button {
+  padding: var(--primitive-spacing-2) var(--primitive-spacing-3);
+  font-size: var(--primitive-font-size-sm);
+  gap: var(--primitive-spacing-1);
+}
+
+.ui-tabs--lg .ui-tab-button {
+  padding: var(--primitive-spacing-4) var(--primitive-spacing-5);
+  font-size: var(--primitive-font-size-lg);
+  gap: var(--primitive-spacing-3);
+}
+
+/* Tab button states */
+
+.ui-tab-button:hover:not(:disabled) {
+  color: var(--semantic-text-primary);
+  background-color: var(--semantic-surface-subtle);
+}
+
+.ui-tab-button:focus-visible {
+  outline: 2px solid var(--semantic-state-focus-ring);
+  outline-offset: -2px;
+  z-index: 1;
+}
+
+.ui-tab-button--active {
+  color: var(--semantic-brand-primary);
+}
+
+.ui-tab-button--disabled {
+  color: var(--semantic-text-disabled);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Tab icon */
+
+.ui-tab-icon {
+  display: inline-flex;
+  font-size: 1.25em;
+}
+
+/* Tab label */
+
+.ui-tab-label {
+  display: inline-block;
+}
+
+/* Tab badge */
+
+.ui-tab-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0 0.375rem;
+  font-size: var(--primitive-font-size-xs);
+  font-weight: var(--primitive-font-weight-semibold);
+  color: var(--semantic-text-inverse);
+  background-color: var(--semantic-brand-primary);
+  border-radius: var(--primitive-border-radius-full);
+}
+
+.ui-tabs--sm .ui-tab-badge {
+  min-width: 1rem;
+  height: 1rem;
+  padding: 0 0.25rem;
+  font-size: 0.625rem;
+}
+
+.ui-tabs--lg .ui-tab-badge {
+  min-width: 1.5rem;
+  height: 1.5rem;
+  padding: 0 0.5rem;
+}
+
+/* Active indicator */
+
+.ui-tabs-indicator {
+  position: absolute;
+  background-color: var(--semantic-brand-primary);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ui-tabs--horizontal .ui-tabs-indicator {
+  bottom: 0;
+  left: 0;
+  height: 2px;
+}
+
+.ui-tabs--vertical .ui-tabs-indicator {
+  right: 0;
+  top: 0;
+  width: 2px;
+}
+
+/* Tab panels */
+
+.ui-tabs-panels {
+  flex: 1;
+  min-width: 0;
+}
+
+.ui-tab-panel {
+  display: none;
+  padding: var(--primitive-spacing-4);
+  animation: ui-tab-fade-in 0.2s ease-out;
+}
+
+.ui-tab-panel--active {
+  display: block;
+}
+
+.ui-tabs--sm .ui-tab-panel {
+  padding: var(--primitive-spacing-3);
+}
+
+.ui-tabs--lg .ui-tab-panel {
+  padding: var(--primitive-spacing-6);
+}
+
+/* Animation */
+
+@keyframes ui-tab-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Reduced motion support */
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-tab-button,
+  .ui-tabs-indicator {
+    transition: none;
+  }
+
+  .ui-tab-panel {
+    animation: none;
+  }
+}
+
+/* High contrast mode support */
+
+@media (prefers-contrast: more) {
+  .ui-tabs-list {
+    border-width: 2px;
+  }
+
+  .ui-tabs-indicator {
+    height: 3px;
+  }
+
+  .ui-tabs--vertical .ui-tabs-indicator {
+    width: 3px;
+  }
+
+  .ui-tab-button:focus-visible {
+    outline-width: 3px;
+  }
+}
+
