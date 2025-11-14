@@ -34,16 +34,16 @@
 
   <div class="ui-tabs-panels">
     @for (tab of tabs(); track $index) {
-      <div
-        class="ui-tab-panel"
-        [class.ui-tab-panel--active]="$index === internalActiveIndex()"
-        [attr.role]="'tabpanel'"
-        [attr.aria-labelledby]="'ui-tab-' + $index"
-        [attr.id]="'ui-tab-panel-' + $index"
-        [attr.hidden]="$index !== internalActiveIndex() ? true : null"
-      >
-        <ng-content select="[tab]"></ng-content>
-      </div>
+      @if ($index === internalActiveIndex()) {
+        <div
+          class="ui-tab-panel ui-tab-panel--active"
+          [attr.role]="'tabpanel'"
+          [attr.aria-labelledby]="'ui-tab-' + $index"
+          [attr.id]="'ui-tab-panel-' + $index"
+        >
+          <ng-container *ngTemplateOutlet="tab.contentTemplate || null"></ng-container>
+        </div>
+      }
     }
   </div>
 </div>

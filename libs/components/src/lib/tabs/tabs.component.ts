@@ -15,7 +15,7 @@ import {
   contentChildren,
   effect,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgTemplateOutlet } from '@angular/common';
 import { TabComponent } from './tab.component';
 
 export type TabsOrientation = 'horizontal' | 'vertical';
@@ -23,7 +23,7 @@ export type TabsSize = 'sm' | 'md' | 'lg';
 
 @Component({
   selector: 'ui-tabs',
-  imports: [CommonModule],
+  imports: [CommonModule, NgTemplateOutlet],
   templateUrl: './tabs.component.html',
   styleUrl: './tabs.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
