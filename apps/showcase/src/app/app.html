@@ -166,6 +166,279 @@
       </ui-card>
     </section>
 
+    <!-- Checkbox Examples -->
+    <section class="component-section">
+      <h2>Checkboxes</h2>
+      <ui-card>
+        <div header class="card-header">
+          <h3>Checkbox Component</h3>
+        </div>
+
+        <div class="demo-group">
+          <ui-checkbox
+            label="Accept terms and conditions"
+            [checked]="checkboxChecked()"
+            (checkedChange)="onCheckboxChange($event)"
+          />
+          <p class="value-display">Checked: {{ checkboxChecked() }}</p>
+        </div>
+
+        <div class="demo-group">
+          <ui-checkbox
+            label="Indeterminate state"
+            [indeterminate]="checkboxIndeterminate()"
+            helperText="Click to toggle indeterminate"
+            (checkedChange)="toggleIndeterminate()"
+          />
+        </div>
+
+        <div class="demo-group">
+          <h4>Sizes</h4>
+          <div class="button-row">
+            <ui-checkbox label="Small" size="sm" />
+            <ui-checkbox label="Medium" size="md" />
+            <ui-checkbox label="Large" size="lg" />
+          </div>
+        </div>
+
+        <div class="demo-group">
+          <ui-checkbox label="Disabled checkbox" [disabled]="true" />
+          <ui-checkbox label="Disabled & checked" [checked]="true" [disabled]="true" />
+        </div>
+      </ui-card>
+    </section>
+
+    <!-- Radio Examples -->
+    <section class="component-section">
+      <h2>Radio Buttons</h2>
+      <ui-card>
+        <div header class="card-header">
+          <h3>Radio Component</h3>
+        </div>
+
+        <div class="demo-group">
+          <h4>Radio Group</h4>
+          <ui-radio
+            name="demo-radio"
+            value="option1"
+            label="Option 1"
+            [checked]="radioValue() === 'option1'"
+            (checkedChange)="onRadioChange($event)"
+          />
+          <ui-radio
+            name="demo-radio"
+            value="option2"
+            label="Option 2"
+            [checked]="radioValue() === 'option2'"
+            (checkedChange)="onRadioChange($event)"
+          />
+          <ui-radio
+            name="demo-radio"
+            value="option3"
+            label="Option 3"
+            [checked]="radioValue() === 'option3'"
+            (checkedChange)="onRadioChange($event)"
+          />
+          <p class="value-display">Selected: {{ radioValue() }}</p>
+        </div>
+
+        <div class="demo-group">
+          <h4>Sizes</h4>
+          <div class="button-row">
+            <ui-radio name="size-demo" value="sm" label="Small" size="sm" [checked]="true" />
+            <ui-radio name="size-demo" value="md" label="Medium" size="md" />
+            <ui-radio name="size-demo" value="lg" label="Large" size="lg" />
+          </div>
+        </div>
+      </ui-card>
+    </section>
+
+    <!-- Switch Examples -->
+    <section class="component-section">
+      <h2>Switch / Toggle</h2>
+      <ui-card>
+        <div header class="card-header">
+          <h3>Switch Component</h3>
+        </div>
+
+        <div class="demo-group">
+          <ui-switch
+            label="Enable notifications"
+            [checked]="switchChecked()"
+            (checkedChange)="onSwitchChange($event)"
+          />
+          <p class="value-display">Enabled: {{ switchChecked() }}</p>
+        </div>
+
+        <div class="demo-group">
+          <h4>Sizes</h4>
+          <ui-switch label="Small switch" size="sm" />
+          <ui-switch label="Medium switch" size="md" [checked]="true" />
+          <ui-switch label="Large switch" size="lg" />
+        </div>
+
+        <div class="demo-group">
+          <ui-switch label="Disabled switch" [disabled]="true" />
+          <ui-switch label="Disabled & on" [checked]="true" [disabled]="true" />
+        </div>
+      </ui-card>
+    </section>
+
+    <!-- Badge Examples -->
+    <section class="component-section">
+      <h2>Badges</h2>
+      <ui-card>
+        <div header class="card-header">
+          <h3>Badge Component</h3>
+        </div>
+
+        <div class="demo-group">
+          <h4>Variants</h4>
+          <div class="button-row">
+            <ui-badge variant="default" label="Default" />
+            <ui-badge variant="primary" label="Primary" />
+            <ui-badge variant="success" label="Success" />
+            <ui-badge variant="warning" label="Warning" />
+            <ui-badge variant="error" label="Error" />
+            <ui-badge variant="info" label="Info" />
+          </div>
+        </div>
+
+        <div class="demo-group">
+          <h4>Sizes</h4>
+          <div class="button-row">
+            <ui-badge size="sm" label="Small" />
+            <ui-badge size="md" label="Medium" />
+            <ui-badge size="lg" label="Large" />
+          </div>
+        </div>
+
+        <div class="demo-group">
+          <h4>Styles</h4>
+          <div class="button-row">
+            <ui-badge variant="primary" label="Regular" />
+            <ui-badge variant="primary" label="Pill" [pill]="true" />
+            <ui-badge variant="success" label="With Dot" [dot]="true" />
+            <ui-badge variant="error" [count]="5" />
+            <ui-badge variant="error" [count]="150" [max]="99" />
+          </div>
+        </div>
+      </ui-card>
+    </section>
+
+    <!-- Alert Examples -->
+    <section class="component-section">
+      <h2>Alerts</h2>
+      <ui-card>
+        <div header class="card-header">
+          <h3>Alert Component</h3>
+        </div>
+
+        <div class="demo-group">
+          <ui-alert variant="info" title="Information">
+            This is an informational alert with a title.
+          </ui-alert>
+        </div>
+
+        <div class="demo-group">
+          <ui-alert variant="success" title="Success!" [dismissible]="true">
+            Your changes have been saved successfully.
+          </ui-alert>
+        </div>
+
+        <div class="demo-group">
+          <ui-alert variant="warning" title="Warning">
+            Please review your settings before continuing.
+          </ui-alert>
+        </div>
+
+        <div class="demo-group">
+          <ui-alert variant="error" title="Error" [dismissible]="true">
+            An error occurred while processing your request.
+          </ui-alert>
+        </div>
+
+        <div class="demo-group">
+          <ui-alert variant="info" [showIcon]="false">
+            Alert without an icon.
+          </ui-alert>
+        </div>
+      </ui-card>
+    </section>
+
+    <!-- Spinner Examples -->
+    <section class="component-section">
+      <h2>Spinners</h2>
+      <ui-card>
+        <div header class="card-header">
+          <h3>Spinner Component</h3>
+        </div>
+
+        <div class="demo-group">
+          <h4>Sizes</h4>
+          <div class="button-row">
+            <ui-spinner size="xs" />
+            <ui-spinner size="sm" />
+            <ui-spinner size="md" />
+            <ui-spinner size="lg" />
+            <ui-spinner size="xl" />
+          </div>
+        </div>
+
+        <div class="demo-group">
+          <h4>With Label</h4>
+          <ui-spinner size="lg" [showLabel]="true" label="Loading data..." />
+        </div>
+
+        <div class="demo-group">
+          <h4>Centered</h4>
+          <div style="height: 100px; border: 1px dashed var(--semantic-border-default); border-radius: var(--primitive-border-radius-md);">
+            <ui-spinner [centered]="true" />
+          </div>
+        </div>
+
+        <div class="demo-group">
+          <ui-button variant="filled" (clicked)="simulateLoading()">
+            Simulate Loading
+          </ui-button>
+          @if (loading()) {
+            <ui-spinner size="sm" label="Processing..." [showLabel]="true" />
+          }
+        </div>
+      </ui-card>
+    </section>
+
+    <!-- Modal Examples -->
+    <section class="component-section">
+      <h2>Modals</h2>
+      <ui-card>
+        <div header class="card-header">
+          <h3>Modal Component</h3>
+        </div>
+
+        <div class="demo-group">
+          <ui-button variant="filled" (clicked)="openModal()">
+            Open Modal
+          </ui-button>
+
+          <ui-modal
+            [open]="modalOpen()"
+            title="Example Modal"
+            size="md"
+            (closed)="closeModal()"
+          >
+            <p>This is a modal dialog. It overlays the page content and traps focus.</p>
+            <p>You can close it by clicking the X button, clicking outside, or pressing Escape.</p>
+
+            <div slot="footer">
+              <ui-button variant="outlined" (clicked)="closeModal()">Cancel</ui-button>
+              <ui-button variant="filled" (clicked)="closeModal()">Confirm</ui-button>
+            </div>
+          </ui-modal>
+        </div>
+      </ui-card>
+    </section>
+
     <!-- Card Examples -->
     <section class="component-section">
       <h2>Cards</h2>

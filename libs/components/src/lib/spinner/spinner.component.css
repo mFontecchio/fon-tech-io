@@ -1,0 +1,167 @@
+/**
+ * Spinner Component Styles
+ */
+
+.ui-spinner-wrapper {
+  display: inline-block;
+}
+
+.ui-spinner-wrapper--centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 4rem;
+}
+
+.ui-spinner-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: var(--primitive-spacing-2);
+}
+
+.ui-spinner-container--with-label {
+  gap: var(--primitive-spacing-3);
+}
+
+/* Spinner SVG */
+
+.ui-spinner {
+  display: block;
+  animation: ui-spinner-rotate 2s linear infinite;
+}
+
+/* Sizes */
+
+.ui-spinner--xs {
+  width: 1rem;
+  height: 1rem;
+}
+
+.ui-spinner--sm {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.ui-spinner--md {
+  width: 2rem;
+  height: 2rem;
+}
+
+.ui-spinner--lg {
+  width: 3rem;
+  height: 3rem;
+}
+
+.ui-spinner--xl {
+  width: 4rem;
+  height: 4rem;
+}
+
+/* Track (background circle) */
+
+.ui-spinner-track {
+  stroke: var(--semantic-border-subtle);
+  opacity: 0.25;
+}
+
+/* Path (animated circle) */
+
+.ui-spinner-path {
+  stroke: var(--semantic-brand-primary);
+  stroke-linecap: round;
+  stroke-dasharray: 90, 150;
+  stroke-dashoffset: 0;
+  transform-origin: center;
+  animation: ui-spinner-dash 1.5s ease-in-out infinite;
+}
+
+/* Variants */
+
+.ui-spinner--secondary .ui-spinner-path {
+  stroke: var(--semantic-text-secondary);
+}
+
+.ui-spinner--inverse .ui-spinner-path {
+  stroke: var(--semantic-text-inverse);
+}
+
+.ui-spinner--inverse .ui-spinner-track {
+  stroke: var(--semantic-text-inverse);
+}
+
+/* Label */
+
+.ui-spinner-label {
+  font-size: var(--primitive-font-size-sm);
+  color: var(--semantic-text-secondary);
+  font-weight: var(--primitive-font-weight-medium);
+  text-align: center;
+}
+
+/* Screen reader only */
+
+.ui-spinner-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Animations */
+
+@keyframes ui-spinner-rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ui-spinner-dash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+  
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+  
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
+}
+
+/* Reduced motion support */
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-spinner {
+    animation: ui-spinner-rotate 3s linear infinite;
+  }
+
+  .ui-spinner-path {
+    animation: none;
+    stroke-dasharray: 90, 150;
+  }
+}
+
+/* High contrast mode support */
+
+@media (prefers-contrast: more) {
+  .ui-spinner-track {
+    opacity: 0.5;
+  }
+
+  .ui-spinner-path {
+    stroke-width: 6;
+  }
+}
+

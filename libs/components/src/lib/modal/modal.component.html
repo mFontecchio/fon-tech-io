@@ -1,0 +1,53 @@
+<dialog
+  #dialog
+  [ngClass]="modalClasses()"
+  [attr.aria-label]="ariaLabel() || title()"
+  [attr.aria-labelledby]="title() ? titleId() : undefined"
+  (click)="handleBackdropClick($event)"
+  (cancel)="handleCancel($event)"
+>
+  <div class="ui-modal-content">
+    @if (title() || showClose()) {
+      <div class="ui-modal-header">
+        @if (title()) {
+          <h2 [id]="titleId()" class="ui-modal-title">
+            {{ title() }}
+          </h2>
+        }
+
+        @if (showClose()) {
+          <button
+            type="button"
+            class="ui-modal-close"
+            aria-label="Close modal"
+            (click)="handleClose()"
+          >
+            <svg 
+              width="20" 
+              height="20" 
+              viewBox="0 0 20 20" 
+              fill="none"
+              aria-hidden="true"
+            >
+              <path 
+                d="M15 5L5 15M5 5L15 15" 
+                stroke="currentColor" 
+                stroke-width="2" 
+                stroke-linecap="round"
+              />
+            </svg>
+          </button>
+        }
+      </div>
+    }
+
+    <div class="ui-modal-body">
+      <ng-content></ng-content>
+    </div>
+
+    <div class="ui-modal-footer">
+      <ng-content select="[slot='footer']"></ng-content>
+    </div>
+  </div>
+</dialog>
+

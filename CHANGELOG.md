@@ -39,8 +39,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Full ARIA support and keyboard navigation for Button
 - Input component with validation states, prefix/suffix slots
 - Textarea component with auto-resize and character count
+- Checkbox component with indeterminate state support
+- Radio component with proper group behavior  
+- Switch/Toggle component with ON/OFF labels
+- Badge component with variants, dots, and count display
+- Alert component with dismissible support and 4 variants (info, success, warning, error)
+- Spinner/Loader component with 5 sizes and loading labels
+- Modal/Dialog component using HTML dialog element with backdrop
 - Card component with elevated, outlined, and filled variants
+- Working showcase application with live demos for all 11 components
+- Theme switching functionality verified across all components
+- TypeScript 5.8.3 (Angular 20.3 compatibility)
+- Updated dependencies (@types/node, @swc/core)
 - Comprehensive architecture documentation
 - Design system documentation
 - Implementation status tracking
+- Testing guide for developers
 

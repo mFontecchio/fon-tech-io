@@ -1,0 +1,60 @@
+<div class="ui-radio-container">
+  <label 
+    [for]="radioId()" 
+    class="ui-radio-label"
+    (click)="handleLabelClick($event)"
+  >
+    <input
+      #radio
+      type="radio"
+      [id]="radioId()"
+      [name]="name()"
+      [value]="value()"
+      [checked]="internalChecked()"
+      [disabled]="disabled()"
+      [required]="required()"
+      [attr.aria-label]="ariaLabel() || label()"
+      [attr.aria-describedby]="computedAriaDescribedBy()"
+      [attr.aria-invalid]="hasError()"
+      [attr.aria-required]="required()"
+      [ngClass]="radioClasses()"
+      (change)="handleChange($event)"
+    />
+    
+    <span class="ui-radio-box">
+      @if (internalChecked()) {
+        <span class="ui-radio-dot"></span>
+      }
+    </span>
+
+    @if (label()) {
+      <span class="ui-radio-label-text">
+        {{ label() }}
+        @if (required()) {
+          <span class="ui-radio-required-indicator" aria-label="required">*</span>
+        }
+      </span>
+    }
+  </label>
+
+  @if (helperText() && !hasError()) {
+    <div 
+      [id]="helperTextId()" 
+      class="ui-radio-helper-text"
+    >
+      {{ helperText() }}
+    </div>
+  }
+
+  @if (hasError()) {
+    <div 
+      [id]="errorId()" 
+      class="ui-radio-error-message"
+      role="alert"
+      aria-live="polite"
+    >
+      {{ errorMessage() }}
+    </div>
+  }
+</div>
+

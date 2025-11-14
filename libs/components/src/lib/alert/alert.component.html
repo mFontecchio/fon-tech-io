@@ -1,0 +1,55 @@
+@if (isVisible()) {
+  <div [ngClass]="alertClasses()">
+    @if (showIcon()) {
+      <div class="ui-alert-icon" aria-hidden="true">
+        <svg 
+          width="20" 
+          height="20" 
+          viewBox="0 0 24 24" 
+          fill="none" 
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path [attr.d]="iconPath()"></path>
+        </svg>
+      </div>
+    }
+
+    <div class="ui-alert-content">
+      @if (title()) {
+        <div class="ui-alert-title">{{ title() }}</div>
+      }
+      
+      <div class="ui-alert-message">
+        <ng-content></ng-content>
+      </div>
+    </div>
+
+    @if (dismissible()) {
+      <button
+        type="button"
+        class="ui-alert-dismiss"
+        aria-label="Dismiss alert"
+        (click)="handleDismiss()"
+      >
+        <svg 
+          width="16" 
+          height="16" 
+          viewBox="0 0 16 16" 
+          fill="none"
+          aria-hidden="true"
+        >
+          <path 
+            d="M12 4L4 12M4 4L12 12" 
+            stroke="currentColor" 
+            stroke-width="2" 
+            stroke-linecap="round"
+          />
+        </svg>
+      </button>
+    }
+  </div>
+}
+

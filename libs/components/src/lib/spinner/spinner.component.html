@@ -1,0 +1,31 @@
+<div class="ui-spinner-container" [ngClass]="containerClasses()">
+  <svg 
+    [ngClass]="spinnerClasses()"
+    viewBox="0 0 50 50"
+    aria-hidden="true"
+  >
+    <circle
+      class="ui-spinner-track"
+      cx="25"
+      cy="25"
+      r="20"
+      fill="none"
+      stroke-width="5"
+    ></circle>
+    <circle
+      class="ui-spinner-path"
+      cx="25"
+      cy="25"
+      r="20"
+      fill="none"
+      stroke-width="5"
+    ></circle>
+  </svg>
+
+  @if (showLabel()) {
+    <span class="ui-spinner-label">{{ label() }}</span>
+  }
+
+  <span class="ui-spinner-sr-only">{{ label() }}</span>
+</div>
+

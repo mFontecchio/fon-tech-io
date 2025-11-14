@@ -1,0 +1,94 @@
+<div class="ui-checkbox-container">
+  <label 
+    [for]="checkboxId()" 
+    class="ui-checkbox-label"
+    (click)="handleLabelClick($event)"
+  >
+    <input
+      #checkbox
+      type="checkbox"
+      [id]="checkboxId()"
+      [name]="name()"
+      [value]="value()"
+      [checked]="internalChecked()"
+      [disabled]="disabled()"
+      [required]="required()"
+      [attr.aria-label]="ariaLabel() || label()"
+      [attr.aria-describedby]="computedAriaDescribedBy()"
+      [attr.aria-invalid]="hasError()"
+      [attr.aria-required]="required()"
+      [attr.aria-checked]="indeterminate() ? 'mixed' : internalChecked()"
+      [ngClass]="checkboxClasses()"
+      (change)="handleChange($event)"
+    />
+    
+    <span class="ui-checkbox-box">
+      @if (internalChecked() && !indeterminate()) {
+        <svg 
+          class="ui-checkbox-icon" 
+          width="16" 
+          height="16" 
+          viewBox="0 0 16 16" 
+          fill="none"
+          aria-hidden="true"
+        >
+          <path 
+            d="M13.5 4L6 11.5L2.5 8" 
+            stroke="currentColor" 
+            stroke-width="2" 
+            stroke-linecap="round" 
+            stroke-linejoin="round"
+          />
+        </svg>
+      }
+      
+      @if (indeterminate()) {
+        <svg 
+          class="ui-checkbox-icon" 
+          width="16" 
+          height="16" 
+          viewBox="0 0 16 16" 
+          fill="none"
+          aria-hidden="true"
+        >
+          <path 
+            d="M4 8H12" 
+            stroke="currentColor" 
+            stroke-width="2" 
+            stroke-linecap="round"
+          />
+        </svg>
+      }
+    </span>
+
+    @if (label()) {
+      <span class="ui-checkbox-label-text">
+        {{ label() }}
+        @if (required()) {
+          <span class="ui-checkbox-required-indicator" aria-label="required">*</span>
+        }
+      </span>
+    }
+  </label>
+
+  @if (helperText() && !hasError()) {
+    <div 
+      [id]="helperTextId()" 
+      class="ui-checkbox-helper-text"
+    >
+      {{ helperText() }}
+    </div>
+  }
+
+  @if (hasError()) {
+    <div 
+      [id]="errorId()" 
+      class="ui-checkbox-error-message"
+      role="alert"
+      aria-live="polite"
+    >
+      {{ errorMessage() }}
+    </div>
+  }
+</div>
+

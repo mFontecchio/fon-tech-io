@@ -1,0 +1,65 @@
+<div class="ui-switch-container">
+  <label 
+    [for]="switchId()" 
+    class="ui-switch-label"
+    (click)="handleLabelClick($event)"
+  >
+    <input
+      #switch
+      type="checkbox"
+      role="switch"
+      [id]="switchId()"
+      [name]="name()"
+      [checked]="internalChecked()"
+      [disabled]="disabled()"
+      [required]="required()"
+      [attr.aria-label]="ariaLabel() || label()"
+      [attr.aria-describedby]="computedAriaDescribedBy()"
+      [attr.aria-invalid]="hasError()"
+      [attr.aria-required]="required()"
+      [attr.aria-checked]="internalChecked()"
+      [ngClass]="switchClasses()"
+      (change)="handleChange($event)"
+    />
+    
+    <span class="ui-switch-track">
+      <span class="ui-switch-thumb">
+        @if (showLabels()) {
+          <span class="ui-switch-thumb-label">
+            {{ internalChecked() ? onLabel() : offLabel() }}
+          </span>
+        }
+      </span>
+    </span>
+
+    @if (label()) {
+      <span class="ui-switch-label-text">
+        {{ label() }}
+        @if (required()) {
+          <span class="ui-switch-required-indicator" aria-label="required">*</span>
+        }
+      </span>
+    }
+  </label>
+
+  @if (helperText() && !hasError()) {
+    <div 
+      [id]="helperTextId()" 
+      class="ui-switch-helper-text"
+    >
+      {{ helperText() }}
+    </div>
+  }
+
+  @if (hasError()) {
+    <div 
+      [id]="errorId()" 
+      class="ui-switch-error-message"
+      role="alert"
+      aria-live="polite"
+    >
+      {{ errorMessage() }}
+    </div>
+  }
+</div>
+
