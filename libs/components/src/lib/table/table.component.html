@@ -1,0 +1,106 @@
+<div class="ui-table-container">
+  <div class="ui-table-scroll">
+    <table [ngClass]="tableClasses()">
+      @if (caption()) {
+        <caption>{{ caption() }}</caption>
+      }
+
+      <thead class="ui-table-head">
+        <tr>
+          @if (selectable()) {
+            <th class="ui-table-cell ui-table-cell--checkbox">
+              <input
+                type="checkbox"
+                class="ui-table-checkbox"
+                [checked]="allSelected()"
+                [indeterminate]="someSelected()"
+                [attr.aria-label]="'Select all rows'"
+                (change)="handleSelectAll()"
+              />
+            </th>
+          }
+
+          @for (column of columns(); track column.key) {
+            <th
+              class="ui-table-cell ui-table-cell--header"
+              [class.ui-table-cell--sortable]="column.sortable"
+              [style.width]="column.width"
+              [attr.aria-sort]="sortState().column === column.key ? (sortState().direction === 'asc' ? 'ascending' : 'descending') : 'none'"
+              (click)="handleSort(column)"
+            >
+              <div class="ui-table-header-content">
+                <span>{{ column.label }}</span>
+                @if (column.sortable) {
+                  <span class="ui-table-sort-icon" aria-hidden="true">
+                    @if (getSortIcon(column) === 'sort-asc') {
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M8 4L12 8H4L8 4Z" fill="currentColor"/>
+                      </svg>
+                    } @else if (getSortIcon(column) === 'sort-desc') {
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M8 12L4 8H12L8 12Z" fill="currentColor"/>
+                      </svg>
+                    } @else {
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M8 4L12 8H4L8 4Z" fill="currentColor" opacity="0.3"/>
+                        <path d="M8 12L4 8H12L8 12Z" fill="currentColor" opacity="0.3"/>
+                      </svg>
+                    }
+                  </span>
+                }
+              </div>
+            </th>
+          }
+        </tr>
+      </thead>
+
+      <tbody class="ui-table-body">
+        @if (loading()) {
+          <tr>
+            <td [attr.colspan]="columns().length + (selectable() ? 1 : 0)" class="ui-table-loading">
+              <div class="ui-table-loading-content">
+                <span class="ui-table-spinner"></span>
+                <span>Loading...</span>
+              </div>
+            </td>
+          </tr>
+        } @else if (sortedData().length === 0) {
+          <tr>
+            <td [attr.colspan]="columns().length + (selectable() ? 1 : 0)" class="ui-table-empty">
+              {{ emptyMessage() }}
+            </td>
+          </tr>
+        } @else {
+          @for (row of sortedData(); track $index) {
+            <tr
+              class="ui-table-row"
+              [class.ui-table-row--selected]="isRowSelected($index)"
+              [attr.aria-selected]="selectable() ? isRowSelected($index) : null"
+              (click)="handleRowClick(row, $index)"
+            >
+              @if (selectable()) {
+                <td class="ui-table-cell ui-table-cell--checkbox">
+                  <input
+                    type="checkbox"
+                    class="ui-table-checkbox"
+                    [checked]="isRowSelected($index)"
+                    [attr.aria-label]="'Select row ' + ($index + 1)"
+                    (change)="handleRowSelect($index, $event)"
+                    (click)="$event.stopPropagation()"
+                  />
+                </td>
+              }
+
+              @for (column of columns(); track column.key) {
+                <td class="ui-table-cell">
+                  {{ row[column.key] }}
+                </td>
+              }
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+

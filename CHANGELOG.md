@@ -63,7 +63,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Popover component with click/hover triggers, positioning, and rich content
 - Pagination component with ellipsis, page size selector, and first/last navigation
 - Toast/Snackbar component with service-based notifications and auto-dismiss
-- Working showcase application with live demos for all 27 components
+- Table component with sorting, row selection, striped/bordered variants, and loading states
+- List component with ordered/unordered, interactive, bordered/divided variants
+- Menu component with dropdown, nested submenus, keyboard navigation, and dynamic positioning
+- Stack layout component with vertical/horizontal direction, flexible spacing and alignment
+- Grid layout component with responsive columns, auto-fit, and customizable gaps
+- Working showcase application with live demos for all 32 components
 - Theme switching functionality verified across all components
 - TypeScript 5.8.3 (Angular 20.3 compatibility)
 - Updated dependencies (@types/node, @swc/core)

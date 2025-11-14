@@ -1,0 +1,60 @@
+@if (items().length === 0) {
+  <div class="ui-list-empty">
+    {{ emptyMessage() }}
+  </div>
+} @else {
+  @if (ordered()) {
+    <ol [ngClass]="listClasses()">
+      @for (item of items(); track item.id) {
+        <li
+          class="ui-list-item"
+          [class.ui-list-item--disabled]="item.disabled"
+          [attr.aria-disabled]="item.disabled"
+          (click)="handleItemClick(item)"
+          (keydown.enter)="handleItemClick(item)"
+          (keydown.space)="$event.preventDefault(); handleItemClick(item)"
+          [attr.tabindex]="interactive() && !item.disabled ? 0 : undefined"
+        >
+          @if (showIcons() && item.icon) {
+            <span class="ui-list-item-icon" [attr.aria-hidden]="true">
+              {{ item.icon }}
+            </span>
+          }
+          <div class="ui-list-item-content">
+            <span class="ui-list-item-label">{{ item.label }}</span>
+            @if (item.description) {
+              <span class="ui-list-item-description">{{ item.description }}</span>
+            }
+          </div>
+        </li>
+      }
+    </ol>
+  } @else {
+    <ul [ngClass]="listClasses()">
+      @for (item of items(); track item.id) {
+        <li
+          class="ui-list-item"
+          [class.ui-list-item--disabled]="item.disabled"
+          [attr.aria-disabled]="item.disabled"
+          (click)="handleItemClick(item)"
+          (keydown.enter)="handleItemClick(item)"
+          (keydown.space)="$event.preventDefault(); handleItemClick(item)"
+          [attr.tabindex]="interactive() && !item.disabled ? 0 : undefined"
+        >
+          @if (showIcons() && item.icon) {
+            <span class="ui-list-item-icon" [attr.aria-hidden]="true">
+              {{ item.icon }}
+            </span>
+          }
+          <div class="ui-list-item-content">
+            <span class="ui-list-item-label">{{ item.label }}</span>
+            @if (item.description) {
+              <span class="ui-list-item-description">{{ item.description }}</span>
+            }
+          </div>
+        </li>
+      }
+    </ul>
+  }
+}
+

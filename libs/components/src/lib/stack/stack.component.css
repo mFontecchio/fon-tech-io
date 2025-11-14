@@ -1,0 +1,54 @@
+/**
+ * Stack Component Styles
+ */
+
+.ui-stack {
+  display: flex;
+}
+
+/* Direction */
+
+.ui-stack--vertical {
+  flex-direction: column;
+}
+
+.ui-stack--horizontal {
+  flex-direction: row;
+}
+
+/* Wrap */
+
+.ui-stack--wrap {
+  flex-wrap: wrap;
+}
+
+/* Full size */
+
+.ui-stack--full-size {
+  width: 100%;
+  height: 100%;
+}
+
+/* Divider */
+
+.ui-stack--divider.ui-stack--vertical > :not(:last-child) {
+  border-bottom: 1px solid var(--semantic-border-subtle);
+  padding-bottom: var(--primitive-spacing-4);
+  margin-bottom: var(--primitive-spacing-4);
+}
+
+.ui-stack--divider.ui-stack--horizontal > :not(:last-child) {
+  border-right: 1px solid var(--semantic-border-subtle);
+  padding-right: var(--primitive-spacing-4);
+  margin-right: var(--primitive-spacing-4);
+}
+
+/* High contrast mode support */
+
+@media (prefers-contrast: more) {
+  .ui-stack--divider.ui-stack--vertical > :not(:last-child),
+  .ui-stack--divider.ui-stack--horizontal > :not(:last-child) {
+    border-width: 2px;
+  }
+}
+

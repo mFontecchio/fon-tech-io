@@ -18,6 +18,8 @@ export * from './lib/accordion/accordion.component';
 export * from './lib/accordion/accordion-item.component';
 export * from './lib/divider/divider.component';
 export * from './lib/drawer/drawer.component';
+export * from './lib/stack/stack.component';
+export * from './lib/grid/grid.component';
 
 // Data Display Components
 export * from './lib/badge/badge.component';
@@ -26,6 +28,8 @@ export * from './lib/tooltip/tooltip.component';
 export * from './lib/chip/chip.component';
 export * from './lib/popover/popover.component';
 export * from './lib/pagination/pagination.component';
+export * from './lib/table/table.component';
+export * from './lib/list/list.component';
 
 // Feedback Components
 export * from './lib/alert/alert.component';
@@ -38,5 +42,6 @@ export * from './lib/toast/toast.service';
 
 // Navigation Components
 export * from './lib/breadcrumb/breadcrumb.component';
+export * from './lib/menu/menu.component';
 
 // More components will be exported as they are implemented

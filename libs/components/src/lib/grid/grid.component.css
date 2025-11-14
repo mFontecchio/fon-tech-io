@@ -1,0 +1,92 @@
+/**
+ * Grid Component Styles
+ */
+
+.ui-grid {
+  display: grid;
+}
+
+.ui-grid--full-width {
+  width: 100%;
+}
+
+/* Responsive columns */
+
+@media (min-width: 768px) {
+  .ui-grid--cols-md-1 {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  
+  .ui-grid--cols-md-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .ui-grid--cols-md-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .ui-grid--cols-md-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .ui-grid--cols-md-6 {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  
+  .ui-grid--cols-md-12 {
+    grid-template-columns: repeat(12, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .ui-grid--cols-lg-1 {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  
+  .ui-grid--cols-lg-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .ui-grid--cols-lg-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .ui-grid--cols-lg-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .ui-grid--cols-lg-6 {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  
+  .ui-grid--cols-lg-12 {
+    grid-template-columns: repeat(12, 1fr);
+  }
+}
+
+/* Grid item utility classes (can be used on children) */
+
+:host ::ng-deep .ui-grid-span-2 {
+  grid-column: span 2;
+}
+
+:host ::ng-deep .ui-grid-span-3 {
+  grid-column: span 3;
+}
+
+:host ::ng-deep .ui-grid-span-4 {
+  grid-column: span 4;
+}
+
+:host ::ng-deep .ui-grid-span-6 {
+  grid-column: span 6;
+}
+
+:host ::ng-deep .ui-grid-span-12 {
+  grid-column: span 12;
+}
+
+:host ::ng-deep .ui-grid-span-full {
+  grid-column: 1 / -1;
+}
+
