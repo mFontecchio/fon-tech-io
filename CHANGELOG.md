@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
+- **Navigation Issues Fixed**:
+  - Component detail page now updates when navigating between different components (using route.params subscription instead of snapshot)
+  - Added overview pages for `/components` and `/getting-started` routes
+  - Header navigation links now work correctly
+  - Sidebar navigation properly updates component detail page on each click
 - Slider component handles now visible (removed opacity: 0, added proper -webkit-appearance: none)
 - Slider native track properly hidden with transparent background for both webkit and mozilla
 - Range slider functionality properly manages both start and end values with reactive state
@@ -27,6 +32,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Phase 1 Complete**: Documentation site foundation with routing and navigation
+  - Angular Router configuration with lazy-loaded routes
+  - Header component with navigation and theme toggle
+  - Sidebar component with categorized component links (36 components)
+  - Home page with hero section and feature cards
+  - Component detail page (shell for API docs)
+  - Theme builder page (shell for theme builder UI)
+  - Getting started pages (shells for guides)
+  - Responsive layout structure with sidebar and main content area
+  - Full routing structure: /, /components/:category/:name, /theme-builder, /getting-started/*
+- Comprehensive documentation site plan with theme builder specifications
+- Technical architecture for API documentation system
+- Phased implementation roadmap (6 phases, 5-6 weeks)
+- Component metadata structure definition
+- Theme builder UI mockups and feature specifications
 - Initial Nx workspace setup with Angular 20+ support
 - TypeScript strict mode configuration
 - ESLint with Angular-specific rules
