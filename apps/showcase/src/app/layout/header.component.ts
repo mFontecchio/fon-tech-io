@@ -3,15 +3,16 @@
  * Top navigation bar with logo, search, and theme toggle
  */
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, viewChild } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ThemeSwitcherComponent } from '../shared/theme-switcher.component';
+import { SearchModalComponent } from '../shared/search-modal.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive, ThemeSwitcherComponent],
+  imports: [CommonModule, RouterLink, RouterLinkActive, ThemeSwitcherComponent, SearchModalComponent],
   template: `
     <header class="app-header">
       <div class="app-header-content">
@@ -30,8 +31,8 @@ import { ThemeSwitcherComponent } from '../shared/theme-switcher.component';
 
         <!-- Actions -->
         <div class="app-header-actions">
-          <!-- Search (placeholder for now) -->
-          <button class="search-button" title="Search (Coming soon)">
+          <!-- Search -->
+          <button class="search-button" (click)="openSearch()" [title]="'Search components (Cmd+K)'">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
               <circle cx="11" cy="11" r="8"/>
               <path d="m21 21-4.35-4.35"/>
@@ -50,6 +51,9 @@ import { ThemeSwitcherComponent } from '../shared/theme-switcher.component';
         </div>
       </div>
     </header>
+
+    <!-- Search Modal -->
+    <app-search-modal />
   `,
   styles: [`
     .app-header {
@@ -153,5 +157,11 @@ import { ThemeSwitcherComponent } from '../shared/theme-switcher.component';
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent {}
+export class HeaderComponent {
+  private readonly searchModal = viewChild(SearchModalComponent);
+
+  protected openSearch(): void {
+    this.searchModal()?.open();
+  }
+}
 

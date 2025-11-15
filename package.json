@@ -85,6 +85,7 @@
   },
   "dependencies": {
     "@types/prismjs": "1.26.5",
+    "fuse.js": "7.1.0",
     "prismjs": "1.30.0"
   }
 }
