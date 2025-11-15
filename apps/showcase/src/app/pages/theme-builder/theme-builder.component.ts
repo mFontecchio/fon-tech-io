@@ -3,16 +3,7 @@
  * Interactive theme customization tool with live preview and export
  */
 
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  signal,
-  computed,
-  effect,
-  HostListener,
-  ViewEncapsulation,
-} from '@angular/core';
+import { Component, signal, computed, effect, HostListener, afterNextRender } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -23,6 +14,8 @@ import {
   InputComponent,
   AlertComponent,
   BadgeComponent,
+  ModalComponent,
+  SkeletonComponent,
 } from '@ui-suite/components';
 import { THEME_PRESETS, ThemePreset } from './theme-presets';
 import {
@@ -75,8 +68,9 @@ interface HistoryEntry {
     InputComponent,
     AlertComponent,
     BadgeComponent,
+    ModalComponent,
+    SkeletonComponent,
   ],
-  encapsulation: ViewEncapsulation.None,
   template: `
     <div class="theme-builder-page">
       <div class="theme-builder-header">
@@ -84,68 +78,165 @@ interface HistoryEntry {
           <h1>Theme Builder</h1>
           <p class="subtitle">Customize design tokens for both light and dark modes</p>
         </div>
-        <div class="header-actions">
-          <div class="history-buttons">
-            <ui-button
-              variant="outlined"
-              size="sm"
-              (clicked)="undo()"
-              [disabled]="!canUndo()"
-              title="Undo (Ctrl+Z)"
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 7v6h6" />
-                <path d="M21 17a9 9 0 00-9-9 9 9 0 00-6 2.3L3 13" />
-              </svg>
-            </ui-button>
-            <ui-button
-              variant="outlined"
-              size="sm"
-              (clicked)="redo()"
-              [disabled]="!canRedo()"
-              title="Redo (Ctrl+Y)"
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 7v6h-6" />
-                <path d="M3 17a9 9 0 019-9 9 9 0 016 2.3l3 2.7" />
-              </svg>
-            </ui-button>
-          </div>
-          <ui-button variant="outlined" (clicked)="toggleAccessibilityChecker()">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; vertical-align: middle;">
-              <circle cx="12" cy="12" r="10" />
-              <path d="M12 16v-4" />
-              <path d="M12 8h.01" />
-            </svg>
-            A11y Check
-          </ui-button>
-          <ui-button variant="outlined" (clicked)="toggleColorGenerator()">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; vertical-align: middle;">
-              <circle cx="13.5" cy="6.5" r=".5" />
-              <circle cx="17.5" cy="10.5" r=".5" />
-              <circle cx="8.5" cy="7.5" r=".5" />
-              <circle cx="6.5" cy="12.5" r=".5" />
-              <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z" />
-            </svg>
-            Colors
-          </ui-button>
-          <ui-button variant="outlined" (clicked)="resetTheme()">
-            Reset
-          </ui-button>
-          <ui-button variant="filled" (clicked)="exportTheme()">
-            Export
-          </ui-button>
-        </div>
       </div>
 
       <!-- Dual Theme Info -->
       <ui-alert variant="info" style="margin-bottom: var(--primitive-spacing-6);">
-        <strong>Dual Theme System:</strong> Edit both Light and Dark color modes simultaneously! 
-        Each color token has two inputs side-by-side - Light (left) and Dark (right). 
-        Typography and spacing tokens are shared between both themes. 
-        Use the Light/Dark toggle buttons in the Live Preview section to see your theme in both modes. 
-        When you export, both light and dark color tokens will be included for a complete theme solution.
+        <strong>Dual Theme System:</strong> Edit both Light and Dark color modes simultaneously!
+        Each color token has two inputs side-by-side - Light (left) and Dark (right). Typography and
+        spacing tokens are shared between both themes. Use the Light/Dark toggle buttons in the Live
+        Preview section to see your theme in both modes. When you export, both light and dark color
+        tokens will be included for a complete theme solution.
       </ui-alert>
+
+      <!-- Sticky Action Toolbar -->
+      <!-- Action Toolbar with Skeleton Loader -->
+      @if (isInitializing()) {
+        <div class="action-toolbar">
+          <ui-skeleton variant="rectangular" height="2.5rem" width="100%" />
+        </div>
+      } @else {
+        <div class="action-toolbar">
+          <div class="toolbar-section">
+            <span class="toolbar-label">History</span>
+            <div class="toolbar-buttons">
+              <ui-button
+                variant="outlined"
+                size="sm"
+                (clicked)="undo()"
+                [disabled]="!canUndo()"
+                title="Undo (Ctrl+Z)"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M3 7v6h6" />
+                  <path d="M21 17a9 9 0 00-9-9 9 9 0 00-6 2.3L3 13" />
+                </svg>
+                Undo
+              </ui-button>
+              <ui-button
+                variant="outlined"
+                size="sm"
+                (clicked)="redo()"
+                [disabled]="!canRedo()"
+                title="Redo (Ctrl+Y)"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M21 7v6h-6" />
+                  <path d="M3 17a9 9 0 019-9 9 9 0 016 2.3l3 2.7" />
+                </svg>
+                Redo
+              </ui-button>
+            </div>
+          </div>
+
+          <div class="toolbar-divider"></div>
+
+          <div class="toolbar-section">
+            <span class="toolbar-label">Tools</span>
+            <div class="toolbar-buttons">
+              <ui-button variant="outlined" size="sm" (clicked)="toggleAccessibilityChecker()">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M12 16v-4" />
+                  <path d="M12 8h.01" />
+                </svg>
+                A11y Check
+              </ui-button>
+              <ui-button variant="outlined" size="sm" (clicked)="toggleColorGenerator()">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="13.5" cy="6.5" r=".5" />
+                  <circle cx="17.5" cy="10.5" r=".5" />
+                  <circle cx="8.5" cy="7.5" r=".5" />
+                  <circle cx="6.5" cy="12.5" r=".5" />
+                  <path
+                    d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"
+                  />
+                </svg>
+                Colors
+              </ui-button>
+            </div>
+          </div>
+
+          <div class="toolbar-divider"></div>
+
+          <div class="toolbar-section">
+            <span class="toolbar-label">Actions</span>
+            <div class="toolbar-buttons">
+              <ui-button variant="outlined" size="sm" (clicked)="resetTheme()">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+                  <path d="M21 3v5h-5" />
+                  <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+                  <path d="M3 21v-5h5" />
+                </svg>
+                Reset
+              </ui-button>
+              <ui-button variant="filled" size="sm" (clicked)="exportTheme()">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+                Export
+              </ui-button>
+            </div>
+          </div>
+        </div>
+      }
 
       <!-- Theme Presets & Quick Actions -->
       <div class="presets-section">
@@ -156,25 +247,44 @@ interface HistoryEntry {
               <p class="presets-description">Start with a pre-made theme or load a saved one</p>
             </div>
             <div class="presets-actions">
-              <ui-button variant="outlined" size="sm" (clicked)="importTheme()">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="margin-right: 6px;">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                  <polyline points="17 8 12 3 7 8" />
-                  <line x1="12" y1="3" x2="12" y2="15" />
-                </svg>
-                Import
-              </ui-button>
-              <ui-button variant="outlined" size="sm" (clicked)="showSaveThemeModal()">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="margin-right: 6px;">
-                  <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
-                  <polyline points="17 21 17 13 7 13 7 21" />
-                  <polyline points="7 3 7 8 15 8" />
-                </svg>
-                Save
-              </ui-button>
+              @if (isInitializing()) {
+                <ui-skeleton variant="rounded" height="2rem" width="5rem" />
+                <ui-skeleton variant="rounded" height="2rem" width="5rem" />
+              } @else {
+                <ui-button variant="outlined" size="sm" (clicked)="importTheme()">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    style="margin-right: 6px;"
+                  >
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" y1="3" x2="12" y2="15" />
+                  </svg>
+                  Import
+                </ui-button>
+                <ui-button variant="outlined" size="sm" (clicked)="showSaveThemeModal()">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    style="margin-right: 6px;"
+                  >
+                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                    <polyline points="17 21 17 13 7 13 7 21" />
+                    <polyline points="7 3 7 8 15 8" />
+                  </svg>
+                  Save
+                </ui-button>
+              }
             </div>
           </div>
-          
+
           <div class="presets-grid">
             @for (preset of themePresets; track preset.id) {
               <div class="preset-card" (click)="applyPreset(preset)">
@@ -184,10 +294,22 @@ interface HistoryEntry {
                   <span class="preset-author">by {{ preset.author }}</span>
                 </div>
                 <div class="preset-colors">
-                  <div class="color-dot" [style.background-color]="preset.tokens['--semantic-brand-primary']"></div>
-                  <div class="color-dot" [style.background-color]="preset.tokens['--semantic-success-primary']"></div>
-                  <div class="color-dot" [style.background-color]="preset.tokens['--semantic-warning-primary']"></div>
-                  <div class="color-dot" [style.background-color]="preset.tokens['--semantic-error-primary']"></div>
+                  <div
+                    class="color-dot"
+                    [style.background-color]="preset.tokens['--semantic-brand-primary']"
+                  ></div>
+                  <div
+                    class="color-dot"
+                    [style.background-color]="preset.tokens['--semantic-success-primary']"
+                  ></div>
+                  <div
+                    class="color-dot"
+                    [style.background-color]="preset.tokens['--semantic-warning-primary']"
+                  ></div>
+                  <div
+                    class="color-dot"
+                    [style.background-color]="preset.tokens['--semantic-error-primary']"
+                  ></div>
                 </div>
               </div>
             }
@@ -203,12 +325,26 @@ interface HistoryEntry {
                       <h4>{{ theme.name }}</h4>
                       <span class="saved-theme-date">{{ formatDate(theme.createdAt) }}</span>
                     </div>
-                    <button class="delete-theme-btn" (click)="deleteSavedTheme(theme.name)" title="Delete theme">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <ui-button
+                      variant="text"
+                      size="sm"
+                      (clicked)="deleteSavedTheme(theme.name)"
+                      [ariaLabel]="'Delete theme ' + theme.name"
+                    >
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
                         <polyline points="3 6 5 6 21 6" />
-                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                        <path
+                          d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                        />
                       </svg>
-                    </button>
+                    </ui-button>
                   </div>
                 }
               </div>
@@ -222,7 +358,7 @@ interface HistoryEntry {
         <div class="token-editor">
           <ui-card>
             <h2>Design Tokens</h2>
-            
+
             <ui-tabs>
               <ui-tab label="Colors">
                 <div class="token-section">
@@ -230,7 +366,7 @@ interface HistoryEntry {
                     <div class="token-category">
                       <h3>{{ category.name }}</h3>
                       <p class="category-description">{{ category.description }}</p>
-                      
+
                       <div class="token-grid">
                         @for (token of category.tokens; track token.name) {
                           <div class="token-item">
@@ -248,13 +384,17 @@ interface HistoryEntry {
                                     type="color"
                                     [id]="token.name + '-light'"
                                     [value]="token.value"
-                                    (input)="updateLightToken(token.name, $any($event.target).value)"
+                                    (input)="
+                                      updateLightToken(token.name, $any($event.target).value)
+                                    "
                                     class="color-input"
                                   />
                                   <input
                                     type="text"
                                     [value]="token.value"
-                                    (input)="updateLightToken(token.name, $any($event.target).value)"
+                                    (input)="
+                                      updateLightToken(token.name, $any($event.target).value)
+                                    "
                                     class="text-input"
                                     [placeholder]="token.value"
                                   />
@@ -294,7 +434,7 @@ interface HistoryEntry {
                     <div class="token-category">
                       <h3>{{ category.name }}</h3>
                       <p class="category-description">{{ category.description }}</p>
-                      
+
                       <div class="token-grid">
                         @for (token of category.tokens; track token.name) {
                           <div class="token-item">
@@ -322,7 +462,7 @@ interface HistoryEntry {
                     <div class="token-category">
                       <h3>{{ category.name }}</h3>
                       <p class="category-description">{{ category.description }}</p>
-                      
+
                       <div class="token-grid">
                         @for (token of category.tokens; track token.name) {
                           <div class="token-item">
@@ -356,12 +496,22 @@ interface HistoryEntry {
                 <p class="preview-description">See your theme changes in real-time</p>
               </div>
               <div class="preview-mode-toggle">
-                <ui-button 
-                  [variant]="!isPreviewingDark() ? 'filled' : 'outlined'" 
+                <ui-button
+                  [variant]="!isPreviewingDark() ? 'filled' : 'outlined'"
                   size="sm"
                   (clicked)="setPreviewMode('light')"
                 >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; vertical-align: middle;">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    style="margin-right: 6px; vertical-align: middle;"
+                  >
                     <circle cx="12" cy="12" r="5" />
                     <line x1="12" y1="1" x2="12" y2="3" />
                     <line x1="12" y1="21" x2="12" y2="23" />
@@ -374,20 +524,33 @@ interface HistoryEntry {
                   </svg>
                   Light
                 </ui-button>
-                <ui-button 
-                  [variant]="isPreviewingDark() ? 'filled' : 'outlined'" 
+                <ui-button
+                  [variant]="isPreviewingDark() ? 'filled' : 'outlined'"
                   size="sm"
                   (clicked)="setPreviewMode('dark')"
                 >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; vertical-align: middle;">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    style="margin-right: 6px; vertical-align: middle;"
+                  >
                     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
                   </svg>
                   Dark
                 </ui-button>
               </div>
             </div>
-            
-            <div class="preview-container" [attr.data-preview-theme]="isPreviewingDark() ? 'dark' : 'light'">
+
+            <div
+              class="preview-container"
+              [attr.data-preview-theme]="isPreviewingDark() ? 'dark' : 'light'"
+            >
               <!-- Buttons -->
               <div class="preview-section">
                 <h4>Buttons</h4>
@@ -439,10 +602,16 @@ interface HistoryEntry {
                   <div class="color-swatch" style="background-color: var(--semantic-brand-primary)">
                     <span>Brand</span>
                   </div>
-                  <div class="color-swatch" style="background-color: var(--semantic-success-primary)">
+                  <div
+                    class="color-swatch"
+                    style="background-color: var(--semantic-success-primary)"
+                  >
                     <span>Success</span>
                   </div>
-                  <div class="color-swatch" style="background-color: var(--semantic-warning-primary)">
+                  <div
+                    class="color-swatch"
+                    style="background-color: var(--semantic-warning-primary)"
+                  >
                     <span>Warning</span>
                   </div>
                   <div class="color-swatch" style="background-color: var(--semantic-error-primary)">
@@ -456,55 +625,52 @@ interface HistoryEntry {
       </div>
 
       <!-- Export Modal (shown when exporting) -->
-      @if (showExportModal()) {
-        <div class="export-modal-overlay" (click)="closeExportModal()">
-          <div class="export-modal" (click)="$event.stopPropagation()">
-            <ui-card>
-              <h2>Export Theme</h2>
-              <p>Choose your export format:</p>
-              
-              <div class="export-options">
-                <ui-button variant="outlined" [fullWidth]="true" (clicked)="exportAsCSS()">
-                  Export as CSS Variables
-                </ui-button>
-                <ui-button variant="outlined" [fullWidth]="true" (clicked)="exportAsJSON()">
-                  Export as JSON
-                </ui-button>
-                <ui-button variant="outlined" [fullWidth]="true" (clicked)="exportAsTypeScript()">
-                  Export as TypeScript
-                </ui-button>
-              </div>
-              
-              <div class="modal-actions">
-                <ui-button variant="text" (clicked)="closeExportModal()">Cancel</ui-button>
-              </div>
-            </ui-card>
-          </div>
+      <ui-modal
+        [open]="showExportModal()"
+        [title]="'Export Theme'"
+        [size]="'md'"
+        (closed)="closeExportModal()"
+      >
+        <p>Choose your export format:</p>
+
+        <div class="export-options">
+          <ui-button variant="outlined" [fullWidth]="true" (clicked)="exportAsCSS()">
+            Export as CSS Variables
+          </ui-button>
+          <ui-button variant="outlined" [fullWidth]="true" (clicked)="exportAsJSON()">
+            Export as JSON
+          </ui-button>
+          <ui-button variant="outlined" [fullWidth]="true" (clicked)="exportAsTypeScript()">
+            Export as TypeScript
+          </ui-button>
         </div>
-      }
+
+        <div slot="footer">
+          <ui-button variant="text" (clicked)="closeExportModal()">Cancel</ui-button>
+        </div>
+      </ui-modal>
 
       <!-- Save Theme Modal -->
-      @if (showSaveModal()) {
-        <div class="export-modal-overlay" (click)="closeSaveModal()">
-          <div class="export-modal" (click)="$event.stopPropagation()">
-            <ui-card>
-              <h2>Save Theme</h2>
-              <p>Give your custom theme a name:</p>
-              
-              <ui-input
-                [(ngModel)]="saveThemeName"
-                placeholder="My Custom Theme"
-                label="Theme Name"
-              />
-              
-              <div class="modal-actions">
-                <ui-button variant="text" (clicked)="closeSaveModal()">Cancel</ui-button>
-                <ui-button variant="filled" (clicked)="saveCurrentTheme()">Save</ui-button>
-              </div>
-            </ui-card>
-          </div>
+      <ui-modal
+        [open]="showSaveModal()"
+        [title]="'Save Theme'"
+        [size]="'md'"
+        (closed)="closeSaveModal()"
+      >
+        <p>Give your custom theme a name:</p>
+
+        <ui-input
+          [value]="saveThemeName()"
+          (valueChange)="saveThemeName.set($event)"
+          placeholder="My Custom Theme"
+          label="Theme Name"
+        />
+
+        <div slot="footer">
+          <ui-button variant="text" (clicked)="closeSaveModal()">Cancel</ui-button>
+          <ui-button variant="filled" (clicked)="saveCurrentTheme()">Save</ui-button>
         </div>
-      }
+      </ui-modal>
 
       <!-- Accessibility Checker Panel -->
       @if (showAccessibilityChecker()) {
@@ -512,29 +678,51 @@ interface HistoryEntry {
           <ui-card>
             <div class="panel-header">
               <h2>Accessibility Checker</h2>
-              <button class="close-panel-btn" (click)="toggleAccessibilityChecker()">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <ui-button
+                variant="text"
+                size="sm"
+                (clicked)="toggleAccessibilityChecker()"
+                [ariaLabel]="'Close accessibility checker'"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
                   <line x1="18" y1="6" x2="6" y2="18" />
                   <line x1="6" y1="6" x2="18" y2="18" />
                 </svg>
-              </button>
+              </ui-button>
             </div>
             <p class="panel-description">Check contrast ratios for WCAG compliance</p>
-            
+
             <div class="contrast-checks">
               @for (check of contrastChecks(); track check.label) {
                 <div class="contrast-check-item">
                   <div class="contrast-info">
                     <span class="contrast-label">{{ check.label }}</span>
                     <div class="color-samples">
-                      <span class="color-sample" [style.background-color]="check.foreground">A</span>
-                      <span class="color-sample" [style.background-color]="check.background">A</span>
+                      <span class="color-sample" [style.background-color]="check.foreground"
+                        >A</span
+                      >
+                      <span class="color-sample" [style.background-color]="check.background"
+                        >A</span
+                      >
                     </div>
                   </div>
                   <div class="contrast-result">
                     <span class="contrast-ratio">{{ check.ratio.toFixed(2) }}:1</span>
-                    <ui-badge 
-                      [variant]="check.level === 'AAA' ? 'success' : check.level === 'AA' ? 'warning' : 'error'"
+                    <ui-badge
+                      [variant]="
+                        check.level === 'AAA'
+                          ? 'success'
+                          : check.level === 'AA'
+                            ? 'warning'
+                            : 'error'
+                      "
                     >
                       {{ check.level }}
                     </ui-badge>
@@ -542,7 +730,7 @@ interface HistoryEntry {
                 </div>
               }
             </div>
-            
+
             <div class="wcag-info">
               <h4>WCAG Standards:</h4>
               <ul>
@@ -561,15 +749,27 @@ interface HistoryEntry {
           <ui-card>
             <div class="panel-header">
               <h2>Color Palette Generator</h2>
-              <button class="close-panel-btn" (click)="toggleColorGenerator()">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <ui-button
+                variant="text"
+                size="sm"
+                (clicked)="toggleColorGenerator()"
+                [ariaLabel]="'Close color generator'"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
                   <line x1="18" y1="6" x2="6" y2="18" />
                   <line x1="6" y1="6" x2="18" y2="18" />
                 </svg>
-              </button>
+              </ui-button>
             </div>
             <p class="panel-description">Generate harmonious color schemes</p>
-            
+
             <div class="color-generator-controls">
               <ui-input
                 [value]="baseColorForGeneration"
@@ -589,7 +789,7 @@ interface HistoryEntry {
                 </ui-button>
               </div>
             </div>
-            
+
             @if (generatedColors().length > 0) {
               <div class="generated-colors">
                 <h4>Generated Colors:</h4>
@@ -618,677 +818,863 @@ interface HistoryEntry {
       />
     </div>
   `,
-  styles: [`
-    .theme-builder-page {
-      padding: var(--primitive-spacing-6);
-      max-width: 1600px;
-      margin: 0 auto;
-    }
-
-    .theme-builder-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: var(--primitive-spacing-6);
-    }
-
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: var(--primitive-spacing-2);
-    }
-
-    .subtitle {
-      font-size: var(--primitive-font-size-lg);
-      color: var(--semantic-text-secondary);
-    }
-
-    .header-actions {
-      display: flex;
-      gap: var(--primitive-spacing-3);
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .history-buttons {
-      display: flex;
-      gap: var(--primitive-spacing-1);
-    }
-    .header-actions ui-button svg{vertical-align:middle}
-
-    /* Utility Panels (Accessibility Checker & Color Generator) */
-    .utility-panel {
-      position: fixed;
-      top: 80px;
-      right: var(--primitive-spacing-6);
-      width: 400px;
-      max-height: calc(100vh - 120px);
-      overflow-y: auto;
-      z-index: 100;
-      background: var(--semantic-surface-card);
-      border: 1px solid var(--semantic-border-default);
-      border-radius: var(--primitive-border-radius-lg);
-      box-shadow: var(--primitive-shadow-lg);
-      animation: slideInRight 0.3s ease-out;
-    }
-    
-    .utility-panel ui-card {
-      background: transparent;
-      border: none;
-      box-shadow: none;
-    }
-
-    .utility-panel ::ng-deep ui-input,
-    .utility-panel ::ng-deep ui-button {
-      display: block !important;
-      opacity: 1 !important;
-      visibility: visible !important;
-    }
-    
-    .utility-panel ::ng-deep ui-input input {
-      display: block !important;
-    }
-    
-    .utility-panel .generator-buttons ui-button {
-      flex: 1 1 auto;
-      min-width: 100px;
-    }
-
-    @keyframes slideInRight {
-      from {
-        transform: translateX(100%);
-        opacity: 0;
+  styles: [
+    `
+      :host {
+        display: block;
       }
-      to {
-        transform: translateX(0);
-        opacity: 1;
+
+      /* Skeleton loader styles */
+      .presets-actions ui-skeleton {
+        display: inline-block;
       }
-    }
 
-    .panel-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: var(--primitive-spacing-3);
-    }
-
-    .panel-header h2 {
-      font-size: var(--primitive-font-size-lg);
-      margin: 0;
-    }
-
-    .close-panel-btn {
-      padding: var(--primitive-spacing-2);
-      border: none;
-      background: transparent;
-      color: var(--semantic-text-secondary);
-      cursor: pointer;
-      border-radius: var(--primitive-border-radius-sm);
-      transition: all 0.2s;
-    }
-
-    .close-panel-btn:hover {
-      background-color: var(--semantic-surface-subtle);
-      color: var(--semantic-text-primary);
-    }
-
-    .panel-description {
-      font-size: var(--primitive-font-size-sm);
-      color: var(--semantic-text-secondary);
-      margin-bottom: var(--primitive-spacing-4);
-    }
-
-    /* Accessibility Checker Styles */
-    .contrast-checks{display:flex;flex-direction:column;gap:var(--primitive-spacing-3);margin-bottom:var(--primitive-spacing-4)}
-    .contrast-check-item{display:flex;justify-content:space-between;align-items:center;padding:var(--primitive-spacing-3);border:1px solid var(--semantic-border-default);border-radius:var(--primitive-border-radius-md)}
-    .contrast-info{flex:1}
-    .contrast-label{font-size:var(--primitive-font-size-sm);font-weight:600;display:block;margin-bottom:var(--primitive-spacing-2)}
-    .color-samples{display:flex;gap:var(--primitive-spacing-2)}
-    .color-sample{width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:var(--primitive-border-radius-sm);font-weight:600;box-shadow:var(--primitive-shadow-sm)}
-    .contrast-result{display:flex;flex-direction:column;align-items:flex-end;gap:var(--primitive-spacing-1)}
-    .contrast-ratio{font-size:var(--primitive-font-size-sm);font-weight:600;color:var(--semantic-text-primary)}
-    .wcag-info{padding:var(--primitive-spacing-3);background:var(--semantic-surface-subtle);border-radius:var(--primitive-border-radius-md)}
-    .wcag-info h4{font-size:var(--primitive-font-size-sm);margin-bottom:var(--primitive-spacing-2)}
-    .wcag-info ul{list-style:none;padding:0;margin:0}
-    .wcag-info li{font-size:var(--primitive-font-size-xs);color:var(--semantic-text-secondary);margin-bottom:var(--primitive-spacing-1)}
-
-    /* Color Generator Styles */
-    .color-generator-controls{margin-bottom:var(--primitive-spacing-4)}
-    .color-generator-controls ui-input{display:block;width:100%}
-    .generator-buttons{display:flex;gap:var(--primitive-spacing-2);margin-top:var(--primitive-spacing-3);flex-wrap:wrap}
-    .generated-colors h4{font-size:var(--primitive-font-size-md);margin-bottom:var(--primitive-spacing-3)}
-    .generated-color-grid{display:grid;grid-template-columns:1fr;gap:var(--primitive-spacing-2);margin-bottom:var(--primitive-spacing-2)}
-    .generated-color-item{display:flex;align-items:center;gap:var(--primitive-spacing-3);padding:var(--primitive-spacing-2);border:1px solid var(--semantic-border-default);border-radius:var(--primitive-border-radius-md);cursor:pointer;transition:all .2s}
-    .generated-color-item:hover{border-color:var(--semantic-brand-primary);background:var(--semantic-surface-subtle)}
-    .generated-color-preview{width:48px;height:48px;border-radius:var(--primitive-border-radius-md);box-shadow:var(--primitive-shadow-sm)}
-    .generated-color-value{font-family:monospace;font-size:var(--primitive-font-size-sm);color:var(--semantic-text-primary)}
-    .hint{font-size:var(--primitive-font-size-xs);color:var(--semantic-text-tertiary);text-align:center;font-style:italic}
-
-    /* Presets Section */
-    .presets-section {
-      margin-bottom: var(--primitive-spacing-6);
-    }
-
-    .presets-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: var(--primitive-spacing-4);
-    }
-
-    .presets-description {
-      font-size: var(--primitive-font-size-sm);
-      color: var(--semantic-text-secondary);
-      margin-top: var(--primitive-spacing-1);
-    }
-
-    .presets-actions {
-      display: flex;
-      gap: var(--primitive-spacing-2);
-    }
-
-    .presets-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: var(--primitive-spacing-4);
-      margin-bottom: var(--primitive-spacing-4);
-    }
-
-    .preset-card {
-      padding: var(--primitive-spacing-4);
-      border: 1px solid var(--semantic-border-default);
-      border-radius: var(--primitive-border-radius-lg);
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .preset-card:hover {
-      border-color: var(--semantic-brand-primary);
-      box-shadow: var(--primitive-shadow-md);
-      transform: translateY(-2px);
-    }
-
-    .preset-info h4 {
-      font-size: var(--primitive-font-size-md);
-      margin-bottom: var(--primitive-spacing-2);
-    }
-
-    .preset-info p {
-      font-size: var(--primitive-font-size-sm);
-      color: var(--semantic-text-secondary);
-      margin-bottom: var(--primitive-spacing-2);
-    }
-
-    .preset-author {
-      font-size: var(--primitive-font-size-xs);
-      color: var(--semantic-text-tertiary);
-    }
-
-    .preset-colors {
-      display: flex;
-      gap: var(--primitive-spacing-2);
-      margin-top: var(--primitive-spacing-3);
-    }
-
-    .color-dot {
-      width: 24px;
-      height: 24px;
-      border-radius: var(--primitive-border-radius-full);
-      box-shadow: var(--primitive-shadow-sm);
-    }
-
-    /* Saved Themes */
-    .saved-themes-section {
-      margin-top: var(--primitive-spacing-6);
-      padding-top: var(--primitive-spacing-6);
-      border-top: 1px solid var(--semantic-border-default);
-    }
-
-    .saved-themes-section h3 {
-      font-size: var(--primitive-font-size-lg);
-      margin-bottom: var(--primitive-spacing-4);
-    }
-
-    .saved-themes-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: var(--primitive-spacing-3);
-    }
-
-    .saved-theme-card {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: var(--primitive-spacing-3);
-      border: 1px solid var(--semantic-border-default);
-      border-radius: var(--primitive-border-radius-md);
-      transition: all 0.2s;
-    }
-
-    .saved-theme-card:hover {
-      border-color: var(--semantic-brand-primary);
-    }
-
-    .saved-theme-info {
-      flex: 1;
-      cursor: pointer;
-    }
-
-    .saved-theme-info h4 {
-      font-size: var(--primitive-font-size-sm);
-      margin-bottom: 2px;
-    }
-
-    .saved-theme-date {
-      font-size: var(--primitive-font-size-xs);
-      color: var(--semantic-text-tertiary);
-    }
-
-    .delete-theme-btn {
-      padding: var(--primitive-spacing-2);
-      border: none;
-      background: transparent;
-      color: var(--semantic-error-primary);
-      cursor: pointer;
-      border-radius: var(--primitive-border-radius-sm);
-      transition: all 0.2s;
-    }
-
-    .delete-theme-btn:hover {
-      background-color: var(--semantic-error-subtle);
-    }
-
-    .delete-theme-btn svg {
-      display: block;
-      stroke-width: 2;
-    }
-
-    .theme-builder-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--primitive-spacing-6);
-    }
-
-    .token-editor h2 {
-      margin-bottom: var(--primitive-spacing-4);
-    }
-
-    .live-preview h2 {
-      margin: 0;
-    }
-
-    .preview-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: var(--primitive-spacing-4);
-      gap: var(--primitive-spacing-4);
-    }
-
-    .preview-mode-toggle {
-      display: flex;
-      gap: var(--primitive-spacing-2);
-      flex-shrink: 0;
-    }
-
-    .token-section {
-      display: flex;
-      flex-direction: column;
-      gap: var(--primitive-spacing-6);
-    }
-
-    .token-category {
-      padding: var(--primitive-spacing-4) 0;
-      border-bottom: 1px solid var(--semantic-border-default);
-    }
-
-    .token-category:last-child {
-      border-bottom: none;
-    }
-
-    .token-category h3 {
-      font-size: var(--primitive-font-size-lg);
-      margin-bottom: var(--primitive-spacing-2);
-    }
-
-    .category-description {
-      font-size: var(--primitive-font-size-sm);
-      color: var(--semantic-text-secondary);
-      margin-bottom: var(--primitive-spacing-4);
-    }
-
-    .token-grid {
-      display: flex;
-      flex-direction: column;
-      gap: var(--primitive-spacing-4);
-    }
-
-    .token-item {
-      display: flex;
-      flex-direction: column;
-      gap: var(--primitive-spacing-3);
-      width: 100%;
-    }
-
-    .dual-token-inputs {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--primitive-spacing-4);
-      width: 100%;
-    }
-
-    .mode-input-group {
-      display: flex;
-      flex-direction: column;
-      gap: var(--primitive-spacing-2);
-      min-width: 0; /* Allows flex items to shrink below content size */
-    }
-
-    .mode-input-label {
-      font-size: var(--primitive-font-size-xs);
-      font-weight: 600;
-      color: var(--semantic-text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: var(--primitive-spacing-1);
-    }
-
-    .token-label {
-      font-size: var(--primitive-font-size-sm);
-      font-weight: var(--primitive-font-weight-medium);
-      color: var(--semantic-text-primary);
-      display: block;
-      margin-bottom: var(--primitive-spacing-1);
-    }
-
-    .token-description {
-      font-size: var(--primitive-font-size-xs);
-      color: var(--semantic-text-secondary);
-      display: block;
-      margin-top: 2px;
-    }
-
-    .token-input-wrapper {
-      display: flex;
-      gap: var(--primitive-spacing-2);
-      align-items: center;
-      width: 100%;
-      min-width: 0;
-    }
-
-    .color-input {
-      width: 48px;
-      height: 38px;
-      min-width: 48px;
-      border: 1px solid var(--semantic-border-default);
-      border-radius: var(--primitive-border-radius-md);
-      cursor: pointer;
-      flex-shrink: 0;
-    }
-
-    .color-input::-webkit-color-swatch-wrapper {
-      padding: 2px;
-    }
-
-    .color-input::-webkit-color-swatch {
-      border: none;
-      border-radius: 4px;
-    }
-
-    .text-input {
-      flex: 1;
-      min-width: 0;
-      padding: var(--primitive-spacing-2) var(--primitive-spacing-3);
-      border: 1px solid var(--semantic-border-default);
-      border-radius: var(--primitive-border-radius-md);
-      font-size: var(--primitive-font-size-sm);
-      font-family: var(--primitive-font-family-mono);
-      background-color: var(--semantic-surface-card);
-      color: var(--semantic-text-primary);
-    }
-
-    .text-input.full-width {
-      width: 100%;
-    }
-
-    .text-input:focus {
-      outline: none;
-      border-color: var(--semantic-brand-primary);
-      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
-    }
-
-    .preview-description {
-      font-size: var(--primitive-font-size-sm);
-      color: var(--semantic-text-secondary);
-      margin-bottom: var(--primitive-spacing-4);
-    }
-
-    .preview-container {
-      padding: var(--primitive-spacing-4);
-      border: 1px solid var(--semantic-border-default);
-      border-radius: var(--primitive-border-radius-md);
-      background-color: var(--semantic-surface-subtle);
-      transition: background-color 0.3s ease, border-color 0.3s ease;
-    }
-
-    /* Dark Mode Preview - Override all color tokens */
-    .preview-container[data-preview-theme="dark"] {
-      /* Semantic: Brand Colors */
-      --semantic-brand-primary: var(--semantic-brand-primary-dark, #6B7FED);
-      --semantic-brand-secondary: var(--semantic-brand-secondary-dark, #8B95A5);
-      --semantic-brand-subtle: var(--semantic-brand-subtle-dark, #2A2E3F);
-      
-      /* Semantic: Feedback Colors */
-      --semantic-success-primary: var(--semantic-success-primary-dark, #4ADE80);
-      --semantic-warning-primary: var(--semantic-warning-primary-dark, #FBBF24);
-      --semantic-error-primary: var(--semantic-error-primary-dark, #F87171);
-      --semantic-info-primary: var(--semantic-info-primary-dark, #60A5FA);
-      
-      /* Semantic: Surface Colors */
-      --semantic-surface-background: var(--semantic-surface-background-dark, #1A1D29);
-      --semantic-surface-card: var(--semantic-surface-card-dark, #232734);
-      --semantic-surface-subtle: var(--semantic-surface-subtle-dark, #2A2E3F);
-      --semantic-surface-background-secondary: var(--semantic-surface-background-secondary-dark, #2A2E3F);
-      
-      /* Semantic: Text Colors */
-      --semantic-text-primary: var(--semantic-text-primary-dark, #E5E7EB);
-      --semantic-text-secondary: var(--semantic-text-secondary-dark, #9CA3AF);
-      --semantic-text-tertiary: var(--semantic-text-tertiary-dark, #6B7280);
-      --semantic-text-disabled: var(--semantic-text-disabled-dark, #4B5563);
-      
-      /* Semantic: Border Colors */
-      --semantic-border-default: var(--semantic-border-default-dark, #374151);
-      --semantic-border-subtle: var(--semantic-border-subtle-dark, #4B5563);
-      --semantic-border-strong: var(--semantic-border-strong-dark, #6B7280);
-      
-      /* Component: Card */
-      --component-card-background: var(--semantic-surface-card-dark, #232734);
-      --component-card-border: var(--semantic-border-default-dark, #374151);
-      
-      /* Component: Input */
-      --component-input-default-background: var(--semantic-surface-card-dark, #232734);
-      --component-input-default-text: var(--semantic-text-primary-dark, #E5E7EB);
-      --component-input-default-border: var(--semantic-border-default-dark, #374151);
-      --component-input-default-placeholder: var(--semantic-text-tertiary-dark, #6B7280);
-      --component-input-hover-border: var(--semantic-border-strong-dark, #6B7280);
-      --component-input-focus-border: var(--semantic-brand-primary-dark, #6B7FED);
-      
-      /* Component: Alert */
-      --component-alert-info-background: var(--semantic-surface-subtle-dark, #2A2E3F);
-      --component-alert-info-text: var(--semantic-text-primary-dark, #E5E7EB);
-      --component-alert-info-border: var(--semantic-border-default-dark, #374151);
-    }
-
-    .preview-container h4,
-    .preview-container h1,
-    .preview-container h2,
-    .preview-container h3,
-    .preview-container p {
-      color: var(--semantic-text-primary);
-    }
-
-    .preview-section {
-      margin-bottom: var(--primitive-spacing-6);
-    }
-
-    .preview-section:last-child {
-      margin-bottom: 0;
-    }
-
-    .preview-section h4 {
-      font-size: var(--primitive-font-size-md);
-      margin-bottom: var(--primitive-spacing-3);
-      color: var(--semantic-text-primary);
-    }
-
-    .preview-row {
-      display: flex;
-      gap: var(--primitive-spacing-3);
-      margin-bottom: var(--primitive-spacing-3);
-      flex-wrap: wrap;
-    }
-
-    .color-swatches {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-      gap: var(--primitive-spacing-3);
-    }
-
-    .color-swatch {
-      aspect-ratio: 1;
-      border-radius: var(--primitive-border-radius-md);
-      display: flex;
-      align-items: flex-end;
-      padding: var(--primitive-spacing-2);
-      box-shadow: var(--primitive-shadow-sm);
-    }
-
-    .color-swatch span {
-      font-size: var(--primitive-font-size-xs);
-      font-weight: var(--primitive-font-weight-medium);
-      color: white;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-    }
-
-    .export-modal-overlay {
-      position: fixed;
-      inset: 0;
-      background-color: rgba(0, 0, 0, 0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-    }
-
-    .export-modal {
-      width: 90%;
-      max-width: 500px;
-    }
-
-    .export-modal h2 {
-      margin-bottom: var(--primitive-spacing-3);
-    }
-
-    .export-modal p {
-      margin-bottom: var(--primitive-spacing-4);
-      color: var(--semantic-text-secondary);
-    }
-
-    .export-options {
-      display: flex;
-      flex-direction: column;
-      gap: var(--primitive-spacing-3);
-      margin-bottom: var(--primitive-spacing-4);
-    }
-
-    .modal-actions {
-      display: flex;
-      justify-content: flex-end;
-      padding-top: var(--primitive-spacing-4);
-      border-top: 1px solid var(--semantic-border-default);
-    }
-
-    @media (max-width: 1200px) {
-      .theme-builder-layout {
-        grid-template-columns: 1fr;
+      .theme-builder-page {
+        padding: var(--primitive-spacing-6);
+        max-width: 1600px;
+        margin: 0 auto;
+        /* Ensure sticky positioning works - no overflow or transform/filter on parent */
+        position: relative;
+        overflow: visible;
+        min-height: 100vh;
+        /* Remove any transforms that could break sticky */
+        transform: none;
       }
-    }
 
-    @media (max-width: 1024px) {
-      .dual-token-inputs {
-        grid-template-columns: 1fr;
+      .theme-builder-header {
+        margin-bottom: var(--primitive-spacing-6);
+      }
+
+      h1 {
+        font-size: 2.5rem;
+        margin-bottom: var(--primitive-spacing-2);
+      }
+
+      .subtitle {
+        font-size: var(--primitive-font-size-lg);
+        color: var(--semantic-text-secondary);
+      }
+
+      /* Sticky Action Toolbar */
+      .action-toolbar {
+        position: -webkit-sticky !important; /* Safari support */
+        position: sticky !important;
+        top: 4rem !important; /* Stick below the header (header height is 4rem/64px) */
+        z-index: 50 !important; /* Above content, below header (which is z-index: 100) */
+        display: flex;
+        align-items: center;
+        gap: var(--primitive-spacing-4);
+        padding: var(--primitive-spacing-3) var(--primitive-spacing-4);
+        margin: 0 calc(var(--primitive-spacing-6) * -1) var(--primitive-spacing-6); /* Negative margin to extend to edges */
+        margin-top: 0;
+        background-color: var(--semantic-surface-background);
+        border-bottom: 1px solid var(--semantic-border-default);
+        box-shadow: var(--primitive-shadow-md);
+        backdrop-filter: blur(12px);
+        transition:
+          box-shadow 0.2s ease,
+          background-color 0.2s ease,
+          border-color 0.2s ease;
+      }
+
+      @supports (backdrop-filter: blur(12px)) {
+        .action-toolbar {
+          background-color: color-mix(in srgb, var(--semantic-surface-background) 95%, transparent);
+        }
+      }
+
+      /* Enhanced shadow when scrolled */
+      .action-toolbar::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: var(--semantic-border-default);
+      }
+
+      .toolbar-section {
+        display: flex;
+        align-items: center;
         gap: var(--primitive-spacing-3);
       }
-      
-      .mode-input-group {
+
+      .toolbar-label {
+        font-size: var(--primitive-font-size-xs);
+        font-weight: var(--primitive-font-weight-semibold);
+        color: var(--semantic-text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        white-space: nowrap;
+      }
+
+      .toolbar-buttons {
+        display: flex;
+        gap: var(--primitive-spacing-2);
+        align-items: center;
+      }
+
+      .toolbar-buttons ui-button {
+        white-space: nowrap;
+      }
+
+      .toolbar-buttons ui-button svg {
+        vertical-align: middle;
+        margin-right: 4px;
+      }
+
+      .toolbar-divider {
+        width: 1px;
+        height: 32px;
+        background-color: var(--semantic-border-default);
+        flex-shrink: 0;
+      }
+
+      /* Utility Panels (Accessibility Checker & Color Generator) */
+      .utility-panel {
+        position: fixed;
+        top: 80px;
+        right: var(--primitive-spacing-6);
+        width: 400px;
+        max-height: calc(100vh - 120px);
+        overflow-y: auto;
+        z-index: 100;
+        background: var(--semantic-surface-card);
+        border: 1px solid var(--semantic-border-default);
+        border-radius: var(--primitive-border-radius-lg);
+        box-shadow: var(--primitive-shadow-lg);
+        animation: slideInRight 0.3s ease-out;
+      }
+
+      .utility-panel ::ng-deep ui-card {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+      }
+
+      .utility-panel ::ng-deep ui-input,
+      .utility-panel ::ng-deep ui-button {
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+      }
+
+      .utility-panel ::ng-deep ui-input input {
+        display: block !important;
+      }
+
+      .utility-panel .generator-buttons ::ng-deep ui-button {
+        flex: 1 1 auto;
+        min-width: 100px;
+      }
+
+      @keyframes slideInRight {
+        from {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      .panel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--primitive-spacing-3);
+      }
+
+      .panel-header h2 {
+        font-size: var(--primitive-font-size-lg);
+        margin: 0;
+      }
+
+      .panel-header ui-button {
+        flex-shrink: 0;
+      }
+
+      .panel-description {
+        font-size: var(--primitive-font-size-sm);
+        color: var(--semantic-text-secondary);
+        margin-bottom: var(--primitive-spacing-4);
+      }
+
+      /* Accessibility Checker Styles */
+      .contrast-checks {
+        display: flex;
+        flex-direction: column;
+        gap: var(--primitive-spacing-3);
+        margin-bottom: var(--primitive-spacing-4);
+      }
+      .contrast-check-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         padding: var(--primitive-spacing-3);
         border: 1px solid var(--semantic-border-default);
         border-radius: var(--primitive-border-radius-md);
-        background-color: var(--semantic-surface-subtle);
       }
-    }
+      .contrast-info {
+        flex: 1;
+      }
+      .contrast-label {
+        font-size: var(--primitive-font-size-sm);
+        font-weight: 600;
+        display: block;
+        margin-bottom: var(--primitive-spacing-2);
+      }
+      .color-samples {
+        display: flex;
+        gap: var(--primitive-spacing-2);
+      }
+      .color-sample {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--primitive-border-radius-sm);
+        font-weight: 600;
+        box-shadow: var(--primitive-shadow-sm);
+      }
+      .contrast-result {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: var(--primitive-spacing-1);
+      }
+      .contrast-ratio {
+        font-size: var(--primitive-font-size-sm);
+        font-weight: 600;
+        color: var(--semantic-text-primary);
+      }
+      .wcag-info {
+        padding: var(--primitive-spacing-3);
+        background: var(--semantic-surface-subtle);
+        border-radius: var(--primitive-border-radius-md);
+      }
+      .wcag-info h4 {
+        font-size: var(--primitive-font-size-sm);
+        margin-bottom: var(--primitive-spacing-2);
+      }
+      .wcag-info ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .wcag-info li {
+        font-size: var(--primitive-font-size-xs);
+        color: var(--semantic-text-secondary);
+        margin-bottom: var(--primitive-spacing-1);
+      }
 
-    @media (max-width: 768px) {
-      .theme-builder-header {
+      /* Color Generator Styles */
+      .color-generator-controls {
+        margin-bottom: var(--primitive-spacing-4);
+      }
+      .color-generator-controls ui-input {
+        display: block;
+        width: 100%;
+      }
+      .generator-buttons {
+        display: flex;
+        gap: var(--primitive-spacing-2);
+        margin-top: var(--primitive-spacing-3);
+        flex-wrap: wrap;
+      }
+      .generated-colors h4 {
+        font-size: var(--primitive-font-size-md);
+        margin-bottom: var(--primitive-spacing-3);
+      }
+      .generated-color-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--primitive-spacing-2);
+        margin-bottom: var(--primitive-spacing-2);
+      }
+      .generated-color-item {
+        display: flex;
+        align-items: center;
+        gap: var(--primitive-spacing-3);
+        padding: var(--primitive-spacing-2);
+        border: 1px solid var(--semantic-border-default);
+        border-radius: var(--primitive-border-radius-md);
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .generated-color-item:hover {
+        border-color: var(--semantic-brand-primary);
+        background: var(--semantic-surface-subtle);
+      }
+      .generated-color-preview {
+        width: 48px;
+        height: 48px;
+        border-radius: var(--primitive-border-radius-md);
+        box-shadow: var(--primitive-shadow-sm);
+      }
+      .generated-color-value {
+        font-family: monospace;
+        font-size: var(--primitive-font-size-sm);
+        color: var(--semantic-text-primary);
+      }
+      .hint {
+        font-size: var(--primitive-font-size-xs);
+        color: var(--semantic-text-tertiary);
+        text-align: center;
+        font-style: italic;
+      }
+
+      /* Presets Section */
+      .presets-section {
+        margin-bottom: var(--primitive-spacing-6);
+      }
+
+      .presets-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: var(--primitive-spacing-4);
+      }
+
+      .presets-description {
+        font-size: var(--primitive-font-size-sm);
+        color: var(--semantic-text-secondary);
+        margin-top: var(--primitive-spacing-1);
+      }
+
+      .presets-actions {
+        display: flex;
+        gap: var(--primitive-spacing-2);
+      }
+
+      .presets-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: var(--primitive-spacing-4);
+        margin-bottom: var(--primitive-spacing-4);
+      }
+
+      .preset-card {
+        padding: var(--primitive-spacing-4);
+        border: 1px solid var(--semantic-border-default);
+        border-radius: var(--primitive-border-radius-lg);
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .preset-card:hover {
+        border-color: var(--semantic-brand-primary);
+        box-shadow: var(--primitive-shadow-md);
+        transform: translateY(-2px);
+      }
+
+      .preset-info h4 {
+        font-size: var(--primitive-font-size-md);
+        margin-bottom: var(--primitive-spacing-2);
+      }
+
+      .preset-info p {
+        font-size: var(--primitive-font-size-sm);
+        color: var(--semantic-text-secondary);
+        margin-bottom: var(--primitive-spacing-2);
+      }
+
+      .preset-author {
+        font-size: var(--primitive-font-size-xs);
+        color: var(--semantic-text-tertiary);
+      }
+
+      .preset-colors {
+        display: flex;
+        gap: var(--primitive-spacing-2);
+        margin-top: var(--primitive-spacing-3);
+      }
+
+      .color-dot {
+        width: 24px;
+        height: 24px;
+        border-radius: var(--primitive-border-radius-full);
+        box-shadow: var(--primitive-shadow-sm);
+      }
+
+      /* Saved Themes */
+      .saved-themes-section {
+        margin-top: var(--primitive-spacing-6);
+        padding-top: var(--primitive-spacing-6);
+        border-top: 1px solid var(--semantic-border-default);
+      }
+
+      .saved-themes-section h3 {
+        font-size: var(--primitive-font-size-lg);
+        margin-bottom: var(--primitive-spacing-4);
+      }
+
+      .saved-themes-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: var(--primitive-spacing-3);
+      }
+
+      .saved-theme-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: var(--primitive-spacing-3);
+        border: 1px solid var(--semantic-border-default);
+        border-radius: var(--primitive-border-radius-md);
+        transition: all 0.2s;
+      }
+
+      .saved-theme-card:hover {
+        border-color: var(--semantic-brand-primary);
+      }
+
+      .saved-theme-info {
+        flex: 1;
+        cursor: pointer;
+      }
+
+      .saved-theme-info h4 {
+        font-size: var(--primitive-font-size-sm);
+        margin-bottom: 2px;
+      }
+
+      .saved-theme-date {
+        font-size: var(--primitive-font-size-xs);
+        color: var(--semantic-text-tertiary);
+      }
+
+      /* Delete button in saved themes - custom color override */
+      .saved-theme-card ui-button svg {
+        color: var(--semantic-error-primary);
+      }
+
+      .saved-theme-card ui-button:hover svg {
+        color: var(--semantic-error-primary);
+      }
+
+      .theme-builder-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--primitive-spacing-6);
+      }
+
+      .token-editor h2 {
+        margin-bottom: var(--primitive-spacing-4);
+      }
+
+      .live-preview h2 {
+        margin: 0;
+      }
+
+      .preview-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: var(--primitive-spacing-4);
+        gap: var(--primitive-spacing-4);
+      }
+
+      .preview-mode-toggle {
+        display: flex;
+        gap: var(--primitive-spacing-2);
+        flex-shrink: 0;
+      }
+
+      .token-section {
+        display: flex;
+        flex-direction: column;
+        gap: var(--primitive-spacing-6);
+      }
+
+      .token-category {
+        padding: var(--primitive-spacing-4) 0;
+        border-bottom: 1px solid var(--semantic-border-default);
+      }
+
+      .token-category:last-child {
+        border-bottom: none;
+      }
+
+      .token-category h3 {
+        font-size: var(--primitive-font-size-lg);
+        margin-bottom: var(--primitive-spacing-2);
+      }
+
+      .category-description {
+        font-size: var(--primitive-font-size-sm);
+        color: var(--semantic-text-secondary);
+        margin-bottom: var(--primitive-spacing-4);
+      }
+
+      .token-grid {
+        display: flex;
         flex-direction: column;
         gap: var(--primitive-spacing-4);
       }
 
-      .header-actions {
-        width: 100%;
+      .token-item {
+        display: flex;
         flex-direction: column;
-      }
-
-      .preview-header {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .preview-mode-toggle {
+        gap: var(--primitive-spacing-3);
         width: 100%;
       }
 
-      .preview-mode-toggle ui-button {
+      .dual-token-inputs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--primitive-spacing-4);
+        width: 100%;
+      }
+
+      .mode-input-group {
+        display: flex;
+        flex-direction: column;
+        gap: var(--primitive-spacing-2);
+        min-width: 0; /* Allows flex items to shrink below content size */
+      }
+
+      .mode-input-label {
+        font-size: var(--primitive-font-size-xs);
+        font-weight: 600;
+        color: var(--semantic-text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: var(--primitive-spacing-1);
+      }
+
+      .token-label {
+        font-size: var(--primitive-font-size-sm);
+        font-weight: var(--primitive-font-weight-medium);
+        color: var(--semantic-text-primary);
+        display: block;
+        margin-bottom: var(--primitive-spacing-1);
+      }
+
+      .token-description {
+        font-size: var(--primitive-font-size-xs);
+        color: var(--semantic-text-secondary);
+        display: block;
+        margin-top: 2px;
+      }
+
+      .token-input-wrapper {
+        display: flex;
+        gap: var(--primitive-spacing-2);
+        align-items: center;
+        width: 100%;
+        min-width: 0;
+      }
+
+      .color-input {
+        width: 48px;
+        height: 38px;
+        min-width: 48px;
+        border: 1px solid var(--semantic-border-default);
+        border-radius: var(--primitive-border-radius-md);
+        cursor: pointer;
+        flex-shrink: 0;
+      }
+
+      .color-input::-webkit-color-swatch-wrapper {
+        padding: 2px;
+      }
+
+      .color-input::-webkit-color-swatch {
+        border: none;
+        border-radius: 4px;
+      }
+
+      .text-input {
         flex: 1;
+        min-width: 0;
+        padding: var(--primitive-spacing-2) var(--primitive-spacing-3);
+        border: 1px solid var(--semantic-border-default);
+        border-radius: var(--primitive-border-radius-md);
+        font-size: var(--primitive-font-size-sm);
+        font-family: var(--primitive-font-family-mono);
+        background-color: var(--semantic-surface-card);
+        color: var(--semantic-text-primary);
       }
 
-      .utility-panel {
-        width: 90%;
-        right: 5%;
+      .text-input.full-width {
+        width: 100%;
       }
-    }
-  `],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+
+      .text-input:focus {
+        outline: none;
+        border-color: var(--semantic-brand-primary);
+        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+      }
+
+      .preview-description {
+        font-size: var(--primitive-font-size-sm);
+        color: var(--semantic-text-secondary);
+        margin-bottom: var(--primitive-spacing-4);
+      }
+
+      .preview-container {
+        padding: var(--primitive-spacing-4);
+        border: 1px solid var(--semantic-border-default);
+        border-radius: var(--primitive-border-radius-md);
+        background-color: var(--semantic-surface-subtle);
+        transition:
+          background-color 0.3s ease,
+          border-color 0.3s ease;
+      }
+
+      /* Dark Mode Preview - Override all color tokens */
+      .preview-container[data-preview-theme='dark'] {
+        /* Semantic: Brand Colors */
+        --semantic-brand-primary: var(--semantic-brand-primary-dark, #6b7fed);
+        --semantic-brand-secondary: var(--semantic-brand-secondary-dark, #8b95a5);
+        --semantic-brand-subtle: var(--semantic-brand-subtle-dark, #2a2e3f);
+
+        /* Semantic: Feedback Colors */
+        --semantic-success-primary: var(--semantic-success-primary-dark, #4ade80);
+        --semantic-warning-primary: var(--semantic-warning-primary-dark, #fbbf24);
+        --semantic-error-primary: var(--semantic-error-primary-dark, #f87171);
+        --semantic-info-primary: var(--semantic-info-primary-dark, #60a5fa);
+
+        /* Semantic: Surface Colors */
+        --semantic-surface-background: var(--semantic-surface-background-dark, #1a1d29);
+        --semantic-surface-card: var(--semantic-surface-card-dark, #232734);
+        --semantic-surface-subtle: var(--semantic-surface-subtle-dark, #2a2e3f);
+        --semantic-surface-background-secondary: var(
+          --semantic-surface-background-secondary-dark,
+          #2a2e3f
+        );
+
+        /* Semantic: Text Colors */
+        --semantic-text-primary: var(--semantic-text-primary-dark, #e5e7eb);
+        --semantic-text-secondary: var(--semantic-text-secondary-dark, #9ca3af);
+        --semantic-text-tertiary: var(--semantic-text-tertiary-dark, #6b7280);
+        --semantic-text-disabled: var(--semantic-text-disabled-dark, #4b5563);
+
+        /* Semantic: Border Colors */
+        --semantic-border-default: var(--semantic-border-default-dark, #374151);
+        --semantic-border-subtle: var(--semantic-border-subtle-dark, #4b5563);
+        --semantic-border-strong: var(--semantic-border-strong-dark, #6b7280);
+
+        /* Component: Card */
+        --component-card-background: var(--semantic-surface-card-dark, #232734);
+        --component-card-border: var(--semantic-border-default-dark, #374151);
+
+        /* Component: Input */
+        --component-input-default-background: var(--semantic-surface-card-dark, #232734);
+        --component-input-default-text: var(--semantic-text-primary-dark, #e5e7eb);
+        --component-input-default-border: var(--semantic-border-default-dark, #374151);
+        --component-input-default-placeholder: var(--semantic-text-tertiary-dark, #6b7280);
+        --component-input-hover-border: var(--semantic-border-strong-dark, #6b7280);
+        --component-input-focus-border: var(--semantic-brand-primary-dark, #6b7fed);
+
+        /* Component: Alert */
+        --component-alert-info-background: var(--semantic-surface-subtle-dark, #2a2e3f);
+        --component-alert-info-text: var(--semantic-text-primary-dark, #e5e7eb);
+        --component-alert-info-border: var(--semantic-border-default-dark, #374151);
+      }
+
+      .preview-container h4,
+      .preview-container h1,
+      .preview-container h2,
+      .preview-container h3,
+      .preview-container p {
+        color: var(--semantic-text-primary);
+      }
+
+      .preview-section {
+        margin-bottom: var(--primitive-spacing-6);
+      }
+
+      .preview-section:last-child {
+        margin-bottom: 0;
+      }
+
+      .preview-section h4 {
+        font-size: var(--primitive-font-size-md);
+        margin-bottom: var(--primitive-spacing-3);
+        color: var(--semantic-text-primary);
+      }
+
+      .preview-row {
+        display: flex;
+        gap: var(--primitive-spacing-3);
+        margin-bottom: var(--primitive-spacing-3);
+        flex-wrap: wrap;
+      }
+
+      .color-swatches {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: var(--primitive-spacing-3);
+      }
+
+      .color-swatch {
+        aspect-ratio: 1;
+        border-radius: var(--primitive-border-radius-md);
+        display: flex;
+        align-items: flex-end;
+        padding: var(--primitive-spacing-2);
+        box-shadow: var(--primitive-shadow-sm);
+      }
+
+      .color-swatch span {
+        font-size: var(--primitive-font-size-xs);
+        font-weight: var(--primitive-font-weight-medium);
+        color: white;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Modal content styles */
+      ::ng-deep ui-modal p {
+        margin-bottom: var(--primitive-spacing-4);
+        color: var(--semantic-text-secondary);
+      }
+
+      ::ng-deep ui-modal .export-options {
+        display: flex;
+        flex-direction: column;
+        gap: var(--primitive-spacing-3);
+        margin-top: var(--primitive-spacing-4);
+      }
+
+      ::ng-deep ui-modal ui-input {
+        display: block;
+        margin-top: var(--primitive-spacing-2);
+      }
+
+      ::ng-deep ui-modal [slot='footer'] {
+        display: flex;
+        gap: var(--primitive-spacing-2);
+        justify-content: flex-end;
+      }
+
+      @media (max-width: 1200px) {
+        .theme-builder-layout {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 1024px) {
+        .dual-token-inputs {
+          grid-template-columns: 1fr;
+          gap: var(--primitive-spacing-3);
+        }
+
+        .mode-input-group {
+          padding: var(--primitive-spacing-3);
+          border: 1px solid var(--semantic-border-default);
+          border-radius: var(--primitive-border-radius-md);
+          background-color: var(--semantic-surface-subtle);
+        }
+      }
+
+      @media (max-width: 1024px) {
+        .action-toolbar {
+          flex-wrap: wrap;
+          gap: var(--primitive-spacing-3);
+        }
+
+        .toolbar-section {
+          flex-wrap: wrap;
+        }
+
+        .toolbar-divider {
+          display: none;
+        }
+
+        .toolbar-label {
+          width: 100%;
+          margin-bottom: var(--primitive-spacing-1);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .action-toolbar {
+          position: relative;
+          flex-direction: column;
+          align-items: stretch;
+          padding: var(--primitive-spacing-3);
+          background-color: var(--semantic-surface-background);
+        }
+
+        .toolbar-section {
+          flex-direction: column;
+          align-items: stretch;
+          gap: var(--primitive-spacing-2);
+          padding: var(--primitive-spacing-3);
+          border: 1px solid var(--semantic-border-subtle);
+          border-radius: var(--primitive-border-radius-md);
+          background: var(--semantic-surface-card);
+        }
+
+        .toolbar-buttons {
+          flex-direction: column;
+          width: 100%;
+        }
+
+        .toolbar-buttons ui-button {
+          width: 100%;
+          justify-content: flex-start;
+        }
+
+        .preview-header {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .preview-mode-toggle {
+          width: 100%;
+        }
+
+        .preview-mode-toggle ui-button {
+          flex: 1;
+        }
+
+        .utility-panel {
+          width: 90%;
+          right: 5%;
+        }
+      }
+    `,
+  ],
 })
 export class ThemeBuilderComponent {
+  // Loading state for skeleton loaders
+  protected readonly isInitializing = signal(true);
+
   protected readonly showExportModal = signal(false);
   protected readonly showSaveModal = signal(false);
   protected readonly showAccessibilityChecker = signal(false);
   protected readonly showColorGenerator = signal(false);
-  protected saveThemeName = '';
+  protected readonly saveThemeName = signal('');
   protected readonly themePresets = THEME_PRESETS;
   protected readonly savedThemes = signal<
     Array<{ name: string; tokens: Record<string, string>; createdAt: string }>
   >([]);
-  
+
   // Preview Mode (for live preview panel)
   protected readonly previewMode = signal<'light' | 'dark'>('light');
   protected readonly isPreviewingDark = computed(() => this.previewMode() === 'dark');
-  
+
   // Undo/Redo History
   private readonly history: HistoryEntry[] = [];
   private historyIndex = -1;
   protected readonly canUndo = signal(false);
   protected readonly canRedo = signal(false);
-  
+
   // Accessibility Checker
   protected readonly contrastChecks = signal<
     Array<{ label: string; foreground: string; background: string; ratio: number; level: string }>
   >([]);
-  
+
   // Color Generator
   protected readonly generatedColors = signal<string[]>([]);
   protected baseColorForGeneration = '#3b82f6';
-  
+
   // Theme tokens organized by category
   protected readonly colorCategories = signal<ThemeCategory[]>([
     {
@@ -1296,9 +1682,24 @@ export class ThemeBuilderComponent {
       name: 'Brand Colors',
       description: 'Primary brand colors and variations',
       tokens: [
-        { name: '--semantic-brand-primary', value: this.getComputedToken('--semantic-brand-primary'), type: 'color', category: 'brand' },
-        { name: '--semantic-brand-secondary', value: this.getComputedToken('--semantic-brand-secondary'), type: 'color', category: 'brand' },
-        { name: '--semantic-brand-subtle', value: this.getComputedToken('--semantic-brand-subtle'), type: 'color', category: 'brand' },
+        {
+          name: '--semantic-brand-primary',
+          value: this.getComputedToken('--semantic-brand-primary'),
+          type: 'color',
+          category: 'brand',
+        },
+        {
+          name: '--semantic-brand-secondary',
+          value: this.getComputedToken('--semantic-brand-secondary'),
+          type: 'color',
+          category: 'brand',
+        },
+        {
+          name: '--semantic-brand-subtle',
+          value: this.getComputedToken('--semantic-brand-subtle'),
+          type: 'color',
+          category: 'brand',
+        },
       ],
     },
     {
@@ -1306,10 +1707,30 @@ export class ThemeBuilderComponent {
       name: 'Semantic Colors',
       description: 'Success, warning, error, and info colors',
       tokens: [
-        { name: '--semantic-success-primary', value: this.getComputedToken('--semantic-success-primary'), type: 'color', category: 'semantic' },
-        { name: '--semantic-warning-primary', value: this.getComputedToken('--semantic-warning-primary'), type: 'color', category: 'semantic' },
-        { name: '--semantic-error-primary', value: this.getComputedToken('--semantic-error-primary'), type: 'color', category: 'semantic' },
-        { name: '--semantic-info-primary', value: this.getComputedToken('--semantic-info-primary'), type: 'color', category: 'semantic' },
+        {
+          name: '--semantic-success-primary',
+          value: this.getComputedToken('--semantic-success-primary'),
+          type: 'color',
+          category: 'semantic',
+        },
+        {
+          name: '--semantic-warning-primary',
+          value: this.getComputedToken('--semantic-warning-primary'),
+          type: 'color',
+          category: 'semantic',
+        },
+        {
+          name: '--semantic-error-primary',
+          value: this.getComputedToken('--semantic-error-primary'),
+          type: 'color',
+          category: 'semantic',
+        },
+        {
+          name: '--semantic-info-primary',
+          value: this.getComputedToken('--semantic-info-primary'),
+          type: 'color',
+          category: 'semantic',
+        },
       ],
     },
     {
@@ -1317,9 +1738,24 @@ export class ThemeBuilderComponent {
       name: 'Surface Colors',
       description: 'Background and surface colors',
       tokens: [
-        { name: '--semantic-surface-background', value: this.getComputedToken('--semantic-surface-background'), type: 'color', category: 'surfaces' },
-        { name: '--semantic-surface-card', value: this.getComputedToken('--semantic-surface-card'), type: 'color', category: 'surfaces' },
-        { name: '--semantic-surface-subtle', value: this.getComputedToken('--semantic-surface-subtle'), type: 'color', category: 'surfaces' },
+        {
+          name: '--semantic-surface-background',
+          value: this.getComputedToken('--semantic-surface-background'),
+          type: 'color',
+          category: 'surfaces',
+        },
+        {
+          name: '--semantic-surface-card',
+          value: this.getComputedToken('--semantic-surface-card'),
+          type: 'color',
+          category: 'surfaces',
+        },
+        {
+          name: '--semantic-surface-subtle',
+          value: this.getComputedToken('--semantic-surface-subtle'),
+          type: 'color',
+          category: 'surfaces',
+        },
       ],
     },
     {
@@ -1327,9 +1763,24 @@ export class ThemeBuilderComponent {
       name: 'Text Colors',
       description: 'Text color hierarchy',
       tokens: [
-        { name: '--semantic-text-primary', value: this.getComputedToken('--semantic-text-primary'), type: 'color', category: 'text' },
-        { name: '--semantic-text-secondary', value: this.getComputedToken('--semantic-text-secondary'), type: 'color', category: 'text' },
-        { name: '--semantic-text-tertiary', value: this.getComputedToken('--semantic-text-tertiary'), type: 'color', category: 'text' },
+        {
+          name: '--semantic-text-primary',
+          value: this.getComputedToken('--semantic-text-primary'),
+          type: 'color',
+          category: 'text',
+        },
+        {
+          name: '--semantic-text-secondary',
+          value: this.getComputedToken('--semantic-text-secondary'),
+          type: 'color',
+          category: 'text',
+        },
+        {
+          name: '--semantic-text-tertiary',
+          value: this.getComputedToken('--semantic-text-tertiary'),
+          type: 'color',
+          category: 'text',
+        },
       ],
     },
   ]);
@@ -1340,8 +1791,18 @@ export class ThemeBuilderComponent {
       name: 'Font Families',
       description: 'Typography font stacks',
       tokens: [
-        { name: '--primitive-font-family-base', value: this.getComputedToken('--primitive-font-family-base'), type: 'font', category: 'fonts' },
-        { name: '--primitive-font-family-mono', value: this.getComputedToken('--primitive-font-family-mono'), type: 'font', category: 'fonts' },
+        {
+          name: '--primitive-font-family-base',
+          value: this.getComputedToken('--primitive-font-family-base'),
+          type: 'font',
+          category: 'fonts',
+        },
+        {
+          name: '--primitive-font-family-mono',
+          value: this.getComputedToken('--primitive-font-family-mono'),
+          type: 'font',
+          category: 'fonts',
+        },
       ],
     },
     {
@@ -1349,11 +1810,36 @@ export class ThemeBuilderComponent {
       name: 'Font Sizes',
       description: 'Typography size scale',
       tokens: [
-        { name: '--primitive-font-size-xs', value: this.getComputedToken('--primitive-font-size-xs'), type: 'size', category: 'sizes' },
-        { name: '--primitive-font-size-sm', value: this.getComputedToken('--primitive-font-size-sm'), type: 'size', category: 'sizes' },
-        { name: '--primitive-font-size-md', value: this.getComputedToken('--primitive-font-size-md'), type: 'size', category: 'sizes' },
-        { name: '--primitive-font-size-lg', value: this.getComputedToken('--primitive-font-size-lg'), type: 'size', category: 'sizes' },
-        { name: '--primitive-font-size-xl', value: this.getComputedToken('--primitive-font-size-xl'), type: 'size', category: 'sizes' },
+        {
+          name: '--primitive-font-size-xs',
+          value: this.getComputedToken('--primitive-font-size-xs'),
+          type: 'size',
+          category: 'sizes',
+        },
+        {
+          name: '--primitive-font-size-sm',
+          value: this.getComputedToken('--primitive-font-size-sm'),
+          type: 'size',
+          category: 'sizes',
+        },
+        {
+          name: '--primitive-font-size-md',
+          value: this.getComputedToken('--primitive-font-size-md'),
+          type: 'size',
+          category: 'sizes',
+        },
+        {
+          name: '--primitive-font-size-lg',
+          value: this.getComputedToken('--primitive-font-size-lg'),
+          type: 'size',
+          category: 'sizes',
+        },
+        {
+          name: '--primitive-font-size-xl',
+          value: this.getComputedToken('--primitive-font-size-xl'),
+          type: 'size',
+          category: 'sizes',
+        },
       ],
     },
   ]);
@@ -1364,12 +1850,42 @@ export class ThemeBuilderComponent {
       name: 'Spacing Scale',
       description: 'Consistent spacing values',
       tokens: [
-        { name: '--primitive-spacing-1', value: this.getComputedToken('--primitive-spacing-1'), type: 'size', category: 'spacing' },
-        { name: '--primitive-spacing-2', value: this.getComputedToken('--primitive-spacing-2'), type: 'size', category: 'spacing' },
-        { name: '--primitive-spacing-3', value: this.getComputedToken('--primitive-spacing-3'), type: 'size', category: 'spacing' },
-        { name: '--primitive-spacing-4', value: this.getComputedToken('--primitive-spacing-4'), type: 'size', category: 'spacing' },
-        { name: '--primitive-spacing-6', value: this.getComputedToken('--primitive-spacing-6'), type: 'size', category: 'spacing' },
-        { name: '--primitive-spacing-8', value: this.getComputedToken('--primitive-spacing-8'), type: 'size', category: 'spacing' },
+        {
+          name: '--primitive-spacing-1',
+          value: this.getComputedToken('--primitive-spacing-1'),
+          type: 'size',
+          category: 'spacing',
+        },
+        {
+          name: '--primitive-spacing-2',
+          value: this.getComputedToken('--primitive-spacing-2'),
+          type: 'size',
+          category: 'spacing',
+        },
+        {
+          name: '--primitive-spacing-3',
+          value: this.getComputedToken('--primitive-spacing-3'),
+          type: 'size',
+          category: 'spacing',
+        },
+        {
+          name: '--primitive-spacing-4',
+          value: this.getComputedToken('--primitive-spacing-4'),
+          type: 'size',
+          category: 'spacing',
+        },
+        {
+          name: '--primitive-spacing-6',
+          value: this.getComputedToken('--primitive-spacing-6'),
+          type: 'size',
+          category: 'spacing',
+        },
+        {
+          name: '--primitive-spacing-8',
+          value: this.getComputedToken('--primitive-spacing-8'),
+          type: 'size',
+          category: 'spacing',
+        },
       ],
     },
     {
@@ -1377,10 +1893,30 @@ export class ThemeBuilderComponent {
       name: 'Border Radius',
       description: 'Corner rounding values',
       tokens: [
-        { name: '--primitive-border-radius-sm', value: this.getComputedToken('--primitive-border-radius-sm'), type: 'size', category: 'radius' },
-        { name: '--primitive-border-radius-md', value: this.getComputedToken('--primitive-border-radius-md'), type: 'size', category: 'radius' },
-        { name: '--primitive-border-radius-lg', value: this.getComputedToken('--primitive-border-radius-lg'), type: 'size', category: 'radius' },
-        { name: '--primitive-border-radius-full', value: this.getComputedToken('--primitive-border-radius-full'), type: 'size', category: 'radius' },
+        {
+          name: '--primitive-border-radius-sm',
+          value: this.getComputedToken('--primitive-border-radius-sm'),
+          type: 'size',
+          category: 'radius',
+        },
+        {
+          name: '--primitive-border-radius-md',
+          value: this.getComputedToken('--primitive-border-radius-md'),
+          type: 'size',
+          category: 'radius',
+        },
+        {
+          name: '--primitive-border-radius-lg',
+          value: this.getComputedToken('--primitive-border-radius-lg'),
+          type: 'size',
+          category: 'radius',
+        },
+        {
+          name: '--primitive-border-radius-full',
+          value: this.getComputedToken('--primitive-border-radius-full'),
+          type: 'size',
+          category: 'radius',
+        },
       ],
     },
   ]);
@@ -1392,71 +1928,76 @@ export class ThemeBuilderComponent {
     return '';
   });
 
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor() {
     // Load saved themes from localStorage
     this.loadSavedThemesList();
-    
+
     // Initialize dark mode tokens with default values (if they don't exist)
     this.initializeDarkTokens();
-    
+
     // Initialize accessibility checks
     this.updateAccessibilityChecks();
-    
+
     // Apply token changes to document root
     effect(() => {
       const colorCategories = this.colorCategories();
       const typographyCategories = this.typographyCategories();
       const spacingCategories = this.spacingCategories();
-      
+
       // Apply light mode tokens
-      [...colorCategories, ...typographyCategories, ...spacingCategories].forEach(category => {
-        category.tokens.forEach(token => {
+      [...colorCategories, ...typographyCategories, ...spacingCategories].forEach((category) => {
+        category.tokens.forEach((token) => {
           document.documentElement.style.setProperty(token.name, token.value);
         });
       });
-      
+
       // Update accessibility checks when colors change
       this.updateAccessibilityChecks();
+    });
+
+    // Hide skeleton loaders after the next render cycle (Angular best practice)
+    afterNextRender(() => {
+      this.isInitializing.set(false);
     });
   }
 
   private initializeDarkTokens(): void {
     // Initialize dark tokens with defaults if they don't exist
     const colorCategories = this.colorCategories();
-    
+
     const darkDefaults: Record<string, string> = {
       // Brand Colors - Dark mode typically uses slightly lighter/more vibrant versions
       '--semantic-brand-primary': '#6B7FED',
       '--semantic-brand-secondary': '#8B95A5',
       '--semantic-brand-subtle': '#2A2E3F',
-      
+
       // Semantic Colors
       '--semantic-success-primary': '#4ADE80',
       '--semantic-warning-primary': '#FBBF24',
       '--semantic-error-primary': '#F87171',
       '--semantic-info-primary': '#60A5FA',
-      
+
       // Surface Colors - Dark backgrounds
       '--semantic-surface-background': '#1A1D29',
       '--semantic-surface-card': '#232734',
       '--semantic-surface-subtle': '#2A2E3F',
-      
+
       // Text Colors - Light text on dark backgrounds
       '--semantic-text-primary': '#E5E7EB',
       '--semantic-text-secondary': '#9CA3AF',
       '--semantic-text-tertiary': '#6B7280',
-      
+
       // Border Colors
       '--semantic-border-default': '#374151',
     };
-    
-    colorCategories.forEach(category => {
-      category.tokens.forEach(token => {
+
+    colorCategories.forEach((category) => {
+      category.tokens.forEach((token) => {
         const darkTokenName = `${token.name}-dark`;
         const existingDarkValue = getComputedStyle(document.documentElement)
           .getPropertyValue(darkTokenName)
           .trim();
-        
+
         // If no dark value exists, use the default or the light value as a starting point
         if (!existingDarkValue) {
           const defaultDarkValue = darkDefaults[token.name] || token.value;
@@ -1482,38 +2023,40 @@ export class ThemeBuilderComponent {
   }
 
   private getComputedToken(tokenName: string): string {
-    return getComputedStyle(document.documentElement)
-      .getPropertyValue(tokenName)
-      .trim();
+    return getComputedStyle(document.documentElement).getPropertyValue(tokenName).trim();
   }
 
   protected formatTokenName(name: string): string {
     return name
       .replace(/^--/, '')
       .replace(/-/g, ' ')
-      .replace(/\b\w/g, l => l.toUpperCase());
+      .replace(/\b\w/g, (l) => l.toUpperCase());
   }
 
   // Direct token update (handles both light and dark)
   protected updateTokenDirect(tokenName: string, value: string, isDark: boolean): void {
     // Get old value for history
-    const oldValue = getComputedStyle(document.documentElement)
-      .getPropertyValue(tokenName)
-      .trim();
-    
+    const oldValue = getComputedStyle(document.documentElement).getPropertyValue(tokenName).trim();
+
     // For light mode updates, update the category signals
     if (!isDark) {
       const baseTokenName = tokenName.replace('-dark', '');
       const updateInCategory = (categories: ThemeCategory[]) => {
-        return categories.map(category => ({
+        return categories.map((category) => ({
           ...category,
-          tokens: category.tokens.map(token =>
+          tokens: category.tokens.map((token) =>
             token.name === baseTokenName ? { ...token, value } : token
           ),
         }));
       };
 
-      if (baseTokenName.includes('color') || baseTokenName.includes('brand') || baseTokenName.includes('semantic') || baseTokenName.includes('surface') || baseTokenName.includes('text')) {
+      if (
+        baseTokenName.includes('color') ||
+        baseTokenName.includes('brand') ||
+        baseTokenName.includes('semantic') ||
+        baseTokenName.includes('surface') ||
+        baseTokenName.includes('text')
+      ) {
         this.colorCategories.set(updateInCategory(this.colorCategories()));
       } else if (baseTokenName.includes('font')) {
         this.typographyCategories.set(updateInCategory(this.typographyCategories()));
@@ -1524,7 +2067,7 @@ export class ThemeBuilderComponent {
 
     // Apply to document
     document.documentElement.style.setProperty(tokenName, value);
-    
+
     // Record in history
     if (oldValue !== value) {
       this.addToHistory(tokenName, oldValue, value);
@@ -1556,23 +2099,24 @@ export class ThemeBuilderComponent {
     const allCategories = [...colorCategories, ...typographyCategories, ...spacingCategories];
 
     let css = '/* Light Mode (Default) */\n:root {\n';
-    allCategories.forEach(category => {
+    allCategories.forEach((category) => {
       css += `  /* ${category.name} */\n`;
-      category.tokens.forEach(token => {
+      category.tokens.forEach((token) => {
         css += `  ${token.name}: ${token.value};\n`;
       });
       css += '\n';
     });
     css += '}\n\n';
-    
+
     css += '/* Dark Mode */\n:root[data-theme="dark"],\n[data-theme="dark"] {\n';
     // Only export dark variants for color tokens
-    colorCategories.forEach(category => {
+    colorCategories.forEach((category) => {
       css += `  /* ${category.name} - Dark */\n`;
-      category.tokens.forEach(token => {
-        const darkValue = getComputedStyle(document.documentElement)
-          .getPropertyValue(`${token.name}-dark`)
-          .trim() || token.value;
+      category.tokens.forEach((token) => {
+        const darkValue =
+          getComputedStyle(document.documentElement)
+            .getPropertyValue(`${token.name}-dark`)
+            .trim() || token.value;
         css += `  ${token.name}: ${darkValue};\n`;
       });
       css += '\n';
@@ -1591,20 +2135,21 @@ export class ThemeBuilderComponent {
 
     const themeLight: Record<string, string> = {};
     const themeDark: Record<string, string> = {};
-    
+
     // All tokens go into light theme
-    allCategories.forEach(category => {
-      category.tokens.forEach(token => {
+    allCategories.forEach((category) => {
+      category.tokens.forEach((token) => {
         themeLight[token.name] = token.value;
       });
     });
-    
+
     // Only color tokens get dark variants
-    colorCategories.forEach(category => {
-      category.tokens.forEach(token => {
-        const darkValue = getComputedStyle(document.documentElement)
-          .getPropertyValue(`${token.name}-dark`)
-          .trim() || token.value;
+    colorCategories.forEach((category) => {
+      category.tokens.forEach((token) => {
+        const darkValue =
+          getComputedStyle(document.documentElement)
+            .getPropertyValue(`${token.name}-dark`)
+            .trim() || token.value;
         themeDark[token.name] = darkValue;
       });
     });
@@ -1627,23 +2172,24 @@ export class ThemeBuilderComponent {
 
     let ts = 'export const customTheme = {\n';
     ts += '  light: {\n';
-    allCategories.forEach(category => {
+    allCategories.forEach((category) => {
       ts += `    // ${category.name}\n`;
-      category.tokens.forEach(token => {
+      category.tokens.forEach((token) => {
         ts += `    '${token.name}': '${token.value}',\n`;
       });
       ts += '\n';
     });
     ts += '  },\n';
-    
+
     ts += '  dark: {\n';
     // Only color tokens get dark variants
-    colorCategories.forEach(category => {
+    colorCategories.forEach((category) => {
       ts += `    // ${category.name} - Dark\n`;
-      category.tokens.forEach(token => {
-        const darkValue = getComputedStyle(document.documentElement)
-          .getPropertyValue(`${token.name}-dark`)
-          .trim() || token.value;
+      category.tokens.forEach((token) => {
+        const darkValue =
+          getComputedStyle(document.documentElement)
+            .getPropertyValue(`${token.name}-dark`)
+            .trim() || token.value;
         ts += `    '${token.name}': '${darkValue}',\n`;
       });
       ts += '\n';
@@ -1678,7 +2224,7 @@ export class ThemeBuilderComponent {
   // Save/Load Management
   protected showSaveThemeModal(): void {
     this.showSaveModal.set(true);
-    this.saveThemeName = '';
+    this.saveThemeName.set('');
   }
 
   protected closeSaveModal(): void {
@@ -1686,7 +2232,7 @@ export class ThemeBuilderComponent {
   }
 
   protected saveCurrentTheme(): void {
-    if (!this.saveThemeName.trim()) {
+    if (!this.saveThemeName().trim()) {
       alert('Please enter a theme name');
       return;
     }
@@ -1698,13 +2244,13 @@ export class ThemeBuilderComponent {
     ];
 
     const tokens: Record<string, string> = {};
-    allCategories.forEach(category => {
-      category.tokens.forEach(token => {
+    allCategories.forEach((category) => {
+      category.tokens.forEach((token) => {
         tokens[token.name] = token.value;
       });
     });
 
-    saveTheme(this.saveThemeName, tokens);
+    saveTheme(this.saveThemeName(), tokens);
     this.loadSavedThemesList();
     this.closeSaveModal();
   }
@@ -1712,7 +2258,7 @@ export class ThemeBuilderComponent {
   protected loadSavedTheme(name: string): void {
     const savedThemes = getSavedThemes();
     const theme = savedThemes[name];
-    
+
     if (theme) {
       Object.entries(theme.tokens).forEach(([tokenName, value]) => {
         this.updateToken(tokenName, value);
@@ -1743,7 +2289,7 @@ export class ThemeBuilderComponent {
   protected handleFileImport(event: Event): void {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
-    
+
     if (!file) return;
 
     const reader = new FileReader();
@@ -1773,7 +2319,7 @@ export class ThemeBuilderComponent {
     };
 
     reader.readAsText(file);
-    
+
     // Reset input
     input.value = '';
   }
@@ -1788,7 +2334,7 @@ export class ThemeBuilderComponent {
   private addToHistory(tokenName: string, oldValue: string, newValue: string): void {
     // Remove any entries after current history index
     this.history.splice(this.historyIndex + 1);
-    
+
     // Add new entry
     this.history.push({
       tokenName,
@@ -1796,14 +2342,14 @@ export class ThemeBuilderComponent {
       newValue,
       timestamp: Date.now(),
     });
-    
+
     // Limit history to 50 entries
     if (this.history.length > 50) {
       this.history.shift();
     } else {
       this.historyIndex++;
     }
-    
+
     this.updateHistoryButtons();
   }
 
@@ -1814,7 +2360,7 @@ export class ThemeBuilderComponent {
 
   protected undo(): void {
     if (!this.canUndo()) return;
-    
+
     const entry = this.history[this.historyIndex];
     const isDark = entry.tokenName.endsWith('-dark');
     document.documentElement.style.setProperty(entry.tokenName, entry.oldValue);
@@ -1824,7 +2370,7 @@ export class ThemeBuilderComponent {
 
   protected redo(): void {
     if (!this.canRedo()) return;
-    
+
     this.historyIndex++;
     const entry = this.history[this.historyIndex];
     const isDark = entry.tokenName.endsWith('-dark');
@@ -1834,7 +2380,7 @@ export class ThemeBuilderComponent {
 
   // Accessibility Checker Methods
   protected toggleAccessibilityChecker(): void {
-    this.showAccessibilityChecker.update(v => !v);
+    this.showAccessibilityChecker.update((v) => !v);
     if (this.showAccessibilityChecker()) {
       this.showColorGenerator.set(false);
       this.updateAccessibilityChecks();
@@ -1843,7 +2389,7 @@ export class ThemeBuilderComponent {
 
   private updateAccessibilityChecks(): void {
     const isDark = this.isPreviewingDark();
-    
+
     // Get appropriate token values based on preview mode
     const getTokenValue = (tokenName: string): string => {
       if (isDark) {
@@ -1854,13 +2400,13 @@ export class ThemeBuilderComponent {
       }
       return this.getComputedToken(tokenName);
     };
-    
+
     const bg = getTokenValue('--semantic-surface-background');
     const card = getTokenValue('--semantic-surface-card');
     const primary = getTokenValue('--semantic-text-primary');
     const secondary = getTokenValue('--semantic-text-secondary');
     const brandPrimary = getTokenValue('--semantic-brand-primary');
-    
+
     const checks = [
       {
         label: 'Primary Text on Background',
@@ -1898,13 +2444,13 @@ export class ThemeBuilderComponent {
         level: getWCAGLevel(getContrastRatio('#ffffff', brandPrimary), 'normal'),
       },
     ];
-    
+
     this.contrastChecks.set(checks);
   }
 
   // Preview Mode Toggle (for live preview panel only)
   protected togglePreviewMode(): void {
-    this.previewMode.update(mode => mode === 'light' ? 'dark' : 'light');
+    this.previewMode.update((mode) => (mode === 'light' ? 'dark' : 'light'));
     // Update accessibility checks for the current preview mode
     this.updateAccessibilityChecks();
   }
@@ -1922,12 +2468,12 @@ export class ThemeBuilderComponent {
     let darkValue = getComputedStyle(document.documentElement)
       .getPropertyValue(darkTokenName)
       .trim();
-    
+
     // If no dark value after initialization, get it from the stored property
     if (!darkValue) {
       darkValue = document.documentElement.style.getPropertyValue(darkTokenName).trim();
     }
-    
+
     // Fallback to light token if dark doesn't exist
     return darkValue || this.getComputedToken(tokenName);
   }
@@ -1940,15 +2486,15 @@ export class ThemeBuilderComponent {
   // Update dark mode token
   protected updateDarkToken(tokenName: string, value: string): void {
     const darkTokenName = `${tokenName}-dark`;
-    
+
     // Get old value for history
     const oldValue = getComputedStyle(document.documentElement)
       .getPropertyValue(darkTokenName)
       .trim();
-    
+
     // Apply to document root
     document.documentElement.style.setProperty(darkTokenName, value);
-    
+
     // Record in history
     if (oldValue !== value) {
       this.addToHistory(darkTokenName, oldValue, value);
@@ -1957,7 +2503,7 @@ export class ThemeBuilderComponent {
 
   // Color Generator Methods
   protected toggleColorGenerator(): void {
-    this.showColorGenerator.update(v => !v);
+    this.showColorGenerator.update((v) => !v);
     if (this.showColorGenerator()) {
       this.showAccessibilityChecker.set(false);
       // Force re-render of child components after animation starts
@@ -1972,7 +2518,7 @@ export class ThemeBuilderComponent {
       alert('Please enter a valid hex color (e.g., #3b82f6)');
       return;
     }
-    
+
     const complementary = getComplementaryColor(this.baseColorForGeneration);
     this.generatedColors.set([this.baseColorForGeneration, complementary]);
   }
@@ -1982,7 +2528,7 @@ export class ThemeBuilderComponent {
       alert('Please enter a valid hex color (e.g., #3b82f6)');
       return;
     }
-    
+
     const analogous = getAnalogousColors(this.baseColorForGeneration);
     this.generatedColors.set(analogous);
   }
@@ -1992,7 +2538,7 @@ export class ThemeBuilderComponent {
       alert('Please enter a valid hex color (e.g., #3b82f6)');
       return;
     }
-    
+
     const shades = generateShades(this.baseColorForGeneration, 7);
     this.generatedColors.set(shades);
   }
