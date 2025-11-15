@@ -1,10 +1,28 @@
 /**
  * CodeBlock Component
- * Displays formatted code with copy-to-clipboard functionality
+ * Displays formatted code with syntax highlighting and copy-to-clipboard functionality
  */
 
-import { ChangeDetectionStrategy, Component, input, signal } from '@angular/core';
+import { 
+  ChangeDetectionStrategy, 
+  Component, 
+  input, 
+  signal, 
+  afterNextRender,
+  ElementRef,
+  viewChild,
+  effect,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
+import Prism from 'prismjs';
+
+// Import language definitions
+import 'prismjs/components/prism-typescript';
+import 'prismjs/components/prism-javascript';
+import 'prismjs/components/prism-markup'; // HTML
+import 'prismjs/components/prism-css';
+import 'prismjs/components/prism-scss';
+import 'prismjs/components/prism-json';
 
 @Component({
   selector: 'app-code-block',
@@ -35,7 +53,7 @@ import { CommonModule } from '@angular/common';
           </button>
         </div>
       }
-      <pre class="code-block-content"><code [class]="'language-' + language()">{{ code() }}</code></pre>
+      <pre class="code-block-content"><code #codeElement [class]="'language-' + language()"></code></pre>
     </div>
   `,
   styles: [`
@@ -108,6 +126,169 @@ import { CommonModule } from '@angular/common';
       white-space: pre;
     }
 
+    /* Prism.js Syntax Highlighting - Theme-Aware Colors */
+    
+    /* Comments - Muted green/gray */
+    :host ::ng-deep code .token.comment,
+    :host ::ng-deep code .token.prolog,
+    :host ::ng-deep code .token.doctype,
+    :host ::ng-deep code .token.cdata {
+      color: #6a9955; /* Dark theme */
+      opacity: 0.8;
+    }
+
+    :host-context([data-theme="light"]) ::ng-deep code .token.comment,
+    :host-context([data-theme="light"]) ::ng-deep code .token.prolog,
+    :host-context([data-theme="light"]) ::ng-deep code .token.doctype,
+    :host-context([data-theme="light"]) ::ng-deep code .token.cdata {
+      color: #008000; /* Darker green for light mode - WCAG AA */
+    }
+
+    :host-context([data-theme="high-contrast"]) ::ng-deep code .token.comment,
+    :host-context([data-theme="high-contrast"]) ::ng-deep code .token.prolog,
+    :host-context([data-theme="high-contrast"]) ::ng-deep code .token.doctype,
+    :host-context([data-theme="high-contrast"]) ::ng-deep code .token.cdata {
+      color: #00ff00; /* Bright green for high contrast */
+    }
+
+    /* Punctuation - Use semantic text color */
+    :host ::ng-deep code .token.punctuation {
+      color: var(--semantic-text-secondary);
+    }
+
+    /* Numbers, Booleans, Constants - Light green */
+    :host ::ng-deep code .token.property,
+    :host ::ng-deep code .token.tag,
+    :host ::ng-deep code .token.boolean,
+    :host ::ng-deep code .token.number,
+    :host ::ng-deep code .token.constant,
+    :host ::ng-deep code .token.symbol,
+    :host ::ng-deep code .token.deleted {
+      color: #b5cea8; /* Dark theme */
+    }
+
+    :host-context([data-theme="light"]) ::ng-deep code .token.property,
+    :host-context([data-theme="light"]) ::ng-deep code .token.tag,
+    :host-context([data-theme="light"]) ::ng-deep code .token.boolean,
+    :host-context([data-theme="light"]) ::ng-deep code .token.number,
+    :host-context([data-theme="light"]) ::ng-deep code .token.constant,
+    :host-context([data-theme="light"]) ::ng-deep code .token.symbol,
+    :host-context([data-theme="light"]) ::ng-deep code .token.deleted {
+      color: #098658; /* Darker green for light mode - WCAG AA */
+    }
+
+    :host-context([data-theme="high-contrast"]) ::ng-deep code .token.property,
+    :host-context([data-theme="high-contrast"]) ::ng-deep code .token.tag,
+    :host-context([data-theme="high-contrast"]) ::ng-deep code .token.boolean,
+    :host-context([data-theme="high-contrast"]) ::ng-deep code .token.number,
+    :host-context([data-theme="high-contrast"]) ::ng-deep code .token.constant,
+    :host-context([data-theme="high-contrast"]) ::ng-deep code .token.symbol,
+    :host-context([data-theme="high-contrast"]) ::ng-deep code .token.deleted {
+      color: #00ffff; /* Cyan for high contrast */
+    }
+
+    /* Strings, Attributes - Orange */
+    :host ::ng-deep code .token.selector,
+    :host ::ng-deep code .token.attr-name,
+    :host ::ng-deep code .token.string,
+    :host ::ng-deep code .token.char,
+    :host ::ng-deep code .token.builtin,
+    :host ::ng-deep code .token.inserted {
+      color: #ce9178; /* Dark theme */
+    }
+
+    :host-context([data-theme="light"]) ::ng-deep code .token.selector,
+    :host-context([data-theme="light"]) ::ng-deep code .token.attr-name,
+    :host-context([data-theme="light"]) ::ng-deep code .token.string,
+    :host-context([data-theme="light"]) ::ng-deep code .token.char,
+    :host-context([data-theme="light"]) ::ng-deep code .token.builtin,
+    :host-context([data-theme="light"]) ::ng-deep code .token.inserted {
+      color: #a31515; /* Darker red for light mode - WCAG AA */
+    }
+
+    :host-context([data-theme="high-contrast"]) ::ng-deep code .token.selector,
+    :host-context([data-theme="high-contrast"]) ::ng-deep code .token.attr-name,
+    :host-context([data-theme="high-contrast"]) ::ng-deep code .token.string,
+    :host-context([data-theme="high-contrast"]) ::ng-deep code .token.char,
+    :host-context([data-theme="high-contrast"]) ::ng-deep code .token.builtin,
+    :host-context([data-theme="high-contrast"]) ::ng-deep code .token.inserted {
+      color: #ffff00; /* Yellow for high contrast */
+    }
+
+    /* Operators - Use primary text color */
+    :host ::ng-deep code .token.operator,
+    :host ::ng-deep code .token.entity,
+    :host ::ng-deep code .token.url,
+    :host ::ng-deep code .language-css .token.string,
+    :host ::ng-deep code .style .token.string {
+      color: var(--semantic-text-primary);
+    }
+
+    /* Keywords - Purple/Magenta */
+    :host ::ng-deep code .token.atrule,
+    :host ::ng-deep code .token.attr-value,
+    :host ::ng-deep code .token.keyword {
+      color: #c586c0; /* Dark theme */
+    }
+
+    :host-context([data-theme="light"]) ::ng-deep code .token.atrule,
+    :host-context([data-theme="light"]) ::ng-deep code .token.attr-value,
+    :host-context([data-theme="light"]) ::ng-deep code .token.keyword {
+      color: #0000ff; /* Blue for light mode - WCAG AA */
+    }
+
+    :host-context([data-theme="high-contrast"]) ::ng-deep code .token.atrule,
+    :host-context([data-theme="high-contrast"]) ::ng-deep code .token.attr-value,
+    :host-context([data-theme="high-contrast"]) ::ng-deep code .token.keyword {
+      color: #ff00ff; /* Magenta for high contrast */
+    }
+
+    /* Functions, Classes - Yellow */
+    :host ::ng-deep code .token.function,
+    :host ::ng-deep code .token.class-name {
+      color: #dcdcaa; /* Dark theme */
+    }
+
+    :host-context([data-theme="light"]) ::ng-deep code .token.function,
+    :host-context([data-theme="light"]) ::ng-deep code .token.class-name {
+      color: #795e26; /* Darker yellow-brown for light mode - WCAG AA */
+    }
+
+    :host-context([data-theme="high-contrast"]) ::ng-deep code .token.function,
+    :host-context([data-theme="high-contrast"]) ::ng-deep code .token.class-name {
+      color: #ffff00; /* Bright yellow for high contrast */
+      font-weight: bold;
+    }
+
+    /* Variables, Regex - Red */
+    :host ::ng-deep code .token.regex,
+    :host ::ng-deep code .token.important,
+    :host ::ng-deep code .token.variable {
+      color: #d16969; /* Dark theme */
+    }
+
+    :host-context([data-theme="light"]) ::ng-deep code .token.regex,
+    :host-context([data-theme="light"]) ::ng-deep code .token.important,
+    :host-context([data-theme="light"]) ::ng-deep code .token.variable {
+      color: #e50000; /* Brighter red for light mode - WCAG AA */
+    }
+
+    :host-context([data-theme="high-contrast"]) ::ng-deep code .token.regex,
+    :host-context([data-theme="high-contrast"]) ::ng-deep code .token.important,
+    :host-context([data-theme="high-contrast"]) ::ng-deep code .token.variable {
+      color: #ff0000; /* Bright red for high contrast */
+    }
+
+    /* Text emphasis */
+    :host ::ng-deep code .token.important,
+    :host ::ng-deep code .token.bold {
+      font-weight: bold;
+    }
+
+    :host ::ng-deep code .token.italic {
+      font-style: italic;
+    }
+
     /* Scrollbar styling */
     .code-block-content::-webkit-scrollbar {
       height: 8px;
@@ -134,6 +315,48 @@ export class CodeBlockComponent {
   readonly title = input<string>('');
 
   protected readonly copied = signal(false);
+  protected readonly codeElement = viewChild<ElementRef<HTMLElement>>('codeElement');
+
+  constructor() {
+    // Initial highlight after rendering
+    afterNextRender(() => {
+      setTimeout(() => {
+        this.highlightCode();
+      }, 0);
+    });
+
+    // Re-highlight when code or language changes
+    effect(() => {
+      // Track code and language changes
+      const currentCode = this.code();
+      const currentLang = this.language();
+      
+      // Skip if no code element yet
+      if (this.codeElement()) {
+        setTimeout(() => {
+          this.highlightCode();
+        }, 0);
+      }
+    });
+  }
+
+  private highlightCode(): void {
+    const element = this.codeElement()?.nativeElement;
+    if (element && this.code()) {
+      // Remove the 'code-highlighted' class that Prism adds to prevent re-highlighting
+      element.classList.remove('code-highlighted');
+      
+      // Ensure the element has the language class
+      const lang = this.language();
+      element.className = `language-${lang}`;
+      
+      // Set the text content
+      element.textContent = this.code();
+      
+      // Highlight the element
+      Prism.highlightElement(element);
+    }
+  }
 
   protected copyCode(): void {
     navigator.clipboard.writeText(this.code()).then(() => {

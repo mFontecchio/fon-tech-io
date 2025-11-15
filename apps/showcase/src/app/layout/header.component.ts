@@ -3,15 +3,15 @@
  * Top navigation bar with logo, search, and theme toggle
  */
 
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ThemeService } from '@ui-suite/theming';
+import { ThemeSwitcherComponent } from '../shared/theme-switcher.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive],
+  imports: [CommonModule, RouterLink, RouterLinkActive, ThemeSwitcherComponent],
   template: `
     <header class="app-header">
       <div class="app-header-content">
@@ -38,19 +38,8 @@ import { ThemeService } from '@ui-suite/theming';
             </svg>
           </button>
 
-          <!-- Theme Toggle -->
-          <button class="theme-toggle" (click)="toggleTheme()" [title]="isDarkMode() ? 'Switch to light mode' : 'Switch to dark mode'">
-            @if (isDarkMode()) {
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <circle cx="12" cy="12" r="5"/>
-                <path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72 1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
-              </svg>
-            } @else {
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-              </svg>
-            }
-          </button>
+          <!-- Theme Switcher -->
+          <app-theme-switcher />
 
           <!-- GitHub Link -->
           <a href="https://github.com" target="_blank" class="github-link" title="View on GitHub">
@@ -131,7 +120,6 @@ import { ThemeService } from '@ui-suite/theming';
     }
 
     .search-button,
-    .theme-toggle,
     .github-link {
       display: flex;
       align-items: center;
@@ -147,7 +135,6 @@ import { ThemeService } from '@ui-suite/theming';
     }
 
     .search-button:hover,
-    .theme-toggle:hover,
     .github-link:hover {
       color: var(--semantic-text-primary);
       background-color: var(--semantic-surface-subtle);
@@ -166,13 +153,5 @@ import { ThemeService } from '@ui-suite/theming';
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent {
-  protected themeService = inject(ThemeService);
-  
-  protected isDarkMode = this.themeService.isDarkMode;
-
-  protected toggleTheme(): void {
-    this.themeService.toggleDarkMode();
-  }
-}
+export class HeaderComponent {}
 

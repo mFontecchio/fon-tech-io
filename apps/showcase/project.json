@@ -20,7 +20,10 @@
             "input": "apps/showcase/public"
           }
         ],
-        "styles": ["apps/showcase/src/styles.css"]
+        "styles": ["apps/showcase/src/styles.css"],
+        "allowedCommonJsDependencies": [
+          "prismjs"
+        ]
       },
       "configurations": {
         "production": {
