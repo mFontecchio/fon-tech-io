@@ -13,10 +13,15 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { TabsComponent, TabComponent, AlertComponent } from '@ui-suite/components';
+import {
+  TabsComponent,
+  TabComponent,
+  AlertComponent,
+  CodeBlockComponent,
+} from '@ui-suite/components';
 import { PropTableComponent } from '../../shared/prop-table.component';
-import { CodeBlockComponent } from '../../shared/code-block.component';
 import { ComponentDemoComponent } from '../../shared/component-demo.component';
+import { ResponsivePreviewComponent } from '../../shared/responsive-preview.component';
 import { getComponentMetadata } from '../../data/component-metadata';
 
 @Component({
@@ -31,6 +36,7 @@ import { getComponentMetadata } from '../../data/component-metadata';
     PropTableComponent,
     CodeBlockComponent,
     ComponentDemoComponent,
+    ResponsivePreviewComponent,
   ],
   template: `
     <div class="component-detail-page">
@@ -61,12 +67,17 @@ import { getComponentMetadata } from '../../data/component-metadata';
                     [exampleTitle]="metadata()!.examples[0].title"
                   />
                 </div>
-                <app-code-block [code]="metadata()!.examples[0].template ?? ''" language="html" />
+                <ui-code-block
+                  [code]="metadata()!.examples[0].template ?? ''"
+                  [title]="'HTML'"
+                  language="html"
+                />
               }
 
               <h3>Selector</h3>
-              <app-code-block
+              <ui-code-block
                 [code]="'<' + metadata()!.selector + '></' + metadata()!.selector + '>'"
+                [title]="'Usage'"
                 language="html"
               />
 
@@ -132,6 +143,23 @@ import { getComponentMetadata } from '../../data/component-metadata';
           <!-- Examples Tab -->
           <ui-tab label="Examples">
             <div class="tab-content">
+              <!-- Responsive Preview Toggle -->
+              <div class="examples-toolbar">
+                <button
+                  class="responsive-toggle"
+                  [class.responsive-toggle--active]="showResponsivePreview()"
+                  (click)="toggleResponsivePreview()"
+                  title="Toggle responsive preview"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                    <path d="M8 21h8" />
+                    <path d="M12 17v4" />
+                  </svg>
+                  <span>Responsive Preview</span>
+                </button>
+              </div>
+
               @if (metadata()!.examples && metadata()!.examples.length > 0) {
                 @for (example of metadata()!.examples; track example.title) {
                   <div class="example-section">
@@ -140,19 +168,36 @@ import { getComponentMetadata } from '../../data/component-metadata';
 
                     <!-- Component Preview -->
                     @if (example.template) {
-                      <div class="example-preview">
-                        <app-component-demo
-                          [componentId]="componentId()"
-                          [exampleTitle]="example.title"
-                        />
-                      </div>
-                      <app-code-block [code]="example.template" language="html" />
+                      @if (showResponsivePreview()) {
+                        <app-responsive-preview>
+                          <div class="example-preview-inner">
+                            <app-component-demo
+                              [componentId]="componentId()"
+                              [exampleTitle]="example.title"
+                            />
+                          </div>
+                        </app-responsive-preview>
+                      } @else {
+                        <div class="example-preview">
+                          <app-component-demo
+                            [componentId]="componentId()"
+                            [exampleTitle]="example.title"
+                          />
+                        </div>
+                      }
+                      <ui-code-block
+                        [code]="example.template"
+                        [title]="'HTML'"
+                        [filename]="generateFilename(example.title, 'html')"
+                        language="html"
+                      />
                     }
 
                     @if (example.typescript) {
-                      <app-code-block
+                      <ui-code-block
                         [code]="example.typescript"
                         [title]="'TypeScript'"
+                        [filename]="generateFilename(example.title, 'ts')"
                         language="typescript"
                       />
                     }
@@ -338,6 +383,46 @@ import { getComponentMetadata } from '../../data/component-metadata';
       }
 
       /* Examples */
+      .examples-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        margin-bottom: var(--primitive-spacing-4);
+        padding-bottom: var(--primitive-spacing-3);
+        border-bottom: 1px solid var(--semantic-border-default);
+      }
+
+      .responsive-toggle {
+        display: flex;
+        align-items: center;
+        gap: var(--primitive-spacing-2);
+        padding: var(--primitive-spacing-2) var(--primitive-spacing-4);
+        border: 1px solid var(--semantic-border-default);
+        background-color: transparent;
+        color: var(--semantic-text-secondary);
+        border-radius: var(--primitive-border-radius-md);
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: var(--primitive-font-size-sm);
+        font-weight: var(--primitive-font-weight-medium);
+      }
+
+      .responsive-toggle:hover {
+        background-color: var(--semantic-surface-subtle);
+        color: var(--semantic-text-primary);
+        border-color: var(--semantic-border-strong);
+      }
+
+      .responsive-toggle--active {
+        background-color: var(--semantic-brand-primary);
+        color: var(--semantic-text-inverse);
+        border-color: var(--semantic-brand-primary);
+      }
+
+      .responsive-toggle svg {
+        stroke-width: 2;
+      }
+
       .example-section {
         margin-bottom: var(--primitive-spacing-8);
         padding-bottom: var(--primitive-spacing-8);
@@ -347,6 +432,10 @@ import { getComponentMetadata } from '../../data/component-metadata';
       .example-section:last-child {
         border-bottom: none;
         padding-bottom: 0;
+      }
+
+      .example-preview-inner {
+        padding: var(--primitive-spacing-4);
       }
 
       .example-section h3 {
@@ -391,6 +480,7 @@ export class ComponentDetailComponent implements OnInit {
   protected category = signal('');
   protected componentName = signal('');
   protected componentId = signal('');
+  protected showResponsivePreview = signal(false);
 
   protected metadata = computed(() => {
     const id = this.componentId();
@@ -412,5 +502,14 @@ export class ComponentDetailComponent implements OnInit {
           .join(' ')
       );
     });
+  }
+
+  protected toggleResponsivePreview(): void {
+    this.showResponsivePreview.update((show) => !show);
+  }
+
+  protected generateFilename(exampleTitle: string, extension: string): string {
+    const cleanTitle = exampleTitle.toLowerCase().replace(/\s+/g, '-');
+    return `${this.componentId()}-${cleanTitle}.${extension}`;
   }
 }

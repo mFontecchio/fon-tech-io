@@ -2212,6 +2212,92 @@ handleClick(item: ListItem) {
   ],
 };
 
+const CODE_BLOCK_METADATA: ComponentMetadata = {
+  id: 'code-block',
+  name: 'Code Block',
+  category: 'data-display',
+  description: 'A component for displaying formatted code with syntax highlighting, copy-to-clipboard, and download functionality. Supports multiple languages and themes.',
+  selector: 'ui-code-block',
+  inputs: [
+    { name: 'code', type: 'string', description: 'The code content to display', required: true },
+    { name: 'language', type: 'string', description: 'Programming language for syntax highlighting', defaultValue: "'typescript'" },
+    { name: 'title', type: 'string', description: 'Optional title shown in header (enables copy/download buttons)', defaultValue: "''" },
+    { name: 'showDownload', type: 'boolean', description: 'Show the download button', defaultValue: 'true' },
+    { name: 'filename', type: 'string', description: 'Custom filename for downloads (auto-generated if not provided)', defaultValue: "''" },
+  ],
+  outputs: [],
+  examples: [
+    {
+      title: 'Basic Code Block',
+      description: 'Simple code display with TypeScript syntax highlighting',
+      typescript: `protected code = signal(\`function greet(name: string): string {
+  return \\\`Hello, \\\${name}!\\\`;
+}\`);`,
+      template: `<ui-code-block [code]="code()" language="typescript" title="TypeScript" />`,
+    },
+    {
+      title: 'HTML Code',
+      description: 'Displaying HTML markup with proper formatting',
+      typescript: `protected htmlCode = signal(\`<ui-button variant="filled" size="md">
+  Click Me
+</ui-button>\`);`,
+      template: `<ui-code-block [code]="htmlCode()" language="html" title="HTML" />`,
+    },
+    {
+      title: 'CSS Code',
+      description: 'Styling information with CSS syntax highlighting',
+      typescript: `protected cssCode = signal(\`.button {
+  padding: 10px 20px;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+}\`);`,
+      template: `<ui-code-block [code]="cssCode()" language="css" title="CSS" />`,
+    },
+    {
+      title: 'JSON Data',
+      description: 'Structured data in JSON format',
+      typescript: `protected jsonCode = signal(\`{
+  "name": "UI Component Suite",
+  "version": "1.0.0",
+  "author": "Your Team"
+}\`);`,
+      template: `<ui-code-block [code]="jsonCode()" language="json" title="Configuration" />`,
+    },
+    {
+      title: 'Custom Filename',
+      description: 'Specify a custom filename for downloads',
+      typescript: `protected componentCode = signal(\`@Component({
+  selector: 'app-example',
+  template: '<div>Example</div>'
+})
+export class ExampleComponent {}\`);`,
+      template: `<ui-code-block [code]="componentCode()" language="typescript" title="Component" filename="example.component.ts" />`,
+    },
+  ],
+  accessibility: {
+    ariaSupport: [
+      'aria-label on copy and download buttons',
+      'Role semantics for interactive elements',
+      'Dynamic aria-label updates on copy success',
+    ],
+    keyboardNavigation: [
+      { key: 'Tab', description: 'Navigate to copy/download buttons' },
+      { key: 'Enter/Space', description: 'Activate buttons' },
+      { key: 'Arrow Keys', description: 'Scroll through code content' },
+    ],
+    screenReaderNotes: 'Code content is readable. Button states announced. Theme-aware colors ensure sufficient contrast.',
+  },
+  bestPractices: [
+    'Always provide a title to enable copy/download functionality',
+    'Specify the correct language for accurate syntax highlighting',
+    'Use custom filenames for better download organization',
+    'Keep code blocks concise and focused',
+    'Supported languages: TypeScript, JavaScript, HTML, CSS, SCSS, JSON',
+    'Component automatically adapts colors to current theme (Light/Dark/High-Contrast)',
+  ],
+};
+
 // ============================================================================
 // FEEDBACK COMPONENTS
 // ============================================================================
@@ -2827,6 +2913,7 @@ const COMPONENT_METADATA_MAP = new Map<string, ComponentMetadata>([
   ['pagination', PAGINATION_METADATA],
   ['table', TABLE_METADATA],
   ['list', LIST_METADATA],
+  ['code-block', CODE_BLOCK_METADATA],
   // Feedback Components
   ['alert', ALERT_METADATA],
   ['spinner', SPINNER_METADATA],

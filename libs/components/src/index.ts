@@ -32,6 +32,7 @@ export * from './lib/popover/popover.component';
 export * from './lib/pagination/pagination.component';
 export * from './lib/table/table.component';
 export * from './lib/list/list.component';
+export * from './lib/code-block/code-block.component';
 
 // Feedback Components
 export * from './lib/alert/alert.component';

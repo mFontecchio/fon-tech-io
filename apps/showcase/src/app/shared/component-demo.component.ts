@@ -41,6 +41,7 @@ import {
   PaginationComponent,
   TableComponent,
   ListComponent,
+  CodeBlockComponent,
   SpinnerComponent,
   ProgressComponent,
   SkeletonComponent,
@@ -85,6 +86,7 @@ import {
     PaginationComponent,
     TableComponent,
     ListComponent,
+    CodeBlockComponent,
     SpinnerComponent,
     ProgressComponent,
     SkeletonComponent,
@@ -1245,6 +1247,25 @@ import {
             }
           }
 
+          <!-- CODE BLOCK DEMOS -->
+          @case ('code-block') {
+            @if (exampleTitle() === 'Basic Code Block') {
+              <ui-code-block [code]="typescriptCode()" language="typescript" title="TypeScript" />
+            }
+            @if (exampleTitle() === 'HTML Code') {
+              <ui-code-block [code]="htmlCode()" language="html" title="HTML" />
+            }
+            @if (exampleTitle() === 'CSS Code') {
+              <ui-code-block [code]="cssCode()" language="css" title="CSS" />
+            }
+            @if (exampleTitle() === 'JSON Data') {
+              <ui-code-block [code]="jsonCode()" language="json" title="Configuration" />
+            }
+            @if (exampleTitle() === 'Custom Filename') {
+              <ui-code-block [code]="componentCode()" language="typescript" title="Component" filename="example.component.ts" />
+            }
+          }
+
           <!-- TOAST DEMOS -->
           @case ('toast') {
             @if (exampleTitle() === 'Toast Variants') {
@@ -1490,6 +1511,36 @@ export class ComponentDemoComponent {
     { id: 2, label: 'Second item' },
     { id: 3, label: 'Third item' },
   ]);
+
+  /**
+   * Code Block Examples
+   */
+  protected readonly typescriptCode = signal(`function greet(name: string): string {
+  return \`Hello, \${name}!\`;
+}`);
+
+  protected readonly htmlCode = signal(`<ui-button variant="filled" size="md">
+  Click Me
+</ui-button>`);
+
+  protected readonly cssCode = signal(`.button {
+  padding: 10px 20px;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+}`);
+
+  protected readonly jsonCode = signal(`{
+  "name": "UI Component Suite",
+  "version": "1.0.0",
+  "author": "Your Team"
+}`);
+
+  protected readonly componentCode = signal(`@Component({
+  selector: 'app-example',
+  template: '<div>Example</div>'
+})
+export class ExampleComponent {}`);
 
   /**
    * Breadcrumb items
