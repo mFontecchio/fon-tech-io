@@ -11,6 +11,7 @@ import {
   effect,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import {
   CardComponent,
   TabsComponent,
@@ -18,7 +19,18 @@ import {
   ButtonComponent,
   InputComponent,
   AlertComponent,
+  BadgeComponent,
 } from '@ui-suite/components';
+import { THEME_PRESETS, ThemePreset } from './theme-presets';
+import {
+  getContrastRatio,
+  getWCAGLevel,
+  saveTheme,
+  getSavedThemes,
+  deleteTheme,
+  parseCSSVariables,
+  isValidHexColor,
+} from './theme-utils';
 
 interface ThemeToken {
   name: string;
@@ -40,12 +52,14 @@ interface ThemeCategory {
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     CardComponent,
     TabsComponent,
     TabComponent,
     ButtonComponent,
     InputComponent,
     AlertComponent,
+    BadgeComponent,
   ],
   template: `
     <div class="theme-builder-page">
@@ -62,6 +76,76 @@ interface ThemeCategory {
             Export Theme
           </ui-button>
         </div>
+      </div>
+
+      <!-- Theme Presets & Quick Actions -->
+      <div class="presets-section">
+        <ui-card>
+          <div class="presets-header">
+            <div>
+              <h2>Theme Presets</h2>
+              <p class="presets-description">Start with a pre-made theme or load a saved one</p>
+            </div>
+            <div class="presets-actions">
+              <ui-button variant="outlined" size="sm" (clicked)="importTheme()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="margin-right: 6px;">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="17 8 12 3 7 8" />
+                  <line x1="12" y1="3" x2="12" y2="15" />
+                </svg>
+                Import
+              </ui-button>
+              <ui-button variant="outlined" size="sm" (clicked)="showSaveThemeModal()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="margin-right: 6px;">
+                  <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                  <polyline points="17 21 17 13 7 13 7 21" />
+                  <polyline points="7 3 7 8 15 8" />
+                </svg>
+                Save
+              </ui-button>
+            </div>
+          </div>
+          
+          <div class="presets-grid">
+            @for (preset of themePresets; track preset.id) {
+              <div class="preset-card" (click)="applyPreset(preset)">
+                <div class="preset-info">
+                  <h4>{{ preset.name }}</h4>
+                  <p>{{ preset.description }}</p>
+                  <span class="preset-author">by {{ preset.author }}</span>
+                </div>
+                <div class="preset-colors">
+                  <div class="color-dot" [style.background-color]="preset.tokens['--semantic-brand-primary']"></div>
+                  <div class="color-dot" [style.background-color]="preset.tokens['--semantic-success-primary']"></div>
+                  <div class="color-dot" [style.background-color]="preset.tokens['--semantic-warning-primary']"></div>
+                  <div class="color-dot" [style.background-color]="preset.tokens['--semantic-error-primary']"></div>
+                </div>
+              </div>
+            }
+          </div>
+
+          @if (savedThemes().length > 0) {
+            <div class="saved-themes-section">
+              <h3>Your Saved Themes</h3>
+              <div class="saved-themes-grid">
+                @for (theme of savedThemes(); track theme.name) {
+                  <div class="saved-theme-card">
+                    <div class="saved-theme-info" (click)="loadSavedTheme(theme.name)">
+                      <h4>{{ theme.name }}</h4>
+                      <span class="saved-theme-date">{{ formatDate(theme.createdAt) }}</span>
+                    </div>
+                    <button class="delete-theme-btn" (click)="deleteSavedTheme(theme.name)" title="Delete theme">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <polyline points="3 6 5 6 21 6" />
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                      </svg>
+                    </button>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        </ui-card>
       </div>
 
       <div class="theme-builder-layout">
@@ -271,6 +355,38 @@ interface ThemeCategory {
           </div>
         </div>
       }
+
+      <!-- Save Theme Modal -->
+      @if (showSaveModal()) {
+        <div class="export-modal-overlay" (click)="closeSaveModal()">
+          <div class="export-modal" (click)="$event.stopPropagation()">
+            <ui-card>
+              <h2>Save Theme</h2>
+              <p>Give your custom theme a name:</p>
+              
+              <ui-input
+                [(ngModel)]="saveThemeName"
+                placeholder="My Custom Theme"
+                label="Theme Name"
+              />
+              
+              <div class="modal-actions">
+                <ui-button variant="text" (clicked)="closeSaveModal()">Cancel</ui-button>
+                <ui-button variant="filled" (clicked)="saveCurrentTheme()">Save</ui-button>
+              </div>
+            </ui-card>
+          </div>
+        </div>
+      }
+
+      <!-- Hidden file input for import -->
+      <input
+        type="file"
+        #fileInput
+        style="display: none"
+        accept=".json,.css"
+        (change)="handleFileImport($event)"
+      />
     </div>
   `,
   styles: [`
@@ -300,6 +416,145 @@ interface ThemeCategory {
     .header-actions {
       display: flex;
       gap: var(--primitive-spacing-3);
+    }
+
+    /* Presets Section */
+    .presets-section {
+      margin-bottom: var(--primitive-spacing-6);
+    }
+
+    .presets-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--primitive-spacing-4);
+    }
+
+    .presets-description {
+      font-size: var(--primitive-font-size-sm);
+      color: var(--semantic-text-secondary);
+      margin-top: var(--primitive-spacing-1);
+    }
+
+    .presets-actions {
+      display: flex;
+      gap: var(--primitive-spacing-2);
+    }
+
+    .presets-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--primitive-spacing-4);
+      margin-bottom: var(--primitive-spacing-4);
+    }
+
+    .preset-card {
+      padding: var(--primitive-spacing-4);
+      border: 1px solid var(--semantic-border-default);
+      border-radius: var(--primitive-border-radius-lg);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .preset-card:hover {
+      border-color: var(--semantic-brand-primary);
+      box-shadow: var(--primitive-shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .preset-info h4 {
+      font-size: var(--primitive-font-size-md);
+      margin-bottom: var(--primitive-spacing-2);
+    }
+
+    .preset-info p {
+      font-size: var(--primitive-font-size-sm);
+      color: var(--semantic-text-secondary);
+      margin-bottom: var(--primitive-spacing-2);
+    }
+
+    .preset-author {
+      font-size: var(--primitive-font-size-xs);
+      color: var(--semantic-text-tertiary);
+    }
+
+    .preset-colors {
+      display: flex;
+      gap: var(--primitive-spacing-2);
+      margin-top: var(--primitive-spacing-3);
+    }
+
+    .color-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: var(--primitive-border-radius-full);
+      box-shadow: var(--primitive-shadow-sm);
+    }
+
+    /* Saved Themes */
+    .saved-themes-section {
+      margin-top: var(--primitive-spacing-6);
+      padding-top: var(--primitive-spacing-6);
+      border-top: 1px solid var(--semantic-border-default);
+    }
+
+    .saved-themes-section h3 {
+      font-size: var(--primitive-font-size-lg);
+      margin-bottom: var(--primitive-spacing-4);
+    }
+
+    .saved-themes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: var(--primitive-spacing-3);
+    }
+
+    .saved-theme-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--primitive-spacing-3);
+      border: 1px solid var(--semantic-border-default);
+      border-radius: var(--primitive-border-radius-md);
+      transition: all 0.2s;
+    }
+
+    .saved-theme-card:hover {
+      border-color: var(--semantic-brand-primary);
+    }
+
+    .saved-theme-info {
+      flex: 1;
+      cursor: pointer;
+    }
+
+    .saved-theme-info h4 {
+      font-size: var(--primitive-font-size-sm);
+      margin-bottom: 2px;
+    }
+
+    .saved-theme-date {
+      font-size: var(--primitive-font-size-xs);
+      color: var(--semantic-text-tertiary);
+    }
+
+    .delete-theme-btn {
+      padding: var(--primitive-spacing-2);
+      border: none;
+      background: transparent;
+      color: var(--semantic-error-primary);
+      cursor: pointer;
+      border-radius: var(--primitive-border-radius-sm);
+      transition: all 0.2s;
+    }
+
+    .delete-theme-btn:hover {
+      background-color: var(--semantic-error-subtle);
+    }
+
+    .delete-theme-btn svg {
+      display: block;
+      stroke-width: 2;
     }
 
     .theme-builder-layout {
@@ -526,6 +781,12 @@ interface ThemeCategory {
 })
 export class ThemeBuilderComponent {
   protected readonly showExportModal = signal(false);
+  protected readonly showSaveModal = signal(false);
+  protected saveThemeName = '';
+  protected readonly themePresets = THEME_PRESETS;
+  protected readonly savedThemes = signal<
+    Array<{ name: string; tokens: Record<string, string>; createdAt: string }>
+  >([]);
   
   // Theme tokens organized by category
   protected readonly colorCategories = signal<ThemeCategory[]>([
@@ -631,6 +892,9 @@ export class ThemeBuilderComponent {
   });
 
   constructor() {
+    // Load saved themes from localStorage
+    this.loadSavedThemesList();
+    
     // Apply token changes to document root
     effect(() => {
       const allCategories = [
@@ -768,5 +1032,122 @@ export class ThemeBuilderComponent {
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
+  }
+
+  // Preset Management
+  protected applyPreset(preset: ThemePreset): void {
+    // Apply all tokens from the preset
+    Object.entries(preset.tokens).forEach(([tokenName, value]) => {
+      this.updateToken(tokenName, value);
+    });
+  }
+
+  // Save/Load Management
+  protected showSaveThemeModal(): void {
+    this.showSaveModal.set(true);
+    this.saveThemeName = '';
+  }
+
+  protected closeSaveModal(): void {
+    this.showSaveModal.set(false);
+  }
+
+  protected saveCurrentTheme(): void {
+    if (!this.saveThemeName.trim()) {
+      alert('Please enter a theme name');
+      return;
+    }
+
+    const allCategories = [
+      ...this.colorCategories(),
+      ...this.typographyCategories(),
+      ...this.spacingCategories(),
+    ];
+
+    const tokens: Record<string, string> = {};
+    allCategories.forEach(category => {
+      category.tokens.forEach(token => {
+        tokens[token.name] = token.value;
+      });
+    });
+
+    saveTheme(this.saveThemeName, tokens);
+    this.loadSavedThemesList();
+    this.closeSaveModal();
+  }
+
+  protected loadSavedTheme(name: string): void {
+    const savedThemes = getSavedThemes();
+    const theme = savedThemes[name];
+    
+    if (theme) {
+      Object.entries(theme.tokens).forEach(([tokenName, value]) => {
+        this.updateToken(tokenName, value);
+      });
+    }
+  }
+
+  protected deleteSavedTheme(name: string): void {
+    if (confirm(`Are you sure you want to delete "${name}"?`)) {
+      deleteTheme(name);
+      this.loadSavedThemesList();
+    }
+  }
+
+  private loadSavedThemesList(): void {
+    const savedThemes = getSavedThemes();
+    this.savedThemes.set(Object.values(savedThemes));
+  }
+
+  // Import/Export
+  protected importTheme(): void {
+    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.click();
+    }
+  }
+
+  protected handleFileImport(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const content = e.target?.result as string;
+      let tokens: Record<string, string> = {};
+
+      try {
+        if (file.name.endsWith('.json')) {
+          tokens = JSON.parse(content);
+        } else if (file.name.endsWith('.css')) {
+          tokens = parseCSSVariables(content);
+        }
+
+        // Apply imported tokens
+        Object.entries(tokens).forEach(([tokenName, value]) => {
+          if (tokenName.startsWith('--')) {
+            this.updateToken(tokenName, value);
+          }
+        });
+
+        alert(`Successfully imported ${Object.keys(tokens).length} tokens!`);
+      } catch (error) {
+        alert('Error importing theme file. Please check the format.');
+        console.error('Import error:', error);
+      }
+    };
+
+    reader.readAsText(file);
+    
+    // Reset input
+    input.value = '';
+  }
+
+  // Utility
+  protected formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    return date.toLocaleDateString();
   }
 }
