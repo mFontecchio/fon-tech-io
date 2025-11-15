@@ -86,8 +86,8 @@ The Table component conditionally renders checkboxes based on the `selectable` i
   <ui-table 
     [columns]="columns()" 
     [data]="users()"
-    [selectable]="true"                           // ✅ ADDED
-    (selectionChange)="handleSelectionChange($event)"  // ✅ ADDED
+    [selectable]="true"                           //  ADDED
+    (selectionChange)="handleSelectionChange($event)"  //  ADDED
   >
   </ui-table>
 }
@@ -245,7 +245,7 @@ When a table is selectable:
 
 ## Status
 
-✅ **Fixed** - Selectable table now fully functional
+ **Fixed** - Selectable table now fully functional
 - 0 TypeScript errors
 - 0 Linter errors
 - Checkboxes render correctly
@@ -260,7 +260,8 @@ When a table is selectable:
 **Cause:** Missing `[selectable]="true"` input property  
 **Fix:** Added selectable property and selection handler  
 **Lines Changed:** 8  
-**Status:** ✅ Resolved
+**Status:**  Resolved
 
-Users can now select rows in the Selectable Table demo using checkboxes! 🎉
+Users can now select rows in the Selectable Table demo using checkboxes! 
+
 

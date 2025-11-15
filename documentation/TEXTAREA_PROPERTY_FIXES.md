@@ -13,7 +13,7 @@ NG8002: Can't bind to 'showCounter' since it isn't a known property of 'ui-texta
 
 The demos and metadata used incorrect property names that didn't match the actual Textarea component implementation:
 
-| ❌ Used (Incorrect) | ✅ Actual Property |
+|  Used (Incorrect) |  Actual Property |
 |---------------------|-------------------|
 | `showCounter` | `showCharacterCount` |
 | `error` | `errorMessage` |
@@ -41,13 +41,13 @@ export class TextareaComponent {
 // BEFORE (wrong)
 <ui-textarea 
   [maxLength]="200"
-  [showCounter]="true"  // ❌ Wrong property name
+  [showCounter]="true"  //  Wrong property name
 />
 
 // AFTER (correct)
 <ui-textarea 
   [maxLength]="200"
-  [showCharacterCount]="true"  // ✅ Correct
+  [showCharacterCount]="true"  //  Correct
 />
 ```
 
@@ -55,12 +55,12 @@ export class TextareaComponent {
 ```typescript
 // BEFORE (wrong)
 <ui-textarea 
-  error="Message is required"  // ❌ Wrong property name
+  error="Message is required"  //  Wrong property name
 />
 
 // AFTER (correct)
 <ui-textarea 
-  errorMessage="Message is required"  // ✅ Correct
+  errorMessage="Message is required"  //  Correct
 />
 ```
 
@@ -72,8 +72,8 @@ export class TextareaComponent {
 inputs: [
   // ... other inputs
   { name: 'maxLength', type: 'number', description: 'Maximum character count' },
-  { name: 'showCharacterCount', type: 'boolean', description: 'Display character counter', defaultValue: 'false' }, // ✅ Added
-  { name: 'errorMessage', type: 'string', description: 'Error message to display' }, // ✅ Fixed from 'error'
+  { name: 'showCharacterCount', type: 'boolean', description: 'Display character counter', defaultValue: 'false' }, //  Added
+  { name: 'errorMessage', type: 'string', description: 'Error message to display' }, //  Fixed from 'error'
   { name: 'helperText', type: 'string', description: 'Helper text below input' },
 ]
 ```
@@ -88,7 +88,7 @@ inputs: [
   label="Bio" 
   placeholder="Tell us about yourself..." 
   [maxLength]="200"
-  [showCharacterCount]="true"  // ✅ Added correct property
+  [showCharacterCount]="true"  //  Added correct property
 />`,
 }
 
@@ -99,7 +99,7 @@ inputs: [
   template: `<ui-textarea 
   label="Message" 
   placeholder="Enter message..." 
-  errorMessage="Message is required"  // ✅ Fixed from 'error'
+  errorMessage="Message is required"  //  Fixed from 'error'
 />`,
 }
 ```
@@ -158,7 +158,7 @@ inputs: [
 
 ## Status
 
-✅ **Fixed** - All property names now match component implementation
+ **Fixed** - All property names now match component implementation
 - 0 TypeScript errors
 - 0 Linter errors
 - Documentation updated
@@ -171,7 +171,8 @@ inputs: [
 **Properties Fixed:** 2 (`showCounter` → `showCharacterCount`, `error` → `errorMessage`)  
 **Files Updated:** 2  
 **Lines Changed:** 6  
-**Status:** ✅ Resolved
+**Status:**  Resolved
 
 Textarea component now uses correct property names throughout the showcase!
+
 

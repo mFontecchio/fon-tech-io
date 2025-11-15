@@ -1,5 +1,5 @@
-@if (isOpen()) {
-  <div class="ui-drawer-container">
+@if (isVisible()) {
+  <div class="ui-drawer-container" [class.ui-drawer-container--active]="isOpen()">
     <!-- Backdrop -->
     @if (showBackdrop()) {
       <div 
@@ -14,8 +14,9 @@
     <div
       [ngClass]="drawerClasses()"
       [attr.role]="'dialog'"
-      [attr.aria-modal]="true"
+      [attr.aria-modal]="isOpen() ? true : undefined"
       [attr.aria-label]="title() || 'Drawer'"
+      [attr.aria-hidden]="!isOpen()"
     >
       <!-- Header -->
       @if (title()) {

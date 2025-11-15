@@ -147,7 +147,7 @@ import {
               <ui-input 
                 label="Search" 
                 placeholder="Search..." 
-                prefixIcon="🔍" 
+                prefixIcon="�" 
               />
             }
             @if (exampleTitle() === 'Input with Suffix Icon') {
@@ -155,7 +155,7 @@ import {
                 label="Password" 
                 type="password"
                 placeholder="Enter password" 
-                suffixIcon="👁️" 
+                suffixIcon="�" 
               />
             }
             @if (exampleTitle() === 'Input with Error') {
@@ -720,7 +720,7 @@ import {
             }
             @if (exampleTitle() === 'Icon with Tooltip') {
               <ui-tooltip text="More information">
-                <button>ℹ️</button>
+                <button></button>
               </ui-tooltip>
             }
             @if (exampleTitle() === 'Link with Tooltip') {
@@ -1048,13 +1048,13 @@ import {
                   <nav style="display: flex; flex-direction: column; gap: 12px;">
                     <a href="#" style="padding: 8px; text-decoration: none; color: var(--semantic-text-primary); border-radius: 4px; transition: background 0.2s;" 
                        onmouseover="this.style.background='var(--semantic-surface-subtle)'" 
-                       onmouseout="this.style.background='transparent'">📊 Dashboard</a>
+                       onmouseout="this.style.background='transparent'"> Dashboard</a>
                     <a href="#" style="padding: 8px; text-decoration: none; color: var(--semantic-text-primary); border-radius: 4px; transition: background 0.2s;"
                        onmouseover="this.style.background='var(--semantic-surface-subtle)'" 
-                       onmouseout="this.style.background='transparent'">⚙️ Settings</a>
+                       onmouseout="this.style.background='transparent'"> Settings</a>
                     <a href="#" style="padding: 8px; text-decoration: none; color: var(--semantic-text-primary); border-radius: 4px; transition: background 0.2s;"
                        onmouseover="this.style.background='var(--semantic-surface-subtle)'" 
-                       onmouseout="this.style.background='transparent'">👤 Profile</a>
+                       onmouseout="this.style.background='transparent'"> Profile</a>
                   </nav>
                 </ui-drawer>
               </div>
@@ -1103,10 +1103,10 @@ import {
                 <ui-button (clicked)="drawerBottom.set(true)">Show Actions</ui-button>
                 <ui-drawer [open]="drawerBottom()" title="Actions" position="bottom" size="sm" (openChange)="drawerBottom.set($event)">
                   <div style="display: flex; flex-direction: column; gap: 8px;">
-                    <ui-button fullWidth>📝 Edit Item</ui-button>
-                    <ui-button fullWidth variant="outline">📋 Duplicate</ui-button>
-                    <ui-button fullWidth variant="outline">📤 Share</ui-button>
-                    <ui-button fullWidth variant="outline">🗑️ Delete</ui-button>
+                    <ui-button [fullWidth]="true"> Edit Item</ui-button>
+                    <ui-button [fullWidth]="true" variant="outlined"> Duplicate</ui-button>
+                    <ui-button [fullWidth]="true" variant="outlined"> Share</ui-button>
+                    <ui-button [fullWidth]="true" variant="outlined"> Delete</ui-button>
                   </div>
                 </ui-drawer>
               </div>
@@ -1119,10 +1119,10 @@ import {
                     <ui-input label="Full Name" placeholder="John Doe" value="John Doe" />
                     <ui-input label="Email" type="email" placeholder="john@example.com" value="john@example.com" />
                     <ui-input label="Phone" type="tel" placeholder="+1 234 567 8900" />
-                    <ui-textarea label="Bio" placeholder="Tell us about yourself..." rows="4" />
+                    <ui-textarea label="Bio" placeholder="Tell us about yourself..." [rows]="4" />
                   </div>
                   <div footer style="display: flex; gap: 8px; justify-content: flex-end;">
-                    <ui-button variant="ghost" (clicked)="drawerWithFooter.set(false)">Cancel</ui-button>
+                    <ui-button variant="text" (clicked)="drawerWithFooter.set(false)">Cancel</ui-button>
                     <ui-button (clicked)="drawerWithFooter.set(false)">Save Changes</ui-button>
                   </div>
                 </ui-drawer>
@@ -1593,4 +1593,5 @@ export class ComponentDemoComponent {
     this.toastService.info(`${selectedIndices.length} row(s) selected`);
   }
 }
+
 

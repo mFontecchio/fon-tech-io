@@ -82,6 +82,16 @@ export class DrawerComponent {
   protected readonly isOpen = signal(false);
 
   /**
+   * Visibility state (keeps drawer in DOM during close animation)
+   */
+  protected readonly isVisible = signal(false);
+
+  /**
+   * Timeout for closing animation
+   */
+  private closeTimeout?: number;
+
+  /**
    * Computed CSS classes
    */
   protected readonly drawerClasses = computed(() => ({
@@ -95,13 +105,31 @@ export class DrawerComponent {
     // Sync internal open state
     effect(() => {
       const open = this.open();
-      this.isOpen.set(open);
       
-      // Manage body scroll
       if (open) {
+        // Opening: Clear any pending close timeout
+        if (this.closeTimeout) {
+          clearTimeout(this.closeTimeout);
+          this.closeTimeout = undefined;
+        }
+        // Make visible immediately, then open
+        this.isVisible.set(true);
+        // Small delay to ensure element is in DOM before animating
+        setTimeout(() => {
+          this.isOpen.set(true);
+        }, 10);
+        // Lock body scroll
         document.body.style.overflow = 'hidden';
       } else {
+        // Closing: Start close animation
+        this.isOpen.set(false);
+        // Restore body scroll
         document.body.style.overflow = '';
+        // Keep in DOM for animation duration (300ms + buffer)
+        this.closeTimeout = window.setTimeout(() => {
+          this.isVisible.set(false);
+          this.closeTimeout = undefined;
+        }, 350);
       }
     });
   }
@@ -110,6 +138,10 @@ export class DrawerComponent {
    * Cleanup on destroy
    */
   ngOnDestroy(): void {
+    // Clear any pending timeout
+    if (this.closeTimeout) {
+      clearTimeout(this.closeTimeout);
+    }
     // Ensure body overflow is reset
     document.body.style.overflow = '';
   }

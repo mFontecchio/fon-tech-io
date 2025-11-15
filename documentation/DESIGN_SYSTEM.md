@@ -487,26 +487,26 @@ Design for mobile first, enhance for larger screens:
 ## Best Practices
 
 ### DO
-✅ Use design tokens for all styling
-✅ Follow the three-tier token hierarchy
-✅ Maintain consistent spacing with the scale
-✅ Ensure proper color contrast
-✅ Use semantic HTML elements
-✅ Support keyboard navigation
-✅ Include ARIA attributes
-✅ Test with screen readers
-✅ Support reduced motion preferences
-✅ Use fluid typography
+ Use design tokens for all styling
+ Follow the three-tier token hierarchy
+ Maintain consistent spacing with the scale
+ Ensure proper color contrast
+ Use semantic HTML elements
+ Support keyboard navigation
+ Include ARIA attributes
+ Test with screen readers
+ Support reduced motion preferences
+ Use fluid typography
 
 ### DON'T
-❌ Hardcode colors or spacing values
-❌ Use arbitrary values outside the system
-❌ Sacrifice accessibility for aesthetics
-❌ Ignore semantic meaning of tokens
-❌ Create components without keyboard support
-❌ Use divs when semantic elements exist
-❌ Skip focus indicators
-❌ Assume mouse-only interaction
+ Hardcode colors or spacing values
+ Use arbitrary values outside the system
+ Sacrifice accessibility for aesthetics
+ Ignore semantic meaning of tokens
+ Create components without keyboard support
+ Use divs when semantic elements exist
+ Skip focus indicators
+ Assume mouse-only interaction
 
 ## Resources
 
@@ -514,4 +514,5 @@ Design for mobile first, enhance for larger screens:
 - [MDN Web Docs](https://developer.mozilla.org/)
 - [Angular Documentation](https://angular.dev/)
 - [Design Tokens Community Group](https://www.w3.org/community/design-tokens/)
+
 

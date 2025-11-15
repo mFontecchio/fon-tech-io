@@ -63,12 +63,12 @@ This meant:
 .ui-tabs-panels {
   flex: 1;
   min-width: 0;
-  overflow: hidden;  /* ✅ Prevent content from breaking out */
+  overflow: hidden;  /*  Prevent content from breaking out */
 }
 
 .ui-tabs--vertical .ui-tabs-panels {
-  width: 100%;       /* ✅ Take all available flex space */
-  max-width: 100%;   /* ✅ Never exceed flex space */
+  width: 100%;       /*  Take all available flex space */
+  max-width: 100%;   /*  Never exceed flex space */
 }
 ```
 
@@ -80,8 +80,8 @@ This meant:
   display: none;
   padding: var(--primitive-spacing-4);
   animation: ui-tab-fade-in 0.2s ease-out;
-  width: 100%;           /* ✅ Fill container width */
-  box-sizing: border-box; /* ✅ Include padding in width */
+  width: 100%;           /*  Fill container width */
+  box-sizing: border-box; /*  Include padding in width */
 }
 ```
 
@@ -214,12 +214,12 @@ box-sizing: border-box;
 
 ## Status
 
-✅ **Panel width is now constrained**  
-✅ **Overflow is handled**  
-✅ **Zero shifting in vertical tabs**  
-✅ **Tab buttons left as they were**  
-✅ **0 TypeScript errors**  
-✅ **0 Linter errors**
+ **Panel width is now constrained**  
+ **Overflow is handled**  
+ **Zero shifting in vertical tabs**  
+ **Tab buttons left as they were**  
+ **0 TypeScript errors**  
+ **0 Linter errors**
 
 ## Key Insight
 
@@ -266,7 +266,8 @@ box-sizing: border-box
 **Wrong diagnosis:** Tab button list width  
 **Correct diagnosis:** Tab panel content width (user identified!)  
 **Fix:** Constrain panel container and individual panels  
-**Result:** Stable, non-shifting vertical tabs ✅
+**Result:** Stable, non-shifting vertical tabs 
 
-Thank you to the user for the crucial correction! 🎯
+Thank you to the user for the crucial correction! 
+
 

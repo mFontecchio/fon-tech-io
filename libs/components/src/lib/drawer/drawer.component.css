@@ -14,6 +14,11 @@
   bottom: 0;
   z-index: var(--primitive-z-modal, 1000);
   pointer-events: none;
+  visibility: hidden;
+}
+
+.ui-drawer-container--active {
+  visibility: visible;
 }
 
 /* Backdrop */

@@ -353,3 +353,4 @@ Build comprehensive documentation in `showcase` app:
 - 80%+ test coverage
 - Published to Artifactory
 - Developer-friendly API with TypeScript support
+
