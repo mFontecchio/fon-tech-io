@@ -11,6 +11,7 @@ import {
   computed,
   effect,
   HostListener,
+  ViewEncapsulation,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -75,12 +76,13 @@ interface HistoryEntry {
     AlertComponent,
     BadgeComponent,
   ],
+  encapsulation: ViewEncapsulation.None,
   template: `
     <div class="theme-builder-page">
       <div class="theme-builder-header">
         <div>
           <h1>Theme Builder</h1>
-          <p class="subtitle">Customize design tokens and see changes in real-time</p>
+          <p class="subtitle">Customize design tokens for both light and dark modes</p>
         </div>
         <div class="header-actions">
           <div class="history-buttons">
@@ -135,6 +137,15 @@ interface HistoryEntry {
           </ui-button>
         </div>
       </div>
+
+      <!-- Dual Theme Info -->
+      <ui-alert variant="info" style="margin-bottom: var(--primitive-spacing-6);">
+        <strong>Dual Theme System:</strong> Edit both Light and Dark color modes simultaneously! 
+        Each color token has two inputs side-by-side - Light (left) and Dark (right). 
+        Typography and spacing tokens are shared between both themes. 
+        Use the Light/Dark toggle buttons in the Live Preview section to see your theme in both modes. 
+        When you export, both light and dark color tokens will be included for a complete theme solution.
+      </ui-alert>
 
       <!-- Theme Presets & Quick Actions -->
       <div class="presets-section">
@@ -223,27 +234,51 @@ interface HistoryEntry {
                       <div class="token-grid">
                         @for (token of category.tokens; track token.name) {
                           <div class="token-item">
-                            <label [for]="token.name">
+                            <label>
                               <span class="token-label">{{ formatTokenName(token.name) }}</span>
                               @if (token.description) {
                                 <span class="token-description">{{ token.description }}</span>
                               }
                             </label>
-                            <div class="token-input-wrapper">
-                              <input
-                                type="color"
-                                [id]="token.name"
-                                [value]="token.value"
-                                (input)="updateToken(token.name, $any($event.target).value)"
-                                class="color-input"
-                              />
-                              <input
-                                type="text"
-                                [value]="token.value"
-                                (input)="updateToken(token.name, $any($event.target).value)"
-                                class="text-input"
-                                [placeholder]="token.value"
-                              />
+                            <div class="dual-token-inputs">
+                              <div class="mode-input-group">
+                                <span class="mode-input-label">Light</span>
+                                <div class="token-input-wrapper">
+                                  <input
+                                    type="color"
+                                    [id]="token.name + '-light'"
+                                    [value]="token.value"
+                                    (input)="updateLightToken(token.name, $any($event.target).value)"
+                                    class="color-input"
+                                  />
+                                  <input
+                                    type="text"
+                                    [value]="token.value"
+                                    (input)="updateLightToken(token.name, $any($event.target).value)"
+                                    class="text-input"
+                                    [placeholder]="token.value"
+                                  />
+                                </div>
+                              </div>
+                              <div class="mode-input-group">
+                                <span class="mode-input-label">Dark</span>
+                                <div class="token-input-wrapper">
+                                  <input
+                                    type="color"
+                                    [id]="token.name + '-dark'"
+                                    [value]="getDarkTokenValue(token.name)"
+                                    (input)="updateDarkToken(token.name, $any($event.target).value)"
+                                    class="color-input"
+                                  />
+                                  <input
+                                    type="text"
+                                    [value]="getDarkTokenValue(token.name)"
+                                    (input)="updateDarkToken(token.name, $any($event.target).value)"
+                                    class="text-input"
+                                    [placeholder]="getDarkTokenValue(token.name)"
+                                  />
+                                </div>
+                              </div>
                             </div>
                           </div>
                         }
@@ -263,7 +298,7 @@ interface HistoryEntry {
                       <div class="token-grid">
                         @for (token of category.tokens; track token.name) {
                           <div class="token-item">
-                            <label [for]="token.name">
+                            <label>
                               <span class="token-label">{{ formatTokenName(token.name) }}</span>
                             </label>
                             <input
@@ -291,7 +326,7 @@ interface HistoryEntry {
                       <div class="token-grid">
                         @for (token of category.tokens; track token.name) {
                           <div class="token-item">
-                            <label [for]="token.name">
+                            <label>
                               <span class="token-label">{{ formatTokenName(token.name) }}</span>
                             </label>
                             <input
@@ -315,10 +350,44 @@ interface HistoryEntry {
         <!-- Live Preview -->
         <div class="live-preview">
           <ui-card>
-            <h2>Live Preview</h2>
-            <p class="preview-description">See your theme changes in real-time</p>
+            <div class="preview-header">
+              <div>
+                <h2>Live Preview</h2>
+                <p class="preview-description">See your theme changes in real-time</p>
+              </div>
+              <div class="preview-mode-toggle">
+                <ui-button 
+                  [variant]="!isPreviewingDark() ? 'filled' : 'outlined'" 
+                  size="sm"
+                  (clicked)="setPreviewMode('light')"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; vertical-align: middle;">
+                    <circle cx="12" cy="12" r="5" />
+                    <line x1="12" y1="1" x2="12" y2="3" />
+                    <line x1="12" y1="21" x2="12" y2="23" />
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                    <line x1="1" y1="12" x2="3" y2="12" />
+                    <line x1="21" y1="12" x2="23" y2="12" />
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                  </svg>
+                  Light
+                </ui-button>
+                <ui-button 
+                  [variant]="isPreviewingDark() ? 'filled' : 'outlined'" 
+                  size="sm"
+                  (clicked)="setPreviewMode('dark')"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; vertical-align: middle;">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                  </svg>
+                  Dark
+                </ui-button>
+              </div>
+            </div>
             
-            <div class="preview-container" [style]="previewStyles()">
+            <div class="preview-container" [attr.data-preview-theme]="isPreviewingDark() ? 'dark' : 'light'">
               <!-- Buttons -->
               <div class="preview-section">
                 <h4>Buttons</h4>
@@ -839,9 +908,26 @@ interface HistoryEntry {
       gap: var(--primitive-spacing-6);
     }
 
-    .token-editor h2,
-    .live-preview h2 {
+    .token-editor h2 {
       margin-bottom: var(--primitive-spacing-4);
+    }
+
+    .live-preview h2 {
+      margin: 0;
+    }
+
+    .preview-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--primitive-spacing-4);
+      gap: var(--primitive-spacing-4);
+    }
+
+    .preview-mode-toggle {
+      display: flex;
+      gap: var(--primitive-spacing-2);
+      flex-shrink: 0;
     }
 
     .token-section {
@@ -871,21 +957,47 @@ interface HistoryEntry {
     }
 
     .token-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      display: flex;
+      flex-direction: column;
       gap: var(--primitive-spacing-4);
     }
 
     .token-item {
       display: flex;
       flex-direction: column;
+      gap: var(--primitive-spacing-3);
+      width: 100%;
+    }
+
+    .dual-token-inputs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--primitive-spacing-4);
+      width: 100%;
+    }
+
+    .mode-input-group {
+      display: flex;
+      flex-direction: column;
       gap: var(--primitive-spacing-2);
+      min-width: 0; /* Allows flex items to shrink below content size */
+    }
+
+    .mode-input-label {
+      font-size: var(--primitive-font-size-xs);
+      font-weight: 600;
+      color: var(--semantic-text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: var(--primitive-spacing-1);
     }
 
     .token-label {
       font-size: var(--primitive-font-size-sm);
       font-weight: var(--primitive-font-weight-medium);
       color: var(--semantic-text-primary);
+      display: block;
+      margin-bottom: var(--primitive-spacing-1);
     }
 
     .token-description {
@@ -898,14 +1010,19 @@ interface HistoryEntry {
     .token-input-wrapper {
       display: flex;
       gap: var(--primitive-spacing-2);
+      align-items: center;
+      width: 100%;
+      min-width: 0;
     }
 
     .color-input {
       width: 48px;
-      height: 36px;
+      height: 38px;
+      min-width: 48px;
       border: 1px solid var(--semantic-border-default);
       border-radius: var(--primitive-border-radius-md);
       cursor: pointer;
+      flex-shrink: 0;
     }
 
     .color-input::-webkit-color-swatch-wrapper {
@@ -919,6 +1036,7 @@ interface HistoryEntry {
 
     .text-input {
       flex: 1;
+      min-width: 0;
       padding: var(--primitive-spacing-2) var(--primitive-spacing-3);
       border: 1px solid var(--semantic-border-default);
       border-radius: var(--primitive-border-radius-md);
@@ -935,6 +1053,7 @@ interface HistoryEntry {
     .text-input:focus {
       outline: none;
       border-color: var(--semantic-brand-primary);
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
     }
 
     .preview-description {
@@ -948,6 +1067,63 @@ interface HistoryEntry {
       border: 1px solid var(--semantic-border-default);
       border-radius: var(--primitive-border-radius-md);
       background-color: var(--semantic-surface-subtle);
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    /* Dark Mode Preview - Override all color tokens */
+    .preview-container[data-preview-theme="dark"] {
+      /* Semantic: Brand Colors */
+      --semantic-brand-primary: var(--semantic-brand-primary-dark, #6B7FED);
+      --semantic-brand-secondary: var(--semantic-brand-secondary-dark, #8B95A5);
+      --semantic-brand-subtle: var(--semantic-brand-subtle-dark, #2A2E3F);
+      
+      /* Semantic: Feedback Colors */
+      --semantic-success-primary: var(--semantic-success-primary-dark, #4ADE80);
+      --semantic-warning-primary: var(--semantic-warning-primary-dark, #FBBF24);
+      --semantic-error-primary: var(--semantic-error-primary-dark, #F87171);
+      --semantic-info-primary: var(--semantic-info-primary-dark, #60A5FA);
+      
+      /* Semantic: Surface Colors */
+      --semantic-surface-background: var(--semantic-surface-background-dark, #1A1D29);
+      --semantic-surface-card: var(--semantic-surface-card-dark, #232734);
+      --semantic-surface-subtle: var(--semantic-surface-subtle-dark, #2A2E3F);
+      --semantic-surface-background-secondary: var(--semantic-surface-background-secondary-dark, #2A2E3F);
+      
+      /* Semantic: Text Colors */
+      --semantic-text-primary: var(--semantic-text-primary-dark, #E5E7EB);
+      --semantic-text-secondary: var(--semantic-text-secondary-dark, #9CA3AF);
+      --semantic-text-tertiary: var(--semantic-text-tertiary-dark, #6B7280);
+      --semantic-text-disabled: var(--semantic-text-disabled-dark, #4B5563);
+      
+      /* Semantic: Border Colors */
+      --semantic-border-default: var(--semantic-border-default-dark, #374151);
+      --semantic-border-subtle: var(--semantic-border-subtle-dark, #4B5563);
+      --semantic-border-strong: var(--semantic-border-strong-dark, #6B7280);
+      
+      /* Component: Card */
+      --component-card-background: var(--semantic-surface-card-dark, #232734);
+      --component-card-border: var(--semantic-border-default-dark, #374151);
+      
+      /* Component: Input */
+      --component-input-default-background: var(--semantic-surface-card-dark, #232734);
+      --component-input-default-text: var(--semantic-text-primary-dark, #E5E7EB);
+      --component-input-default-border: var(--semantic-border-default-dark, #374151);
+      --component-input-default-placeholder: var(--semantic-text-tertiary-dark, #6B7280);
+      --component-input-hover-border: var(--semantic-border-strong-dark, #6B7280);
+      --component-input-focus-border: var(--semantic-brand-primary-dark, #6B7FED);
+      
+      /* Component: Alert */
+      --component-alert-info-background: var(--semantic-surface-subtle-dark, #2A2E3F);
+      --component-alert-info-text: var(--semantic-text-primary-dark, #E5E7EB);
+      --component-alert-info-border: var(--semantic-border-default-dark, #374151);
+    }
+
+    .preview-container h4,
+    .preview-container h1,
+    .preview-container h2,
+    .preview-container h3,
+    .preview-container p {
+      color: var(--semantic-text-primary);
     }
 
     .preview-section {
@@ -1037,6 +1213,20 @@ interface HistoryEntry {
       }
     }
 
+    @media (max-width: 1024px) {
+      .dual-token-inputs {
+        grid-template-columns: 1fr;
+        gap: var(--primitive-spacing-3);
+      }
+      
+      .mode-input-group {
+        padding: var(--primitive-spacing-3);
+        border: 1px solid var(--semantic-border-default);
+        border-radius: var(--primitive-border-radius-md);
+        background-color: var(--semantic-surface-subtle);
+      }
+    }
+
     @media (max-width: 768px) {
       .theme-builder-header {
         flex-direction: column;
@@ -1048,8 +1238,22 @@ interface HistoryEntry {
         flex-direction: column;
       }
 
-      .token-grid {
-        grid-template-columns: 1fr;
+      .preview-header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .preview-mode-toggle {
+        width: 100%;
+      }
+
+      .preview-mode-toggle ui-button {
+        flex: 1;
+      }
+
+      .utility-panel {
+        width: 90%;
+        right: 5%;
       }
     }
   `],
@@ -1065,6 +1269,10 @@ export class ThemeBuilderComponent {
   protected readonly savedThemes = signal<
     Array<{ name: string; tokens: Record<string, string>; createdAt: string }>
   >([]);
+  
+  // Preview Mode (for live preview panel)
+  protected readonly previewMode = signal<'light' | 'dark'>('light');
+  protected readonly isPreviewingDark = computed(() => this.previewMode() === 'dark');
   
   // Undo/Redo History
   private readonly history: HistoryEntry[] = [];
@@ -1177,29 +1385,31 @@ export class ThemeBuilderComponent {
     },
   ]);
 
-  // Computed styles for preview
+  // Computed property to trigger updates when color categories change
   protected readonly previewStyles = computed(() => {
-    // This will trigger recomputation when tokens change
-    const categories = [...this.colorCategories(), ...this.typographyCategories(), ...this.spacingCategories()];
+    // This ensures the preview updates when tokens change
+    this.colorCategories();
     return '';
   });
 
-  constructor() {
+  constructor(private cdr: ChangeDetectorRef) {
     // Load saved themes from localStorage
     this.loadSavedThemesList();
+    
+    // Initialize dark mode tokens with default values (if they don't exist)
+    this.initializeDarkTokens();
     
     // Initialize accessibility checks
     this.updateAccessibilityChecks();
     
     // Apply token changes to document root
     effect(() => {
-      const allCategories = [
-        ...this.colorCategories(),
-        ...this.typographyCategories(),
-        ...this.spacingCategories(),
-      ];
+      const colorCategories = this.colorCategories();
+      const typographyCategories = this.typographyCategories();
+      const spacingCategories = this.spacingCategories();
       
-      allCategories.forEach(category => {
+      // Apply light mode tokens
+      [...colorCategories, ...typographyCategories, ...spacingCategories].forEach(category => {
         category.tokens.forEach(token => {
           document.documentElement.style.setProperty(token.name, token.value);
         });
@@ -1207,6 +1417,52 @@ export class ThemeBuilderComponent {
       
       // Update accessibility checks when colors change
       this.updateAccessibilityChecks();
+    });
+  }
+
+  private initializeDarkTokens(): void {
+    // Initialize dark tokens with defaults if they don't exist
+    const colorCategories = this.colorCategories();
+    
+    const darkDefaults: Record<string, string> = {
+      // Brand Colors - Dark mode typically uses slightly lighter/more vibrant versions
+      '--semantic-brand-primary': '#6B7FED',
+      '--semantic-brand-secondary': '#8B95A5',
+      '--semantic-brand-subtle': '#2A2E3F',
+      
+      // Semantic Colors
+      '--semantic-success-primary': '#4ADE80',
+      '--semantic-warning-primary': '#FBBF24',
+      '--semantic-error-primary': '#F87171',
+      '--semantic-info-primary': '#60A5FA',
+      
+      // Surface Colors - Dark backgrounds
+      '--semantic-surface-background': '#1A1D29',
+      '--semantic-surface-card': '#232734',
+      '--semantic-surface-subtle': '#2A2E3F',
+      
+      // Text Colors - Light text on dark backgrounds
+      '--semantic-text-primary': '#E5E7EB',
+      '--semantic-text-secondary': '#9CA3AF',
+      '--semantic-text-tertiary': '#6B7280',
+      
+      // Border Colors
+      '--semantic-border-default': '#374151',
+    };
+    
+    colorCategories.forEach(category => {
+      category.tokens.forEach(token => {
+        const darkTokenName = `${token.name}-dark`;
+        const existingDarkValue = getComputedStyle(document.documentElement)
+          .getPropertyValue(darkTokenName)
+          .trim();
+        
+        // If no dark value exists, use the default or the light value as a starting point
+        if (!existingDarkValue) {
+          const defaultDarkValue = darkDefaults[token.name] || token.value;
+          document.documentElement.style.setProperty(darkTokenName, defaultDarkValue);
+        }
+      });
     });
   }
 
@@ -1238,35 +1494,46 @@ export class ThemeBuilderComponent {
       .replace(/\b\w/g, l => l.toUpperCase());
   }
 
-  protected updateToken(tokenName: string, value: string, recordHistory: boolean = true): void {
+  // Direct token update (handles both light and dark)
+  protected updateTokenDirect(tokenName: string, value: string, isDark: boolean): void {
     // Get old value for history
-    const oldValue = this.getComputedToken(tokenName);
+    const oldValue = getComputedStyle(document.documentElement)
+      .getPropertyValue(tokenName)
+      .trim();
     
-    // Update the token value in all categories
-    const updateInCategory = (categories: ThemeCategory[]) => {
-      return categories.map(category => ({
-        ...category,
-        tokens: category.tokens.map(token =>
-          token.name === tokenName ? { ...token, value } : token
-        ),
-      }));
-    };
+    // For light mode updates, update the category signals
+    if (!isDark) {
+      const baseTokenName = tokenName.replace('-dark', '');
+      const updateInCategory = (categories: ThemeCategory[]) => {
+        return categories.map(category => ({
+          ...category,
+          tokens: category.tokens.map(token =>
+            token.name === baseTokenName ? { ...token, value } : token
+          ),
+        }));
+      };
 
-    if (tokenName.includes('color') || tokenName.includes('brand') || tokenName.includes('semantic') || tokenName.includes('surface') || tokenName.includes('text')) {
-      this.colorCategories.set(updateInCategory(this.colorCategories()));
-    } else if (tokenName.includes('font')) {
-      this.typographyCategories.set(updateInCategory(this.typographyCategories()));
-    } else {
-      this.spacingCategories.set(updateInCategory(this.spacingCategories()));
+      if (baseTokenName.includes('color') || baseTokenName.includes('brand') || baseTokenName.includes('semantic') || baseTokenName.includes('surface') || baseTokenName.includes('text')) {
+        this.colorCategories.set(updateInCategory(this.colorCategories()));
+      } else if (baseTokenName.includes('font')) {
+        this.typographyCategories.set(updateInCategory(this.typographyCategories()));
+      } else {
+        this.spacingCategories.set(updateInCategory(this.spacingCategories()));
+      }
     }
 
-    // Apply immediately to document
+    // Apply to document
     document.documentElement.style.setProperty(tokenName, value);
     
     // Record in history
-    if (recordHistory && oldValue !== value) {
+    if (oldValue !== value) {
       this.addToHistory(tokenName, oldValue, value);
     }
+  }
+
+  // Legacy method for backwards compatibility
+  protected updateToken(tokenName: string, value: string): void {
+    this.updateLightToken(tokenName, value);
   }
 
   protected resetTheme(): void {
@@ -1283,17 +1550,30 @@ export class ThemeBuilderComponent {
   }
 
   protected exportAsCSS(): void {
-    const allCategories = [
-      ...this.colorCategories(),
-      ...this.typographyCategories(),
-      ...this.spacingCategories(),
-    ];
+    const colorCategories = this.colorCategories();
+    const typographyCategories = this.typographyCategories();
+    const spacingCategories = this.spacingCategories();
+    const allCategories = [...colorCategories, ...typographyCategories, ...spacingCategories];
 
-    let css = ':root {\n';
+    let css = '/* Light Mode (Default) */\n:root {\n';
     allCategories.forEach(category => {
       css += `  /* ${category.name} */\n`;
       category.tokens.forEach(token => {
         css += `  ${token.name}: ${token.value};\n`;
+      });
+      css += '\n';
+    });
+    css += '}\n\n';
+    
+    css += '/* Dark Mode */\n:root[data-theme="dark"],\n[data-theme="dark"] {\n';
+    // Only export dark variants for color tokens
+    colorCategories.forEach(category => {
+      css += `  /* ${category.name} - Dark */\n`;
+      category.tokens.forEach(token => {
+        const darkValue = getComputedStyle(document.documentElement)
+          .getPropertyValue(`${token.name}-dark`)
+          .trim() || token.value;
+        css += `  ${token.name}: ${darkValue};\n`;
       });
       css += '\n';
     });
@@ -1304,40 +1584,71 @@ export class ThemeBuilderComponent {
   }
 
   protected exportAsJSON(): void {
-    const allCategories = [
-      ...this.colorCategories(),
-      ...this.typographyCategories(),
-      ...this.spacingCategories(),
-    ];
+    const colorCategories = this.colorCategories();
+    const typographyCategories = this.typographyCategories();
+    const spacingCategories = this.spacingCategories();
+    const allCategories = [...colorCategories, ...typographyCategories, ...spacingCategories];
 
-    const theme: Record<string, string> = {};
+    const themeLight: Record<string, string> = {};
+    const themeDark: Record<string, string> = {};
+    
+    // All tokens go into light theme
     allCategories.forEach(category => {
       category.tokens.forEach(token => {
-        theme[token.name] = token.value;
+        themeLight[token.name] = token.value;
+      });
+    });
+    
+    // Only color tokens get dark variants
+    colorCategories.forEach(category => {
+      category.tokens.forEach(token => {
+        const darkValue = getComputedStyle(document.documentElement)
+          .getPropertyValue(`${token.name}-dark`)
+          .trim() || token.value;
+        themeDark[token.name] = darkValue;
       });
     });
 
-    const json = JSON.stringify(theme, null, 2);
+    const fullTheme = {
+      light: themeLight,
+      dark: themeDark,
+    };
+
+    const json = JSON.stringify(fullTheme, null, 2);
     this.downloadFile('theme.json', json, 'application/json');
     this.closeExportModal();
   }
 
   protected exportAsTypeScript(): void {
-    const allCategories = [
-      ...this.colorCategories(),
-      ...this.typographyCategories(),
-      ...this.spacingCategories(),
-    ];
+    const colorCategories = this.colorCategories();
+    const typographyCategories = this.typographyCategories();
+    const spacingCategories = this.spacingCategories();
+    const allCategories = [...colorCategories, ...typographyCategories, ...spacingCategories];
 
     let ts = 'export const customTheme = {\n';
+    ts += '  light: {\n';
     allCategories.forEach(category => {
-      ts += `  // ${category.name}\n`;
+      ts += `    // ${category.name}\n`;
       category.tokens.forEach(token => {
-        const key = token.name.replace(/^--/, '').replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
-        ts += `  '${token.name}': '${token.value}',\n`;
+        ts += `    '${token.name}': '${token.value}',\n`;
       });
       ts += '\n';
     });
+    ts += '  },\n';
+    
+    ts += '  dark: {\n';
+    // Only color tokens get dark variants
+    colorCategories.forEach(category => {
+      ts += `    // ${category.name} - Dark\n`;
+      category.tokens.forEach(token => {
+        const darkValue = getComputedStyle(document.documentElement)
+          .getPropertyValue(`${token.name}-dark`)
+          .trim() || token.value;
+        ts += `    '${token.name}': '${darkValue}',\n`;
+      });
+      ts += '\n';
+    });
+    ts += '  },\n';
     ts += '};\n';
 
     this.downloadFile('theme.ts', ts, 'text/typescript');
@@ -1505,7 +1816,8 @@ export class ThemeBuilderComponent {
     if (!this.canUndo()) return;
     
     const entry = this.history[this.historyIndex];
-    this.updateToken(entry.tokenName, entry.oldValue, false);
+    const isDark = entry.tokenName.endsWith('-dark');
+    document.documentElement.style.setProperty(entry.tokenName, entry.oldValue);
     this.historyIndex--;
     this.updateHistoryButtons();
   }
@@ -1515,7 +1827,8 @@ export class ThemeBuilderComponent {
     
     this.historyIndex++;
     const entry = this.history[this.historyIndex];
-    this.updateToken(entry.tokenName, entry.newValue, false);
+    const isDark = entry.tokenName.endsWith('-dark');
+    document.documentElement.style.setProperty(entry.tokenName, entry.newValue);
     this.updateHistoryButtons();
   }
 
@@ -1529,11 +1842,24 @@ export class ThemeBuilderComponent {
   }
 
   private updateAccessibilityChecks(): void {
-    const bg = this.getComputedToken('--semantic-surface-background');
-    const card = this.getComputedToken('--semantic-surface-card');
-    const primary = this.getComputedToken('--semantic-text-primary');
-    const secondary = this.getComputedToken('--semantic-text-secondary');
-    const brandPrimary = this.getComputedToken('--semantic-brand-primary');
+    const isDark = this.isPreviewingDark();
+    
+    // Get appropriate token values based on preview mode
+    const getTokenValue = (tokenName: string): string => {
+      if (isDark) {
+        const darkValue = getComputedStyle(document.documentElement)
+          .getPropertyValue(`${tokenName}-dark`)
+          .trim();
+        return darkValue || this.getComputedToken(tokenName);
+      }
+      return this.getComputedToken(tokenName);
+    };
+    
+    const bg = getTokenValue('--semantic-surface-background');
+    const card = getTokenValue('--semantic-surface-card');
+    const primary = getTokenValue('--semantic-text-primary');
+    const secondary = getTokenValue('--semantic-text-secondary');
+    const brandPrimary = getTokenValue('--semantic-brand-primary');
     
     const checks = [
       {
@@ -1574,6 +1900,59 @@ export class ThemeBuilderComponent {
     ];
     
     this.contrastChecks.set(checks);
+  }
+
+  // Preview Mode Toggle (for live preview panel only)
+  protected togglePreviewMode(): void {
+    this.previewMode.update(mode => mode === 'light' ? 'dark' : 'light');
+    // Update accessibility checks for the current preview mode
+    this.updateAccessibilityChecks();
+  }
+
+  // Set specific preview mode
+  protected setPreviewMode(mode: 'light' | 'dark'): void {
+    this.previewMode.set(mode);
+    // Update accessibility checks for the current preview mode
+    this.updateAccessibilityChecks();
+  }
+
+  // Get dark mode token value
+  protected getDarkTokenValue(tokenName: string): string {
+    const darkTokenName = `${tokenName}-dark`;
+    let darkValue = getComputedStyle(document.documentElement)
+      .getPropertyValue(darkTokenName)
+      .trim();
+    
+    // If no dark value after initialization, get it from the stored property
+    if (!darkValue) {
+      darkValue = document.documentElement.style.getPropertyValue(darkTokenName).trim();
+    }
+    
+    // Fallback to light token if dark doesn't exist
+    return darkValue || this.getComputedToken(tokenName);
+  }
+
+  // Update light mode token
+  protected updateLightToken(tokenName: string, value: string): void {
+    this.updateTokenDirect(tokenName, value, false);
+  }
+
+  // Update dark mode token
+  protected updateDarkToken(tokenName: string, value: string): void {
+    const darkTokenName = `${tokenName}-dark`;
+    
+    // Get old value for history
+    const oldValue = getComputedStyle(document.documentElement)
+      .getPropertyValue(darkTokenName)
+      .trim();
+    
+    // Apply to document root
+    document.documentElement.style.setProperty(darkTokenName, value);
+    
+    // Record in history
+    if (oldValue !== value) {
+      this.addToHistory(darkTokenName, oldValue, value);
+    }
   }
 
   // Color Generator Methods

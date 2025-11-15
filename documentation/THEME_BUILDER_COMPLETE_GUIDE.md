@@ -8,11 +8,12 @@ The Theme Builder is a comprehensive, professional-grade theme customization too
 
 ## All Features Status
 
-### ✅ 1. Theme Presets (6 Pre-Made Themes)
+### ✅ 1. Theme Presets (7 Pre-Made Themes)
 
 **Available Presets:**
 - Material Design
 - Bootstrap
+- Dark
 - Minimal
 - High Contrast (WCAG AAA)
 - Ocean
@@ -566,7 +567,7 @@ parseCSSVariables(css: string): Record<string, string> // Regex extraction
 
 The Theme Builder is a **complete, production-ready** theme customization tool with all 6 advanced features:
 
-✅ **Theme Presets** - 6 pre-made themes  
+✅ **Theme Presets** - 7 pre-made themes (including Dark mode)  
 ✅ **Undo/Redo** - 50-entry history with keyboard shortcuts  
 ✅ **Import** - JSON/CSS file upload  
 ✅ **Accessibility Checker** - WCAG contrast ratio validation  

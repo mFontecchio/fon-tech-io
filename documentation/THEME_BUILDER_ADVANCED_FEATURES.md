@@ -8,7 +8,7 @@ The Theme Builder has been enhanced with advanced features that provide professi
 
 ### ✅ 1. Theme Presets
 
-**6 Pre-Made Themes:**
+**7 Pre-Made Themes:**
 
 1. **Material Design** - Inspired by Google Material Design
    - Vibrant blues (#1976d2)
@@ -20,22 +20,28 @@ The Theme Builder has been enhanced with advanced features that provide professi
    - Helvetica Neue font stack
    - Bootstrap-style borders
 
-3. **Minimal** - Clean and modern
+3. **Dark** - Modern dark theme
+   - Optimized for low-light environments
+   - Slate blue backgrounds (#0f172a, #1e293b)
+   - Bright blue accents (#60a5fa)
+   - WCAG AA compliant contrast
+
+4. **Minimal** - Clean and modern
    - Pure black/white contrast
    - Inter font family
    - Subtle grays
 
-4. **High Contrast** - Maximum accessibility
+5. **High Contrast** - Maximum accessibility
    - WCAG AAA compliance
    - Larger spacing and text
    - High contrast ratios
 
-5. **Ocean** - Calm and serene
+6. **Ocean** - Calm and serene
    - Teal and cyan tones
    - Open Sans font
    - Soft, rounded aesthetics
 
-6. **Sunset** - Warm and vibrant
+7. **Sunset** - Warm and vibrant
    - Orange and red tones
    - Poppins font family
    - Bold, energetic feel
