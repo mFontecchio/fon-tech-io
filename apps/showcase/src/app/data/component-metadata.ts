@@ -1171,7 +1171,6 @@ const MODAL_METADATA: ComponentMetadata = {
     { name: 'closeOnEsc', type: 'boolean', description: 'Close on Escape key press', defaultValue: 'true' },
   ],
   outputs: [
-    { name: 'openChange', type: 'boolean', description: 'Emitted when open state changes' },
     { name: 'closed', type: 'void', description: 'Emitted when modal is closed' },
   ],
   examples: [

@@ -913,6 +913,9 @@ import {
                 <div style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;">Item 1</div>
                 <div style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;">Item 2</div>
                 <div style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;">Item 3</div>
+                <div style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;">Item 4</div>
+                <div style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;">Item 5</div>
+                <div style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;">Item 6</div>
               </ui-grid>
             }
             @if (exampleTitle() === '4-Column Grid') {
@@ -921,6 +924,10 @@ import {
                 <div style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;">Item 2</div>
                 <div style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;">Item 3</div>
                 <div style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;">Item 4</div>
+                <div style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;">Item 5</div>
+                <div style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;">Item 6</div>
+                <div style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;">Item 7</div>
+                <div style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;">Item 8</div>
               </ui-grid>
             }
           }
@@ -930,7 +937,7 @@ import {
             @if (exampleTitle() === 'Basic Modal') {
               <div>
                 <ui-button (clicked)="isOpen.set(true)">Open Modal</ui-button>
-                <ui-modal [open]="isOpen()" (closeModal)="isOpen.set(false)">
+                <ui-modal [open]="isOpen()" (closed)="isOpen.set(false)">
                   <h2>Modal Title</h2>
                   <p>This is a basic modal dialog. Click outside or press Escape to close.</p>
                   <ui-button (clicked)="isOpen.set(false)">Close</ui-button>
@@ -940,7 +947,7 @@ import {
             @if (exampleTitle() === 'Modal Sizes') {
               <div class="demo-row">
                 <ui-button size="sm" (clicked)="isOpen.set(true)">Small Modal</ui-button>
-                <ui-modal [open]="isOpen()" size="sm" (closeModal)="isOpen.set(false)">
+                <ui-modal [open]="isOpen()" size="sm" (closed)="isOpen.set(false)">
                   <h3>Small Modal</h3>
                   <p>Compact modal for simple messages.</p>
                 </ui-modal>
@@ -949,7 +956,7 @@ import {
             @if (exampleTitle() === 'Modal without Backdrop Close') {
               <div>
                 <ui-button (clicked)="isOpen.set(true)">Open Modal</ui-button>
-                <ui-modal [open]="isOpen()" [closeOnBackdropClick]="false" (closeModal)="isOpen.set(false)">
+                <ui-modal [open]="isOpen()" [closeOnBackdropClick]="false" (closed)="isOpen.set(false)">
                   <h2>Important Modal</h2>
                   <p>This modal can only be closed by clicking the button.</p>
                   <ui-button (clicked)="isOpen.set(false)">Close Modal</ui-button>
@@ -1037,7 +1044,7 @@ import {
             @if (exampleTitle() === 'Navigation Drawer') {
               <div>
                 <ui-button (clicked)="showSettings.set(true)">Open Drawer</ui-button>
-                <ui-drawer [open]="showSettings()" position="left" (close)="showSettings.set(false)">
+                <ui-drawer [open]="showSettings()" position="left" (openChange)="showSettings.set($event)">
                   <h3>Navigation</h3>
                   <p>Drawer content goes here.</p>
                 </ui-drawer>
@@ -1046,7 +1053,7 @@ import {
             @if (exampleTitle() === 'Right Drawer') {
               <div>
                 <ui-button (clicked)="showSettings.set(true)">Open Right Drawer</ui-button>
-                <ui-drawer [open]="showSettings()" position="right" (close)="showSettings.set(false)">
+                <ui-drawer [open]="showSettings()" position="right" (openChange)="showSettings.set($event)">
                   <h3>Settings</h3>
                   <p>Drawer on the right side.</p>
                 </ui-drawer>
@@ -1055,7 +1062,7 @@ import {
             @if (exampleTitle() === 'Drawer Sizes') {
               <div>
                 <ui-button (clicked)="showSettings.set(true)">Open Small Drawer</ui-button>
-                <ui-drawer [open]="showSettings()" size="sm" (close)="showSettings.set(false)">
+                <ui-drawer [open]="showSettings()" size="sm" (openChange)="showSettings.set($event)">
                   <h3>Small Drawer</h3>
                   <p>Compact drawer for quick actions.</p>
                 </ui-drawer>
@@ -1136,7 +1143,12 @@ import {
               </ui-table>
             }
             @if (exampleTitle() === 'Selectable Table') {
-              <ui-table [columns]="columns()" [data]="users()">
+              <ui-table 
+                [columns]="columns()" 
+                [data]="users()"
+                [selectable]="true"
+                (selectionChange)="handleSelectionChange($event)"
+              >
               </ui-table>
             }
           }
@@ -1481,6 +1493,14 @@ export class ComponentDemoComponent {
    */
   protected showActionToast(): void {
     this.toastService.success('Changes saved successfully');
+  }
+
+  /**
+   * Handle table selection change
+   */
+  protected handleSelectionChange(selectedIndices: number[]): void {
+    console.log('Selected rows:', selectedIndices);
+    this.toastService.info(`${selectedIndices.length} row(s) selected`);
   }
 }
 

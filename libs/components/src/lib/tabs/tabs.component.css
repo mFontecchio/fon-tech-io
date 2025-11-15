@@ -33,6 +33,8 @@
   border-bottom: none;
   border-right: 1px solid var(--semantic-border-subtle);
   min-width: 200px;
+  flex-shrink: 0;
+  align-items: stretch;
 }
 
 .ui-tabs--full-width .ui-tabs-list {
@@ -146,19 +148,25 @@
 .ui-tabs-indicator {
   position: absolute;
   background-color: var(--semantic-brand-primary);
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 0; /* Keep indicator behind text */
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              top 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 0;
+  pointer-events: none;
+  will-change: left, top, width, height;
 }
 
 .ui-tabs--horizontal .ui-tabs-indicator {
   bottom: 0;
-  left: 0;
+  right: auto;
   height: 2px;
 }
 
 .ui-tabs--vertical .ui-tabs-indicator {
   right: 0;
-  top: 0;
+  left: auto !important;
+  bottom: auto;
   width: 2px;
 }
 
@@ -167,12 +175,20 @@
 .ui-tabs-panels {
   flex: 1;
   min-width: 0;
+  overflow: hidden;
+}
+
+.ui-tabs--vertical .ui-tabs-panels {
+  width: 100%;
+  max-width: 100%;
 }
 
 .ui-tab-panel {
   display: none;
   padding: var(--primitive-spacing-4);
   animation: ui-tab-fade-in 0.2s ease-out;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .ui-tab-panel--active {
@@ -201,7 +217,10 @@
 /* Reduced motion support */
 
 @media (prefers-reduced-motion: reduce) {
-  .ui-tab-button,
+  .ui-tab-button {
+    transition: none;
+  }
+
   .ui-tabs-indicator {
     transition: none;
   }

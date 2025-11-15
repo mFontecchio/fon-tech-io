@@ -1,10 +1,5 @@
 @if (label() && orientation() === 'horizontal') {
-  <div [ngClass]="dividerClasses()">
-    <span class="ui-divider-line"></span>
-    <span class="ui-divider-label">{{ label() }}</span>
-    <span class="ui-divider-line"></span>
-  </div>
-} @else {
-  <div [ngClass]="dividerClasses()"></div>
+  <span class="ui-divider-line"></span>
+  <span class="ui-divider-label">{{ label() }}</span>
+  <span class="ui-divider-line"></span>
 }
-

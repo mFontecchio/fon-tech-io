@@ -14,6 +14,9 @@ import {
   signal,
   contentChildren,
   effect,
+  viewChildren,
+  ElementRef,
+  afterNextRender,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TabComponent } from './tab.component';
@@ -65,9 +68,24 @@ export class TabsComponent {
   protected readonly tabs = contentChildren(TabComponent);
 
   /**
+   * Tab button elements
+   */
+  protected readonly tabButtons = viewChildren<ElementRef<HTMLButtonElement>>('tabButton');
+
+  /**
    * Internal active index
    */
   protected readonly internalActiveIndex = signal(0);
+
+  /**
+   * Indicator position (left or top depending on orientation)
+   */
+  protected readonly indicatorPosition = signal(0);
+
+  /**
+   * Indicator size (width or height depending on orientation)
+   */
+  protected readonly indicatorSize = signal(0);
 
   /**
    * Computed CSS classes
@@ -105,6 +123,57 @@ export class TabsComponent {
         tab.setIndex(index);
       });
     });
+
+    // Update indicator position and size when active index changes
+    effect(() => {
+      // Track the active index change
+      const activeIdx = this.internalActiveIndex();
+      
+      // Only update after DOM is ready
+      if (this.tabButtons().length > 0) {
+        setTimeout(() => {
+          this.updateIndicator();
+        }, 0);
+      }
+    });
+    
+    // Initial calculation after first render
+    afterNextRender(() => {
+      setTimeout(() => {
+        this.updateIndicator();
+      }, 10);
+    });
+  }
+
+  /**
+   * Update indicator position and size based on active tab button
+   */
+  private updateIndicator(): void {
+    const activeIdx = this.internalActiveIndex();
+    const buttons = this.tabButtons();
+    const isHorizontal = this.orientation() === 'horizontal';
+
+    if (buttons && buttons.length > 0 && buttons[activeIdx]) {
+      const button = buttons[activeIdx].nativeElement;
+
+      if (button) {
+        if (isHorizontal) {
+          // For horizontal tabs, position from left and use width
+          const position = button.offsetLeft;
+          const size = button.offsetWidth;
+          
+          this.indicatorPosition.set(position);
+          this.indicatorSize.set(size);
+        } else {
+          // For vertical tabs, position from top and use height
+          const position = button.offsetTop;
+          const size = button.offsetHeight;
+          
+          this.indicatorPosition.set(position);
+          this.indicatorSize.set(size);
+        }
+      }
+    }
   }
 
   /**
@@ -117,6 +186,11 @@ export class TabsComponent {
     if (tab && !tab.disabled()) {
       this.internalActiveIndex.set(index);
       this.activeIndexChange.emit(index);
+      
+      // Manually trigger indicator update
+      setTimeout(() => {
+        this.updateIndicator();
+      }, 0);
     }
   }
 
