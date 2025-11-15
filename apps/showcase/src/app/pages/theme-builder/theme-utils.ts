@@ -247,3 +247,26 @@ export function darkenColor(hex: string, percent: number): string {
   return rgbToHex(r, g, b);
 }
 
+/**
+ * Generate shades of a color (lighter to darker)
+ */
+export function generateShades(hex: string, count: number = 5): string[] {
+  const shades: string[] = [];
+  const step = 100 / (count + 1);
+  
+  for (let i = 1; i <= count; i++) {
+    if (i < Math.ceil(count / 2)) {
+      // Lighter shades
+      shades.push(lightenColor(hex, step * (Math.ceil(count / 2) - i)));
+    } else if (i === Math.ceil(count / 2)) {
+      // Base color
+      shades.push(hex);
+    } else {
+      // Darker shades
+      shades.push(darkenColor(hex, step * (i - Math.ceil(count / 2))));
+    }
+  }
+  
+  return shades;
+}
+

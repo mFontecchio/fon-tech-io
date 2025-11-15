@@ -5,10 +5,12 @@
 
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   signal,
   computed,
   effect,
+  HostListener,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -30,6 +32,11 @@ import {
   deleteTheme,
   parseCSSVariables,
   isValidHexColor,
+  getComplementaryColor,
+  getAnalogousColors,
+  lightenColor,
+  darkenColor,
+  generateShades,
 } from './theme-utils';
 
 interface ThemeToken {
@@ -45,6 +52,13 @@ interface ThemeCategory {
   name: string;
   description: string;
   tokens: ThemeToken[];
+}
+
+interface HistoryEntry {
+  tokenName: string;
+  oldValue: string;
+  newValue: string;
+  timestamp: number;
 }
 
 @Component({
@@ -69,11 +83,55 @@ interface ThemeCategory {
           <p class="subtitle">Customize design tokens and see changes in real-time</p>
         </div>
         <div class="header-actions">
+          <div class="history-buttons">
+            <ui-button
+              variant="outlined"
+              size="sm"
+              (clicked)="undo()"
+              [disabled]="!canUndo()"
+              title="Undo (Ctrl+Z)"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 7v6h6" />
+                <path d="M21 17a9 9 0 00-9-9 9 9 0 00-6 2.3L3 13" />
+              </svg>
+            </ui-button>
+            <ui-button
+              variant="outlined"
+              size="sm"
+              (clicked)="redo()"
+              [disabled]="!canRedo()"
+              title="Redo (Ctrl+Y)"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 7v6h-6" />
+                <path d="M3 17a9 9 0 019-9 9 9 0 016 2.3l3 2.7" />
+              </svg>
+            </ui-button>
+          </div>
+          <ui-button variant="outlined" (clicked)="toggleAccessibilityChecker()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; vertical-align: middle;">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 16v-4" />
+              <path d="M12 8h.01" />
+            </svg>
+            A11y Check
+          </ui-button>
+          <ui-button variant="outlined" (clicked)="toggleColorGenerator()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; vertical-align: middle;">
+              <circle cx="13.5" cy="6.5" r=".5" />
+              <circle cx="17.5" cy="10.5" r=".5" />
+              <circle cx="8.5" cy="7.5" r=".5" />
+              <circle cx="6.5" cy="12.5" r=".5" />
+              <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z" />
+            </svg>
+            Colors
+          </ui-button>
           <ui-button variant="outlined" (clicked)="resetTheme()">
-            Reset to Default
+            Reset
           </ui-button>
           <ui-button variant="filled" (clicked)="exportTheme()">
-            Export Theme
+            Export
           </ui-button>
         </div>
       </div>
@@ -379,6 +437,108 @@ interface ThemeCategory {
         </div>
       }
 
+      <!-- Accessibility Checker Panel -->
+      @if (showAccessibilityChecker()) {
+        <div class="utility-panel">
+          <ui-card>
+            <div class="panel-header">
+              <h2>Accessibility Checker</h2>
+              <button class="close-panel-btn" (click)="toggleAccessibilityChecker()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+            <p class="panel-description">Check contrast ratios for WCAG compliance</p>
+            
+            <div class="contrast-checks">
+              @for (check of contrastChecks(); track check.label) {
+                <div class="contrast-check-item">
+                  <div class="contrast-info">
+                    <span class="contrast-label">{{ check.label }}</span>
+                    <div class="color-samples">
+                      <span class="color-sample" [style.background-color]="check.foreground">A</span>
+                      <span class="color-sample" [style.background-color]="check.background">A</span>
+                    </div>
+                  </div>
+                  <div class="contrast-result">
+                    <span class="contrast-ratio">{{ check.ratio.toFixed(2) }}:1</span>
+                    <ui-badge 
+                      [variant]="check.level === 'AAA' ? 'success' : check.level === 'AA' ? 'warning' : 'error'"
+                    >
+                      {{ check.level }}
+                    </ui-badge>
+                  </div>
+                </div>
+              }
+            </div>
+            
+            <div class="wcag-info">
+              <h4>WCAG Standards:</h4>
+              <ul>
+                <li><strong>AAA:</strong> 7:1 for normal text, 4.5:1 for large text</li>
+                <li><strong>AA:</strong> 4.5:1 for normal text, 3:1 for large text</li>
+                <li><strong>Fail:</strong> Does not meet minimum standards</li>
+              </ul>
+            </div>
+          </ui-card>
+        </div>
+      }
+
+      <!-- Color Generator Panel -->
+      @if (showColorGenerator()) {
+        <div class="utility-panel">
+          <ui-card>
+            <div class="panel-header">
+              <h2>Color Palette Generator</h2>
+              <button class="close-panel-btn" (click)="toggleColorGenerator()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+            <p class="panel-description">Generate harmonious color schemes</p>
+            
+            <div class="color-generator-controls">
+              <ui-input
+                [value]="baseColorForGeneration"
+                (valueChange)="baseColorForGeneration = $event"
+                label="Base Color"
+                placeholder="#3b82f6"
+              />
+              <div class="generator-buttons">
+                <ui-button variant="outlined" size="sm" (clicked)="generateComplementary()">
+                  Complementary
+                </ui-button>
+                <ui-button variant="outlined" size="sm" (clicked)="generateAnalogous()">
+                  Analogous
+                </ui-button>
+                <ui-button variant="outlined" size="sm" (clicked)="generateShades()">
+                  Shades
+                </ui-button>
+              </div>
+            </div>
+            
+            @if (generatedColors().length > 0) {
+              <div class="generated-colors">
+                <h4>Generated Colors:</h4>
+                <div class="generated-color-grid">
+                  @for (color of generatedColors(); track color) {
+                    <div class="generated-color-item" (click)="copyColorToClipboard(color)">
+                      <div class="generated-color-preview" [style.background-color]="color"></div>
+                      <span class="generated-color-value">{{ color }}</span>
+                    </div>
+                  }
+                </div>
+                <p class="hint">Click any color to copy to clipboard</p>
+              </div>
+            }
+          </ui-card>
+        </div>
+      }
+
       <!-- Hidden file input for import -->
       <input
         type="file"
@@ -416,7 +576,123 @@ interface ThemeCategory {
     .header-actions {
       display: flex;
       gap: var(--primitive-spacing-3);
+      align-items: center;
+      flex-wrap: wrap;
     }
+
+    .history-buttons {
+      display: flex;
+      gap: var(--primitive-spacing-1);
+    }
+    .header-actions ui-button svg{vertical-align:middle}
+
+    /* Utility Panels (Accessibility Checker & Color Generator) */
+    .utility-panel {
+      position: fixed;
+      top: 80px;
+      right: var(--primitive-spacing-6);
+      width: 400px;
+      max-height: calc(100vh - 120px);
+      overflow-y: auto;
+      z-index: 100;
+      background: var(--semantic-surface-card);
+      border: 1px solid var(--semantic-border-default);
+      border-radius: var(--primitive-border-radius-lg);
+      box-shadow: var(--primitive-shadow-lg);
+      animation: slideInRight 0.3s ease-out;
+    }
+    
+    .utility-panel ui-card {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+    }
+
+    .utility-panel ::ng-deep ui-input,
+    .utility-panel ::ng-deep ui-button {
+      display: block !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
+    
+    .utility-panel ::ng-deep ui-input input {
+      display: block !important;
+    }
+    
+    .utility-panel .generator-buttons ui-button {
+      flex: 1 1 auto;
+      min-width: 100px;
+    }
+
+    @keyframes slideInRight {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--primitive-spacing-3);
+    }
+
+    .panel-header h2 {
+      font-size: var(--primitive-font-size-lg);
+      margin: 0;
+    }
+
+    .close-panel-btn {
+      padding: var(--primitive-spacing-2);
+      border: none;
+      background: transparent;
+      color: var(--semantic-text-secondary);
+      cursor: pointer;
+      border-radius: var(--primitive-border-radius-sm);
+      transition: all 0.2s;
+    }
+
+    .close-panel-btn:hover {
+      background-color: var(--semantic-surface-subtle);
+      color: var(--semantic-text-primary);
+    }
+
+    .panel-description {
+      font-size: var(--primitive-font-size-sm);
+      color: var(--semantic-text-secondary);
+      margin-bottom: var(--primitive-spacing-4);
+    }
+
+    /* Accessibility Checker Styles */
+    .contrast-checks{display:flex;flex-direction:column;gap:var(--primitive-spacing-3);margin-bottom:var(--primitive-spacing-4)}
+    .contrast-check-item{display:flex;justify-content:space-between;align-items:center;padding:var(--primitive-spacing-3);border:1px solid var(--semantic-border-default);border-radius:var(--primitive-border-radius-md)}
+    .contrast-info{flex:1}
+    .contrast-label{font-size:var(--primitive-font-size-sm);font-weight:600;display:block;margin-bottom:var(--primitive-spacing-2)}
+    .color-samples{display:flex;gap:var(--primitive-spacing-2)}
+    .color-sample{width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:var(--primitive-border-radius-sm);font-weight:600;box-shadow:var(--primitive-shadow-sm)}
+    .contrast-result{display:flex;flex-direction:column;align-items:flex-end;gap:var(--primitive-spacing-1)}
+    .contrast-ratio{font-size:var(--primitive-font-size-sm);font-weight:600;color:var(--semantic-text-primary)}
+    .wcag-info{padding:var(--primitive-spacing-3);background:var(--semantic-surface-subtle);border-radius:var(--primitive-border-radius-md)}
+    .wcag-info h4{font-size:var(--primitive-font-size-sm);margin-bottom:var(--primitive-spacing-2)}
+    .wcag-info ul{list-style:none;padding:0;margin:0}
+    .wcag-info li{font-size:var(--primitive-font-size-xs);color:var(--semantic-text-secondary);margin-bottom:var(--primitive-spacing-1)}
+
+    /* Color Generator Styles */
+    .color-generator-controls{margin-bottom:var(--primitive-spacing-4)}
+    .color-generator-controls ui-input{display:block;width:100%}
+    .generator-buttons{display:flex;gap:var(--primitive-spacing-2);margin-top:var(--primitive-spacing-3);flex-wrap:wrap}
+    .generated-colors h4{font-size:var(--primitive-font-size-md);margin-bottom:var(--primitive-spacing-3)}
+    .generated-color-grid{display:grid;grid-template-columns:1fr;gap:var(--primitive-spacing-2);margin-bottom:var(--primitive-spacing-2)}
+    .generated-color-item{display:flex;align-items:center;gap:var(--primitive-spacing-3);padding:var(--primitive-spacing-2);border:1px solid var(--semantic-border-default);border-radius:var(--primitive-border-radius-md);cursor:pointer;transition:all .2s}
+    .generated-color-item:hover{border-color:var(--semantic-brand-primary);background:var(--semantic-surface-subtle)}
+    .generated-color-preview{width:48px;height:48px;border-radius:var(--primitive-border-radius-md);box-shadow:var(--primitive-shadow-sm)}
+    .generated-color-value{font-family:monospace;font-size:var(--primitive-font-size-sm);color:var(--semantic-text-primary)}
+    .hint{font-size:var(--primitive-font-size-xs);color:var(--semantic-text-tertiary);text-align:center;font-style:italic}
 
     /* Presets Section */
     .presets-section {
@@ -782,11 +1058,28 @@ interface ThemeCategory {
 export class ThemeBuilderComponent {
   protected readonly showExportModal = signal(false);
   protected readonly showSaveModal = signal(false);
+  protected readonly showAccessibilityChecker = signal(false);
+  protected readonly showColorGenerator = signal(false);
   protected saveThemeName = '';
   protected readonly themePresets = THEME_PRESETS;
   protected readonly savedThemes = signal<
     Array<{ name: string; tokens: Record<string, string>; createdAt: string }>
   >([]);
+  
+  // Undo/Redo History
+  private readonly history: HistoryEntry[] = [];
+  private historyIndex = -1;
+  protected readonly canUndo = signal(false);
+  protected readonly canRedo = signal(false);
+  
+  // Accessibility Checker
+  protected readonly contrastChecks = signal<
+    Array<{ label: string; foreground: string; background: string; ratio: number; level: string }>
+  >([]);
+  
+  // Color Generator
+  protected readonly generatedColors = signal<string[]>([]);
+  protected baseColorForGeneration = '#3b82f6';
   
   // Theme tokens organized by category
   protected readonly colorCategories = signal<ThemeCategory[]>([
@@ -895,6 +1188,9 @@ export class ThemeBuilderComponent {
     // Load saved themes from localStorage
     this.loadSavedThemesList();
     
+    // Initialize accessibility checks
+    this.updateAccessibilityChecks();
+    
     // Apply token changes to document root
     effect(() => {
       const allCategories = [
@@ -908,7 +1204,25 @@ export class ThemeBuilderComponent {
           document.documentElement.style.setProperty(token.name, token.value);
         });
       });
+      
+      // Update accessibility checks when colors change
+      this.updateAccessibilityChecks();
     });
+  }
+
+  // Keyboard shortcuts
+  @HostListener('window:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent): void {
+    if ((event.ctrlKey || event.metaKey) && event.key === 'z' && !event.shiftKey) {
+      event.preventDefault();
+      this.undo();
+    } else if (
+      ((event.ctrlKey || event.metaKey) && event.key === 'y') ||
+      ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key === 'z')
+    ) {
+      event.preventDefault();
+      this.redo();
+    }
   }
 
   private getComputedToken(tokenName: string): string {
@@ -924,7 +1238,10 @@ export class ThemeBuilderComponent {
       .replace(/\b\w/g, l => l.toUpperCase());
   }
 
-  protected updateToken(tokenName: string, value: string): void {
+  protected updateToken(tokenName: string, value: string, recordHistory: boolean = true): void {
+    // Get old value for history
+    const oldValue = this.getComputedToken(tokenName);
+    
     // Update the token value in all categories
     const updateInCategory = (categories: ThemeCategory[]) => {
       return categories.map(category => ({
@@ -945,6 +1262,11 @@ export class ThemeBuilderComponent {
 
     // Apply immediately to document
     document.documentElement.style.setProperty(tokenName, value);
+    
+    // Record in history
+    if (recordHistory && oldValue !== value) {
+      this.addToHistory(tokenName, oldValue, value);
+    }
   }
 
   protected resetTheme(): void {
@@ -1149,5 +1471,156 @@ export class ThemeBuilderComponent {
   protected formatDate(dateString: string): string {
     const date = new Date(dateString);
     return date.toLocaleDateString();
+  }
+
+  // Undo/Redo Methods
+  private addToHistory(tokenName: string, oldValue: string, newValue: string): void {
+    // Remove any entries after current history index
+    this.history.splice(this.historyIndex + 1);
+    
+    // Add new entry
+    this.history.push({
+      tokenName,
+      oldValue,
+      newValue,
+      timestamp: Date.now(),
+    });
+    
+    // Limit history to 50 entries
+    if (this.history.length > 50) {
+      this.history.shift();
+    } else {
+      this.historyIndex++;
+    }
+    
+    this.updateHistoryButtons();
+  }
+
+  private updateHistoryButtons(): void {
+    this.canUndo.set(this.historyIndex >= 0);
+    this.canRedo.set(this.historyIndex < this.history.length - 1);
+  }
+
+  protected undo(): void {
+    if (!this.canUndo()) return;
+    
+    const entry = this.history[this.historyIndex];
+    this.updateToken(entry.tokenName, entry.oldValue, false);
+    this.historyIndex--;
+    this.updateHistoryButtons();
+  }
+
+  protected redo(): void {
+    if (!this.canRedo()) return;
+    
+    this.historyIndex++;
+    const entry = this.history[this.historyIndex];
+    this.updateToken(entry.tokenName, entry.newValue, false);
+    this.updateHistoryButtons();
+  }
+
+  // Accessibility Checker Methods
+  protected toggleAccessibilityChecker(): void {
+    this.showAccessibilityChecker.update(v => !v);
+    if (this.showAccessibilityChecker()) {
+      this.showColorGenerator.set(false);
+      this.updateAccessibilityChecks();
+    }
+  }
+
+  private updateAccessibilityChecks(): void {
+    const bg = this.getComputedToken('--semantic-surface-background');
+    const card = this.getComputedToken('--semantic-surface-card');
+    const primary = this.getComputedToken('--semantic-text-primary');
+    const secondary = this.getComputedToken('--semantic-text-secondary');
+    const brandPrimary = this.getComputedToken('--semantic-brand-primary');
+    
+    const checks = [
+      {
+        label: 'Primary Text on Background',
+        foreground: primary,
+        background: bg,
+        ratio: getContrastRatio(primary, bg),
+        level: getWCAGLevel(getContrastRatio(primary, bg), 'normal'),
+      },
+      {
+        label: 'Primary Text on Card',
+        foreground: primary,
+        background: card,
+        ratio: getContrastRatio(primary, card),
+        level: getWCAGLevel(getContrastRatio(primary, card), 'normal'),
+      },
+      {
+        label: 'Secondary Text on Background',
+        foreground: secondary,
+        background: bg,
+        ratio: getContrastRatio(secondary, bg),
+        level: getWCAGLevel(getContrastRatio(secondary, bg), 'normal'),
+      },
+      {
+        label: 'Brand Primary on Background',
+        foreground: brandPrimary,
+        background: bg,
+        ratio: getContrastRatio(brandPrimary, bg),
+        level: getWCAGLevel(getContrastRatio(brandPrimary, bg), 'normal'),
+      },
+      {
+        label: 'White Text on Brand Primary',
+        foreground: '#ffffff',
+        background: brandPrimary,
+        ratio: getContrastRatio('#ffffff', brandPrimary),
+        level: getWCAGLevel(getContrastRatio('#ffffff', brandPrimary), 'normal'),
+      },
+    ];
+    
+    this.contrastChecks.set(checks);
+  }
+
+  // Color Generator Methods
+  protected toggleColorGenerator(): void {
+    this.showColorGenerator.update(v => !v);
+    if (this.showColorGenerator()) {
+      this.showAccessibilityChecker.set(false);
+      // Force re-render of child components after animation starts
+      setTimeout(() => {
+        this.baseColorForGeneration = this.baseColorForGeneration || '#3b82f6';
+      }, 0);
+    }
+  }
+
+  protected generateComplementary(): void {
+    if (!isValidHexColor(this.baseColorForGeneration)) {
+      alert('Please enter a valid hex color (e.g., #3b82f6)');
+      return;
+    }
+    
+    const complementary = getComplementaryColor(this.baseColorForGeneration);
+    this.generatedColors.set([this.baseColorForGeneration, complementary]);
+  }
+
+  protected generateAnalogous(): void {
+    if (!isValidHexColor(this.baseColorForGeneration)) {
+      alert('Please enter a valid hex color (e.g., #3b82f6)');
+      return;
+    }
+    
+    const analogous = getAnalogousColors(this.baseColorForGeneration);
+    this.generatedColors.set(analogous);
+  }
+
+  protected generateShades(): void {
+    if (!isValidHexColor(this.baseColorForGeneration)) {
+      alert('Please enter a valid hex color (e.g., #3b82f6)');
+      return;
+    }
+    
+    const shades = generateShades(this.baseColorForGeneration, 7);
+    this.generatedColors.set(shades);
+  }
+
+  protected copyColorToClipboard(color: string): void {
+    navigator.clipboard.writeText(color).then(() => {
+      alert(`Copied ${color} to clipboard!`);
+    });
   }
 }
