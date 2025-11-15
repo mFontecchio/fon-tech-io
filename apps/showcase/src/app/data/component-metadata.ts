@@ -1453,13 +1453,14 @@ const DRAWER_METADATA: ComponentMetadata = {
   ],
   outputs: [
     { name: 'openChange', type: 'boolean', description: 'Emitted when open state changes' },
+    { name: 'closed', type: 'void', description: 'Emitted when drawer is closed' },
   ],
   examples: [
     {
-      title: 'Navigation Drawer',
-      description: 'Side panel for navigation menu',
+      title: 'Left Drawer',
+      description: 'Navigation drawer sliding from left',
       typescript: `protected isOpen = signal(false);`,
-      template: `<button (click)="isOpen.set(true)">Open Menu</button>
+      template: `<button (click)="isOpen.set(true)">Open Navigation</button>
 <ui-drawer [open]="isOpen()" title="Navigation" position="left" (openChange)="isOpen.set($event)">
   <nav>
     <a href="/dashboard">Dashboard</a>
@@ -1470,17 +1471,56 @@ const DRAWER_METADATA: ComponentMetadata = {
     },
     {
       title: 'Right Drawer',
-      description: 'Settings or info panel from right',
+      description: 'Settings or filters drawer from right',
       typescript: `protected showSettings = signal(false);`,
-      template: `<ui-drawer [open]="showSettings()" title="Settings" position="right">
+      template: `<button (click)="showSettings.set(true)">Open Settings</button>
+<ui-drawer [open]="showSettings()" title="Settings" position="right" (openChange)="showSettings.set($event)">
   <div>Settings content...</div>
 </ui-drawer>`,
     },
     {
+      title: 'Top Drawer',
+      description: 'Notification panel from top',
+      typescript: `protected showNotifications = signal(false);`,
+      template: `<button (click)="showNotifications.set(true)">Show Notifications</button>
+<ui-drawer [open]="showNotifications()" title="Notifications" position="top" (openChange)="showNotifications.set($event)">
+  <p>You have 3 new notifications</p>
+</ui-drawer>`,
+    },
+    {
+      title: 'Bottom Drawer',
+      description: 'Action sheet from bottom',
+      typescript: `protected showActions = signal(false);`,
+      template: `<button (click)="showActions.set(true)">Show Actions</button>
+<ui-drawer [open]="showActions()" title="Actions" position="bottom" (openChange)="showActions.set($event)">
+  <button>Edit</button>
+  <button>Delete</button>
+</ui-drawer>`,
+    },
+    {
+      title: 'Drawer with Footer',
+      description: 'Enhanced drawer with action buttons in footer',
+      typescript: `protected showForm = signal(false);`,
+      template: `<button (click)="showForm.set(true)">Edit Profile</button>
+<ui-drawer [open]="showForm()" title="Edit Profile" (openChange)="showForm.set($event)">
+  <form>
+    <input type="text" placeholder="Name" />
+    <input type="email" placeholder="Email" />
+  </form>
+  <div footer>
+    <button (click)="showForm.set(false)">Cancel</button>
+    <button>Save Changes</button>
+  </div>
+</ui-drawer>`,
+    },
+    {
       title: 'Drawer Sizes',
-      description: 'Different drawer widths',
+      description: 'Different drawer sizes (sm, md, lg, xl)',
       typescript: `protected isOpen = signal(false);`,
-      template: `<ui-drawer [open]="isOpen()" title="Small Drawer" size="sm">Content</ui-drawer>`,
+      template: `<button (click)="isOpen.set(true)">Small Drawer</button>
+<ui-drawer [open]="isOpen()" title="Small Drawer" size="sm" (openChange)="isOpen.set($event)">
+  <p>Compact drawer for simple content.</p>
+</ui-drawer>`,
     },
   ],
   accessibility: {

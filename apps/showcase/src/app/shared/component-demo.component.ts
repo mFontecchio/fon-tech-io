@@ -1041,30 +1041,109 @@ import {
 
           <!-- DRAWER DEMOS -->
           @case ('drawer') {
-            @if (exampleTitle() === 'Navigation Drawer') {
+            @if (exampleTitle() === 'Left Drawer') {
               <div>
-                <ui-button (clicked)="showSettings.set(true)">Open Drawer</ui-button>
-                <ui-drawer [open]="showSettings()" position="left" (openChange)="showSettings.set($event)">
-                  <h3>Navigation</h3>
-                  <p>Drawer content goes here.</p>
+                <ui-button (clicked)="drawerLeft.set(true)">Open Navigation</ui-button>
+                <ui-drawer [open]="drawerLeft()" title="Navigation" position="left" (openChange)="drawerLeft.set($event)">
+                  <nav style="display: flex; flex-direction: column; gap: 12px;">
+                    <a href="#" style="padding: 8px; text-decoration: none; color: var(--semantic-text-primary); border-radius: 4px; transition: background 0.2s;" 
+                       onmouseover="this.style.background='var(--semantic-surface-subtle)'" 
+                       onmouseout="this.style.background='transparent'">📊 Dashboard</a>
+                    <a href="#" style="padding: 8px; text-decoration: none; color: var(--semantic-text-primary); border-radius: 4px; transition: background 0.2s;"
+                       onmouseover="this.style.background='var(--semantic-surface-subtle)'" 
+                       onmouseout="this.style.background='transparent'">⚙️ Settings</a>
+                    <a href="#" style="padding: 8px; text-decoration: none; color: var(--semantic-text-primary); border-radius: 4px; transition: background 0.2s;"
+                       onmouseover="this.style.background='var(--semantic-surface-subtle)'" 
+                       onmouseout="this.style.background='transparent'">👤 Profile</a>
+                  </nav>
                 </ui-drawer>
               </div>
             }
             @if (exampleTitle() === 'Right Drawer') {
               <div>
-                <ui-button (clicked)="showSettings.set(true)">Open Right Drawer</ui-button>
-                <ui-drawer [open]="showSettings()" position="right" (openChange)="showSettings.set($event)">
-                  <h3>Settings</h3>
-                  <p>Drawer on the right side.</p>
+                <ui-button (clicked)="drawerRight.set(true)">Open Settings</ui-button>
+                <ui-drawer [open]="drawerRight()" title="Settings" position="right" (openChange)="drawerRight.set($event)">
+                  <div style="display: flex; flex-direction: column; gap: 16px;">
+                    <div>
+                      <h4 style="margin: 0 0 8px 0; font-size: 14px; color: var(--semantic-text-secondary);">Appearance</h4>
+                      <ui-switch label="Dark Mode" />
+                    </div>
+                    <div>
+                      <h4 style="margin: 0 0 8px 0; font-size: 14px; color: var(--semantic-text-secondary);">Notifications</h4>
+                      <ui-switch label="Email Notifications" [checked]="true" />
+                      <ui-switch label="Push Notifications" />
+                    </div>
+                  </div>
+                </ui-drawer>
+              </div>
+            }
+            @if (exampleTitle() === 'Top Drawer') {
+              <div>
+                <ui-button (clicked)="drawerTop.set(true)">Show Notifications</ui-button>
+                <ui-drawer [open]="drawerTop()" title="Notifications" position="top" size="sm" (openChange)="drawerTop.set($event)">
+                  <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <div style="padding: 12px; background: var(--semantic-surface-subtle); border-radius: 6px;">
+                      <strong>New message from John</strong>
+                      <p style="margin: 4px 0 0 0; color: var(--semantic-text-secondary); font-size: 14px;">Hey, are you available for a call?</p>
+                    </div>
+                    <div style="padding: 12px; background: var(--semantic-surface-subtle); border-radius: 6px;">
+                      <strong>System Update</strong>
+                      <p style="margin: 4px 0 0 0; color: var(--semantic-text-secondary); font-size: 14px;">Your system will update tonight at 2 AM</p>
+                    </div>
+                    <div style="padding: 12px; background: var(--semantic-surface-subtle); border-radius: 6px;">
+                      <strong>Task completed</strong>
+                      <p style="margin: 4px 0 0 0; color: var(--semantic-text-secondary); font-size: 14px;">Your report has been generated</p>
+                    </div>
+                  </div>
+                </ui-drawer>
+              </div>
+            }
+            @if (exampleTitle() === 'Bottom Drawer') {
+              <div>
+                <ui-button (clicked)="drawerBottom.set(true)">Show Actions</ui-button>
+                <ui-drawer [open]="drawerBottom()" title="Actions" position="bottom" size="sm" (openChange)="drawerBottom.set($event)">
+                  <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <ui-button fullWidth>📝 Edit Item</ui-button>
+                    <ui-button fullWidth variant="outline">📋 Duplicate</ui-button>
+                    <ui-button fullWidth variant="outline">📤 Share</ui-button>
+                    <ui-button fullWidth variant="outline">🗑️ Delete</ui-button>
+                  </div>
+                </ui-drawer>
+              </div>
+            }
+            @if (exampleTitle() === 'Drawer with Footer') {
+              <div>
+                <ui-button (clicked)="drawerWithFooter.set(true)">Edit Profile</ui-button>
+                <ui-drawer [open]="drawerWithFooter()" title="Edit Profile" (openChange)="drawerWithFooter.set($event)">
+                  <div style="display: flex; flex-direction: column; gap: 16px;">
+                    <ui-input label="Full Name" placeholder="John Doe" value="John Doe" />
+                    <ui-input label="Email" type="email" placeholder="john@example.com" value="john@example.com" />
+                    <ui-input label="Phone" type="tel" placeholder="+1 234 567 8900" />
+                    <ui-textarea label="Bio" placeholder="Tell us about yourself..." rows="4" />
+                  </div>
+                  <div footer style="display: flex; gap: 8px; justify-content: flex-end;">
+                    <ui-button variant="ghost" (clicked)="drawerWithFooter.set(false)">Cancel</ui-button>
+                    <ui-button (clicked)="drawerWithFooter.set(false)">Save Changes</ui-button>
+                  </div>
                 </ui-drawer>
               </div>
             }
             @if (exampleTitle() === 'Drawer Sizes') {
-              <div>
-                <ui-button (clicked)="showSettings.set(true)">Open Small Drawer</ui-button>
-                <ui-drawer [open]="showSettings()" size="sm" (openChange)="showSettings.set($event)">
-                  <h3>Small Drawer</h3>
-                  <p>Compact drawer for quick actions.</p>
+              <div class="demo-row">
+                <ui-button size="sm" (clicked)="drawerSmall.set(true)">Small</ui-button>
+                <ui-button size="sm" (clicked)="drawerMedium.set(true)">Medium</ui-button>
+                <ui-button size="sm" (clicked)="drawerLarge.set(true)">Large</ui-button>
+                
+                <ui-drawer [open]="drawerSmall()" title="Small Drawer" size="sm" (openChange)="drawerSmall.set($event)">
+                  <p>This is a small drawer (20rem width).</p>
+                </ui-drawer>
+                
+                <ui-drawer [open]="drawerMedium()" title="Medium Drawer" size="md" (openChange)="drawerMedium.set($event)">
+                  <p>This is a medium drawer (28rem width) - the default size.</p>
+                </ui-drawer>
+                
+                <ui-drawer [open]="drawerLarge()" title="Large Drawer" size="lg" (openChange)="drawerLarge.set($event)">
+                  <p>This is a large drawer (36rem width) for more content.</p>
                 </ui-drawer>
               </div>
             }
@@ -1356,9 +1435,20 @@ export class ComponentDemoComponent {
   protected readonly isOpen = signal(false);
 
   /**
-   * Drawer/settings open state
+   * Drawer open states for different positions
    */
-  protected readonly showSettings = signal(false);
+  protected readonly drawerLeft = signal(false);
+  protected readonly drawerRight = signal(false);
+  protected readonly drawerTop = signal(false);
+  protected readonly drawerBottom = signal(false);
+  protected readonly drawerWithFooter = signal(false);
+  
+  /**
+   * Drawer size demo states
+   */
+  protected readonly drawerSmall = signal(false);
+  protected readonly drawerMedium = signal(false);
+  protected readonly drawerLarge = signal(false);
 
   /**
    * Current pagination page
