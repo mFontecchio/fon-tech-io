@@ -10,7 +10,6 @@
       [id]="radioId()"
       [name]="name()"
       [value]="value()"
-      [checked]="internalChecked()"
       [disabled]="disabled()"
       [required]="required()"
       [attr.aria-label]="ariaLabel() || label()"
@@ -22,7 +21,7 @@
     />
     
     <span class="ui-radio-box">
-      @if (internalChecked()) {
+      @if (isChecked()) {
         <span class="ui-radio-dot"></span>
       }
     </span>

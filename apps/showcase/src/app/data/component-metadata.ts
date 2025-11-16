@@ -409,54 +409,72 @@ const RADIO_METADATA: ComponentMetadata = {
   id: 'radio',
   name: 'Radio',
   category: 'form',
-  description: 'A radio button component for mutually exclusive selections within a group.',
+  description: 'A themable radio button component for mutually exclusive selections. Uses model-based approach with Angular signals, following PrimeNG pattern.',
   selector: 'ui-radio',
   inputs: [
-    { name: 'checked', type: 'boolean', description: 'Whether the radio is checked', defaultValue: 'false' },
-    { name: 'disabled', type: 'boolean', description: 'Whether the radio is disabled', defaultValue: 'false' },
-    { name: 'label', type: 'string', description: 'Label text displayed next to radio' },
-    { name: 'name', type: 'string', description: 'Radio group name (required for grouping)' },
-    { name: 'value', type: 'any', description: 'Radio value for form submission' },
+    { name: 'modelValue', type: 'model<string | undefined>', description: 'Two-way binding for selected value (like PrimeNG ngModel)', defaultValue: 'undefined' },
+    { name: 'value', type: 'string', description: 'Value for this radio button', required: true },
+    { name: 'name', type: 'string', description: 'Radio group name (required for proper grouping and mutual exclusion)', required: true },
+    { name: 'label', type: 'string', description: 'Label text displayed next to radio button', defaultValue: 'undefined' },
+    { name: 'disabled', type: 'boolean', description: 'Whether the radio button is disabled', defaultValue: 'false' },
+    { name: 'required', type: 'boolean', description: 'Whether the radio selection is required', defaultValue: 'false' },
+    { name: 'size', type: "'sm' | 'md' | 'lg'", description: 'Size of the radio button', defaultValue: "'md'" },
+    { name: 'helperText', type: 'string', description: 'Helper text displayed below the radio button', defaultValue: 'undefined' },
+    { name: 'errorMessage', type: 'string', description: 'Error message displayed below the radio button (replaces helperText when present)', defaultValue: 'undefined' },
+    { name: 'id', type: 'string', description: 'ID attribute for the radio input element (auto-generated if not provided)', defaultValue: 'auto-generated' },
+    { name: 'ariaLabel', type: 'string', description: 'ARIA label for accessibility (falls back to label if not provided)', defaultValue: 'undefined' },
   ],
-  outputs: [
-    { name: 'checkedChange', type: 'boolean', description: 'Emitted when checked state changes' },
+  outputs: [],
+  methods: [
+    { name: 'focus', parameters: '', returnType: 'void', description: 'Programmatically focus the radio button' },
   ],
   examples: [
     {
       title: 'Basic Radio Group',
-      description: 'Simple radio group for single selection',
-      template: `<ui-radio name="plan" value="free" label="Free Plan" />
-<ui-radio name="plan" value="pro" label="Pro Plan" />
-<ui-radio name="plan" value="enterprise" label="Enterprise Plan" />`,
+      description: 'Simple radio group for single selection using model binding',
+      template: `<ui-radio name="plan" value="free" label="Free Plan" [(modelValue)]="selectedPlan" />
+<ui-radio name="plan" value="pro" label="Pro Plan" [(modelValue)]="selectedPlan" />
+<ui-radio name="plan" value="enterprise" label="Enterprise Plan" [(modelValue)]="selectedPlan" />`,
+      typescript: `export class MyComponent {
+  selectedPlan = signal<string | undefined>(undefined);
+}`,
     },
     {
       title: 'Radio with Pre-selection',
       description: 'Radio group with default selection',
-      template: `<ui-radio name="size" value="sm" label="Small" />
-<ui-radio name="size" value="md" label="Medium" [checked]="true" />
-<ui-radio name="size" value="lg" label="Large" />`,
+      template: `<ui-radio name="size" value="sm" label="Small" [(modelValue)]="selectedSize" />
+<ui-radio name="size" value="md" label="Medium" [(modelValue)]="selectedSize" />
+<ui-radio name="size" value="lg" label="Large" [(modelValue)]="selectedSize" />`,
+      typescript: `export class MyComponent {
+  selectedSize = signal<string>('md'); // Pre-selected
+}`,
     },
     {
       title: 'Disabled Radio Options',
       description: 'Radio group with disabled options',
-      template: `<ui-radio name="shipping" value="standard" label="Standard (5-7 days)" />
-<ui-radio name="shipping" value="express" label="Express (2-3 days)" />
-<ui-radio name="shipping" value="overnight" label="Overnight" [disabled]="true" />`,
+      template: `<ui-radio name="shipping" value="standard" label="Standard (5-7 days)" [(modelValue)]="selectedShipping" />
+<ui-radio name="shipping" value="express" label="Express (2-3 days)" [(modelValue)]="selectedShipping" />
+<ui-radio name="shipping" value="overnight" label="Overnight" [disabled]="true" [(modelValue)]="selectedShipping" />`,
+      typescript: `export class MyComponent {
+  selectedShipping = signal<string | undefined>(undefined);
+}`,
     },
     {
       title: 'Radio States',
       description: 'Different radio button states',
-      template: `<ui-radio name="state1" value="unchecked" label="Unchecked" [checked]="false" />
-<ui-radio name="state2" value="checked" label="Checked" [checked]="true" />
-<ui-radio name="state3" value="disabled-unchecked" label="Disabled Unchecked" [disabled]="true" />
-<ui-radio name="state4" value="disabled-checked" label="Disabled Checked" [checked]="true" [disabled]="true" />`,
+      template: `<ui-radio name="state1" value="unchecked" label="Unchecked" />
+<ui-radio name="state2" value="disabled-unchecked" label="Disabled Unchecked" [disabled]="true" />
+<ui-radio name="state3" value="disabled-checked" label="Disabled" [disabled]="true" />`,
     },
     {
       title: 'Payment Method Selection',
-      description: 'Practical radio group example',
-      template: `<ui-radio name="payment" value="card" label="Credit/Debit Card" [checked]="true" />
-<ui-radio name="payment" value="paypal" label="PayPal" />
-<ui-radio name="payment" value="bank" label="Bank Transfer" />`,
+      description: 'Practical radio group example with pre-selection',
+      template: `<ui-radio name="payment" value="card" label="Credit/Debit Card" [(modelValue)]="selectedPayment" />
+<ui-radio name="payment" value="paypal" label="PayPal" [(modelValue)]="selectedPayment" />
+<ui-radio name="payment" value="bank" label="Bank Transfer" [(modelValue)]="selectedPayment" />`,
+      typescript: `export class MyComponent {
+  selectedPayment = signal<string>('card'); // Pre-selected card
+}`,
     },
   ],
   accessibility: {

@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- **Radio Component API Documentation**: Updated metadata with complete API surface
+  - Added missing inputs: `helperText`, `errorMessage`, `required`, `ariaLabel`, `id`
+  - Added public method: `focus()`
+  - Enhanced descriptions for better clarity
+  - Marked required inputs properly (`name`, `value`)
+
 ### Added
 - **API Documentation System - 100% COMPLETE!**: Full API documentation for all 36 components
   - Component metadata type definitions with full TypeScript support

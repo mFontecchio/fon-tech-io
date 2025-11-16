@@ -274,38 +274,37 @@ import {
           @case ('radio') {
             @if (exampleTitle() === 'Basic Radio Group') {
               <div class="demo-column">
-                <ui-radio name="plan" value="free" label="Free Plan" />
-                <ui-radio name="plan" value="pro" label="Pro Plan" />
-                <ui-radio name="plan" value="enterprise" label="Enterprise Plan" />
+                <ui-radio name="plan" value="free" label="Free Plan" [(modelValue)]="selectedPlan" />
+                <ui-radio name="plan" value="pro" label="Pro Plan" [(modelValue)]="selectedPlan" />
+                <ui-radio name="plan" value="enterprise" label="Enterprise Plan" [(modelValue)]="selectedPlan" />
               </div>
             }
             @if (exampleTitle() === 'Radio with Pre-selection') {
               <div class="demo-column">
-                <ui-radio name="size" value="sm" label="Small" />
-                <ui-radio name="size" value="md" label="Medium" [checked]="true" />
-                <ui-radio name="size" value="lg" label="Large" />
+                <ui-radio name="size" value="sm" label="Small" [(modelValue)]="selectedSize" />
+                <ui-radio name="size" value="md" label="Medium" [(modelValue)]="selectedSize" />
+                <ui-radio name="size" value="lg" label="Large" [(modelValue)]="selectedSize" />
               </div>
             }
             @if (exampleTitle() === 'Disabled Radio Options') {
               <div class="demo-column">
-                <ui-radio name="shipping" value="standard" label="Standard (5-7 days)" />
-                <ui-radio name="shipping" value="express" label="Express (2-3 days)" />
-                <ui-radio name="shipping" value="overnight" label="Overnight" [disabled]="true" />
+                <ui-radio name="shipping" value="standard" label="Standard (5-7 days)" [(modelValue)]="selectedShipping" />
+                <ui-radio name="shipping" value="express" label="Express (2-3 days)" [(modelValue)]="selectedShipping" />
+                <ui-radio name="shipping" value="overnight" label="Overnight" [disabled]="true" [(modelValue)]="selectedShipping" />
               </div>
             }
             @if (exampleTitle() === 'Radio States') {
               <div class="demo-column">
-                <ui-radio name="state1" value="unchecked" label="Unchecked" [checked]="false" />
-                <ui-radio name="state2" value="checked" label="Checked" [checked]="true" />
-                <ui-radio name="state3" value="disabled-unchecked" label="Disabled Unchecked" [disabled]="true" />
-                <ui-radio name="state4" value="disabled-checked" label="Disabled Checked" [checked]="true" [disabled]="true" />
+                <ui-radio name="state1" value="unchecked" label="Unchecked" />
+                <ui-radio name="state2" value="disabled-unchecked" label="Disabled Unchecked" [disabled]="true" />
+                <ui-radio name="state3" value="disabled-checked" label="Disabled" [disabled]="true" />
               </div>
             }
             @if (exampleTitle() === 'Payment Method Selection') {
               <div class="demo-column">
-                <ui-radio name="payment" value="card" label="Credit/Debit Card" [checked]="true" />
-                <ui-radio name="payment" value="paypal" label="PayPal" />
-                <ui-radio name="payment" value="bank" label="Bank Transfer" />
+                <ui-radio name="payment" value="card" label="Credit/Debit Card" [(modelValue)]="selectedPayment" />
+                <ui-radio name="payment" value="paypal" label="PayPal" [(modelValue)]="selectedPayment" />
+                <ui-radio name="payment" value="bank" label="Bank Transfer" [(modelValue)]="selectedPayment" />
               </div>
             }
           }
@@ -1475,6 +1474,14 @@ export class ComponentDemoComponent {
    * Current pagination page
    */
   protected readonly currentPage = signal(1);
+
+  /**
+   * Radio button states (PrimeNG-style model binding)
+   */
+  protected readonly selectedPlan = signal<string | undefined>(undefined);
+  protected readonly selectedSize = signal<string>('md'); // Pre-selected
+  protected readonly selectedShipping = signal<string | undefined>(undefined);
+  protected readonly selectedPayment = signal<string>('card'); // Pre-selected
 
   /**
    * Table columns definition

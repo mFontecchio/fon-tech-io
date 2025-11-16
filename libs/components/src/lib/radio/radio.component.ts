@@ -1,8 +1,8 @@
 /**
  * Radio Component
- * 
- * A themable radio button component.
- * Uses native HTML radio with Angular 20 best practices.
+ *
+ * A themable radio button component following PrimeNG's pattern.
+ * Uses model-based approach for proper radio group behavior.
  */
 
 import {
@@ -11,19 +11,17 @@ import {
   computed,
   input,
   output,
-  signal,
-  effect,
+  model,
   ElementRef,
   viewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 
 export type RadioSize = 'sm' | 'md' | 'lg';
 
 @Component({
   selector: 'ui-radio',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule],
   templateUrl: './radio.component.html',
   styleUrl: './radio.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -34,9 +32,10 @@ export type RadioSize = 'sm' | 'md' | 'lg';
 })
 export class RadioComponent {
   /**
-   * Checked state
+   * Model value - the currently selected value for the radio group
+   * Similar to PrimeNG's [(ngModel)] binding
    */
-  readonly checked = input<boolean>(false);
+  readonly modelValue = model<string | undefined>(undefined);
 
   /**
    * Disabled state
@@ -89,19 +88,17 @@ export class RadioComponent {
   readonly ariaLabel = input<string | undefined>(undefined);
 
   /**
-   * Checked change event
-   */
-  readonly checkedChange = output<string>();
-
-  /**
-   * Internal checked state
-   */
-  protected readonly internalChecked = signal(false);
-
-  /**
    * Reference to radio input element
    */
   protected readonly radioElement = viewChild<ElementRef<HTMLInputElement>>('radio');
+
+  /**
+   * Computed checked state - compares modelValue with this radio's value
+   * This is how PrimeNG determines which radio is selected
+   */
+  protected readonly isChecked = computed(() => {
+    return this.modelValue() === this.value();
+  });
 
   /**
    * Computed error state
@@ -131,15 +128,15 @@ export class RadioComponent {
    */
   protected readonly computedAriaDescribedBy = computed(() => {
     const parts: string[] = [];
-    
+
     if (this.helperText()) {
       parts.push(this.helperTextId());
     }
-    
+
     if (this.hasError()) {
       parts.push(this.errorId());
     }
-    
+
     return parts.length > 0 ? parts.join(' ') : undefined;
   });
 
@@ -149,27 +146,19 @@ export class RadioComponent {
   protected readonly radioClasses = computed(() => ({
     'ui-radio': true,
     [`ui-radio--${this.size()}`]: true,
-    'ui-radio--checked': this.internalChecked(),
+    'ui-radio--checked': this.isChecked(),
     'ui-radio--disabled': this.disabled(),
     'ui-radio--error': this.hasError(),
   }));
 
-  constructor() {
-    // Sync internal checked state
-    effect(() => {
-      this.internalChecked.set(this.checked());
-    });
-  }
-
   /**
-   * Handle radio change
+   * Handle radio change - updates the model value
    */
   protected handleChange(event: Event): void {
     const target = event.target as HTMLInputElement;
-    
+
     if (target.checked) {
-      this.internalChecked.set(true);
-      this.checkedChange.emit(this.value());
+      this.modelValue.set(this.value());
     }
   }
 
@@ -193,4 +182,3 @@ export class RadioComponent {
     }
   }
 }
-
