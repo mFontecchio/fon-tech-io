@@ -35,43 +35,57 @@
 /* Variants */
 
 .ui-button--filled {
-  background-color: var(--component-button-filled-background);
-  color: var(--component-button-filled-text);
-  border-color: var(--component-button-filled-border);
+  background-color: var(--semantic-brand-primary);
+  color: var(--semantic-text-inverse);
+  border-color: transparent;
+  transition:
+    background-color 0.2s ease-in-out,
+    transform 0.1s ease-in-out;
 }
 
 .ui-button--filled:hover:not(:disabled) {
-  background-color: var(--component-button-filled-background-hover);
+  /* Use theme-provided hover color, or slightly darken while keeping vibrancy */
+  background-color: var(--semantic-brand-primary-hover);
+  /* Fallback for browsers without hover token: reduce lightness slightly */
+  background-color: color-mix(in oklch, var(--semantic-brand-primary) 92%, black 8%);
 }
 
 .ui-button--filled:active:not(:disabled) {
-  background-color: var(--component-button-filled-background-active);
+  background-color: var(--semantic-brand-primary-active);
+  background-color: color-mix(in oklch, var(--semantic-brand-primary) 85%, black 15%);
   transform: translateY(1px);
 }
 
 .ui-button--outlined {
-  background-color: var(--component-button-outlined-background);
-  color: var(--component-button-outlined-text);
-  border-color: var(--component-button-outlined-border);
+  background-color: transparent;
+  color: var(--semantic-brand-primary);
+  border-color: var(--semantic-brand-primary);
+  transition:
+    background-color 0.2s ease-in-out,
+    border-color 0.2s ease-in-out,
+    transform 0.1s ease-in-out;
 }
 
 .ui-button--outlined:hover:not(:disabled) {
-  background-color: var(--component-button-outlined-background-hover);
-  border-color: var(--component-button-outlined-border-hover);
+  background-color: var(--semantic-state-hover);
+  border-color: var(--semantic-brand-primary-hover);
+  border-color: color-mix(in oklch, var(--semantic-brand-primary) 92%, black 8%);
 }
 
 .ui-button--outlined:active:not(:disabled) {
+  border-color: var(--semantic-brand-primary-active);
+  border-color: color-mix(in oklch, var(--semantic-brand-primary) 85%, black 15%);
   transform: translateY(1px);
 }
 
 .ui-button--text {
-  background-color: var(--component-button-text-background);
-  color: var(--component-button-text-text);
+  background-color: transparent;
+  color: var(--semantic-brand-primary);
   border-color: transparent;
 }
 
 .ui-button--text:hover:not(:disabled) {
-  background-color: var(--component-button-text-background-hover);
+  background-color: var(--semantic-state-hover);
 }
 
 .ui-button--text:active:not(:disabled) {
@@ -102,10 +116,10 @@
 
 .ui-button--disabled,
 .ui-button:disabled {
-  background-color: var(--component-button-disabled-background);
-  color: var(--component-button-disabled-text);
-  border-color: var(--component-button-disabled-border);
-  opacity: var(--component-button-disabled-opacity);
+  background-color: var(--semantic-state-disabled);
+  color: var(--semantic-text-disabled);
+  border-color: var(--semantic-border-subtle);
+  opacity: 0.6;
   cursor: not-allowed;
   pointer-events: none;
 }
@@ -200,4 +214,3 @@
     outline-width: 3px;
   }
 }
-

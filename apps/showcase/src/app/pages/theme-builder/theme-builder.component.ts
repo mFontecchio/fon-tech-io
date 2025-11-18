@@ -3,7 +3,15 @@
  * Interactive theme customization tool with live preview and export
  */
 
-import { Component, signal, computed, effect, HostListener, afterNextRender } from '@angular/core';
+import {
+  Component,
+  signal,
+  computed,
+  effect,
+  HostListener,
+  afterNextRender,
+  inject,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -17,7 +25,9 @@ import {
   ModalComponent,
   SkeletonComponent,
 } from '@ui-suite/components';
+import { ThemeService, Theme } from '@ui-suite/theming';
 import { THEME_PRESETS, ThemePreset } from './theme-presets';
+import { convertPresetToTheme } from './preset-converter';
 import {
   getContrastRatio,
   getWCAGLevel,
@@ -1748,6 +1758,9 @@ interface HistoryEntry {
   ],
 })
 export class ThemeBuilderComponent {
+  // Services
+  private readonly themeService = inject(ThemeService);
+
   // Loading state for skeleton loaders
   protected readonly isInitializing = signal(true);
 
@@ -2330,10 +2343,97 @@ export class ThemeBuilderComponent {
 
   // Preset Management
   protected applyPreset(preset: ThemePreset): void {
-    // Apply all tokens from the preset
-    Object.entries(preset.tokens).forEach(([tokenName, value]) => {
-      this.updateToken(tokenName, value);
+    // Convert preset to proper Theme object
+    const theme = convertPresetToTheme(preset);
+
+    // Apply through ThemeService for proper theme engine integration
+    this.themeService.setCustomTheme(theme);
+
+    // Update local category signals to reflect the new theme
+    this.refreshCategoriesFromTheme(theme);
+  }
+
+  /**
+   * Refresh local token categories from a theme object
+   */
+  private refreshCategoriesFromTheme(theme: Theme): void {
+    // Update color categories
+    const colorCats = this.colorCategories();
+    colorCats.forEach((category) => {
+      category.tokens.forEach((token) => {
+        // Extract value from theme based on token name
+        const value = this.getTokenValueFromTheme(theme, token.name);
+        if (value) {
+          token.value = value;
+        }
+      });
     });
+    this.colorCategories.set([...colorCats]);
+
+    // Update typography categories
+    const typoCats = this.typographyCategories();
+    typoCats.forEach((category) => {
+      category.tokens.forEach((token) => {
+        const value = this.getTokenValueFromTheme(theme, token.name);
+        if (value) {
+          token.value = value;
+        }
+      });
+    });
+    this.typographyCategories.set([...typoCats]);
+
+    // Update spacing categories
+    const spacingCats = this.spacingCategories();
+    spacingCats.forEach((category) => {
+      category.tokens.forEach((token) => {
+        const value = this.getTokenValueFromTheme(theme, token.name);
+        if (value) {
+          token.value = value;
+        }
+      });
+    });
+    this.spacingCategories.set([...spacingCats]);
+  }
+
+  /**
+   * Extract token value from theme object by CSS variable name
+   */
+  private getTokenValueFromTheme(theme: Theme, tokenName: string): string | undefined {
+    // Map CSS variable names to theme paths
+    const mapping: Record<string, string> = {
+      '--semantic-brand-primary': theme.semantic.brand.primary,
+      '--semantic-brand-secondary': theme.semantic.brand.secondary,
+      '--semantic-brand-subtle': theme.semantic.brand.primarySubtle,
+      '--semantic-success-primary': theme.semantic.feedback.success,
+      '--semantic-warning-primary': theme.semantic.feedback.warning,
+      '--semantic-error-primary': theme.semantic.feedback.error,
+      '--semantic-info-primary': theme.semantic.feedback.info,
+      '--semantic-surface-background': theme.semantic.surface.background,
+      '--semantic-surface-card': theme.semantic.surface.card,
+      '--semantic-surface-subtle': theme.semantic.surface.backgroundSecondary,
+      '--semantic-text-primary': theme.semantic.text.primary,
+      '--semantic-text-secondary': theme.semantic.text.secondary,
+      '--semantic-text-tertiary': theme.semantic.text.tertiary,
+      '--primitive-font-family-base': theme.primitive.typography.fontFamily.sans,
+      '--primitive-font-family-mono': theme.primitive.typography.fontFamily.mono,
+      '--primitive-font-size-xs': theme.primitive.typography.fontSize.xs,
+      '--primitive-font-size-sm': theme.primitive.typography.fontSize.sm,
+      '--primitive-font-size-md': theme.primitive.typography.fontSize.base,
+      '--primitive-font-size-lg': theme.primitive.typography.fontSize.lg,
+      '--primitive-font-size-xl': theme.primitive.typography.fontSize.xl,
+      '--primitive-spacing-1': theme.primitive.spacing[1],
+      '--primitive-spacing-2': theme.primitive.spacing[2],
+      '--primitive-spacing-3': theme.primitive.spacing[3],
+      '--primitive-spacing-4': theme.primitive.spacing[4],
+      '--primitive-spacing-6': theme.primitive.spacing[6],
+      '--primitive-spacing-8': theme.primitive.spacing[8],
+      '--primitive-border-radius-sm': theme.primitive.borderRadius.sm,
+      '--primitive-border-radius-md': theme.primitive.borderRadius.md,
+      '--primitive-border-radius-lg': theme.primitive.borderRadius.lg,
+      '--primitive-border-radius-full': theme.primitive.borderRadius.full,
+    };
+
+    return mapping[tokenName];
   }
 
   // Save/Load Management

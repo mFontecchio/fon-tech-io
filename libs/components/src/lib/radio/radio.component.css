@@ -83,6 +83,7 @@
 
 .ui-radio--checked:hover:not(:disabled) + .ui-radio-box {
   border-color: var(--semantic-brand-primary-hover);
+  border-color: color-mix(in oklch, var(--semantic-brand-primary) 92%, black 8%);
 }
 
 /* Radio dot (inner circle when checked) */
@@ -108,6 +109,7 @@
 
 .ui-radio--checked:hover:not(:disabled) + .ui-radio-box .ui-radio-dot {
   background-color: var(--semantic-brand-primary-hover);
+  background-color: color-mix(in oklch, var(--semantic-brand-primary) 92%, black 8%);
 }
 
 /* Error state */
