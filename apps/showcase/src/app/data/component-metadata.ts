@@ -13,7 +13,8 @@ const BUTTON_METADATA: ComponentMetadata = {
   id: 'button',
   name: 'Button',
   category: 'form',
-  description: 'A themable button component with multiple variants, sizes, and states. Supports loading states and full accessibility.',
+  description:
+    'A themable button component with multiple variants, sizes, and states. Supports loading states and full accessibility.',
   selector: 'ui-button',
   inputs: [
     {
@@ -113,7 +114,8 @@ const BUTTON_METADATA: ComponentMetadata = {
       { key: 'Enter', description: 'Activates the button' },
       { key: 'Space', description: 'Activates the button' },
     ],
-    screenReaderNotes: 'Button text is announced along with its state (disabled, loading). Use aria-label for icon-only buttons.',
+    screenReaderNotes:
+      'Button text is announced along with its state (disabled, loading). Use aria-label for icon-only buttons.',
   },
   bestPractices: [
     'Use "filled" variant for primary actions',
@@ -130,23 +132,48 @@ const INPUT_METADATA: ComponentMetadata = {
   id: 'input',
   name: 'Input',
   category: 'form',
-  description: 'A themable text input component with validation states, icons, and helper text support.',
+  description:
+    'A themable text input component with validation states, icons, and helper text support.',
   selector: 'ui-input',
   inputs: [
-    { name: 'type', type: "'text' | 'email' | 'password' | 'number' | 'tel' | 'url'", description: 'HTML input type', defaultValue: "'text'" },
+    {
+      name: 'type',
+      type: "'text' | 'email' | 'password' | 'number' | 'tel' | 'url'",
+      description: 'HTML input type',
+      defaultValue: "'text'",
+    },
     { name: 'label', type: 'string', description: 'Label text displayed above the input' },
     { name: 'placeholder', type: 'string', description: 'Placeholder text' },
     { name: 'value', type: 'string | number', description: 'Input value', defaultValue: "''" },
-    { name: 'disabled', type: 'boolean', description: 'Whether the input is disabled', defaultValue: 'false' },
-    { name: 'required', type: 'boolean', description: 'Whether the input is required', defaultValue: 'false' },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      description: 'Whether the input is disabled',
+      defaultValue: 'false',
+    },
+    {
+      name: 'required',
+      type: 'boolean',
+      description: 'Whether the input is required',
+      defaultValue: 'false',
+    },
     { name: 'error', type: 'string', description: 'Error message to display' },
     { name: 'helperText', type: 'string', description: 'Helper text displayed below the input' },
     { name: 'prefixIcon', type: 'string', description: 'Icon to display before the input text' },
     { name: 'suffixIcon', type: 'string', description: 'Icon to display after the input text' },
-    { name: 'fullWidth', type: 'boolean', description: 'Whether input should take full width', defaultValue: 'false' },
+    {
+      name: 'fullWidth',
+      type: 'boolean',
+      description: 'Whether input should take full width',
+      defaultValue: 'false',
+    },
   ],
   outputs: [
-    { name: 'valueChange', type: 'string | number', description: 'Emitted when input value changes' },
+    {
+      name: 'valueChange',
+      type: 'string | number',
+      description: 'Emitted when input value changes',
+    },
   ],
   examples: [
     {
@@ -219,9 +246,14 @@ const INPUT_METADATA: ComponentMetadata = {
     },
   ],
   accessibility: {
-    ariaSupport: ['Automatically associates label with input', 'aria-invalid set when error present', 'aria-describedby links to helper/error text'],
+    ariaSupport: [
+      'Automatically associates label with input',
+      'aria-invalid set when error present',
+      'aria-describedby links to helper/error text',
+    ],
     keyboardNavigation: [{ key: 'Tab', description: 'Move focus to/from input' }],
-    screenReaderNotes: 'Label, value, and error states are announced. Helper text provides additional context.',
+    screenReaderNotes:
+      'Label, value, and error states are announced. Helper text provides additional context.',
   },
   bestPractices: [
     'Always provide a label for clarity',
@@ -241,17 +273,30 @@ const TEXTAREA_METADATA: ComponentMetadata = {
     { name: 'label', type: 'string', description: 'Label text displayed above the textarea' },
     { name: 'placeholder', type: 'string', description: 'Placeholder text shown when empty' },
     { name: 'value', type: 'string', description: 'Current textarea value', defaultValue: "''" },
-    { name: 'disabled', type: 'boolean', description: 'Whether textarea is disabled', defaultValue: 'false' },
-    { name: 'required', type: 'boolean', description: 'Whether input is required', defaultValue: 'false' },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      description: 'Whether textarea is disabled',
+      defaultValue: 'false',
+    },
+    {
+      name: 'required',
+      type: 'boolean',
+      description: 'Whether input is required',
+      defaultValue: 'false',
+    },
     { name: 'rows', type: 'number', description: 'Number of visible text rows', defaultValue: '3' },
     { name: 'maxLength', type: 'number', description: 'Maximum character count' },
-    { name: 'showCharacterCount', type: 'boolean', description: 'Display character counter', defaultValue: 'false' },
+    {
+      name: 'showCharacterCount',
+      type: 'boolean',
+      description: 'Display character counter',
+      defaultValue: 'false',
+    },
     { name: 'errorMessage', type: 'string', description: 'Error message to display' },
     { name: 'helperText', type: 'string', description: 'Helper text below input' },
   ],
-  outputs: [
-    { name: 'valueChange', type: 'string', description: 'Emitted when value changes' },
-  ],
+  outputs: [{ name: 'valueChange', type: 'string', description: 'Emitted when value changes' }],
   examples: [
     {
       title: 'Basic Textarea',
@@ -328,7 +373,8 @@ const TEXTAREA_METADATA: ComponentMetadata = {
       { key: 'Tab', description: 'Move focus to/from textarea' },
       { key: 'Shift+Tab', description: 'Move focus backward' },
     ],
-    screenReaderNotes: 'Label, required state, helper text, and errors announced. Character count updates announced as user types.',
+    screenReaderNotes:
+      'Label, required state, helper text, and errors announced. Character count updates announced as user types.',
   },
   bestPractices: [
     'Always provide a clear label describing the expected input',
@@ -350,7 +396,12 @@ const CHECKBOX_METADATA: ComponentMetadata = {
   inputs: [
     { name: 'checked', type: 'boolean', description: 'Whether checked', defaultValue: 'false' },
     { name: 'disabled', type: 'boolean', description: 'Whether disabled', defaultValue: 'false' },
-    { name: 'indeterminate', type: 'boolean', description: 'Indeterminate state (partially checked)', defaultValue: 'false' },
+    {
+      name: 'indeterminate',
+      type: 'boolean',
+      description: 'Indeterminate state (partially checked)',
+      defaultValue: 'false',
+    },
     { name: 'label', type: 'string', description: 'Label text displayed next to checkbox' },
   ],
   outputs: [
@@ -394,7 +445,8 @@ const CHECKBOX_METADATA: ComponentMetadata = {
       { key: 'Space', description: 'Toggle checked state' },
       { key: 'Tab', description: 'Move focus to/from checkbox' },
     ],
-    screenReaderNotes: 'Checkbox state (checked, unchecked, or mixed) and label are announced. Disabled state is also announced.',
+    screenReaderNotes:
+      'Checkbox state (checked, unchecked, or mixed) and label are announced. Disabled state is also announced.',
   },
   bestPractices: [
     'Always provide a clear label',
@@ -409,24 +461,81 @@ const RADIO_METADATA: ComponentMetadata = {
   id: 'radio',
   name: 'Radio',
   category: 'form',
-  description: 'A themable radio button component for mutually exclusive selections. Uses model-based approach with Angular signals, following PrimeNG pattern.',
+  description:
+    'A themable radio button component for mutually exclusive selections. Uses model-based approach with Angular signals, following PrimeNG pattern.',
   selector: 'ui-radio',
   inputs: [
-    { name: 'modelValue', type: 'model<string | undefined>', description: 'Two-way binding for selected value (like PrimeNG ngModel)', defaultValue: 'undefined' },
+    {
+      name: 'modelValue',
+      type: 'model<string | undefined>',
+      description: 'Two-way binding for selected value (like PrimeNG ngModel)',
+      defaultValue: 'undefined',
+    },
     { name: 'value', type: 'string', description: 'Value for this radio button', required: true },
-    { name: 'name', type: 'string', description: 'Radio group name (required for proper grouping and mutual exclusion)', required: true },
-    { name: 'label', type: 'string', description: 'Label text displayed next to radio button', defaultValue: 'undefined' },
-    { name: 'disabled', type: 'boolean', description: 'Whether the radio button is disabled', defaultValue: 'false' },
-    { name: 'required', type: 'boolean', description: 'Whether the radio selection is required', defaultValue: 'false' },
-    { name: 'size', type: "'sm' | 'md' | 'lg'", description: 'Size of the radio button', defaultValue: "'md'" },
-    { name: 'helperText', type: 'string', description: 'Helper text displayed below the radio button', defaultValue: 'undefined' },
-    { name: 'errorMessage', type: 'string', description: 'Error message displayed below the radio button (replaces helperText when present)', defaultValue: 'undefined' },
-    { name: 'id', type: 'string', description: 'ID attribute for the radio input element (auto-generated if not provided)', defaultValue: 'auto-generated' },
-    { name: 'ariaLabel', type: 'string', description: 'ARIA label for accessibility (falls back to label if not provided)', defaultValue: 'undefined' },
+    {
+      name: 'name',
+      type: 'string',
+      description: 'Radio group name (required for proper grouping and mutual exclusion)',
+      required: true,
+    },
+    {
+      name: 'label',
+      type: 'string',
+      description: 'Label text displayed next to radio button',
+      defaultValue: 'undefined',
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      description: 'Whether the radio button is disabled',
+      defaultValue: 'false',
+    },
+    {
+      name: 'required',
+      type: 'boolean',
+      description: 'Whether the radio selection is required',
+      defaultValue: 'false',
+    },
+    {
+      name: 'size',
+      type: "'sm' | 'md' | 'lg'",
+      description: 'Size of the radio button',
+      defaultValue: "'md'",
+    },
+    {
+      name: 'helperText',
+      type: 'string',
+      description: 'Helper text displayed below the radio button',
+      defaultValue: 'undefined',
+    },
+    {
+      name: 'errorMessage',
+      type: 'string',
+      description:
+        'Error message displayed below the radio button (replaces helperText when present)',
+      defaultValue: 'undefined',
+    },
+    {
+      name: 'id',
+      type: 'string',
+      description: 'ID attribute for the radio input element (auto-generated if not provided)',
+      defaultValue: 'auto-generated',
+    },
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      description: 'ARIA label for accessibility (falls back to label if not provided)',
+      defaultValue: 'undefined',
+    },
   ],
   outputs: [],
   methods: [
-    { name: 'focus', parameters: '', returnType: 'void', description: 'Programmatically focus the radio button' },
+    {
+      name: 'focus',
+      parameters: '',
+      returnType: 'void',
+      description: 'Programmatically focus the radio button',
+    },
   ],
   examples: [
     {
@@ -489,7 +598,8 @@ const RADIO_METADATA: ComponentMetadata = {
       { key: 'Arrow Keys (↑↓←→)', description: 'Navigate between radio buttons in group' },
       { key: 'Space', description: 'Select focused radio button' },
     ],
-    screenReaderNotes: 'Radio button label, state (checked/unchecked), and position in group announced. Group label should be announced when entering the group.',
+    screenReaderNotes:
+      'Radio button label, state (checked/unchecked), and position in group announced. Group label should be announced when entering the group.',
   },
   bestPractices: [
     'Always use the same "name" attribute for radio buttons in a group',
@@ -509,7 +619,12 @@ const SWITCH_METADATA: ComponentMetadata = {
   description: 'A toggle switch component for binary on/off states.',
   selector: 'ui-switch',
   inputs: [
-    { name: 'checked', type: 'boolean', description: 'Whether checked (on)', defaultValue: 'false' },
+    {
+      name: 'checked',
+      type: 'boolean',
+      description: 'Whether checked (on)',
+      defaultValue: 'false',
+    },
     { name: 'disabled', type: 'boolean', description: 'Whether disabled', defaultValue: 'false' },
     { name: 'label', type: 'string', description: 'Label text displayed next to switch' },
     { name: 'size', type: "'sm' | 'md' | 'lg'", description: 'Switch size', defaultValue: "'md'" },
@@ -554,7 +669,8 @@ const SWITCH_METADATA: ComponentMetadata = {
       { key: 'Space', description: 'Toggle switch on/off' },
       { key: 'Tab', description: 'Move focus to/from switch' },
     ],
-    screenReaderNotes: 'Switch state (on/off) and label are announced. Disabled state is also announced.',
+    screenReaderNotes:
+      'Switch state (on/off) and label are announced. Disabled state is also announced.',
   },
   bestPractices: [
     'Use for settings that take effect immediately',
@@ -575,14 +691,27 @@ const SELECT_METADATA: ComponentMetadata = {
     { name: 'label', type: 'string', description: 'Label text displayed above select' },
     { name: 'placeholder', type: 'string', description: 'Placeholder text when no selection' },
     { name: 'value', type: 'string', description: 'Currently selected value' },
-    { name: 'disabled', type: 'boolean', description: 'Whether select is disabled', defaultValue: 'false' },
-    { name: 'required', type: 'boolean', description: 'Whether selection is required', defaultValue: 'false' },
-    { name: 'options', type: 'SelectOption[]', description: 'Array of selectable options { value, label }', required: true },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      description: 'Whether select is disabled',
+      defaultValue: 'false',
+    },
+    {
+      name: 'required',
+      type: 'boolean',
+      description: 'Whether selection is required',
+      defaultValue: 'false',
+    },
+    {
+      name: 'options',
+      type: 'SelectOption[]',
+      description: 'Array of selectable options { value, label }',
+      required: true,
+    },
     { name: 'error', type: 'string', description: 'Error message to display' },
   ],
-  outputs: [
-    { name: 'valueChange', type: 'string', description: 'Emitted when selection changes' },
-  ],
+  outputs: [{ name: 'valueChange', type: 'string', description: 'Emitted when selection changes' }],
   examples: [
     {
       title: 'Basic Select',
@@ -672,7 +801,8 @@ const SELECT_METADATA: ComponentMetadata = {
       { key: 'Escape', description: 'Close dropdown' },
       { key: 'Tab', description: 'Close dropdown and move focus' },
     ],
-    screenReaderNotes: 'Selected value, label, and available options announced. Dropdown state changes announced.',
+    screenReaderNotes:
+      'Selected value, label, and available options announced. Dropdown state changes announced.',
   },
   bestPractices: [
     'Provide a clear label describing what to select',
@@ -694,9 +824,24 @@ const MULTI_SELECT_METADATA: ComponentMetadata = {
   inputs: [
     { name: 'label', type: 'string', description: 'Label text displayed above select' },
     { name: 'placeholder', type: 'string', description: 'Placeholder text when no selection' },
-    { name: 'value', type: 'string[]', description: 'Array of selected values', defaultValue: '[]' },
-    { name: 'disabled', type: 'boolean', description: 'Whether select is disabled', defaultValue: 'false' },
-    { name: 'options', type: 'SelectOption[]', description: 'Array of selectable options', required: true },
+    {
+      name: 'value',
+      type: 'string[]',
+      description: 'Array of selected values',
+      defaultValue: '[]',
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      description: 'Whether select is disabled',
+      defaultValue: 'false',
+    },
+    {
+      name: 'options',
+      type: 'SelectOption[]',
+      description: 'Array of selectable options',
+      required: true,
+    },
   ],
   outputs: [
     { name: 'valueChange', type: 'string[]', description: 'Emitted when selection changes' },
@@ -781,13 +926,27 @@ const SLIDER_METADATA: ComponentMetadata = {
     { name: 'valueEnd', type: 'number', description: 'End value for range mode (dual handles)' },
     { name: 'min', type: 'number', description: 'Minimum allowed value', defaultValue: '0' },
     { name: 'max', type: 'number', description: 'Maximum allowed value', defaultValue: '100' },
-    { name: 'step', type: 'number', description: 'Step increment for value changes', defaultValue: '1' },
-    { name: 'disabled', type: 'boolean', description: 'Whether slider is disabled', defaultValue: 'false' },
+    {
+      name: 'step',
+      type: 'number',
+      description: 'Step increment for value changes',
+      defaultValue: '1',
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      description: 'Whether slider is disabled',
+      defaultValue: 'false',
+    },
     { name: 'label', type: 'string', description: 'Label text displayed above slider' },
   ],
   outputs: [
     { name: 'valueChange', type: 'number', description: 'Emitted when value changes' },
-    { name: 'valueEndChange', type: 'number', description: 'Emitted when end value changes (range mode)' },
+    {
+      name: 'valueEndChange',
+      type: 'number',
+      description: 'Emitted when end value changes (range mode)',
+    },
   ],
   examples: [
     {
@@ -849,7 +1008,8 @@ const SLIDER_METADATA: ComponentMetadata = {
       { key: 'End', description: 'Jump to maximum value' },
       { key: 'Page Up/Down', description: 'Large increment/decrement' },
     ],
-    screenReaderNotes: 'Current value, minimum, maximum, and label announced. Value changes announced as user adjusts.',
+    screenReaderNotes:
+      'Current value, minimum, maximum, and label announced. Value changes announced as user adjusts.',
   },
   bestPractices: [
     'Provide a clear label describing what the slider controls',
@@ -866,20 +1026,49 @@ const DATEPICKER_METADATA: ComponentMetadata = {
   id: 'date-picker',
   name: 'Date Picker',
   category: 'form',
-  description: 'A comprehensive date picker component with calendar popup, keyboard input support, and date range validation. Supports min/max dates, custom placeholders, and helper text.',
+  description:
+    'A comprehensive date picker component with calendar popup, keyboard input support, and date range validation. Supports min/max dates, custom placeholders, and helper text.',
   selector: 'ui-date-picker',
   inputs: [
     { name: 'label', type: 'string', description: 'Label text displayed above the date picker' },
-    { name: 'placeholder', type: 'string', description: 'Placeholder text shown when no date is selected' },
+    {
+      name: 'placeholder',
+      type: 'string',
+      description: 'Placeholder text shown when no date is selected',
+    },
     { name: 'value', type: 'string', description: 'Selected date in ISO format (YYYY-MM-DD)' },
     { name: 'min', type: 'string', description: 'Minimum selectable date in ISO format' },
     { name: 'max', type: 'string', description: 'Maximum selectable date in ISO format' },
-    { name: 'disabled', type: 'boolean', description: 'Whether the date picker is disabled', defaultValue: 'false' },
-    { name: 'helperText', type: 'string', description: 'Helper text displayed below the date picker' },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      description: 'Whether the date picker is disabled',
+      defaultValue: 'false',
+    },
+    {
+      name: 'helperText',
+      type: 'string',
+      description: 'Helper text displayed below the date picker',
+    },
     { name: 'errorMessage', type: 'string', description: 'Error message to display' },
-    { name: 'required', type: 'boolean', description: 'Whether the field is required', defaultValue: 'false' },
-    { name: 'size', type: "'sm' | 'md' | 'lg'", description: 'Size of the date picker', defaultValue: "'md'" },
-    { name: 'fullWidth', type: 'boolean', description: 'Whether to take full width', defaultValue: 'false' },
+    {
+      name: 'required',
+      type: 'boolean',
+      description: 'Whether the field is required',
+      defaultValue: 'false',
+    },
+    {
+      name: 'size',
+      type: "'sm' | 'md' | 'lg'",
+      description: 'Size of the date picker',
+      defaultValue: "'md'",
+    },
+    {
+      name: 'fullWidth',
+      type: 'boolean',
+      description: 'Whether to take full width',
+      defaultValue: 'false',
+    },
   ],
   outputs: [
     { name: 'valueChange', type: 'string', description: 'Emitted when date changes (ISO format)' },
@@ -962,7 +1151,12 @@ const DATEPICKER_METADATA: ComponentMetadata = {
     },
   ],
   accessibility: {
-    ariaSupport: ['Calendar grid navigation with arrow keys', 'Date format announced to screen readers', 'Selected date clearly indicated', 'Required fields marked with aria-required'],
+    ariaSupport: [
+      'Calendar grid navigation with arrow keys',
+      'Date format announced to screen readers',
+      'Selected date clearly indicated',
+      'Required fields marked with aria-required',
+    ],
     keyboardNavigation: [
       { key: 'Arrow Keys', description: 'Navigate between dates in the calendar' },
       { key: 'Enter/Space', description: 'Select the focused date' },
@@ -971,7 +1165,8 @@ const DATEPICKER_METADATA: ComponentMetadata = {
       { key: 'Home/End', description: 'Jump to first/last day of month' },
       { key: 'PageUp/PageDown', description: 'Navigate to previous/next month' },
     ],
-    screenReaderNotes: 'Selected date and format announced. Calendar month and year announced. Available and disabled dates indicated. Date range restrictions communicated clearly.',
+    screenReaderNotes:
+      'Selected date and format announced. Calendar month and year announced. Available and disabled dates indicated. Date range restrictions communicated clearly.',
   },
   bestPractices: [
     'Always provide a clear label describing what date is being selected',
@@ -991,21 +1186,59 @@ const FILEUPLOAD_METADATA: ComponentMetadata = {
   id: 'file-upload',
   name: 'File Upload',
   category: 'form',
-  description: 'A comprehensive file upload component with drag-and-drop support, file type validation, size restrictions, and file preview. Supports both single and multiple file uploads with progress indication.',
+  description:
+    'A comprehensive file upload component with drag-and-drop support, file type validation, size restrictions, and file preview. Supports both single and multiple file uploads with progress indication.',
   selector: 'ui-file-upload',
   inputs: [
     { name: 'label', type: 'string', description: 'Label text displayed above the upload area' },
-    { name: 'accept', type: 'string', description: 'Accepted file types (e.g., ".pdf,.jpg,.png" or "image/*")' },
-    { name: 'multiple', type: 'boolean', description: 'Allow multiple file uploads', defaultValue: 'false' },
-    { name: 'disabled', type: 'boolean', description: 'Whether the upload is disabled', defaultValue: 'false' },
-    { name: 'maxSize', type: 'number', description: 'Maximum file size in bytes (e.g., 5242880 for 5MB)', defaultValue: '5242880' },
-    { name: 'maxFiles', type: 'number', description: 'Maximum number of files allowed', defaultValue: '10' },
-    { name: 'showPreview', type: 'boolean', description: 'Show preview for images', defaultValue: 'true' },
-    { name: 'helperText', type: 'string', description: 'Helper text displayed below the upload area' },
+    {
+      name: 'accept',
+      type: 'string',
+      description: 'Accepted file types (e.g., ".pdf,.jpg,.png" or "image/*")',
+    },
+    {
+      name: 'multiple',
+      type: 'boolean',
+      description: 'Allow multiple file uploads',
+      defaultValue: 'false',
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      description: 'Whether the upload is disabled',
+      defaultValue: 'false',
+    },
+    {
+      name: 'maxSize',
+      type: 'number',
+      description: 'Maximum file size in bytes (e.g., 5242880 for 5MB)',
+      defaultValue: '5242880',
+    },
+    {
+      name: 'maxFiles',
+      type: 'number',
+      description: 'Maximum number of files allowed',
+      defaultValue: '10',
+    },
+    {
+      name: 'showPreview',
+      type: 'boolean',
+      description: 'Show preview for images',
+      defaultValue: 'true',
+    },
+    {
+      name: 'helperText',
+      type: 'string',
+      description: 'Helper text displayed below the upload area',
+    },
     { name: 'errorMessage', type: 'string', description: 'Error message to display' },
   ],
   outputs: [
-    { name: 'filesSelected', type: 'File[]', description: 'Emitted when files are selected or dropped' },
+    {
+      name: 'filesSelected',
+      type: 'File[]',
+      description: 'Emitted when files are selected or dropped',
+    },
     { name: 'fileRemoved', type: 'File', description: 'Emitted when a file is removed' },
   ],
   examples: [
@@ -1095,13 +1328,19 @@ const FILEUPLOAD_METADATA: ComponentMetadata = {
     },
   ],
   accessibility: {
-    ariaSupport: ['Drag-and-drop with keyboard alternatives', 'File list announced to screen readers', 'Upload progress and status announced', 'Error messages associated with upload area'],
+    ariaSupport: [
+      'Drag-and-drop with keyboard alternatives',
+      'File list announced to screen readers',
+      'Upload progress and status announced',
+      'Error messages associated with upload area',
+    ],
     keyboardNavigation: [
       { key: 'Enter/Space', description: 'Open file browser dialog' },
       { key: 'Tab', description: 'Navigate to file upload button' },
       { key: 'Delete/Backspace', description: 'Remove selected file from list' },
     ],
-    screenReaderNotes: 'File names, types, sizes, and upload status are announced. Validation errors and file restrictions are communicated clearly.',
+    screenReaderNotes:
+      'File names, types, sizes, and upload status are announced. Validation errors and file restrictions are communicated clearly.',
   },
   bestPractices: [
     'Always provide a clear label describing what files should be uploaded',
@@ -1128,10 +1367,16 @@ const CARD_METADATA: ComponentMetadata = {
   id: 'card',
   name: 'Card',
   category: 'layout',
-  description: 'A versatile container component for grouping related content with optional header and footer.',
+  description:
+    'A versatile container component for grouping related content with optional header and footer.',
   selector: 'ui-card',
   inputs: [
-    { name: 'variant', type: "'elevated' | 'outlined' | 'filled'", description: 'Visual style variant', defaultValue: "'elevated'" },
+    {
+      name: 'variant',
+      type: "'elevated' | 'outlined' | 'filled'",
+      description: 'Visual style variant',
+      defaultValue: "'elevated'",
+    },
   ],
   outputs: [],
   examples: [
@@ -1163,9 +1408,13 @@ const CARD_METADATA: ComponentMetadata = {
     },
   ],
   accessibility: {
-    ariaSupport: ['Semantic HTML structure', 'Optional role="region" with aria-label for landmark cards'],
+    ariaSupport: [
+      'Semantic HTML structure',
+      'Optional role="region" with aria-label for landmark cards',
+    ],
     keyboardNavigation: [],
-    screenReaderNotes: 'Card structure and content are announced. Use aria-label when card represents a significant region.',
+    screenReaderNotes:
+      'Card structure and content are announced. Use aria-label when card represents a significant region.',
   },
   bestPractices: [
     'Use "elevated" for prominent content that should stand out',
@@ -1179,18 +1428,37 @@ const MODAL_METADATA: ComponentMetadata = {
   id: 'modal',
   name: 'Modal',
   category: 'layout',
-  description: 'A dialog overlay component for focused user interactions with backdrop and animations.',
+  description:
+    'A dialog overlay component for focused user interactions with backdrop and animations.',
   selector: 'ui-modal',
   inputs: [
-    { name: 'open', type: 'boolean', description: 'Whether modal is visible', defaultValue: 'false' },
+    {
+      name: 'open',
+      type: 'boolean',
+      description: 'Whether modal is visible',
+      defaultValue: 'false',
+    },
     { name: 'title', type: 'string', description: 'Modal title text' },
-    { name: 'size', type: "'sm' | 'md' | 'lg' | 'xl' | 'full'", description: 'Modal width size', defaultValue: "'md'" },
-    { name: 'closeOnBackdrop', type: 'boolean', description: 'Close when clicking backdrop', defaultValue: 'true' },
-    { name: 'closeOnEsc', type: 'boolean', description: 'Close on Escape key press', defaultValue: 'true' },
+    {
+      name: 'size',
+      type: "'sm' | 'md' | 'lg' | 'xl' | 'full'",
+      description: 'Modal width size',
+      defaultValue: "'md'",
+    },
+    {
+      name: 'closeOnBackdrop',
+      type: 'boolean',
+      description: 'Close when clicking backdrop',
+      defaultValue: 'true',
+    },
+    {
+      name: 'closeOnEsc',
+      type: 'boolean',
+      description: 'Close on Escape key press',
+      defaultValue: 'true',
+    },
   ],
-  outputs: [
-    { name: 'closed', type: 'void', description: 'Emitted when modal is closed' },
-  ],
+  outputs: [{ name: 'closed', type: 'void', description: 'Emitted when modal is closed' }],
   examples: [
     {
       title: 'Basic Modal',
@@ -1231,7 +1499,8 @@ const MODAL_METADATA: ComponentMetadata = {
       { key: 'Tab', description: 'Cycle through focusable elements forward' },
       { key: 'Shift+Tab', description: 'Cycle through focusable elements backward' },
     ],
-    screenReaderNotes: 'Modal announced as dialog. Focus automatically moves into modal when opened and returns to trigger when closed.',
+    screenReaderNotes:
+      'Modal announced as dialog. Focus automatically moves into modal when opened and returns to trigger when closed.',
   },
   bestPractices: [
     'Use modals sparingly - they interrupt user flow',
@@ -1251,10 +1520,30 @@ const TABS_METADATA: ComponentMetadata = {
   description: 'A tabbed interface component for organizing content into separate panels.',
   selector: 'ui-tabs',
   inputs: [
-    { name: 'activeIndex', type: 'number', description: 'Currently active tab index (0-based)', defaultValue: '0' },
-    { name: 'orientation', type: "'horizontal' | 'vertical'", description: 'Tab list orientation', defaultValue: "'horizontal'" },
-    { name: 'size', type: "'sm' | 'md' | 'lg'", description: 'Tab button size', defaultValue: "'md'" },
-    { name: 'fullWidth', type: 'boolean', description: 'Tabs expand to fill container width', defaultValue: 'false' },
+    {
+      name: 'activeIndex',
+      type: 'number',
+      description: 'Currently active tab index (0-based)',
+      defaultValue: '0',
+    },
+    {
+      name: 'orientation',
+      type: "'horizontal' | 'vertical'",
+      description: 'Tab list orientation',
+      defaultValue: "'horizontal'",
+    },
+    {
+      name: 'size',
+      type: "'sm' | 'md' | 'lg'",
+      description: 'Tab button size',
+      defaultValue: "'md'",
+    },
+    {
+      name: 'fullWidth',
+      type: 'boolean',
+      description: 'Tabs expand to fill container width',
+      defaultValue: 'false',
+    },
   ],
   outputs: [
     { name: 'activeIndexChange', type: 'number', description: 'Emitted when active tab changes' },
@@ -1312,7 +1601,8 @@ const TABS_METADATA: ComponentMetadata = {
       { key: 'End', description: 'Jump to last tab' },
       { key: 'Tab', description: 'Move focus to tab panel content' },
     ],
-    screenReaderNotes: 'Tab labels, current selection, and panel content announced. Total number of tabs announced when entering tablist.',
+    screenReaderNotes:
+      'Tab labels, current selection, and panel content announced. Total number of tabs announced when entering tablist.',
   },
   bestPractices: [
     'Use tabs for organizing related content that users switch between',
@@ -1332,11 +1622,25 @@ const ACCORDION_METADATA: ComponentMetadata = {
   description: 'A vertically stacked set of collapsible content panels for organizing information.',
   selector: 'ui-accordion',
   inputs: [
-    { name: 'mode', type: "'single' | 'multiple'", description: 'Expansion mode (single allows one, multiple allows many)', defaultValue: "'single'" },
-    { name: 'expanded', type: 'number[]', description: 'Array of expanded item indices', defaultValue: '[]' },
+    {
+      name: 'mode',
+      type: "'single' | 'multiple'",
+      description: 'Expansion mode (single allows one, multiple allows many)',
+      defaultValue: "'single'",
+    },
+    {
+      name: 'expanded',
+      type: 'number[]',
+      description: 'Array of expanded item indices',
+      defaultValue: '[]',
+    },
   ],
   outputs: [
-    { name: 'expandedChange', type: 'number[]', description: 'Emitted when expansion state changes' },
+    {
+      name: 'expandedChange',
+      type: 'number[]',
+      description: 'Emitted when expansion state changes',
+    },
   ],
   examples: [
     {
@@ -1386,7 +1690,8 @@ const ACCORDION_METADATA: ComponentMetadata = {
       { key: 'Home', description: 'Move to first header' },
       { key: 'End', description: 'Move to last header' },
     ],
-    screenReaderNotes: 'Panel states (expanded/collapsed) and content announced. Header buttons clearly labeled.',
+    screenReaderNotes:
+      'Panel states (expanded/collapsed) and content announced. Header buttons clearly labeled.',
   },
   bestPractices: [
     'Use for FAQs, settings sections, and content organization',
@@ -1406,8 +1711,18 @@ const DIVIDER_METADATA: ComponentMetadata = {
   description: 'A visual separator for content sections with customizable styles.',
   selector: 'ui-divider',
   inputs: [
-    { name: 'orientation', type: "'horizontal' | 'vertical'", description: 'Divider direction', defaultValue: "'horizontal'" },
-    { name: 'variant', type: "'solid' | 'dashed' | 'dotted'", description: 'Line style', defaultValue: "'solid'" },
+    {
+      name: 'orientation',
+      type: "'horizontal' | 'vertical'",
+      description: 'Divider direction',
+      defaultValue: "'horizontal'",
+    },
+    {
+      name: 'variant',
+      type: "'solid' | 'dashed' | 'dotted'",
+      description: 'Line style',
+      defaultValue: "'solid'",
+    },
   ],
   outputs: [],
   examples: [
@@ -1444,7 +1759,8 @@ const DIVIDER_METADATA: ComponentMetadata = {
       'Decorative role when purely visual',
     ],
     keyboardNavigation: [],
-    screenReaderNotes: 'Announced as separator between sections. Can be hidden from screen readers if purely decorative.',
+    screenReaderNotes:
+      'Announced as separator between sections. Can be hidden from screen readers if purely decorative.',
   },
   bestPractices: [
     'Use horizontal dividers to separate vertical content',
@@ -1460,14 +1776,35 @@ const DRAWER_METADATA: ComponentMetadata = {
   id: 'drawer',
   name: 'Drawer',
   category: 'layout',
-  description: 'A slide-in panel component that appears from the edge of the screen for navigation or content.',
+  description:
+    'A slide-in panel component that appears from the edge of the screen for navigation or content.',
   selector: 'ui-drawer',
   inputs: [
-    { name: 'open', type: 'boolean', description: 'Whether drawer is visible', defaultValue: 'false' },
-    { name: 'position', type: "'left' | 'right' | 'top' | 'bottom'", description: 'Edge from which drawer slides', defaultValue: "'right'" },
-    { name: 'size', type: "'sm' | 'md' | 'lg' | 'xl' | 'full'", description: 'Drawer width/height', defaultValue: "'md'" },
+    {
+      name: 'open',
+      type: 'boolean',
+      description: 'Whether drawer is visible',
+      defaultValue: 'false',
+    },
+    {
+      name: 'position',
+      type: "'left' | 'right' | 'top' | 'bottom'",
+      description: 'Edge from which drawer slides',
+      defaultValue: "'right'",
+    },
+    {
+      name: 'size',
+      type: "'sm' | 'md' | 'lg' | 'xl' | 'full'",
+      description: 'Drawer width/height',
+      defaultValue: "'md'",
+    },
     { name: 'title', type: 'string', description: 'Drawer title text' },
-    { name: 'showBackdrop', type: 'boolean', description: 'Show backdrop overlay', defaultValue: 'true' },
+    {
+      name: 'showBackdrop',
+      type: 'boolean',
+      description: 'Show backdrop overlay',
+      defaultValue: 'true',
+    },
   ],
   outputs: [
     { name: 'openChange', type: 'boolean', description: 'Emitted when open state changes' },
@@ -1552,7 +1889,8 @@ const DRAWER_METADATA: ComponentMetadata = {
       { key: 'Escape', description: 'Close drawer' },
       { key: 'Tab', description: 'Navigate within drawer' },
     ],
-    screenReaderNotes: 'Drawer announced as dialog. Focus moves into drawer when opened, returns to trigger when closed.',
+    screenReaderNotes:
+      'Drawer announced as dialog. Focus moves into drawer when opened, returns to trigger when closed.',
   },
   bestPractices: [
     'Use left drawer for navigation menus',
@@ -1569,13 +1907,34 @@ const STACK_METADATA: ComponentMetadata = {
   id: 'stack',
   name: 'Stack',
   category: 'layout',
-  description: 'A layout component for arranging children in a vertical or horizontal stack with consistent spacing.',
+  description:
+    'A layout component for arranging children in a vertical or horizontal stack with consistent spacing.',
   selector: 'ui-stack',
   inputs: [
-    { name: 'direction', type: "'vertical' | 'horizontal'", description: 'Stack direction', defaultValue: "'vertical'" },
-    { name: 'spacing', type: 'number', description: 'Spacing between items (in spacing units)', defaultValue: '4' },
-    { name: 'align', type: "'start' | 'center' | 'end' | 'stretch'", description: 'Cross-axis alignment', defaultValue: "'stretch'" },
-    { name: 'justify', type: "'start' | 'center' | 'end' | 'space-between' | 'space-around' | 'space-evenly'", description: 'Main-axis alignment', defaultValue: "'start'" },
+    {
+      name: 'direction',
+      type: "'vertical' | 'horizontal'",
+      description: 'Stack direction',
+      defaultValue: "'vertical'",
+    },
+    {
+      name: 'spacing',
+      type: 'number',
+      description: 'Spacing between items (in spacing units)',
+      defaultValue: '4',
+    },
+    {
+      name: 'align',
+      type: "'start' | 'center' | 'end' | 'stretch'",
+      description: 'Cross-axis alignment',
+      defaultValue: "'stretch'",
+    },
+    {
+      name: 'justify',
+      type: "'start' | 'center' | 'end' | 'space-between' | 'space-around' | 'space-evenly'",
+      description: 'Main-axis alignment',
+      defaultValue: "'start'",
+    },
   ],
   outputs: [],
   examples: [
@@ -1629,7 +1988,12 @@ const GRID_METADATA: ComponentMetadata = {
   selector: 'ui-grid',
   inputs: [
     { name: 'columns', type: 'number', description: 'Number of columns', defaultValue: '12' },
-    { name: 'gap', type: 'number', description: 'Gap between items (in spacing units)', defaultValue: '4' },
+    {
+      name: 'gap',
+      type: 'number',
+      description: 'Gap between items (in spacing units)',
+      defaultValue: '4',
+    },
   ],
   outputs: [],
   examples: [
@@ -1659,7 +2023,8 @@ const GRID_METADATA: ComponentMetadata = {
   accessibility: {
     ariaSupport: ['Natural grid flow', 'Semantic structure maintained'],
     keyboardNavigation: [],
-    screenReaderNotes: 'Grid items announced in source order. Grid structure communicated by screen readers.',
+    screenReaderNotes:
+      'Grid items announced in source order. Grid structure communicated by screen readers.',
   },
   bestPractices: [
     'Use for displaying collections of similar items',
@@ -1682,7 +2047,12 @@ const BADGE_METADATA: ComponentMetadata = {
   description: 'A small label for displaying status, count, or category.',
   selector: 'ui-badge',
   inputs: [
-    { name: 'variant', type: "'default' | 'primary' | 'success' | 'warning' | 'error'", description: 'Visual variant', defaultValue: "'default'" },
+    {
+      name: 'variant',
+      type: "'default' | 'primary' | 'success' | 'warning' | 'error'",
+      description: 'Visual variant',
+      defaultValue: "'default'",
+    },
     { name: 'size', type: "'sm' | 'md' | 'lg'", description: 'Badge size', defaultValue: "'md'" },
   ],
   outputs: [],
@@ -1724,7 +2094,8 @@ const BADGE_METADATA: ComponentMetadata = {
       'Can be enhanced with aria-label for additional context',
     ],
     keyboardNavigation: [],
-    screenReaderNotes: 'Badge text read as part of parent element. Consider adding context like "status: active" for clarity.',
+    screenReaderNotes:
+      'Badge text read as part of parent element. Consider adding context like "status: active" for clarity.',
   },
   bestPractices: [
     'Use "success" for positive states (active, completed, approved)',
@@ -1739,13 +2110,23 @@ const AVATAR_METADATA: ComponentMetadata = {
   id: 'avatar',
   name: 'Avatar',
   category: 'data-display',
-  description: 'A component for displaying user profile images or initials in a circular container.',
+  description:
+    'A component for displaying user profile images or initials in a circular container.',
   selector: 'ui-avatar',
   inputs: [
     { name: 'src', type: 'string', description: 'Image URL' },
     { name: 'alt', type: 'string', description: 'Alt text for image accessibility' },
-    { name: 'text', type: 'string', description: 'Text/initials to display when no image is provided' },
-    { name: 'size', type: "'sm' | 'md' | 'lg' | 'xl'", description: 'Avatar size', defaultValue: "'md'" },
+    {
+      name: 'text',
+      type: 'string',
+      description: 'Text/initials to display when no image is provided',
+    },
+    {
+      name: 'size',
+      type: "'sm' | 'md' | 'lg' | 'xl'",
+      description: 'Avatar size',
+      defaultValue: "'md'",
+    },
   ],
   outputs: [],
   examples: [
@@ -1783,7 +2164,8 @@ const AVATAR_METADATA: ComponentMetadata = {
       'aria-label with full name when showing initials',
     ],
     keyboardNavigation: [],
-    screenReaderNotes: 'Alt text or full name announced. Initials are not announced as individual letters.',
+    screenReaderNotes:
+      'Alt text or full name announced. Initials are not announced as individual letters.',
   },
   bestPractices: [
     'Always provide alt text or aria-label with the full name',
@@ -1803,7 +2185,12 @@ const TOOLTIP_METADATA: ComponentMetadata = {
   selector: 'ui-tooltip',
   inputs: [
     { name: 'text', type: 'string', description: 'Tooltip text content', required: true },
-    { name: 'position', type: "'top' | 'bottom' | 'left' | 'right'", description: 'Tooltip position relative to target', defaultValue: "'top'" },
+    {
+      name: 'position',
+      type: "'top' | 'bottom' | 'left' | 'right'",
+      description: 'Tooltip position relative to target',
+      defaultValue: "'top'",
+    },
   ],
   outputs: [],
   examples: [
@@ -1842,7 +2229,8 @@ const TOOLTIP_METADATA: ComponentMetadata = {
       { key: 'Focus', description: 'Show tooltip (keyboard users)' },
       { key: 'Escape', description: 'Hide tooltip' },
     ],
-    screenReaderNotes: 'Tooltip text announced when element receives focus. Announced as description of the trigger element.',
+    screenReaderNotes:
+      'Tooltip text announced when element receives focus. Announced as description of the trigger element.',
   },
   bestPractices: [
     'Keep tooltip text concise (1-2 short sentences)',
@@ -1850,7 +2238,7 @@ const TOOLTIP_METADATA: ComponentMetadata = {
     'Ensure tooltip appears on both hover and keyboard focus',
     'Position tooltips to avoid covering important content',
     'Use consistent positioning throughout the application',
-    'Don\'t put interactive elements inside tooltips',
+    "Don't put interactive elements inside tooltips",
     'Ensure sufficient contrast for tooltip text',
   ],
 };
@@ -1863,10 +2251,25 @@ const CHIP_METADATA: ComponentMetadata = {
   selector: 'ui-chip',
   inputs: [
     { name: 'label', type: 'string', description: 'Chip label text', required: true },
-    { name: 'variant', type: "'default' | 'primary' | 'success' | 'warning' | 'error'", description: 'Visual variant for semantic meaning', defaultValue: "'default'" },
+    {
+      name: 'variant',
+      type: "'default' | 'primary' | 'success' | 'warning' | 'error'",
+      description: 'Visual variant for semantic meaning',
+      defaultValue: "'default'",
+    },
     { name: 'size', type: "'sm' | 'md' | 'lg'", description: 'Chip size', defaultValue: "'md'" },
-    { name: 'removable', type: 'boolean', description: 'Show remove button', defaultValue: 'false' },
-    { name: 'disabled', type: 'boolean', description: 'Whether the chip is disabled', defaultValue: 'false' },
+    {
+      name: 'removable',
+      type: 'boolean',
+      description: 'Show remove button',
+      defaultValue: 'false',
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      description: 'Whether the chip is disabled',
+      defaultValue: 'false',
+    },
   ],
   outputs: [
     { name: 'removed', type: 'void', description: 'Emitted when remove button is clicked' },
@@ -1926,7 +2329,8 @@ const CHIP_METADATA: ComponentMetadata = {
       { key: 'Enter/Space', description: 'Activate remove button' },
       { key: 'Backspace/Delete', description: 'Remove chip (when focused)' },
     ],
-    screenReaderNotes: 'Chip label announced. When removable, announced as button with remove action.',
+    screenReaderNotes:
+      'Chip label announced. When removable, announced as button with remove action.',
   },
   bestPractices: [
     'Use chips for displaying selected filters, tags, or options',
@@ -1942,12 +2346,28 @@ const POPOVER_METADATA: ComponentMetadata = {
   id: 'popover',
   name: 'Popover',
   category: 'data-display',
-  description: 'A floating panel that displays rich content relative to a trigger element, similar to tooltip but interactive.',
+  description:
+    'A floating panel that displays rich content relative to a trigger element, similar to tooltip but interactive.',
   selector: 'ui-popover',
   inputs: [
-    { name: 'open', type: 'boolean', description: 'Whether popover is visible', defaultValue: 'false' },
-    { name: 'position', type: "'top' | 'bottom' | 'left' | 'right'", description: 'Popover position relative to trigger', defaultValue: "'bottom'" },
-    { name: 'trigger', type: "'click' | 'hover'", description: 'Interaction that opens popover', defaultValue: "'click'" },
+    {
+      name: 'open',
+      type: 'boolean',
+      description: 'Whether popover is visible',
+      defaultValue: 'false',
+    },
+    {
+      name: 'position',
+      type: "'top' | 'bottom' | 'left' | 'right'",
+      description: 'Popover position relative to trigger',
+      defaultValue: "'bottom'",
+    },
+    {
+      name: 'trigger',
+      type: "'click' | 'hover'",
+      description: 'Interaction that opens popover',
+      defaultValue: "'click'",
+    },
   ],
   outputs: [
     { name: 'openChange', type: 'boolean', description: 'Emitted when open state changes' },
@@ -1993,7 +2413,8 @@ const POPOVER_METADATA: ComponentMetadata = {
       { key: 'Escape', description: 'Close popover' },
       { key: 'Tab', description: 'Navigate within popover content' },
     ],
-    screenReaderNotes: 'Popover content announced when opened. Focus moved to popover for click trigger.',
+    screenReaderNotes:
+      'Popover content announced when opened. Focus moved to popover for click trigger.',
   },
   bestPractices: [
     'Use for rich, interactive content (forms, actions)',
@@ -2013,12 +2434,31 @@ const PAGINATION_METADATA: ComponentMetadata = {
   description: 'A component for navigating through paginated data with page numbers and controls.',
   selector: 'ui-pagination',
   inputs: [
-    { name: 'currentPage', type: 'number', description: 'Current active page number (1-based)', defaultValue: '1' },
-    { name: 'totalItems', type: 'number', description: 'Total number of items across all pages', required: true },
-    { name: 'pageSize', type: 'number', description: 'Number of items per page', defaultValue: '10' },
+    {
+      name: 'currentPage',
+      type: 'number',
+      description: 'Current active page number (1-based)',
+      defaultValue: '1',
+    },
+    {
+      name: 'totalItems',
+      type: 'number',
+      description: 'Total number of items across all pages',
+      required: true,
+    },
+    {
+      name: 'pageSize',
+      type: 'number',
+      description: 'Number of items per page',
+      defaultValue: '10',
+    },
   ],
   outputs: [
-    { name: 'pageChange', type: 'number', description: 'Emitted when user navigates to a different page' },
+    {
+      name: 'pageChange',
+      type: 'number',
+      description: 'Emitted when user navigates to a different page',
+    },
   ],
   examples: [
     {
@@ -2067,7 +2507,8 @@ const PAGINATION_METADATA: ComponentMetadata = {
       { key: 'Enter/Space', description: 'Activate page button' },
       { key: 'Arrow Left/Right', description: 'Previous/Next page (optional)' },
     ],
-    screenReaderNotes: 'Current page, total pages, and page context announced. Page changes announced.',
+    screenReaderNotes:
+      'Current page, total pages, and page context announced. Page changes announced.',
   },
   bestPractices: [
     'Show reasonable number of page buttons (5-7 max)',
@@ -2084,13 +2525,34 @@ const TABLE_METADATA: ComponentMetadata = {
   id: 'table',
   name: 'Table',
   category: 'data-display',
-  description: 'A data table component with sorting, selection, and customizable columns for displaying structured data.',
+  description:
+    'A data table component with sorting, selection, and customizable columns for displaying structured data.',
   selector: 'ui-table',
   inputs: [
-    { name: 'columns', type: 'TableColumn[]', description: 'Array of column definitions with keys and headers', required: true },
-    { name: 'data', type: 'any[]', description: 'Array of data objects to display', required: true },
-    { name: 'sortable', type: 'boolean', description: 'Enable column sorting', defaultValue: 'false' },
-    { name: 'selectable', type: 'boolean', description: 'Enable row selection', defaultValue: 'false' },
+    {
+      name: 'columns',
+      type: 'TableColumn[]',
+      description: 'Array of column definitions with keys and headers',
+      required: true,
+    },
+    {
+      name: 'data',
+      type: 'any[]',
+      description: 'Array of data objects to display',
+      required: true,
+    },
+    {
+      name: 'sortable',
+      type: 'boolean',
+      description: 'Enable column sorting',
+      defaultValue: 'false',
+    },
+    {
+      name: 'selectable',
+      type: 'boolean',
+      description: 'Enable row selection',
+      defaultValue: 'false',
+    },
   ],
   outputs: [
     { name: 'rowClick', type: 'any', description: 'Emitted when a row is clicked' },
@@ -2143,7 +2605,8 @@ protected users = [
       { key: 'Enter/Space', description: 'Activate row or toggle selection' },
       { key: 'Home/End', description: 'First/last cell in row' },
     ],
-    screenReaderNotes: 'Table structure announced. Column headers, row count, and data read in order. Sort and selection states announced.',
+    screenReaderNotes:
+      'Table structure announced. Column headers, row count, and data read in order. Sort and selection states announced.',
   },
   bestPractices: [
     'Use for displaying structured, tabular data',
@@ -2163,9 +2626,24 @@ const LIST_METADATA: ComponentMetadata = {
   description: 'A component for displaying lists of items with optional interactivity and styling.',
   selector: 'ui-list',
   inputs: [
-    { name: 'items', type: 'ListItem[]', description: 'Array of list items to display', required: true },
-    { name: 'variant', type: "'default' | 'divided' | 'bordered'", description: 'Visual styling variant', defaultValue: "'default'" },
-    { name: 'interactive', type: 'boolean', description: 'Items are clickable/interactive', defaultValue: 'false' },
+    {
+      name: 'items',
+      type: 'ListItem[]',
+      description: 'Array of list items to display',
+      required: true,
+    },
+    {
+      name: 'variant',
+      type: "'default' | 'divided' | 'bordered'",
+      description: 'Visual styling variant',
+      defaultValue: "'default'",
+    },
+    {
+      name: 'interactive',
+      type: 'boolean',
+      description: 'Items are clickable/interactive',
+      defaultValue: 'false',
+    },
   ],
   outputs: [
     { name: 'itemClick', type: 'ListItem', description: 'Emitted when an item is clicked' },
@@ -2218,7 +2696,8 @@ handleClick(item: ListItem) {
       { key: 'Enter/Space', description: 'Activate interactive item' },
       { key: 'Home/End', description: 'Jump to first/last item' },
     ],
-    screenReaderNotes: 'List structure and total item count announced. Interactive items announced as buttons.',
+    screenReaderNotes:
+      'List structure and total item count announced. Interactive items announced as buttons.',
   },
   bestPractices: [
     'Use for displaying collections of similar items',
@@ -2234,14 +2713,35 @@ const CODE_BLOCK_METADATA: ComponentMetadata = {
   id: 'code-block',
   name: 'Code Block',
   category: 'data-display',
-  description: 'A component for displaying formatted code with syntax highlighting, copy-to-clipboard, and download functionality. Supports multiple languages and themes.',
+  description:
+    'A component for displaying formatted code with syntax highlighting, copy-to-clipboard, and download functionality. Supports multiple languages and themes.',
   selector: 'ui-code-block',
   inputs: [
     { name: 'code', type: 'string', description: 'The code content to display', required: true },
-    { name: 'language', type: 'string', description: 'Programming language for syntax highlighting', defaultValue: "'typescript'" },
-    { name: 'title', type: 'string', description: 'Optional title shown in header (enables copy/download buttons)', defaultValue: "''" },
-    { name: 'showDownload', type: 'boolean', description: 'Show the download button', defaultValue: 'true' },
-    { name: 'filename', type: 'string', description: 'Custom filename for downloads (auto-generated if not provided)', defaultValue: "''" },
+    {
+      name: 'language',
+      type: 'string',
+      description: 'Programming language for syntax highlighting',
+      defaultValue: "'typescript'",
+    },
+    {
+      name: 'title',
+      type: 'string',
+      description: 'Optional title shown in header (enables copy/download buttons)',
+      defaultValue: "''",
+    },
+    {
+      name: 'showDownload',
+      type: 'boolean',
+      description: 'Show the download button',
+      defaultValue: 'true',
+    },
+    {
+      name: 'filename',
+      type: 'string',
+      description: 'Custom filename for downloads (auto-generated if not provided)',
+      defaultValue: "''",
+    },
   ],
   outputs: [],
   examples: [
@@ -2304,7 +2804,8 @@ export class ExampleComponent {}\`);`,
       { key: 'Enter/Space', description: 'Activate buttons' },
       { key: 'Arrow Keys', description: 'Scroll through code content' },
     ],
-    screenReaderNotes: 'Code content is readable. Button states announced. Theme-aware colors ensure sufficient contrast.',
+    screenReaderNotes:
+      'Code content is readable. Button states announced. Theme-aware colors ensure sufficient contrast.',
   },
   bestPractices: [
     'Always provide a title to enable copy/download functionality',
@@ -2327,13 +2828,21 @@ const ALERT_METADATA: ComponentMetadata = {
   description: 'A component for displaying important messages with different severity levels.',
   selector: 'ui-alert',
   inputs: [
-    { name: 'variant', type: "'info' | 'success' | 'warning' | 'error'", description: 'Alert variant', defaultValue: "'info'" },
-    { name: 'dismissible', type: 'boolean', description: 'Show dismiss button', defaultValue: 'false' },
+    {
+      name: 'variant',
+      type: "'info' | 'success' | 'warning' | 'error'",
+      description: 'Alert variant',
+      defaultValue: "'info'",
+    },
+    {
+      name: 'dismissible',
+      type: 'boolean',
+      description: 'Show dismiss button',
+      defaultValue: 'false',
+    },
     { name: 'size', type: "'sm' | 'md' | 'lg'", description: 'Alert size', defaultValue: "'md'" },
   ],
-  outputs: [
-    { name: 'dismissed', type: 'void', description: 'Emitted when alert is dismissed' },
-  ],
+  outputs: [{ name: 'dismissed', type: 'void', description: 'Emitted when alert is dismissed' }],
   examples: [
     {
       title: 'Alert Variants',
@@ -2380,7 +2889,8 @@ const ALERT_METADATA: ComponentMetadata = {
       { key: 'Escape', description: 'Dismiss alert (if dismissible)' },
       { key: 'Tab', description: 'Focus dismiss button' },
     ],
-    screenReaderNotes: 'Alert content immediately announced. Variant determines urgency of announcement.',
+    screenReaderNotes:
+      'Alert content immediately announced. Variant determines urgency of announcement.',
   },
   bestPractices: [
     'Use "info" for general information and tips',
@@ -2429,7 +2939,8 @@ const SPINNER_METADATA: ComponentMetadata = {
       'aria-live="polite" for non-intrusive updates',
     ],
     keyboardNavigation: [],
-    screenReaderNotes: 'Loading state announced without interrupting user. Spinner is not focusable.',
+    screenReaderNotes:
+      'Loading state announced without interrupting user. Spinner is not focusable.',
   },
   bestPractices: [
     'Use for asynchronous operations that take more than 1 second',
@@ -2448,8 +2959,18 @@ const PROGRESS_METADATA: ComponentMetadata = {
   selector: 'ui-progress',
   inputs: [
     { name: 'value', type: 'number', description: 'Progress value (0-100)', defaultValue: '0' },
-    { name: 'variant', type: "'default' | 'success' | 'warning' | 'error'", description: 'Visual variant for semantic meaning', defaultValue: "'default'" },
-    { name: 'showValue', type: 'boolean', description: 'Show percentage text', defaultValue: 'false' },
+    {
+      name: 'variant',
+      type: "'default' | 'success' | 'warning' | 'error'",
+      description: 'Visual variant for semantic meaning',
+      defaultValue: "'default'",
+    },
+    {
+      name: 'showValue',
+      type: 'boolean',
+      description: 'Show percentage text',
+      defaultValue: 'false',
+    },
   ],
   outputs: [],
   examples: [
@@ -2489,7 +3010,8 @@ const PROGRESS_METADATA: ComponentMetadata = {
       'aria-label describes the operation',
     ],
     keyboardNavigation: [],
-    screenReaderNotes: 'Progress percentage and label announced. Updates are announced as progress changes.',
+    screenReaderNotes:
+      'Progress percentage and label announced. Updates are announced as progress changes.',
   },
   bestPractices: [
     'Use "success" variant when operation completes successfully',
@@ -2507,8 +3029,13 @@ const SKELETON_METADATA: ComponentMetadata = {
   description: 'A placeholder component for loading content with animated shimmer effect.',
   selector: 'ui-skeleton',
   inputs: [
-    { name: 'variant', type: "'text' | 'circular' | 'rectangular'", description: 'Skeleton shape', defaultValue: "'text'" },
-    { name: 'width', type: 'string', description: 'Skeleton width (CSS value)', },
+    {
+      name: 'variant',
+      type: "'text' | 'circular' | 'rectangular'",
+      description: 'Skeleton shape',
+      defaultValue: "'text'",
+    },
+    { name: 'width', type: 'string', description: 'Skeleton width (CSS value)' },
     { name: 'height', type: 'string', description: 'Skeleton height (CSS value)' },
   ],
   outputs: [],
@@ -2554,7 +3081,8 @@ const SKELETON_METADATA: ComponentMetadata = {
       'role="status" for screen reader announcements',
     ],
     keyboardNavigation: [],
-    screenReaderNotes: 'Loading state announced when skeleton appears. Content announced when loading completes.',
+    screenReaderNotes:
+      'Loading state announced when skeleton appears. Content announced when loading completes.',
   },
   bestPractices: [
     'Use skeleton shapes that match the content being loaded',
@@ -2571,16 +3099,25 @@ const TOAST_METADATA: ComponentMetadata = {
   id: 'toast',
   name: 'Toast',
   category: 'feedback',
-  description: 'A temporary notification component that appears at screen edges for non-intrusive feedback.',
+  description:
+    'A temporary notification component that appears at screen edges for non-intrusive feedback.',
   selector: 'ui-toast',
   inputs: [
     { name: 'message', type: 'string', description: 'Notification message text', required: true },
-    { name: 'variant', type: "'info' | 'success' | 'warning' | 'error'", description: 'Visual variant for semantic meaning', defaultValue: "'info'" },
-    { name: 'duration', type: 'number', description: 'Auto-dismiss duration in milliseconds', defaultValue: '3000' },
+    {
+      name: 'variant',
+      type: "'info' | 'success' | 'warning' | 'error'",
+      description: 'Visual variant for semantic meaning',
+      defaultValue: "'info'",
+    },
+    {
+      name: 'duration',
+      type: 'number',
+      description: 'Auto-dismiss duration in milliseconds',
+      defaultValue: '3000',
+    },
   ],
-  outputs: [
-    { name: 'dismissed', type: 'void', description: 'Emitted when toast is dismissed' },
-  ],
+  outputs: [{ name: 'dismissed', type: 'void', description: 'Emitted when toast is dismissed' }],
   examples: [
     {
       title: 'Toast Variants',
@@ -2620,18 +3157,17 @@ this.toastService.show('Failed to save changes', 'error');`,
       'aria-live="polite" for non-intrusive announcements',
       'aria-atomic="true" announces entire message',
     ],
-    keyboardNavigation: [
-      { key: 'Escape', description: 'Dismiss toast' },
-    ],
-    screenReaderNotes: 'Toast messages announced automatically. Success/error variants use appropriate aria-live settings.',
+    keyboardNavigation: [{ key: 'Escape', description: 'Dismiss toast' }],
+    screenReaderNotes:
+      'Toast messages announced automatically. Success/error variants use appropriate aria-live settings.',
   },
   bestPractices: [
     'Use for confirmation of user actions (saved, deleted, etc.)',
     'Keep messages concise (1-2 short sentences)',
     'Use success variant for positive confirmation',
     'Use error variant for failed operations',
-    'Don\'t use for critical information that requires action',
-    'Ensure toasts don\'t obscure important content',
+    "Don't use for critical information that requires action",
+    "Ensure toasts don't obscure important content",
     'Position consistently (usually top-right or bottom-right)',
   ],
 };
@@ -2644,11 +3180,22 @@ const BREADCRUMB_METADATA: ComponentMetadata = {
   id: 'breadcrumb',
   name: 'Breadcrumb',
   category: 'navigation',
-  description: 'A navigation component showing the current page location within the site hierarchy.',
+  description:
+    'A navigation component showing the current page location within the site hierarchy.',
   selector: 'ui-breadcrumb',
   inputs: [
-    { name: 'items', type: 'BreadcrumbItem[]', description: 'Array of breadcrumb items with label and optional link', required: true },
-    { name: 'separator', type: 'string', description: 'Character or icon separating items', defaultValue: "'/'"},
+    {
+      name: 'items',
+      type: 'BreadcrumbItem[]',
+      description: 'Array of breadcrumb items with label and optional link',
+      required: true,
+    },
+    {
+      name: 'separator',
+      type: 'string',
+      description: 'Character or icon separating items',
+      defaultValue: "'/'",
+    },
   ],
   outputs: [],
   examples: [
@@ -2684,7 +3231,8 @@ const BREADCRUMB_METADATA: ComponentMetadata = {
       { key: 'Tab', description: 'Navigate between breadcrumb links' },
       { key: 'Enter', description: 'Follow breadcrumb link' },
     ],
-    screenReaderNotes: 'Breadcrumb trail announced with "Breadcrumb navigation". Current page identified. Path hierarchy clear.',
+    screenReaderNotes:
+      'Breadcrumb trail announced with "Breadcrumb navigation". Current page identified. Path hierarchy clear.',
   },
   bestPractices: [
     'Start with Home or top-level page',
@@ -2703,8 +3251,18 @@ const MENU_METADATA: ComponentMetadata = {
   description: 'A dropdown menu component with nested submenu support for contextual actions.',
   selector: 'ui-menu',
   inputs: [
-    { name: 'items', type: 'MenuItem[]', description: 'Array of menu items with labels and optional children', required: true },
-    { name: 'open', type: 'boolean', description: 'Whether menu is visible', defaultValue: 'false' },
+    {
+      name: 'items',
+      type: 'MenuItem[]',
+      description: 'Array of menu items with labels and optional children',
+      required: true,
+    },
+    {
+      name: 'open',
+      type: 'boolean',
+      description: 'Whether menu is visible',
+      defaultValue: 'false',
+    },
   ],
   outputs: [
     { name: 'itemSelected', type: 'string', description: 'Emitted when menu item is selected' },
@@ -2762,6 +3320,161 @@ const MENU_METADATA: ComponentMetadata = {
     'Use dividers to separate action groups',
     'Provide keyboard shortcuts for common actions',
   ],
+  relatedComponents: ['context-menu', 'popover'],
+};
+
+const CONTEXT_MENU_METADATA: ComponentMetadata = {
+  id: 'context-menu',
+  name: 'Context Menu',
+  category: 'navigation',
+  description:
+    'A right-click context menu component with nested submenu support, icons, and keyboard shortcuts.',
+  selector: 'ui-context-menu',
+  inputs: [
+    {
+      name: 'items',
+      type: 'ContextMenuItem[]',
+      description: 'Array of menu items with labels, icons, shortcuts, and optional submenus',
+      required: true,
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      description: 'Whether the context menu is disabled',
+      defaultValue: 'false',
+    },
+  ],
+  outputs: [
+    {
+      name: 'itemClick',
+      type: 'ContextMenuItem',
+      description: 'Emitted when a menu item is clicked',
+    },
+    { name: 'opened', type: 'MouseEvent', description: 'Emitted when the context menu opens' },
+    { name: 'closed', type: 'void', description: 'Emitted when the context menu closes' },
+  ],
+  examples: [
+    {
+      title: 'Basic Context Menu',
+      description: 'Simple right-click menu with actions',
+      typescript: `protected readonly contextMenuItems = signal<ContextMenuItem[]>([
+  { id: 'cut', label: 'Cut', shortcut: 'Ctrl+X' },
+  { id: 'copy', label: 'Copy', shortcut: 'Ctrl+C' },
+  { id: 'paste', label: 'Paste', shortcut: 'Ctrl+V' },
+  { id: 'divider-1', divider: true },
+  { id: 'delete', label: 'Delete', shortcut: 'Del' },
+]);
+
+handleMenuClick(item: ContextMenuItem): void {
+  console.log('Selected:', item.id);
+}`,
+      template: `<ui-context-menu
+  [items]="contextMenuItems()"
+  (itemClick)="handleMenuClick($event)"
+>
+  <div class="content-area">
+    Right-click anywhere in this area
+  </div>
+</ui-context-menu>`,
+    },
+    {
+      title: 'File Explorer Context Menu',
+      description: 'Context menu with nested submenus',
+      typescript: `protected readonly fileMenuItems = signal<ContextMenuItem[]>([
+  { id: 'open', label: 'Open', shortcut: 'Enter' },
+  {
+    id: 'open-with',
+    label: 'Open With',
+    submenu: [
+      { id: 'notepad', label: 'Notepad' },
+      { id: 'vscode', label: 'VS Code' },
+      { id: 'other', label: 'Choose another app...' }
+    ]
+  },
+  { id: 'divider-1', divider: true },
+  { id: 'cut', label: 'Cut', shortcut: 'Ctrl+X' },
+  { id: 'copy', label: 'Copy', shortcut: 'Ctrl+C' },
+  { id: 'paste', label: 'Paste', shortcut: 'Ctrl+V', disabled: true },
+  { id: 'divider-2', divider: true },
+  { id: 'rename', label: 'Rename', shortcut: 'F2' },
+  { id: 'delete', label: 'Delete', shortcut: 'Del' },
+  { id: 'divider-3', divider: true },
+  { id: 'properties', label: 'Properties', shortcut: 'Alt+Enter' },
+]);`,
+      template: `<ui-context-menu
+  [items]="fileMenuItems()"
+  (itemClick)="handleFileAction($event)"
+>
+  <div class="file-item">
+    📄 document.pdf
+  </div>
+</ui-context-menu>`,
+    },
+    {
+      title: 'Text Editor Context Menu',
+      description: 'Context menu with formatting options',
+      typescript: `protected readonly editorMenuItems = signal<ContextMenuItem[]>([
+  { id: 'cut', label: 'Cut', shortcut: 'Ctrl+X' },
+  { id: 'copy', label: 'Copy', shortcut: 'Ctrl+C' },
+  { id: 'paste', label: 'Paste', shortcut: 'Ctrl+V' },
+  { id: 'divider-1', divider: true },
+  { id: 'select-all', label: 'Select All', shortcut: 'Ctrl+A' },
+  { id: 'divider-2', divider: true },
+  {
+    id: 'format',
+    label: 'Format',
+    submenu: [
+      { id: 'bold', label: 'Bold', shortcut: 'Ctrl+B' },
+      { id: 'italic', label: 'Italic', shortcut: 'Ctrl+I' },
+      { id: 'underline', label: 'Underline', shortcut: 'Ctrl+U' },
+    ]
+  },
+]);`,
+      template: `<ui-context-menu
+  [items]="editorMenuItems()"
+  (itemClick)="handleTextFormat($event)"
+>
+  <textarea class="editor">
+    Right-click to format text
+  </textarea>
+</ui-context-menu>`,
+    },
+  ],
+  accessibility: {
+    ariaSupport: [
+      'role="menu" on menu container',
+      'role="menuitem" on each item',
+      'role="separator" on dividers',
+      'aria-disabled for disabled items',
+      'aria-haspopup for items with submenus',
+      'aria-expanded for submenu state',
+      'aria-label for keyboard shortcuts',
+    ],
+    keyboardNavigation: [
+      { key: 'Right-click', description: 'Open context menu at cursor position' },
+      { key: 'Arrow Up/Down', description: 'Navigate menu items' },
+      { key: 'Arrow Right', description: 'Open submenu' },
+      { key: 'Arrow Left', description: 'Close submenu' },
+      { key: 'Enter/Space', description: 'Activate menu item' },
+      { key: 'Escape', description: 'Close context menu' },
+      { key: 'Tab', description: 'Move focus within menu' },
+    ],
+    screenReaderNotes:
+      'Menu structure announced with item count. Icons and shortcuts announced. Disabled items identified. Submenu presence indicated.',
+  },
+  bestPractices: [
+    'Use meaningful IDs for each menu item',
+    'Display common keyboard shortcuts for better UX',
+    'Group related items with dividers',
+    'Limit submenu nesting to 2 levels maximum',
+    'Handle disabled state for inapplicable actions',
+    'Provide visual feedback when actions are performed',
+    'Keep labels concise and action-oriented',
+    'Use icons sparingly to enhance recognition',
+    'Consider different contexts (text selection, files, etc.)',
+    'Ensure menu stays within viewport boundaries',
+  ],
+  relatedComponents: ['menu', 'popover', 'tooltip'],
 };
 
 const NAVBAR_METADATA: ComponentMetadata = {
@@ -2772,8 +3485,18 @@ const NAVBAR_METADATA: ComponentMetadata = {
   selector: 'ui-navbar',
   inputs: [
     { name: 'logo', type: 'string', description: 'Logo text or image URL' },
-    { name: 'links', type: 'NavbarLink[]', description: 'Array of navigation links with labels and paths', required: true },
-    { name: 'variant', type: "'default' | 'transparent' | 'sticky'", description: 'Navbar style variant', defaultValue: "'default'" },
+    {
+      name: 'links',
+      type: 'NavbarLink[]',
+      description: 'Array of navigation links with labels and paths',
+      required: true,
+    },
+    {
+      name: 'variant',
+      type: "'default' | 'transparent' | 'sticky'",
+      description: 'Navbar style variant',
+      defaultValue: "'default'",
+    },
   ],
   outputs: [],
   examples: [
@@ -2830,12 +3553,31 @@ const STEPPER_METADATA: ComponentMetadata = {
   description: 'A component for multi-step processes with progress indication and step navigation.',
   selector: 'ui-stepper',
   inputs: [
-    { name: 'steps', type: 'Step[]', description: 'Array of steps with labels and optional descriptions', required: true },
-    { name: 'activeStep', type: 'number', description: 'Current active step index (0-based)', defaultValue: '0' },
-    { name: 'orientation', type: "'horizontal' | 'vertical'", description: 'Stepper layout direction', defaultValue: "'horizontal'" },
+    {
+      name: 'steps',
+      type: 'Step[]',
+      description: 'Array of steps with labels and optional descriptions',
+      required: true,
+    },
+    {
+      name: 'activeStep',
+      type: 'number',
+      description: 'Current active step index (0-based)',
+      defaultValue: '0',
+    },
+    {
+      name: 'orientation',
+      type: "'horizontal' | 'vertical'",
+      description: 'Stepper layout direction',
+      defaultValue: "'horizontal'",
+    },
   ],
   outputs: [
-    { name: 'activeStepChange', type: 'number', description: 'Emitted when user navigates to different step' },
+    {
+      name: 'activeStepChange',
+      type: 'number',
+      description: 'Emitted when user navigates to different step',
+    },
   ],
   examples: [
     {
@@ -2883,7 +3625,8 @@ protected currentStep = signal(0);`,
       { key: 'Arrow Keys', description: 'Navigate between steps (optional)' },
       { key: 'Enter/Space', description: 'Activate step' },
     ],
-    screenReaderNotes: 'Current step, total steps, and completion status announced. Step descriptions read when focused.',
+    screenReaderNotes:
+      'Current step, total steps, and completion status announced. Step descriptions read when focused.',
   },
   bestPractices: [
     'Use for processes with 3-7 distinct steps',
@@ -2941,6 +3684,7 @@ const COMPONENT_METADATA_MAP = new Map<string, ComponentMetadata>([
   // Navigation Components
   ['breadcrumb', BREADCRUMB_METADATA],
   ['menu', MENU_METADATA],
+  ['context-menu', CONTEXT_MENU_METADATA],
   ['navbar', NAVBAR_METADATA],
   ['stepper', STEPPER_METADATA],
 ]);
@@ -2962,7 +3706,8 @@ export function getAllComponentMetadata(): ComponentMetadata[] {
 /**
  * Get components by category
  */
-export function getComponentsByCategory(category: ComponentMetadata['category']): ComponentMetadata[] {
-  return getAllComponentMetadata().filter(meta => meta.category === category);
+export function getComponentsByCategory(
+  category: ComponentMetadata['category']
+): ComponentMetadata[] {
+  return getAllComponentMetadata().filter((meta) => meta.category === category);
 }
-

@@ -38,7 +38,7 @@
         [attr.id]="'ui-accordion-panel-' + $index"
         [attr.aria-labelledby]="'ui-accordion-header-' + $index"
         [attr.role]="'region'"
-        [attr.hidden]="!isExpanded($index) ? true : null"
+        [attr.aria-hidden]="!isExpanded($index)"
       >
         <div class="ui-accordion-content">
           <ng-content></ng-content>

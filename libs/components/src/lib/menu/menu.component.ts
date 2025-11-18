@@ -1,6 +1,6 @@
 /**
  * Menu Component
- * 
+ *
  * A versatile menu component for dropdowns and context menus.
  * Supports nested submenus, dividers, and keyboard navigation.
  */
@@ -132,9 +132,7 @@ export class MenuComponent {
 
     if (item.submenu && item.submenu.length > 0) {
       // Toggle submenu
-      this.activeSubmenu.set(
-        this.activeSubmenu() === item.id ? null : item.id
-      );
+      this.activeSubmenu.set(this.activeSubmenu() === item.id ? null : item.id);
     } else {
       // Emit click event and close menu
       this.itemClick.emit(item);
@@ -159,6 +157,17 @@ export class MenuComponent {
 
     if (!hostElement.contains(target) && this.isOpen()) {
       this.close();
+    }
+  }
+
+  /**
+   * Update position on scroll
+   */
+  @HostListener('window:scroll')
+  @HostListener('window:resize')
+  protected handleScrollOrResize(): void {
+    if (this.isOpen()) {
+      this.updatePosition();
     }
   }
 
@@ -210,4 +219,3 @@ export class MenuComponent {
     this.menuStyles.set(styles);
   }
 }
-

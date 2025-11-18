@@ -3,13 +3,7 @@
  * Displays live interactive examples of components based on component ID and example data
  */
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  input,
-  signal,
-  inject,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToastService } from '@ui-suite/components';
 import {
@@ -47,6 +41,7 @@ import {
   SkeletonComponent,
   BreadcrumbComponent,
   MenuComponent,
+  ContextMenuComponent,
   NavbarComponent,
   StepperComponent,
   DividerComponent,
@@ -92,6 +87,7 @@ import {
     SkeletonComponent,
     BreadcrumbComponent,
     MenuComponent,
+    ContextMenuComponent,
     NavbarComponent,
     StepperComponent,
     DividerComponent,
@@ -146,99 +142,80 @@ import {
               </div>
             }
             @if (exampleTitle() === 'Input with Prefix Icon') {
-              <ui-input 
-                label="Search" 
-                placeholder="Search..." 
-                prefixIcon="�" 
-              />
+              <ui-input label="Search" placeholder="Search..." prefixIcon="�" />
             }
             @if (exampleTitle() === 'Input with Suffix Icon') {
-              <ui-input 
-                label="Password" 
+              <ui-input
+                label="Password"
                 type="password"
-                placeholder="Enter password" 
-                suffixIcon="�" 
+                placeholder="Enter password"
+                suffixIcon="�"
               />
             }
             @if (exampleTitle() === 'Input with Error') {
-              <ui-input 
-                label="Email" 
+              <ui-input
+                label="Email"
                 value="invalid-email"
                 error="Please enter a valid email address"
               />
             }
             @if (exampleTitle() === 'Input with Helper Text') {
-              <ui-input 
-                label="Username" 
+              <ui-input
+                label="Username"
                 placeholder="Enter username"
                 helperText="Must be 3-20 characters, letters and numbers only"
               />
             }
             @if (exampleTitle() === 'Disabled Input') {
-              <ui-input 
-                label="Email" 
-                value="user@example.com"
-                [disabled]="true"
-              />
+              <ui-input label="Email" value="user@example.com" [disabled]="true" />
             }
             @if (exampleTitle() === 'Required Input') {
-              <ui-input 
-                label="Email" 
-                placeholder="Enter your email"
-                [required]="true"
-              />
+              <ui-input label="Email" placeholder="Enter your email" [required]="true" />
             }
           }
 
           <!-- TEXTAREA DEMOS -->
           @case ('textarea') {
             @if (exampleTitle() === 'Basic Textarea') {
-              <ui-textarea 
-                label="Description" 
-                placeholder="Enter description..." 
-              />
+              <ui-textarea label="Description" placeholder="Enter description..." />
             }
             @if (exampleTitle() === 'Textarea with Rows') {
-              <ui-textarea 
-                label="Comments" 
-                placeholder="Enter your comments..." 
-                [rows]="5" 
-              />
+              <ui-textarea label="Comments" placeholder="Enter your comments..." [rows]="5" />
             }
             @if (exampleTitle() === 'Textarea with Character Limit') {
-              <ui-textarea 
-                label="Bio" 
-                placeholder="Tell us about yourself..." 
+              <ui-textarea
+                label="Bio"
+                placeholder="Tell us about yourself..."
                 [maxLength]="200"
                 [showCharacterCount]="true"
               />
             }
             @if (exampleTitle() === 'Textarea with Helper Text') {
-              <ui-textarea 
-                label="Feedback" 
-                placeholder="Share your thoughts..." 
-                helperText="Your feedback helps us improve." 
+              <ui-textarea
+                label="Feedback"
+                placeholder="Share your thoughts..."
+                helperText="Your feedback helps us improve."
               />
             }
             @if (exampleTitle() === 'Textarea with Error') {
-              <ui-textarea 
-                label="Message" 
-                placeholder="Enter message..." 
-                errorMessage="Message is required" 
+              <ui-textarea
+                label="Message"
+                placeholder="Enter message..."
+                errorMessage="Message is required"
               />
             }
             @if (exampleTitle() === 'Required Textarea') {
-              <ui-textarea 
-                label="Required Field" 
-                placeholder="This field is required..." 
-                [required]="true" 
+              <ui-textarea
+                label="Required Field"
+                placeholder="This field is required..."
+                [required]="true"
               />
             }
             @if (exampleTitle() === 'Disabled Textarea') {
-              <ui-textarea 
-                label="Readonly Content" 
-                value="This content cannot be edited." 
-                [disabled]="true" 
+              <ui-textarea
+                label="Readonly Content"
+                value="This content cannot be edited."
+                [disabled]="true"
               />
             }
           }
@@ -274,9 +251,19 @@ import {
           @case ('radio') {
             @if (exampleTitle() === 'Basic Radio Group') {
               <div class="demo-column">
-                <ui-radio name="plan" value="free" label="Free Plan" [(modelValue)]="selectedPlan" />
+                <ui-radio
+                  name="plan"
+                  value="free"
+                  label="Free Plan"
+                  [(modelValue)]="selectedPlan"
+                />
                 <ui-radio name="plan" value="pro" label="Pro Plan" [(modelValue)]="selectedPlan" />
-                <ui-radio name="plan" value="enterprise" label="Enterprise Plan" [(modelValue)]="selectedPlan" />
+                <ui-radio
+                  name="plan"
+                  value="enterprise"
+                  label="Enterprise Plan"
+                  [(modelValue)]="selectedPlan"
+                />
               </div>
             }
             @if (exampleTitle() === 'Radio with Pre-selection') {
@@ -288,23 +275,64 @@ import {
             }
             @if (exampleTitle() === 'Disabled Radio Options') {
               <div class="demo-column">
-                <ui-radio name="shipping" value="standard" label="Standard (5-7 days)" [(modelValue)]="selectedShipping" />
-                <ui-radio name="shipping" value="express" label="Express (2-3 days)" [(modelValue)]="selectedShipping" />
-                <ui-radio name="shipping" value="overnight" label="Overnight" [disabled]="true" [(modelValue)]="selectedShipping" />
+                <ui-radio
+                  name="shipping"
+                  value="standard"
+                  label="Standard (5-7 days)"
+                  [(modelValue)]="selectedShipping"
+                />
+                <ui-radio
+                  name="shipping"
+                  value="express"
+                  label="Express (2-3 days)"
+                  [(modelValue)]="selectedShipping"
+                />
+                <ui-radio
+                  name="shipping"
+                  value="overnight"
+                  label="Overnight"
+                  [disabled]="true"
+                  [(modelValue)]="selectedShipping"
+                />
               </div>
             }
             @if (exampleTitle() === 'Radio States') {
               <div class="demo-column">
                 <ui-radio name="state1" value="unchecked" label="Unchecked" />
-                <ui-radio name="state2" value="disabled-unchecked" label="Disabled Unchecked" [disabled]="true" />
-                <ui-radio name="state3" value="disabled-checked" label="Disabled" [disabled]="true" />
+                <ui-radio
+                  name="state2"
+                  value="disabled-unchecked"
+                  label="Disabled Unchecked"
+                  [disabled]="true"
+                />
+                <ui-radio
+                  name="state3"
+                  value="disabled-checked"
+                  label="Disabled"
+                  [disabled]="true"
+                />
               </div>
             }
             @if (exampleTitle() === 'Payment Method Selection') {
               <div class="demo-column">
-                <ui-radio name="payment" value="card" label="Credit/Debit Card" [(modelValue)]="selectedPayment" />
-                <ui-radio name="payment" value="paypal" label="PayPal" [(modelValue)]="selectedPayment" />
-                <ui-radio name="payment" value="bank" label="Bank Transfer" [(modelValue)]="selectedPayment" />
+                <ui-radio
+                  name="payment"
+                  value="card"
+                  label="Credit/Debit Card"
+                  [(modelValue)]="selectedPayment"
+                />
+                <ui-radio
+                  name="payment"
+                  value="paypal"
+                  label="PayPal"
+                  [(modelValue)]="selectedPayment"
+                />
+                <ui-radio
+                  name="payment"
+                  value="bank"
+                  label="Bank Transfer"
+                  [(modelValue)]="selectedPayment"
+                />
               </div>
             }
           }
@@ -338,67 +366,50 @@ import {
           <!-- SELECT DEMOS -->
           @case ('select') {
             @if (exampleTitle() === 'Basic Select') {
-              <ui-select 
-                label="Country" 
-                [options]="sampleOptions()" 
-                placeholder="Select country" 
-              />
+              <ui-select label="Country" [options]="sampleOptions()" placeholder="Select country" />
             }
             @if (exampleTitle() === 'Select with Pre-selection') {
-              <ui-select 
-                label="Country" 
-                [options]="sampleOptions()" 
-                value="us" 
-              />
+              <ui-select label="Country" [options]="sampleOptions()" value="us" />
             }
             @if (exampleTitle() === 'Required Select') {
-              <ui-select 
-                label="Priority" 
-                [options]="priorityOptions()" 
-                [required]="true" 
-                placeholder="Select priority" 
+              <ui-select
+                label="Priority"
+                [options]="priorityOptions()"
+                [required]="true"
+                placeholder="Select priority"
               />
             }
             @if (exampleTitle() === 'Select with Error') {
-              <ui-select 
-                label="Country" 
-                [options]="sampleOptions()" 
-                placeholder="Select country" 
-                error="Country is required" 
+              <ui-select
+                label="Country"
+                [options]="sampleOptions()"
+                placeholder="Select country"
+                error="Country is required"
               />
             }
             @if (exampleTitle() === 'Disabled Select') {
-              <ui-select 
-                label="Country" 
-                [options]="sampleOptions()" 
-                value="us" 
-                [disabled]="true" 
-              />
+              <ui-select label="Country" [options]="sampleOptions()" value="us" [disabled]="true" />
             }
           }
 
           <!-- MULTI-SELECT DEMOS -->
           @case ('multi-select') {
             @if (exampleTitle() === 'Basic Multi-Select') {
-              <ui-multi-select 
-                label="Skills" 
-                [options]="skillOptions()" 
-                placeholder="Select your skills" 
+              <ui-multi-select
+                label="Skills"
+                [options]="skillOptions()"
+                placeholder="Select your skills"
               />
             }
             @if (exampleTitle() === 'Multi-Select with Pre-selection') {
-              <ui-multi-select 
-                label="Skills" 
-                [options]="skillOptions()" 
-                [value]="['js', 'ts']" 
-              />
+              <ui-multi-select label="Skills" [options]="skillOptions()" [value]="['js', 'ts']" />
             }
             @if (exampleTitle() === 'Disabled Multi-Select') {
-              <ui-multi-select 
-                label="Skills" 
-                [options]="skillOptions()" 
-                [value]="['js']" 
-                [disabled]="true" 
+              <ui-multi-select
+                label="Skills"
+                [options]="skillOptions()"
+                [value]="['js']"
+                [disabled]="true"
               />
             }
           }
@@ -406,60 +417,40 @@ import {
           <!-- SLIDER DEMOS -->
           @case ('slider') {
             @if (exampleTitle() === 'Basic Slider') {
-              <ui-slider 
-                label="Volume" 
-                [min]="0" 
-                [max]="100" 
-                [value]="50" 
-              />
+              <ui-slider label="Volume" [min]="0" [max]="100" [value]="50" />
             }
             @if (exampleTitle() === 'Slider with Steps') {
-              <ui-slider 
-                label="Rating" 
-                [min]="0" 
-                [max]="10" 
-                [step]="2" 
-                [value]="6" 
-              />
+              <ui-slider label="Rating" [min]="0" [max]="10" [step]="2" [value]="6" />
             }
             @if (exampleTitle() === 'Range Slider') {
-              <ui-slider 
-                label="Price Range" 
-                [min]="0" 
-                [max]="1000" 
-                [value]="200" 
-                [valueEnd]="800" 
+              <ui-slider
+                label="Price Range"
+                [min]="0"
+                [max]="1000"
+                [value]="200"
+                [valueEnd]="800"
               />
             }
             @if (exampleTitle() === 'Disabled Slider') {
-              <ui-slider 
-                label="Volume" 
-                [min]="0" 
-                [max]="100" 
-                [value]="75" 
-                [disabled]="true" 
-              />
+              <ui-slider label="Volume" [min]="0" [max]="100" [value]="75" [disabled]="true" />
             }
           }
 
           <!-- DATE PICKER DEMOS -->
           @case ('date-picker') {
             @if (exampleTitle() === 'Basic Date Picker') {
-              <ui-date-picker 
-                label="Birth Date" 
-                placeholder="Select your birth date" 
-              />
+              <ui-date-picker label="Birth Date" placeholder="Select your birth date" />
             }
             @if (exampleTitle() === 'Date Picker with Pre-selected Date') {
-              <ui-date-picker 
-                label="Appointment Date" 
-                placeholder="Select date" 
+              <ui-date-picker
+                label="Appointment Date"
+                placeholder="Select date"
                 value="2024-12-15"
               />
             }
             @if (exampleTitle() === 'Date Picker with Date Range') {
-              <ui-date-picker 
-                label="Start Date" 
+              <ui-date-picker
+                label="Start Date"
                 placeholder="Select start date"
                 min="2024-01-01"
                 max="2024-12-31"
@@ -467,23 +458,23 @@ import {
               />
             }
             @if (exampleTitle() === 'Required Date Picker') {
-              <ui-date-picker 
-                label="Event Date" 
+              <ui-date-picker
+                label="Event Date"
                 placeholder="Select date"
                 [required]="true"
                 helperText="This field is required"
               />
             }
             @if (exampleTitle() === 'Date Picker with Error') {
-              <ui-date-picker 
-                label="Expiry Date" 
+              <ui-date-picker
+                label="Expiry Date"
                 placeholder="Select expiry date"
                 errorMessage="Please select a valid expiry date"
               />
             }
             @if (exampleTitle() === 'Disabled Date Picker') {
-              <ui-date-picker 
-                label="Locked Date" 
+              <ui-date-picker
+                label="Locked Date"
                 placeholder="Not available"
                 value="2024-01-15"
                 [disabled]="true"
@@ -491,14 +482,14 @@ import {
             }
             @if (exampleTitle() === 'Booking Form') {
               <div class="demo-column">
-                <ui-date-picker 
-                  label="Check-in Date" 
+                <ui-date-picker
+                  label="Check-in Date"
                   placeholder="Select check-in date"
                   [required]="true"
                   helperText="Select your arrival date"
                 />
-                <ui-date-picker 
-                  label="Check-out Date" 
+                <ui-date-picker
+                  label="Check-out Date"
                   placeholder="Select check-out date"
                   [required]="true"
                   helperText="Select your departure date"
@@ -510,66 +501,63 @@ import {
           <!-- FILE UPLOAD DEMOS -->
           @case ('file-upload') {
             @if (exampleTitle() === 'Basic File Upload') {
-              <ui-file-upload 
-                label="Upload File" 
-                helperText="Choose a file to upload"
-              />
+              <ui-file-upload label="Upload File" helperText="Choose a file to upload" />
             }
             @if (exampleTitle() === 'Multiple File Upload') {
-              <ui-file-upload 
-                label="Upload Documents" 
+              <ui-file-upload
+                label="Upload Documents"
                 [multiple]="true"
                 helperText="You can select multiple files"
               />
             }
             @if (exampleTitle() === 'File Type Restrictions') {
-              <ui-file-upload 
-                label="Upload PDF Documents" 
+              <ui-file-upload
+                label="Upload PDF Documents"
                 accept=".pdf"
                 helperText="Only PDF files are accepted"
               />
             }
             @if (exampleTitle() === 'Image Upload') {
-              <ui-file-upload 
-                label="Upload Images" 
+              <ui-file-upload
+                label="Upload Images"
                 accept="image/*"
                 [multiple]="true"
                 helperText="Supports JPG, PNG, GIF, and WebP"
               />
             }
             @if (exampleTitle() === 'File Size Limit') {
-              <ui-file-upload 
-                label="Upload Profile Picture" 
+              <ui-file-upload
+                label="Upload Profile Picture"
                 accept="image/*"
                 [maxSize]="2097152"
                 helperText="Maximum file size: 2MB"
               />
             }
             @if (exampleTitle() === 'File Upload with Error') {
-              <ui-file-upload 
-                label="Upload Resume" 
+              <ui-file-upload
+                label="Upload Resume"
                 accept=".pdf,.doc,.docx"
                 errorMessage="File size exceeds the maximum limit of 10MB"
                 helperText="Please upload your resume (PDF or Word)"
               />
             }
             @if (exampleTitle() === 'Disabled Upload') {
-              <ui-file-upload 
-                label="Upload Disabled" 
+              <ui-file-upload
+                label="Upload Disabled"
                 [disabled]="true"
                 helperText="File upload is currently disabled"
               />
             }
             @if (exampleTitle() === 'Document Upload Form') {
               <div class="demo-column">
-                <ui-file-upload 
-                  label="Upload Identity Document" 
+                <ui-file-upload
+                  label="Upload Identity Document"
                   accept=".pdf,.jpg,.png"
                   helperText="Upload a PDF or image of your ID (max 5MB)"
                   [maxSize]="5242880"
                 />
-                <ui-file-upload 
-                  label="Upload Supporting Documents" 
+                <ui-file-upload
+                  label="Upload Supporting Documents"
                   accept=".pdf,.doc,.docx"
                   [multiple]="true"
                   helperText="Upload any supporting documents (optional)"
@@ -609,18 +597,10 @@ import {
           @case ('alert') {
             @if (exampleTitle() === 'Alert Variants') {
               <div class="demo-column">
-                <ui-alert variant="info">
-                  This is an informational message.
-                </ui-alert>
-                <ui-alert variant="success">
-                  Operation completed successfully!
-                </ui-alert>
-                <ui-alert variant="warning">
-                  Please review your input carefully.
-                </ui-alert>
-                <ui-alert variant="error">
-                  An error occurred. Please try again.
-                </ui-alert>
+                <ui-alert variant="info"> This is an informational message. </ui-alert>
+                <ui-alert variant="success"> Operation completed successfully! </ui-alert>
+                <ui-alert variant="warning"> Please review your input carefully. </ui-alert>
+                <ui-alert variant="error"> An error occurred. Please try again. </ui-alert>
               </div>
             }
             @if (exampleTitle() === 'Dismissible Alert') {
@@ -886,23 +866,59 @@ import {
           @case ('stack') {
             @if (exampleTitle() === 'Vertical Stack') {
               <ui-stack direction="vertical" [spacing]="4">
-                <div style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;">Item 1</div>
-                <div style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;">Item 2</div>
-                <div style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;">Item 3</div>
+                <div
+                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                >
+                  Item 1
+                </div>
+                <div
+                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                >
+                  Item 2
+                </div>
+                <div
+                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                >
+                  Item 3
+                </div>
               </ui-stack>
             }
             @if (exampleTitle() === 'Horizontal Stack') {
               <ui-stack direction="horizontal" [spacing]="4">
-                <div style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;">Item 1</div>
-                <div style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;">Item 2</div>
-                <div style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;">Item 3</div>
+                <div
+                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                >
+                  Item 1
+                </div>
+                <div
+                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                >
+                  Item 2
+                </div>
+                <div
+                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                >
+                  Item 3
+                </div>
               </ui-stack>
             }
             @if (exampleTitle() === 'Stack with Alignment') {
               <ui-stack direction="vertical" [spacing]="3" align="center">
-                <div style="padding: 0.5rem 2rem; background: var(--semantic-surface-subtle); border-radius: 4px;">Centered Item 1</div>
-                <div style="padding: 0.5rem 3rem; background: var(--semantic-surface-subtle); border-radius: 4px;">Centered Item 2</div>
-                <div style="padding: 0.5rem 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;">Centered Item 3</div>
+                <div
+                  style="padding: 0.5rem 2rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                >
+                  Centered Item 1
+                </div>
+                <div
+                  style="padding: 0.5rem 3rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                >
+                  Centered Item 2
+                </div>
+                <div
+                  style="padding: 0.5rem 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                >
+                  Centered Item 3
+                </div>
               </ui-stack>
             }
           }
@@ -911,24 +927,80 @@ import {
           @case ('grid') {
             @if (exampleTitle() === '3-Column Grid') {
               <ui-grid [columns]="3" [gap]="4">
-                <div style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;">Item 1</div>
-                <div style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;">Item 2</div>
-                <div style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;">Item 3</div>
-                <div style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;">Item 4</div>
-                <div style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;">Item 5</div>
-                <div style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;">Item 6</div>
+                <div
+                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                >
+                  Item 1
+                </div>
+                <div
+                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                >
+                  Item 2
+                </div>
+                <div
+                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                >
+                  Item 3
+                </div>
+                <div
+                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                >
+                  Item 4
+                </div>
+                <div
+                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                >
+                  Item 5
+                </div>
+                <div
+                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                >
+                  Item 6
+                </div>
               </ui-grid>
             }
             @if (exampleTitle() === '4-Column Grid') {
               <ui-grid [columns]="4" [gap]="3">
-                <div style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;">Item 1</div>
-                <div style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;">Item 2</div>
-                <div style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;">Item 3</div>
-                <div style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;">Item 4</div>
-                <div style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;">Item 5</div>
-                <div style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;">Item 6</div>
-                <div style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;">Item 7</div>
-                <div style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;">Item 8</div>
+                <div
+                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                >
+                  Item 1
+                </div>
+                <div
+                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                >
+                  Item 2
+                </div>
+                <div
+                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                >
+                  Item 3
+                </div>
+                <div
+                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                >
+                  Item 4
+                </div>
+                <div
+                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                >
+                  Item 5
+                </div>
+                <div
+                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                >
+                  Item 6
+                </div>
+                <div
+                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                >
+                  Item 7
+                </div>
+                <div
+                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                >
+                  Item 8
+                </div>
               </ui-grid>
             }
           }
@@ -957,7 +1029,11 @@ import {
             @if (exampleTitle() === 'Modal without Backdrop Close') {
               <div>
                 <ui-button (clicked)="isOpen.set(true)">Open Modal</ui-button>
-                <ui-modal [open]="isOpen()" [closeOnBackdropClick]="false" (closed)="isOpen.set(false)">
+                <ui-modal
+                  [open]="isOpen()"
+                  [closeOnBackdropClick]="false"
+                  (closed)="isOpen.set(false)"
+                >
                   <h2>Important Modal</h2>
                   <p>This modal can only be closed by clicking the button.</p>
                   <ui-button (clicked)="isOpen.set(false)">Close Modal</ui-button>
@@ -1045,17 +1121,37 @@ import {
             @if (exampleTitle() === 'Left Drawer') {
               <div>
                 <ui-button (clicked)="drawerLeft.set(true)">Open Navigation</ui-button>
-                <ui-drawer [open]="drawerLeft()" title="Navigation" position="left" (openChange)="drawerLeft.set($event)">
+                <ui-drawer
+                  [open]="drawerLeft()"
+                  title="Navigation"
+                  position="left"
+                  (openChange)="drawerLeft.set($event)"
+                >
                   <nav style="display: flex; flex-direction: column; gap: 12px;">
-                    <a href="#" style="padding: 8px; text-decoration: none; color: var(--semantic-text-primary); border-radius: 4px; transition: background 0.2s;" 
-                       onmouseover="this.style.background='var(--semantic-surface-subtle)'" 
-                       onmouseout="this.style.background='transparent'"> Dashboard</a>
-                    <a href="#" style="padding: 8px; text-decoration: none; color: var(--semantic-text-primary); border-radius: 4px; transition: background 0.2s;"
-                       onmouseover="this.style.background='var(--semantic-surface-subtle)'" 
-                       onmouseout="this.style.background='transparent'"> Settings</a>
-                    <a href="#" style="padding: 8px; text-decoration: none; color: var(--semantic-text-primary); border-radius: 4px; transition: background 0.2s;"
-                       onmouseover="this.style.background='var(--semantic-surface-subtle)'" 
-                       onmouseout="this.style.background='transparent'"> Profile</a>
+                    <a
+                      href="#"
+                      style="padding: 8px; text-decoration: none; color: var(--semantic-text-primary); border-radius: 4px; transition: background 0.2s;"
+                      onmouseover="this.style.background='var(--semantic-surface-subtle)'"
+                      onmouseout="this.style.background='transparent'"
+                    >
+                      Dashboard</a
+                    >
+                    <a
+                      href="#"
+                      style="padding: 8px; text-decoration: none; color: var(--semantic-text-primary); border-radius: 4px; transition: background 0.2s;"
+                      onmouseover="this.style.background='var(--semantic-surface-subtle)'"
+                      onmouseout="this.style.background='transparent'"
+                    >
+                      Settings</a
+                    >
+                    <a
+                      href="#"
+                      style="padding: 8px; text-decoration: none; color: var(--semantic-text-primary); border-radius: 4px; transition: background 0.2s;"
+                      onmouseover="this.style.background='var(--semantic-surface-subtle)'"
+                      onmouseout="this.style.background='transparent'"
+                    >
+                      Profile</a
+                    >
                   </nav>
                 </ui-drawer>
               </div>
@@ -1063,14 +1159,27 @@ import {
             @if (exampleTitle() === 'Right Drawer') {
               <div>
                 <ui-button (clicked)="drawerRight.set(true)">Open Settings</ui-button>
-                <ui-drawer [open]="drawerRight()" title="Settings" position="right" (openChange)="drawerRight.set($event)">
+                <ui-drawer
+                  [open]="drawerRight()"
+                  title="Settings"
+                  position="right"
+                  (openChange)="drawerRight.set($event)"
+                >
                   <div style="display: flex; flex-direction: column; gap: 16px;">
                     <div>
-                      <h4 style="margin: 0 0 8px 0; font-size: 14px; color: var(--semantic-text-secondary);">Appearance</h4>
+                      <h4
+                        style="margin: 0 0 8px 0; font-size: 14px; color: var(--semantic-text-secondary);"
+                      >
+                        Appearance
+                      </h4>
                       <ui-switch label="Dark Mode" />
                     </div>
                     <div>
-                      <h4 style="margin: 0 0 8px 0; font-size: 14px; color: var(--semantic-text-secondary);">Notifications</h4>
+                      <h4
+                        style="margin: 0 0 8px 0; font-size: 14px; color: var(--semantic-text-secondary);"
+                      >
+                        Notifications
+                      </h4>
                       <ui-switch label="Email Notifications" [checked]="true" />
                       <ui-switch label="Push Notifications" />
                     </div>
@@ -1081,19 +1190,43 @@ import {
             @if (exampleTitle() === 'Top Drawer') {
               <div>
                 <ui-button (clicked)="drawerTop.set(true)">Show Notifications</ui-button>
-                <ui-drawer [open]="drawerTop()" title="Notifications" position="top" size="sm" (openChange)="drawerTop.set($event)">
+                <ui-drawer
+                  [open]="drawerTop()"
+                  title="Notifications"
+                  position="top"
+                  size="sm"
+                  (openChange)="drawerTop.set($event)"
+                >
                   <div style="display: flex; flex-direction: column; gap: 12px;">
-                    <div style="padding: 12px; background: var(--semantic-surface-subtle); border-radius: 6px;">
+                    <div
+                      style="padding: 12px; background: var(--semantic-surface-subtle); border-radius: 6px;"
+                    >
                       <strong>New message from John</strong>
-                      <p style="margin: 4px 0 0 0; color: var(--semantic-text-secondary); font-size: 14px;">Hey, are you available for a call?</p>
+                      <p
+                        style="margin: 4px 0 0 0; color: var(--semantic-text-secondary); font-size: 14px;"
+                      >
+                        Hey, are you available for a call?
+                      </p>
                     </div>
-                    <div style="padding: 12px; background: var(--semantic-surface-subtle); border-radius: 6px;">
+                    <div
+                      style="padding: 12px; background: var(--semantic-surface-subtle); border-radius: 6px;"
+                    >
                       <strong>System Update</strong>
-                      <p style="margin: 4px 0 0 0; color: var(--semantic-text-secondary); font-size: 14px;">Your system will update tonight at 2 AM</p>
+                      <p
+                        style="margin: 4px 0 0 0; color: var(--semantic-text-secondary); font-size: 14px;"
+                      >
+                        Your system will update tonight at 2 AM
+                      </p>
                     </div>
-                    <div style="padding: 12px; background: var(--semantic-surface-subtle); border-radius: 6px;">
+                    <div
+                      style="padding: 12px; background: var(--semantic-surface-subtle); border-radius: 6px;"
+                    >
                       <strong>Task completed</strong>
-                      <p style="margin: 4px 0 0 0; color: var(--semantic-text-secondary); font-size: 14px;">Your report has been generated</p>
+                      <p
+                        style="margin: 4px 0 0 0; color: var(--semantic-text-secondary); font-size: 14px;"
+                      >
+                        Your report has been generated
+                      </p>
                     </div>
                   </div>
                 </ui-drawer>
@@ -1102,7 +1235,13 @@ import {
             @if (exampleTitle() === 'Bottom Drawer') {
               <div>
                 <ui-button (clicked)="drawerBottom.set(true)">Show Actions</ui-button>
-                <ui-drawer [open]="drawerBottom()" title="Actions" position="bottom" size="sm" (openChange)="drawerBottom.set($event)">
+                <ui-drawer
+                  [open]="drawerBottom()"
+                  title="Actions"
+                  position="bottom"
+                  size="sm"
+                  (openChange)="drawerBottom.set($event)"
+                >
                   <div style="display: flex; flex-direction: column; gap: 8px;">
                     <ui-button [fullWidth]="true"> Edit Item</ui-button>
                     <ui-button [fullWidth]="true" variant="outlined"> Duplicate</ui-button>
@@ -1115,15 +1254,26 @@ import {
             @if (exampleTitle() === 'Drawer with Footer') {
               <div>
                 <ui-button (clicked)="drawerWithFooter.set(true)">Edit Profile</ui-button>
-                <ui-drawer [open]="drawerWithFooter()" title="Edit Profile" (openChange)="drawerWithFooter.set($event)">
+                <ui-drawer
+                  [open]="drawerWithFooter()"
+                  title="Edit Profile"
+                  (openChange)="drawerWithFooter.set($event)"
+                >
                   <div style="display: flex; flex-direction: column; gap: 16px;">
                     <ui-input label="Full Name" placeholder="John Doe" value="John Doe" />
-                    <ui-input label="Email" type="email" placeholder="john@example.com" value="john@example.com" />
+                    <ui-input
+                      label="Email"
+                      type="email"
+                      placeholder="john@example.com"
+                      value="john@example.com"
+                    />
                     <ui-input label="Phone" type="tel" placeholder="+1 234 567 8900" />
                     <ui-textarea label="Bio" placeholder="Tell us about yourself..." [rows]="4" />
                   </div>
                   <div footer style="display: flex; gap: 8px; justify-content: flex-end;">
-                    <ui-button variant="text" (clicked)="drawerWithFooter.set(false)">Cancel</ui-button>
+                    <ui-button variant="text" (clicked)="drawerWithFooter.set(false)"
+                      >Cancel</ui-button
+                    >
                     <ui-button (clicked)="drawerWithFooter.set(false)">Save Changes</ui-button>
                   </div>
                 </ui-drawer>
@@ -1134,16 +1284,31 @@ import {
                 <ui-button size="sm" (clicked)="drawerSmall.set(true)">Small</ui-button>
                 <ui-button size="sm" (clicked)="drawerMedium.set(true)">Medium</ui-button>
                 <ui-button size="sm" (clicked)="drawerLarge.set(true)">Large</ui-button>
-                
-                <ui-drawer [open]="drawerSmall()" title="Small Drawer" size="sm" (openChange)="drawerSmall.set($event)">
+
+                <ui-drawer
+                  [open]="drawerSmall()"
+                  title="Small Drawer"
+                  size="sm"
+                  (openChange)="drawerSmall.set($event)"
+                >
                   <p>This is a small drawer (20rem width).</p>
                 </ui-drawer>
-                
-                <ui-drawer [open]="drawerMedium()" title="Medium Drawer" size="md" (openChange)="drawerMedium.set($event)">
+
+                <ui-drawer
+                  [open]="drawerMedium()"
+                  title="Medium Drawer"
+                  size="md"
+                  (openChange)="drawerMedium.set($event)"
+                >
                   <p>This is a medium drawer (28rem width) - the default size.</p>
                 </ui-drawer>
-                
-                <ui-drawer [open]="drawerLarge()" title="Large Drawer" size="lg" (openChange)="drawerLarge.set($event)">
+
+                <ui-drawer
+                  [open]="drawerLarge()"
+                  title="Large Drawer"
+                  size="lg"
+                  (openChange)="drawerLarge.set($event)"
+                >
                   <p>This is a large drawer (36rem width) for more content.</p>
                 </ui-drawer>
               </div>
@@ -1189,42 +1354,32 @@ import {
           <!-- PAGINATION DEMOS -->
           @case ('pagination') {
             @if (exampleTitle() === 'Basic Pagination') {
-              <ui-pagination 
-                [totalItems]="100" 
-                [pageSize]="10" 
+              <ui-pagination
+                [totalItems]="100"
+                [pageSize]="10"
                 [currentPage]="currentPage()"
                 (pageChange)="currentPage.set($event)"
               />
             }
             @if (exampleTitle() === 'Large Dataset Pagination') {
-              <ui-pagination 
-                [totalItems]="1000" 
-                [pageSize]="20" 
-                [currentPage]="1"
-              />
+              <ui-pagination [totalItems]="1000" [pageSize]="20" [currentPage]="1" />
             }
             @if (exampleTitle() === 'Small Page Size') {
-              <ui-pagination 
-                [totalItems]="50" 
-                [pageSize]="5" 
-                [currentPage]="1"
-              />
+              <ui-pagination [totalItems]="50" [pageSize]="5" [currentPage]="1" />
             }
           }
 
           <!-- TABLE DEMOS -->
           @case ('table') {
             @if (exampleTitle() === 'Basic Table') {
-              <ui-table [columns]="columns()" [data]="users()">
-              </ui-table>
+              <ui-table [columns]="columns()" [data]="users()"> </ui-table>
             }
             @if (exampleTitle() === 'Sortable Table') {
-              <ui-table [columns]="sortableColumns()" [data]="users()">
-              </ui-table>
+              <ui-table [columns]="sortableColumns()" [data]="users()"> </ui-table>
             }
             @if (exampleTitle() === 'Selectable Table') {
-              <ui-table 
-                [columns]="columns()" 
+              <ui-table
+                [columns]="columns()"
                 [data]="users()"
                 [selectable]="true"
                 (selectionChange)="handleSelectionChange($event)"
@@ -1261,7 +1416,12 @@ import {
               <ui-code-block [code]="jsonCode()" language="json" title="Configuration" />
             }
             @if (exampleTitle() === 'Custom Filename') {
-              <ui-code-block [code]="componentCode()" language="typescript" title="Component" filename="example.component.ts" />
+              <ui-code-block
+                [code]="componentCode()"
+                language="typescript"
+                title="Component"
+                filename="example.component.ts"
+              />
             }
           }
 
@@ -1307,6 +1467,47 @@ import {
             }
           }
 
+          <!-- CONTEXT MENU DEMOS -->
+          @case ('context-menu') {
+            @if (exampleTitle() === 'Basic Context Menu') {
+              <ui-context-menu
+                [items]="contextMenuItems()"
+                (itemClick)="handleContextMenuClick($event)"
+              >
+                <div class="context-menu-demo-area">
+                  <p
+                    style="text-align: center; padding: 3rem 2rem; color: var(--semantic-text-secondary);"
+                  >
+                    Right-click anywhere in this area<br />
+                    to open the context menu
+                  </p>
+                </div>
+              </ui-context-menu>
+            }
+            @if (exampleTitle() === 'File Explorer Context Menu') {
+              <ui-context-menu
+                [items]="fileContextMenuItems()"
+                (itemClick)="handleContextMenuClick($event)"
+              >
+                <div class="file-item-demo">
+                  <div class="file-icon">📄</div>
+                  <span class="file-name">document.pdf</span>
+                  <span class="file-hint">Right-click for options</span>
+                </div>
+              </ui-context-menu>
+            }
+            @if (exampleTitle() === 'Text Editor Context Menu') {
+              <ui-context-menu
+                [items]="editorContextMenuItems()"
+                (itemClick)="handleContextMenuClick($event)"
+              >
+                <textarea class="editor-demo" placeholder="Right-click to format text...">
+Sample text for editing</textarea
+                >
+              </ui-context-menu>
+            }
+          }
+
           <!-- NAVBAR DEMOS -->
           @case ('navbar') {
             @if (exampleTitle() === 'Basic Navbar') {
@@ -1328,8 +1529,7 @@ import {
               </ui-stepper>
             }
             @if (exampleTitle() === 'Form Wizard') {
-              <ui-stepper [steps]="steps()" [activeStep]="currentStep()">
-              </ui-stepper>
+              <ui-stepper [steps]="steps()" [activeStep]="currentStep()"> </ui-stepper>
             }
           }
 
@@ -1342,66 +1542,139 @@ import {
       </div>
     </div>
   `,
-  styles: [`
-    .component-demo {
-      width: 100%;
-    }
+  styles: [
+    `
+      .component-demo {
+        width: 100%;
+      }
 
-    .demo-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-    }
+      .demo-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+      }
 
-    .demo-row {
-      display: flex;
-      gap: var(--primitive-spacing-4);
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: center;
-    }
+      .demo-row {
+        display: flex;
+        gap: var(--primitive-spacing-4);
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+      }
 
-    .demo-column {
-      display: flex;
-      flex-direction: column;
-      gap: var(--primitive-spacing-3);
-      align-items: flex-start;
-    }
+      .demo-column {
+        display: flex;
+        flex-direction: column;
+        gap: var(--primitive-spacing-3);
+        align-items: flex-start;
+      }
 
-    .demo-placeholder {
-      text-align: center;
-      color: var(--semantic-text-tertiary);
-      font-style: italic;
-      padding: var(--primitive-spacing-6);
-    }
+      .demo-placeholder {
+        text-align: center;
+        color: var(--semantic-text-tertiary);
+        font-style: italic;
+        padding: var(--primitive-spacing-6);
+      }
 
-    /* Ensure components have appropriate sizing */
-    :host ::ng-deep ui-input,
-    :host ::ng-deep ui-textarea,
-    :host ::ng-deep ui-select,
-    :host ::ng-deep ui-multi-select,
-    :host ::ng-deep ui-slider {
-      width: 100%;
-      max-width: 400px;
-    }
+      /* Ensure components have appropriate sizing */
+      :host ::ng-deep ui-input,
+      :host ::ng-deep ui-textarea,
+      :host ::ng-deep ui-select,
+      :host ::ng-deep ui-multi-select,
+      :host ::ng-deep ui-slider {
+        width: 100%;
+        max-width: 400px;
+      }
 
-    :host ::ng-deep ui-card {
-      width: 100%;
-      max-width: 500px;
-    }
+      :host ::ng-deep ui-card {
+        width: 100%;
+        max-width: 500px;
+      }
 
-    :host ::ng-deep ui-alert {
-      width: 100%;
-      max-width: 600px;
-    }
+      :host ::ng-deep ui-alert {
+        width: 100%;
+        max-width: 600px;
+      }
 
-    :host ::ng-deep ui-stack,
-    :host ::ng-deep ui-grid {
-      width: 100%;
-      max-width: 600px;
-    }
-  `],
+      :host ::ng-deep ui-stack,
+      :host ::ng-deep ui-grid {
+        width: 100%;
+        max-width: 600px;
+      }
+
+      /* Context menu demo styles */
+      .context-menu-demo-area {
+        min-height: 200px;
+        width: 100%;
+        max-width: 500px;
+        border: 2px dashed var(--semantic-border-default);
+        border-radius: var(--primitive-border-radius-md);
+        background-color: var(--semantic-surface-subtle);
+        cursor: context-menu;
+        transition: all 0.2s ease;
+      }
+
+      .context-menu-demo-area:hover {
+        border-color: var(--semantic-brand-primary);
+        background-color: var(--semantic-surface-card);
+      }
+
+      .file-item-demo {
+        display: flex;
+        align-items: center;
+        gap: var(--primitive-spacing-3);
+        padding: var(--primitive-spacing-4);
+        border: 1px solid var(--semantic-border-default);
+        border-radius: var(--primitive-border-radius-md);
+        background-color: var(--semantic-surface-card);
+        cursor: context-menu;
+        max-width: 400px;
+        transition: all 0.2s ease;
+      }
+
+      .file-item-demo:hover {
+        background-color: var(--semantic-surface-subtle);
+        border-color: var(--semantic-brand-primary);
+      }
+
+      .file-icon {
+        font-size: 2rem;
+      }
+
+      .file-name {
+        flex: 1;
+        font-weight: var(--primitive-font-weight-medium);
+        color: var(--semantic-text-primary);
+      }
+
+      .file-hint {
+        font-size: var(--primitive-font-size-xs);
+        color: var(--semantic-text-tertiary);
+        font-style: italic;
+      }
+
+      .editor-demo {
+        width: 100%;
+        max-width: 500px;
+        min-height: 150px;
+        padding: var(--primitive-spacing-4);
+        border: 1px solid var(--semantic-border-default);
+        border-radius: var(--primitive-border-radius-md);
+        background-color: var(--semantic-surface-card);
+        color: var(--semantic-text-primary);
+        font-family: var(--primitive-font-family-mono);
+        font-size: var(--primitive-font-size-sm);
+        resize: vertical;
+        cursor: text;
+      }
+
+      .editor-demo:focus {
+        outline: 2px solid var(--semantic-state-focus-ring);
+        outline-offset: 2px;
+      }
+    `,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ComponentDemoComponent {
@@ -1462,7 +1735,7 @@ export class ComponentDemoComponent {
   protected readonly drawerTop = signal(false);
   protected readonly drawerBottom = signal(false);
   protected readonly drawerWithFooter = signal(false);
-  
+
   /**
    * Drawer size demo states
    */
@@ -1572,10 +1845,14 @@ export class ExampleComponent {}`);
    */
   protected readonly nestedMenuItems = signal([
     { id: 'item1', label: 'Item 1' },
-    { id: 'item2', label: 'Item 2', submenu: [
-      { id: 'sub1', label: 'Subitem 1' },
-      { id: 'sub2', label: 'Subitem 2' },
-    ] },
+    {
+      id: 'item2',
+      label: 'Item 2',
+      submenu: [
+        { id: 'sub1', label: 'Subitem 1' },
+        { id: 'sub2', label: 'Subitem 2' },
+      ],
+    },
   ]);
 
   /**
@@ -1585,6 +1862,63 @@ export class ExampleComponent {}`);
     { id: 'home', label: 'Home', href: '/' },
     { id: 'about', label: 'About', href: '/about' },
     { id: 'contact', label: 'Contact', href: '/contact' },
+  ]);
+
+  /**
+   * Context menu items - basic
+   */
+  protected readonly contextMenuItems = signal([
+    { id: 'cut', label: 'Cut', shortcut: 'Ctrl+X' },
+    { id: 'copy', label: 'Copy', shortcut: 'Ctrl+C' },
+    { id: 'paste', label: 'Paste', shortcut: 'Ctrl+V' },
+    { id: 'divider-1', label: '', divider: true },
+    { id: 'delete', label: 'Delete', shortcut: 'Del' },
+  ]);
+
+  /**
+   * Context menu items - file explorer
+   */
+  protected readonly fileContextMenuItems = signal([
+    { id: 'open', label: 'Open', shortcut: 'Enter' },
+    {
+      id: 'open-with',
+      label: 'Open With',
+      submenu: [
+        { id: 'notepad', label: 'Notepad' },
+        { id: 'vscode', label: 'VS Code' },
+        { id: 'other', label: 'Choose another app...' },
+      ],
+    },
+    { id: 'divider-1', label: '', divider: true },
+    { id: 'cut', label: 'Cut', shortcut: 'Ctrl+X' },
+    { id: 'copy', label: 'Copy', shortcut: 'Ctrl+C' },
+    { id: 'paste', label: 'Paste', shortcut: 'Ctrl+V', disabled: true },
+    { id: 'divider-2', label: '', divider: true },
+    { id: 'rename', label: 'Rename', shortcut: 'F2' },
+    { id: 'delete', label: 'Delete', shortcut: 'Del' },
+    { id: 'divider-3', label: '', divider: true },
+    { id: 'properties', label: 'Properties', shortcut: 'Alt+Enter' },
+  ]);
+
+  /**
+   * Context menu items - text editor
+   */
+  protected readonly editorContextMenuItems = signal([
+    { id: 'cut', label: 'Cut', shortcut: 'Ctrl+X' },
+    { id: 'copy', label: 'Copy', shortcut: 'Ctrl+C' },
+    { id: 'paste', label: 'Paste', shortcut: 'Ctrl+V' },
+    { id: 'divider-1', label: '', divider: true },
+    { id: 'select-all', label: 'Select All', shortcut: 'Ctrl+A' },
+    { id: 'divider-2', label: '', divider: true },
+    {
+      id: 'format',
+      label: 'Format',
+      submenu: [
+        { id: 'bold', label: 'Bold', shortcut: 'Ctrl+B' },
+        { id: 'italic', label: 'Italic', shortcut: 'Ctrl+I' },
+        { id: 'underline', label: 'Underline', shortcut: 'Ctrl+U' },
+      ],
+    },
   ]);
 
   /**
@@ -1624,7 +1958,7 @@ export class ExampleComponent {}`);
       info: 'This is an informational message',
       success: 'Success! Operation completed',
       warning: 'Warning: Please check your input',
-      error: 'Error: Something went wrong'
+      error: 'Error: Something went wrong',
     };
     this.toastService.show(messages[variant], variant);
   }
@@ -1650,6 +1984,12 @@ export class ExampleComponent {}`);
     console.log('Selected rows:', selectedIndices);
     this.toastService.info(`${selectedIndices.length} row(s) selected`);
   }
+
+  /**
+   * Handle context menu item click
+   */
+  protected handleContextMenuClick(item: any): void {
+    console.log('Context menu item clicked:', item);
+    this.toastService.info(`Action: ${item.label}`);
+  }
 }
-
-

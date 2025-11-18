@@ -46,5 +46,6 @@ export * from './lib/toast/toast.service';
 // Navigation Components
 export * from './lib/breadcrumb/breadcrumb.component';
 export * from './lib/menu/menu.component';
+export * from './lib/context-menu/context-menu.component';
 export * from './lib/navbar/navbar.component';
 export * from './lib/stepper/stepper.component';

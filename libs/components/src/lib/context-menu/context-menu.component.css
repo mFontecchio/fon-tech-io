@@ -1,0 +1,203 @@
+/**
+ * Context Menu Component Styles
+ */
+
+.ui-context-menu-wrapper {
+  display: contents;
+}
+
+.ui-context-menu-content {
+  display: contents;
+}
+
+/* Context Menu */
+
+.ui-context-menu {
+  position: fixed;
+  z-index: 9999;
+  min-width: 12rem;
+  max-width: 20rem;
+  background-color: var(--semantic-surface-card);
+  border: 1px solid var(--semantic-border-default);
+  border-radius: var(--primitive-border-radius-md);
+  box-shadow: var(--primitive-shadow-lg);
+  padding: var(--primitive-spacing-2);
+  opacity: 0;
+  transform: scale(0.95) translateY(-8px);
+  transition:
+    opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    visibility 0s linear 0.25s;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.ui-context-menu--open {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  transition:
+    opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    visibility 0s linear 0s;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* List */
+
+.ui-context-menu-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Item */
+
+.ui-context-menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--primitive-spacing-2);
+  padding: var(--primitive-spacing-2) var(--primitive-spacing-3);
+  border-radius: var(--primitive-border-radius-sm);
+  cursor: pointer;
+  font-size: var(--primitive-font-size-sm);
+  color: var(--semantic-text-primary);
+  transition:
+    background-color 0.15s ease,
+    transform 0.1s ease;
+  position: relative;
+}
+
+.ui-context-menu-item:hover {
+  background-color: var(--semantic-surface-subtle);
+  transform: translateX(2px);
+}
+
+.ui-context-menu-item:active {
+  transform: translateX(1px);
+}
+
+.ui-context-menu-item:focus-visible {
+  outline: 2px solid var(--semantic-state-focus-ring);
+  outline-offset: -2px;
+}
+
+.ui-context-menu-item--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Item icon */
+
+.ui-context-menu-item-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  font-size: var(--primitive-font-size-lg);
+}
+
+/* Item label */
+
+.ui-context-menu-item-label {
+  flex: 1;
+  line-height: var(--primitive-line-height-tight);
+}
+
+/* Item shortcut */
+
+.ui-context-menu-item-shortcut {
+  flex-shrink: 0;
+  font-size: var(--primitive-font-size-xs);
+  color: var(--semantic-text-secondary);
+  font-family: var(--primitive-font-family-mono);
+  padding: 0.125rem 0.375rem;
+  background-color: var(--semantic-surface-subtle);
+  border-radius: var(--primitive-border-radius-sm);
+  border: 1px solid var(--semantic-border-subtle);
+}
+
+/* Item arrow */
+
+.ui-context-menu-item-arrow {
+  flex-shrink: 0;
+  color: var(--semantic-text-secondary);
+  margin-left: auto;
+}
+
+/* Divider */
+
+.ui-context-menu-divider {
+  height: 1px;
+  background-color: var(--semantic-border-default);
+  margin: var(--primitive-spacing-2) 0;
+}
+
+/* Submenu */
+
+.ui-context-menu-submenu {
+  position: absolute;
+  left: 100%;
+  top: -0.5rem;
+  min-width: 12rem;
+  background-color: var(--semantic-surface-card);
+  border: 1px solid var(--semantic-border-default);
+  border-radius: var(--primitive-border-radius-md);
+  box-shadow: var(--primitive-shadow-lg);
+  list-style: none;
+  padding: var(--primitive-spacing-2);
+  margin: 0 0 0 0.25rem;
+  opacity: 0;
+  transform: translateX(-8px);
+  transition:
+    opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    visibility 0s linear 0.25s;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.ui-context-menu-item--submenu-open > .ui-context-menu-submenu {
+  opacity: 1;
+  transform: translateX(0);
+  transition:
+    opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    visibility 0s linear 0s;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* Submenu indicator */
+
+.ui-context-menu-item--has-submenu::after {
+  content: '';
+  position: absolute;
+  right: var(--primitive-spacing-3);
+}
+
+/* Reduced motion support */
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-context-menu,
+  .ui-context-menu-submenu,
+  .ui-context-menu-item {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* High contrast mode support */
+
+@media (prefers-contrast: more) {
+  .ui-context-menu {
+    border-width: 2px;
+  }
+
+  .ui-context-menu-item:focus-visible {
+    outline-width: 3px;
+  }
+}

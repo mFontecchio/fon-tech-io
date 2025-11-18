@@ -285,34 +285,57 @@ interface HistoryEntry {
             </div>
           </div>
 
-          <div class="presets-grid">
-            @for (preset of themePresets; track preset.id) {
-              <div class="preset-card" (click)="applyPreset(preset)">
-                <div class="preset-info">
-                  <h4>{{ preset.name }}</h4>
-                  <p>{{ preset.description }}</p>
-                  <span class="preset-author">by {{ preset.author }}</span>
-                </div>
-                <div class="preset-colors">
+          <div class="presets-compact">
+            <label for="preset-selector" class="preset-label">Quick Start with Preset:</label>
+            <div class="preset-selector-wrapper">
+              <select
+                id="preset-selector"
+                class="preset-selector"
+                (change)="onPresetChange($event)"
+                [value]="''"
+              >
+                <option value="" disabled>Select a theme preset...</option>
+                @for (preset of themePresets; track preset.id) {
+                  <option [value]="preset.id">{{ preset.name }} - {{ preset.description }}</option>
+                }
+              </select>
+              <svg
+                class="preset-selector-icon"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+              >
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </div>
+            <div class="preset-colors-preview">
+              @for (preset of themePresets.slice(0, 6); track preset.id) {
+                <button
+                  class="preset-quick-button"
+                  (click)="applyPreset(preset)"
+                  [title]="preset.name + ': ' + preset.description"
+                  [attr.aria-label]="'Apply ' + preset.name + ' preset'"
+                >
                   <div
-                    class="color-dot"
-                    [style.background-color]="preset.tokens['--semantic-brand-primary']"
+                    class="preset-color-swatch"
+                    [style.background]="
+                      'linear-gradient(135deg, ' +
+                      preset.tokens['--semantic-brand-primary'] +
+                      ' 0%, ' +
+                      preset.tokens['--semantic-brand-primary'] +
+                      ' 50%, ' +
+                      preset.tokens['--semantic-success-primary'] +
+                      ' 50%, ' +
+                      preset.tokens['--semantic-success-primary'] +
+                      ' 100%)'
+                    "
                   ></div>
-                  <div
-                    class="color-dot"
-                    [style.background-color]="preset.tokens['--semantic-success-primary']"
-                  ></div>
-                  <div
-                    class="color-dot"
-                    [style.background-color]="preset.tokens['--semantic-warning-primary']"
-                  ></div>
-                  <div
-                    class="color-dot"
-                    [style.background-color]="preset.tokens['--semantic-error-primary']"
-                  ></div>
-                </div>
-              </div>
-            }
+                  <span class="preset-quick-name">{{ preset.name }}</span>
+                </button>
+              }
+            </div>
           </div>
 
           @if (savedThemes().length > 0) {
@@ -771,12 +794,23 @@ interface HistoryEntry {
             <p class="panel-description">Generate harmonious color schemes</p>
 
             <div class="color-generator-controls">
-              <ui-input
-                [value]="baseColorForGeneration"
-                (valueChange)="baseColorForGeneration = $event"
-                label="Base Color"
-                placeholder="#3b82f6"
-              />
+              <div class="color-input-group">
+                <ui-input
+                  [value]="baseColorForGeneration"
+                  (valueChange)="baseColorForGeneration = $event"
+                  label="Base Color"
+                  placeholder="#3b82f6"
+                />
+                <div class="color-picker-wrapper">
+                  <label class="color-picker-label">Pick Color</label>
+                  <input
+                    type="color"
+                    class="color-picker-input"
+                    [value]="baseColorForGeneration || '#3b82f6'"
+                    (input)="baseColorForGeneration = $any($event.target).value"
+                  />
+                </div>
+              </div>
               <div class="generator-buttons">
                 <ui-button variant="outlined" size="sm" (clicked)="generateComplementary()">
                   Complementary
@@ -1075,9 +1109,39 @@ interface HistoryEntry {
       .color-generator-controls {
         margin-bottom: var(--primitive-spacing-4);
       }
+      .color-input-group {
+        display: flex;
+        gap: var(--primitive-spacing-3);
+        align-items: flex-end;
+      }
       .color-generator-controls ui-input {
-        display: block;
-        width: 100%;
+        flex: 1;
+      }
+      .color-picker-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: var(--primitive-spacing-1);
+      }
+      .color-picker-label {
+        font-size: var(--primitive-font-size-sm);
+        font-weight: var(--primitive-font-weight-medium);
+        color: var(--semantic-text-primary);
+      }
+      .color-picker-input {
+        width: 4rem;
+        height: 2.5rem;
+        border: 1px solid var(--semantic-border-default);
+        border-radius: var(--primitive-border-radius-md);
+        cursor: pointer;
+        background: var(--semantic-surface-card);
+        transition: border-color 0.2s ease;
+      }
+      .color-picker-input:hover {
+        border-color: var(--semantic-brand-primary);
+      }
+      .color-picker-input:focus {
+        outline: 2px solid var(--semantic-state-focus-ring);
+        outline-offset: 2px;
       }
       .generator-buttons {
         display: flex;
@@ -1150,54 +1214,95 @@ interface HistoryEntry {
         gap: var(--primitive-spacing-2);
       }
 
-      .presets-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: var(--primitive-spacing-4);
+      .presets-compact {
+        display: flex;
+        flex-direction: column;
+        gap: var(--primitive-spacing-3);
         margin-bottom: var(--primitive-spacing-4);
+        padding: var(--primitive-spacing-4);
+        background-color: var(--semantic-surface-subtle);
+        border-radius: var(--primitive-border-radius-lg);
       }
 
-      .preset-card {
-        padding: var(--primitive-spacing-4);
+      .preset-label {
+        font-size: var(--primitive-font-size-sm);
+        font-weight: var(--primitive-font-weight-medium);
+        color: var(--semantic-text-secondary);
+      }
+
+      .preset-selector-wrapper {
+        position: relative;
+        width: 100%;
+      }
+
+      .preset-selector {
+        width: 100%;
+        padding: var(--primitive-spacing-3) var(--primitive-spacing-10) var(--primitive-spacing-3)
+          var(--primitive-spacing-3);
+        background-color: var(--semantic-surface-card);
         border: 1px solid var(--semantic-border-default);
-        border-radius: var(--primitive-border-radius-lg);
+        border-radius: var(--primitive-border-radius-md);
+        font-size: var(--primitive-font-size-sm);
+        color: var(--semantic-text-primary);
         cursor: pointer;
+        appearance: none;
         transition: all 0.2s;
       }
 
-      .preset-card:hover {
+      .preset-selector:hover {
         border-color: var(--semantic-brand-primary);
-        box-shadow: var(--primitive-shadow-md);
-        transform: translateY(-2px);
       }
 
-      .preset-info h4 {
-        font-size: var(--primitive-font-size-md);
-        margin-bottom: var(--primitive-spacing-2);
+      .preset-selector:focus {
+        outline: 2px solid var(--semantic-brand-primary);
+        outline-offset: 2px;
       }
 
-      .preset-info p {
-        font-size: var(--primitive-font-size-sm);
+      .preset-selector-icon {
+        position: absolute;
+        right: var(--primitive-spacing-3);
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
         color: var(--semantic-text-secondary);
-        margin-bottom: var(--primitive-spacing-2);
+        stroke-width: 2;
       }
 
-      .preset-author {
-        font-size: var(--primitive-font-size-xs);
-        color: var(--semantic-text-tertiary);
-      }
-
-      .preset-colors {
+      .preset-colors-preview {
         display: flex;
+        flex-wrap: wrap;
         gap: var(--primitive-spacing-2);
-        margin-top: var(--primitive-spacing-3);
       }
 
-      .color-dot {
-        width: 24px;
-        height: 24px;
-        border-radius: var(--primitive-border-radius-full);
+      .preset-quick-button {
+        display: flex;
+        align-items: center;
+        gap: var(--primitive-spacing-2);
+        padding: var(--primitive-spacing-2) var(--primitive-spacing-3);
+        background-color: var(--semantic-surface-card);
+        border: 1px solid var(--semantic-border-default);
+        border-radius: var(--primitive-border-radius-md);
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: var(--primitive-font-size-xs);
+      }
+
+      .preset-quick-button:hover {
+        border-color: var(--semantic-brand-primary);
+        transform: translateY(-1px);
         box-shadow: var(--primitive-shadow-sm);
+      }
+
+      .preset-color-swatch {
+        width: 20px;
+        height: 20px;
+        border-radius: var(--primitive-border-radius-sm);
+        box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+      }
+
+      .preset-quick-name {
+        color: var(--semantic-text-secondary);
+        font-weight: var(--primitive-font-weight-medium);
       }
 
       /* Saved Themes */
@@ -1655,6 +1760,16 @@ export class ThemeBuilderComponent {
   protected readonly savedThemes = signal<
     Array<{ name: string; tokens: Record<string, string>; createdAt: string }>
   >([]);
+
+  protected onPresetChange(event: Event): void {
+    const select = event.target as HTMLSelectElement;
+    const presetId = select.value;
+    const preset = this.themePresets.find((p) => p.id === presetId);
+    if (preset) {
+      this.applyPreset(preset);
+      select.value = ''; // Reset dropdown
+    }
+  }
 
   // Preview Mode (for live preview panel)
   protected readonly previewMode = signal<'light' | 'dark'>('light');

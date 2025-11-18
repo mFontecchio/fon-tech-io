@@ -7,7 +7,54 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Whimsical Theme Presets**: Added playful themed color schemes to theme builder
+  - Frog theme with vibrant lily pad greens and wetland tones (#22c55e primary, fresh green palette)
+  - Axolotl theme with cute pink coral tones and aquatic vibes (#f472b6 primary, playful pink palette)
+  - Both themes feature rounded borders and playful typography
+  - Available in theme builder preset selector alongside Material, Bootstrap, Dark, Minimal, Ocean, and Sunset
+- **Context Menu Component**: New right-click context menu component
+  - Right-click activation with automatic positioning at cursor
+  - Nested submenus with smooth animations
+  - Icons and keyboard shortcuts display
+  - Dividers for menu item grouping
+  - Automatic viewport boundary detection and adjustment
+  - Full keyboard navigation (Arrow keys, Enter, Escape)
+  - Comprehensive accessibility support (ARIA attributes, screen reader friendly)
+  - Material Design animations with reduced motion support
+  - OnPush change detection for optimal performance
+- **Theme Switcher Animations**: Enhanced theme selection dropdown with micro-interactions
+  - Sun icon: Core pulse animation (scale 1→1.1 over 2s), rays rotate 360° over 8s
+  - Moon icon: Floating animation (vertical movement 3px over 3s)
+  - Contrast icon: Circle pulse with opacity changes, split line shift
+  - Toggle button: Scale feedback on hover (1.05) and click (0.95)
+  - Dropdown: Slide-in with bounce effect (scale 0.95→1.02→1)
+  - Theme options: Staggered slide-in with delays (0.05s, 0.1s, 0.15s)
+  - Selected icon: Rotation (15°) and scale (1.1) on hover, bounce when selected
+  - Check mark: Scale-in with rotation animation
+  - All animations respect prefers-reduced-motion accessibility preference
+- **Theme Builder Enhancement**: Added native HTML5 color picker alongside text input for color palette generator
+  - Visual color selection with synchronized hex value input
+  - Improved user experience for theme customization
+- **Smooth Animations**: Enhanced interactive components with Material Design easing
+  - Accordion: Smooth expand/collapse with max-height transitions, icon rotation, and content slide-down
+  - Menu: Scale and translateY animations for menu open/close with visibility control
+  - Menu: Staggered fade-in for menu items (first 10 items with incremental delays)
+  - Submenu: Slide-in animations with visibility-based transitions
+  - All animations use cubic-bezier(0.4, 0, 0.2, 1) timing function
+  - Full support for prefers-reduced-motion accessibility preference
+
+### Fixed
+- **Accordion Animation**: Removed hidden attribute that prevented CSS transitions from working, replaced with aria-hidden for accessibility while maintaining smooth animations
+- **Menu Positioning**: Added scroll and resize listeners to keep menu attached to trigger button during page scroll, preventing menu from detaching from its initiator
+
 ### Changed
+- **Theme Builder Presets UI**: Condensed theme preset display from large card grid to compact dropdown selector
+  - Replaced full-width card grid (8 cards) with single dropdown menu for all presets
+  - Added quick-access buttons showing first 6 presets with gradient color swatches
+  - Reduced vertical space usage by approximately 60 percent
+  - Maintained full accessibility with ARIA labels and keyboard navigation
+  - Dropdown includes preset name and description for easy identification
 - **Radio Component API Documentation**: Updated metadata with complete API surface
   - Added missing inputs: `helperText`, `errorMessage`, `required`, `ariaLabel`, `id`
   - Added public method: `focus()`
