@@ -156,6 +156,26 @@ export interface PrimitiveZIndex {
 }
 
 /**
+ * Animation primitive tokens
+ */
+export interface PrimitiveAnimation {
+  duration: {
+    instant: string;  // 0ms — no animation
+    fast: string;     // 150ms — hover/focus states
+    normal: string;   // 250ms — component transitions
+    slow: string;     // 350ms — enter/exit animations
+    slower: string;   // 500ms — page-level transitions
+  };
+  easing: {
+    linear: string;    // linear
+    easeIn: string;    // cubic-bezier(0.4, 0, 1, 1)
+    easeOut: string;   // cubic-bezier(0, 0, 0.2, 1)
+    easeInOut: string; // cubic-bezier(0.4, 0, 0.2, 1)
+    spring: string;    // cubic-bezier(0.34, 1.56, 0.64, 1) — springy bounce
+  };
+}
+
+/**
  * Complete primitive token interface
  */
 export interface PrimitiveTokens {
@@ -165,6 +185,7 @@ export interface PrimitiveTokens {
   borderRadius: PrimitiveBorderRadius;
   shadows: PrimitiveShadows;
   zIndex: PrimitiveZIndex;
+  animation: PrimitiveAnimation;
 }
 
 /**
@@ -377,6 +398,22 @@ export const defaultPrimitiveTokens: PrimitiveTokens = {
     popover: 1500,
     tooltip: 1600,
     notification: 1700,
+  },
+  animation: {
+    duration: {
+      instant: '0ms',
+      fast: '150ms',
+      normal: '250ms',
+      slow: '350ms',
+      slower: '500ms',
+    },
+    easing: {
+      linear: 'linear',
+      easeIn: 'cubic-bezier(0.4, 0, 1, 1)',
+      easeOut: 'cubic-bezier(0, 0, 0.2, 1)',
+      easeInOut: 'cubic-bezier(0.4, 0, 0.2, 1)',
+      spring: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+    },
   },
 };
 

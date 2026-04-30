@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Table Component Styles
  */
 
@@ -17,6 +17,9 @@
 .ui-table-scroll {
   width: 100%;
   overflow-x: auto;
+  /* Firefox scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: var(--semantic-border-default) var(--semantic-surface-subtle);
 }
 
 .ui-table-scroll::-webkit-scrollbar {
@@ -73,7 +76,7 @@
 .ui-table-cell--sortable {
   cursor: pointer;
   user-select: none;
-  transition: background-color 0.2s ease-in-out;
+  transition: background-color var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .ui-table-cell--sortable:hover {
@@ -107,7 +110,7 @@
 /* Row */
 
 .ui-table-row {
-  transition: background-color 0.2s ease-in-out;
+  transition: background-color var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .ui-table--hoverable .ui-table-row:hover {

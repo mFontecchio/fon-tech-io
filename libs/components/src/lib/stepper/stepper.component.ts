@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Stepper Component
  * 
  * A step-by-step progress indicator component.
@@ -13,8 +13,11 @@ import {
   output,
   signal,
   effect,
+  ElementRef,
+  HostListener,
+  inject,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 export interface Step {
   id: string;
@@ -29,7 +32,7 @@ export type StepperOrientation = 'horizontal' | 'vertical';
 
 @Component({
   selector: 'ui-stepper',
-  imports: [CommonModule],
+  imports: [NgClass],
   templateUrl: './stepper.component.html',
   styleUrl: './stepper.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -91,11 +94,77 @@ export class StepperComponent {
       .join(' ');
   });
 
+  private readonly elementRef = inject(ElementRef);
+
   constructor() {
     // Sync internal active step
     effect(() => {
       this.internalActiveStep.set(this.activeStep());
     });
+  }
+
+  /**
+   * Arrow key navigation (WAI-ARIA step/tablist pattern)
+   * Horizontal orientation: ArrowLeft / ArrowRight
+   * Vertical orientation:   ArrowUp  / ArrowDown
+   * Home / End move to the first / last focusable step.
+   */
+  @HostListener('keydown', ['$event'])
+  protected handleKeyDown(event: KeyboardEvent): void {
+    const isHorizontal = this.orientation() === 'horizontal';
+    const prevKey = isHorizontal ? 'ArrowLeft' : 'ArrowUp';
+    const nextKey = isHorizontal ? 'ArrowRight' : 'ArrowDown';
+
+    if (![prevKey, nextKey, 'Home', 'End'].includes(event.key)) return;
+
+    event.preventDefault();
+
+    const steps = this.steps();
+    const current = this.internalActiveStep();
+
+    const firstClickable = (): number => {
+      for (let i = 0; i < steps.length; i++) {
+        if (this.isStepClickable(steps[i], i)) return i;
+      }
+      return current;
+    };
+
+    const lastClickable = (): number => {
+      for (let i = steps.length - 1; i >= 0; i--) {
+        if (this.isStepClickable(steps[i], i)) return i;
+      }
+      return current;
+    };
+
+    const nextClickable = (from: number, dir: 1 | -1): number => {
+      let i = from + dir;
+      while (i >= 0 && i < steps.length) {
+        if (this.isStepClickable(steps[i], i)) return i;
+        i += dir;
+      }
+      return from;
+    };
+
+    let target = current;
+    if (event.key === prevKey) target = nextClickable(current, -1);
+    else if (event.key === nextKey) target = nextClickable(current, 1);
+    else if (event.key === 'Home') target = firstClickable();
+    else if (event.key === 'End') target = lastClickable();
+
+    if (target !== current) {
+      this.handleStepClick(steps[target], target);
+      this.focusStep(target);
+    }
+  }
+
+  /**
+   * Programmatically focus the step button at the given index
+   */
+  private focusStep(index: number): void {
+    const buttons = Array.from(
+      this.elementRef.nativeElement.querySelectorAll('.ui-stepper-step-button')
+    ) as HTMLElement[];
+    buttons[index]?.focus();
   }
 
   /**

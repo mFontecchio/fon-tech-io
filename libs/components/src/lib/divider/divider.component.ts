@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Divider Component
  * 
  * A thin line that groups content in lists or layouts.
@@ -11,14 +11,13 @@ import {
   computed,
   input,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 export type DividerOrientation = 'horizontal' | 'vertical';
 export type DividerAlign = 'left' | 'center' | 'right';
 
 @Component({
   selector: 'ui-divider',
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './divider.component.html',
   styleUrl: './divider.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

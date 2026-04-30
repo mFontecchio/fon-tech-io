@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Textarea Component
  * 
  * A themable textarea component with auto-resize and character count features.
@@ -16,12 +16,12 @@ import {
   ElementRef,
   viewChild,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'ui-textarea',
-  imports: [CommonModule, FormsModule],
+  imports: [NgClass, FormsModule],
   templateUrl: './textarea.component.html',
   styleUrl: './textarea.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

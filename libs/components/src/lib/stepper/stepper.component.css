@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Stepper Component Styles
  */
 
@@ -38,7 +38,7 @@
   border: none;
   text-align: left;
   cursor: default;
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .ui-stepper--horizontal .ui-stepper-step-button {
@@ -92,7 +92,7 @@
   border: 2px solid var(--semantic-border-default);
   background-color: var(--semantic-surface-card);
   color: var(--semantic-text-secondary);
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
   flex-shrink: 0;
 }
 
@@ -128,7 +128,7 @@
 .ui-stepper-step-connector {
   height: 2px;
   background-color: var(--semantic-border-default);
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .ui-stepper--horizontal .ui-stepper-step-connector {

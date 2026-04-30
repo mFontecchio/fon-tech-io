@@ -238,6 +238,22 @@ export function convertPresetToTheme(preset: ThemePreset): Theme {
         tooltip: 1600,
         notification: 1700,
       },
+      animation: {
+        duration: {
+          instant: '0ms',
+          fast: '150ms',
+          normal: '250ms',
+          slow: '350ms',
+          slower: '500ms',
+        },
+        easing: {
+          linear: 'linear',
+          easeIn: 'cubic-bezier(0.4, 0, 1, 1)',
+          easeOut: 'cubic-bezier(0, 0, 0.2, 1)',
+          easeInOut: 'cubic-bezier(0.4, 0, 0.2, 1)',
+          spring: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+        },
+      },
     },
     semantic: {
       surface: {
@@ -298,6 +314,19 @@ export function convertPresetToTheme(preset: ThemePreset): Theme {
         errorSubtle: '#fee2e2',
         info: getSemantic('--semantic-info-primary', '#3b82f6'),
         infoSubtle: '#dbeafe',
+      },
+      animation: {
+        duration: {
+          interactive: 'var(--primitive-animation-duration-fast)',
+          component: 'var(--primitive-animation-duration-normal)',
+          page: 'var(--primitive-animation-duration-slow)',
+        },
+        easing: {
+          default: 'var(--primitive-animation-easing-ease-in-out)',
+          decelerate: 'var(--primitive-animation-easing-ease-out)',
+          accelerate: 'var(--primitive-animation-easing-ease-in)',
+          spring: 'var(--primitive-animation-easing-spring)',
+        },
       },
     },
     component: {

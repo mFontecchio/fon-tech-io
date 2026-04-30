@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Input Component
  * 
  * A themable input component with validation states and full accessibility support.
@@ -16,14 +16,14 @@ import {
   ElementRef,
   viewChild,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 export type InputType = 'text' | 'email' | 'tel' | 'url' | 'number' | 'password' | 'search';
 
 @Component({
   selector: 'ui-input',
-  imports: [CommonModule, FormsModule],
+  imports: [NgClass, FormsModule],
   templateUrl: './input.component.html',
   styleUrl: './input.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

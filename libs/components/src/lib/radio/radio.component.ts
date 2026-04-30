@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Radio Component
  *
  * A themable radio button component following PrimeNG's pattern.
@@ -15,13 +15,13 @@ import {
   ElementRef,
   viewChild,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 export type RadioSize = 'sm' | 'md' | 'lg';
 
 @Component({
   selector: 'ui-radio',
-  imports: [CommonModule],
+  imports: [NgClass],
   templateUrl: './radio.component.html',
   styleUrl: './radio.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

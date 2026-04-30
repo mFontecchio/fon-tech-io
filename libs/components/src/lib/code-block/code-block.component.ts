@@ -1,4 +1,4 @@
-/**
+﻿/**
  * CodeBlock Component
  * Displays formatted code with syntax highlighting, copy-to-clipboard, and download functionality
  */
@@ -13,7 +13,6 @@ import {
   viewChild,
   effect,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import Prism from 'prismjs';
 
 // Import language definitions
@@ -27,7 +26,7 @@ import 'prismjs/components/prism-json';
 @Component({
   selector: 'ui-code-block',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   template: `
     <div class="ui-code-block">
       @if (title()) {

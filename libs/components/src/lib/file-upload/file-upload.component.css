@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File Upload Component Styles
  */
 
@@ -35,7 +35,7 @@
   border: 2px dashed var(--semantic-border-default);
   border-radius: var(--primitive-border-radius-md);
   background-color: var(--semantic-surface-subtle);
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
   cursor: pointer;
 }
 
@@ -101,7 +101,7 @@
   border: none;
   cursor: pointer;
   pointer-events: auto;
-  transition: opacity 0.2s ease-in-out;
+  transition: opacity var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .ui-file-upload-browse-link:hover:not(:disabled) {
@@ -218,7 +218,7 @@
   cursor: pointer;
   color: var(--semantic-text-secondary);
   border-radius: var(--primitive-border-radius-sm);
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .ui-file-upload-remove:hover {

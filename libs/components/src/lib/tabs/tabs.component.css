@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Tabs Component Styles
  */
 
@@ -60,7 +60,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
   white-space: nowrap;
   min-width: fit-content;
   z-index: 1; /* Ensure text is above indicator */
@@ -148,10 +148,10 @@
 .ui-tabs-indicator {
   position: absolute;
   background-color: var(--semantic-brand-primary);
-  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-              top 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-              width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-              height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: left var(--semantic-animation-duration-component, 250ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+              top var(--semantic-animation-duration-component, 250ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+              width var(--semantic-animation-duration-component, 250ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+              height var(--semantic-animation-duration-component, 250ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
   z-index: 0;
   pointer-events: none;
   will-change: left, top, width, height;
@@ -186,7 +186,7 @@
 .ui-tab-panel {
   display: none;
   padding: var(--primitive-spacing-4);
-  animation: ui-tab-fade-in 0.2s ease-out;
+  animation: ui-tab-fade-in var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-decelerate, cubic-bezier(0, 0, 0.2, 1));
   width: 100%;
   box-sizing: border-box;
 }

@@ -5,6 +5,7 @@
 
 import {
   Component,
+  ChangeDetectionStrategy,
   signal,
   computed,
   effect,
@@ -12,8 +13,7 @@ import {
   afterNextRender,
   inject,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+
 import {
   CardComponent,
   TabsComponent,
@@ -68,9 +68,8 @@ interface HistoryEntry {
 @Component({
   selector: 'app-theme-builder',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
-    FormsModule,
     CardComponent,
     TabsComponent,
     TabComponent,

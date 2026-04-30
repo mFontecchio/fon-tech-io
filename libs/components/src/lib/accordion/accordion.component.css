@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Accordion Component Styles
  */
 
@@ -37,8 +37,8 @@
   cursor: pointer;
   text-align: left;
   transition:
-    background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    background-color var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+    box-shadow var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .ui-accordion-header:hover:not(:disabled) {
@@ -76,8 +76,8 @@
   flex-shrink: 0;
   color: var(--semantic-text-secondary);
   transition:
-    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    color 0.2s ease-in-out;
+    transform var(--semantic-animation-duration-component, 250ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+    color var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .ui-accordion-item--expanded .ui-accordion-icon {
@@ -85,38 +85,40 @@
   color: var(--semantic-brand-primary);
 }
 
-/* Panel */
+/* Panel — uses grid-template-rows instead of max-height to avoid magic number */
 
 .ui-accordion-panel {
-  overflow: hidden;
+  display: grid;
+  grid-template-rows: 0fr;
   background-color: var(--semantic-surface-card);
-  max-height: 0;
   transition:
-    max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    grid-template-rows var(--semantic-animation-duration-component, 250ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+    opacity var(--semantic-animation-duration-component, 250ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
   opacity: 0;
 }
 
 .ui-accordion-item--expanded .ui-accordion-panel {
-  max-height: 1000px; /* Large enough for most content */
+  grid-template-rows: 1fr;
   opacity: 1;
   transition:
-    max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-    opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    grid-template-rows var(--semantic-animation-duration-page, 350ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+    opacity var(--semantic-animation-duration-component, 250ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .ui-accordion-panel[aria-hidden='true'] {
   pointer-events: none;
 }
 
-/* Content */
+/* Content — direct grid child, must have overflow:hidden and min-height:0 for grid trick */
 
 .ui-accordion-content {
+  overflow: hidden;
+  min-height: 0;
   padding: var(--primitive-spacing-4) var(--primitive-spacing-5);
   color: var(--semantic-text-primary);
   line-height: var(--primitive-line-height-relaxed);
   transform: translateY(-8px);
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform var(--semantic-animation-duration-component, 250ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .ui-accordion-item--expanded .ui-accordion-content {
@@ -142,16 +144,12 @@
   .ui-accordion-header,
   .ui-accordion-icon,
   .ui-accordion-panel,
-  .ui-accordion-panel-content {
+  .ui-accordion-content {
     transition: none;
   }
 
   .ui-accordion-content {
     animation: none;
-  }
-
-  .ui-accordion-item--expanded .ui-accordion-panel {
-    max-height: none;
   }
 }
 

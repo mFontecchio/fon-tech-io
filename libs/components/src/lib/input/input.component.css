@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Input Component Styles
  * 
  * Uses design tokens from the theming system
@@ -61,7 +61,7 @@
   border: var(--component-input-border-width) solid var(--component-input-default-border);
   border-radius: var(--component-input-border-radius);
   outline: none;
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .ui-input::placeholder {

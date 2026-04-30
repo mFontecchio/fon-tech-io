@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Date Picker Component
  * 
  * A date picker component with native HTML5 input fallback.
@@ -14,14 +14,14 @@ import {
   signal,
   effect,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 export type DatePickerSize = 'sm' | 'md' | 'lg';
 
 @Component({
   selector: 'ui-date-picker',
-  imports: [CommonModule, FormsModule],
+  imports: [NgClass, FormsModule],
   templateUrl: './date-picker.component.html',
   styleUrl: './date-picker.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

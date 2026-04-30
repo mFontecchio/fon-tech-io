@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Drawer Component Styles
  */
 
@@ -6,40 +6,31 @@
   display: contents;
 }
 
-.ui-drawer-container {
+/* Native dialog as full-screen overlay container */
+
+dialog.ui-drawer-dialog {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: var(--primitive-z-modal, 1000);
-  pointer-events: none;
-  visibility: hidden;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  overflow: hidden;
 }
 
-.ui-drawer-container--active {
-  visibility: visible;
-}
-
-/* Backdrop */
-
-.ui-drawer-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+dialog.ui-drawer-dialog::backdrop {
   background-color: rgba(0, 0, 0, 0.5);
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out;
-  pointer-events: auto;
+  transition: opacity var(--semantic-animation-duration-component, 250ms)
+    var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
-.ui-drawer-backdrop--visible {
-  opacity: 1;
+dialog.ui-drawer-dialog--no-backdrop::backdrop {
+  background-color: transparent;
 }
-
-/* Drawer */
 
 .ui-drawer {
   position: fixed;
@@ -47,7 +38,7 @@
   box-shadow: var(--primitive-shadow-xl);
   display: flex;
   flex-direction: column;
-  transition: transform 0.3s ease-in-out;
+  transition: transform var(--semantic-animation-duration-component, 250ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
   pointer-events: auto;
   z-index: 1;
 }
@@ -178,7 +169,7 @@
   cursor: pointer;
   color: var(--semantic-text-secondary);
   border-radius: var(--primitive-border-radius-sm);
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .ui-drawer-close:hover {
@@ -260,8 +251,11 @@
 /* Reduced motion support */
 
 @media (prefers-reduced-motion: reduce) {
-  .ui-drawer,
-  .ui-drawer-backdrop {
+  .ui-drawer {
+    transition: none;
+  }
+
+  dialog.ui-drawer-dialog::backdrop {
     transition: none;
   }
 }

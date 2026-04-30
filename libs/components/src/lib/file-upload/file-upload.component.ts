@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File Upload Component
  * 
  * A file upload component with drag-drop support, preview, and progress tracking.
@@ -14,7 +14,7 @@ import {
   signal,
   HostListener,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 export interface UploadedFile {
   file: File;
@@ -25,7 +25,7 @@ export interface UploadedFile {
 
 @Component({
   selector: 'ui-file-upload',
-  imports: [CommonModule],
+  imports: [NgClass],
   templateUrl: './file-upload.component.html',
   styleUrl: './file-upload.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

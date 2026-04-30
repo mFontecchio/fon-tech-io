@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Card Component
  * 
  * A themable card container component with optional header and footer.
@@ -11,13 +11,13 @@ import {
   computed,
   input,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 export type CardVariant = 'elevated' | 'outlined' | 'filled';
 
 @Component({
   selector: 'ui-card',
-  imports: [CommonModule],
+  imports: [NgClass],
   templateUrl: './card.component.html',
   styleUrl: './card.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

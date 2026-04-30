@@ -197,3 +197,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Tooltip always visible on top with z-index 9999
 - Input and Textarea components use correct attribute bindings for HTML validation
 
+## [0.2.0] - 2026-04-30
+
+### Added
+
+- **Animation token system** in `@ui-suite/theming`: New `PrimitiveAnimation` interface with duration tokens (`fast: 150ms`, `normal: 250ms`, `slow: 350ms`) and easing tokens (`default: ease-in-out`, `spring: cubic-bezier(0.34, 1.56, 0.64, 1)`) in `libs/theming/src/lib/tokens/primitive-tokens.ts`
+- Semantic animation tokens mapped from primitive animation tokens in `libs/theming/src/lib/tokens/semantic-tokens.ts`
+- All three default themes (light, dark, high-contrast) updated with animation token values in `libs/theming/src/lib/themes/default-themes.ts`
+- `CssGeneratorService` updated to flatten and emit animation CSS custom properties (e.g., `--animation-duration-normal`, `--animation-easing-default`)
+- Context menu component: ArrowUp/ArrowDown item traversal and ArrowRight/ArrowLeft submenu open/close per WAI-ARIA Menu pattern
+- Context menu component: Proper `ngOnDestroy` lifecycle cleanup for Renderer2 listeners
+- Stepper component: ArrowLeft/Right (horizontal orientation), ArrowUp/Down (vertical orientation), Home/End keyboard navigation
+- Theme builder library (`@ui-suite/theme-builder`): Real 2,900-line theme builder implementation moved from showcase app into reusable library; exports `ThemeBuilderComponent`, `ThemePreset`, `THEME_PRESETS`, `convertPresetToTheme`, and theme utilities
+
+### Changed
+
+- `tsconfig.base.json`: `moduleResolution` changed from `"node"` to `"bundler"` (Angular 20 best practice)
+- `tsconfig.base.json`: Removed `emitDecoratorMetadata: true` (unnecessary with signals-based APIs)
+- Tabs component: Replaced `setTimeout(..., 0)` and `setTimeout(..., 10)` scheduling with `requestAnimationFrame()` for correct browser paint timing
+- Accordion component: Replaced `max-height: 1000px` magic number with `grid-template-rows: 0fr / 1fr` CSS transition (eliminates magic numbers, animates to natural content height)
+- All 38 component CSS files: Replaced hardcoded `0.2s ease-in-out` and `0.3s cubic-bezier(...)` values with animation token CSS variables (`var(--animation-duration-normal)`, `var(--animation-easing-default)`, etc.)
+- Removed unnecessary `CommonModule` imports from components that exclusively use Angular 20 built-in control flow (`@if`, `@for`, `@switch`)
+- Table component CSS: Added `scrollbar-width: thin` and `scrollbar-color` Firefox scrollbar fallback alongside WebKit `::-webkit-scrollbar` rules
+- Theme builder utilities (`libs/theme-builder/src/lib/theme-utils.ts`): Eliminated duplicate `getLuminance`, `hexToRgb`, `rgbToHex`, `lightenColor`, `darkenColor`, `getContrastRatio` implementations; now re-exports from `@ui-suite/shared`
+- `ThemeBuilderComponent`: Added `ChangeDetectionStrategy.OnPush`, removed unused `CommonModule` and `FormsModule` imports
+- Showcase app route for theme-builder updated to import from `@ui-suite/theme-builder` library instead of local page file
+
+### Fixed
+
+- Drawer component: Converted from `<div role="dialog">` to native `<dialog>` element, gaining built-in focus trap, native backdrop, `showModal()`/`close()` API, and improved screen reader support
+- Drawer component: Verified `document.body` access is guarded by `isPlatformBrowser()` for SSR compatibility
+
+### Removed
+
+- `libs/shared/src/lib/shared/` stub component (unused dead code)
+- `libs/components/src/lib/components/components.css` empty file
+- `fuse.js`, `prismjs`, and `@types/prismjs` moved from production `dependencies` to `devDependencies` (only used by showcase and development tooling)
+

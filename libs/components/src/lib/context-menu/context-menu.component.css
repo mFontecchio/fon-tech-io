@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Context Menu Component Styles
  */
 
@@ -25,8 +25,8 @@
   opacity: 0;
   transform: scale(0.95) translateY(-8px);
   transition:
-    opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+    transform var(--semantic-animation-duration-component, 250ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
     visibility 0s linear 0.25s;
   visibility: hidden;
   pointer-events: none;
@@ -36,8 +36,8 @@
   opacity: 1;
   transform: scale(1) translateY(0);
   transition:
-    opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+    transform var(--semantic-animation-duration-component, 250ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
     visibility 0s linear 0s;
   visibility: visible;
   pointer-events: auto;
@@ -64,7 +64,7 @@
   color: var(--semantic-text-primary);
   transition:
     background-color 0.15s ease,
-    transform 0.1s ease;
+    transform var(--primitive-animation-duration-fast, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
   position: relative;
 }
 
@@ -153,8 +153,8 @@
   opacity: 0;
   transform: translateX(-8px);
   transition:
-    opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+    transform var(--semantic-animation-duration-component, 250ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
     visibility 0s linear 0.25s;
   visibility: hidden;
   pointer-events: none;
@@ -164,8 +164,8 @@
   opacity: 1;
   transform: translateX(0);
   transition:
-    opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+    transform var(--semantic-animation-duration-component, 250ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
     visibility 0s linear 0s;
   visibility: visible;
   pointer-events: auto;

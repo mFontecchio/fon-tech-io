@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Select Component Styles
  */
 
@@ -54,7 +54,7 @@
   background-color: var(--semantic-surface-card);
   border: 1px solid var(--semantic-border-default);
   border-radius: var(--primitive-border-radius-md);
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
   cursor: pointer;
 }
 
@@ -123,7 +123,7 @@
   transform: translateY(-50%);
   pointer-events: none;
   color: var(--semantic-text-secondary);
-  transition: color 0.2s ease-in-out;
+  transition: color var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .ui-select--sm ~ .ui-select-icon {

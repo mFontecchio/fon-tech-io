@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Stack Component
  * 
  * A layout component for arranging items in a vertical or horizontal stack
@@ -11,7 +11,7 @@ import {
   computed,
   input,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 export type StackDirection = 'vertical' | 'horizontal';
 export type StackAlign = 'start' | 'center' | 'end' | 'stretch';
@@ -20,7 +20,7 @@ export type StackSpacing = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12;
 
 @Component({
   selector: 'ui-stack',
-  imports: [CommonModule],
+  imports: [NgClass],
   templateUrl: './stack.component.html',
   styleUrl: './stack.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

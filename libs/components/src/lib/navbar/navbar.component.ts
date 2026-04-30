@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Navbar Component
  * 
  * A responsive navigation bar with mobile menu support.
@@ -13,7 +13,7 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 export interface NavbarLink {
   id: string;
@@ -27,7 +27,7 @@ export type NavbarVariant = 'default' | 'sticky' | 'fixed';
 
 @Component({
   selector: 'ui-navbar',
-  imports: [CommonModule],
+  imports: [NgClass],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

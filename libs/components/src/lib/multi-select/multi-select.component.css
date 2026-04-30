@@ -1,4 +1,4 @@
-/**
+﻿/**
  * MultiSelect Component Styles
  */
 
@@ -52,7 +52,7 @@
   border: 1px solid var(--semantic-border-default);
   border-radius: var(--primitive-border-radius-md);
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 /* Sizes */
@@ -148,7 +148,7 @@
   cursor: pointer;
   color: currentColor;
   border-radius: var(--primitive-border-radius-sm);
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
   flex-shrink: 0;
 }
 
@@ -180,7 +180,7 @@
   cursor: pointer;
   color: var(--semantic-text-secondary);
   border-radius: var(--primitive-border-radius-sm);
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .ui-multi-select-clear:hover {
@@ -190,7 +190,7 @@
 
 .ui-multi-select-arrow {
   color: var(--semantic-text-secondary);
-  transition: transform 0.2s ease-in-out;
+  transition: transform var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .ui-multi-select--open .ui-multi-select-arrow {
@@ -212,7 +212,7 @@
   max-height: 300px;
   display: flex;
   flex-direction: column;
-  animation: ui-multi-select-dropdown-open 0.2s ease-out;
+  animation: ui-multi-select-dropdown-open var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-decelerate, cubic-bezier(0, 0, 0.2, 1));
 }
 
 @keyframes ui-multi-select-dropdown-open {
@@ -243,7 +243,7 @@
   border: 1px solid var(--semantic-border-default);
   border-radius: var(--primitive-border-radius-sm);
   outline: none;
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .ui-multi-select-search-input:focus {
@@ -285,7 +285,7 @@
   padding: var(--primitive-spacing-2) var(--primitive-spacing-3);
   border-radius: var(--primitive-border-radius-sm);
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
   user-select: none;
 }
 
@@ -327,7 +327,7 @@
   border: 2px solid var(--semantic-border-default);
   border-radius: var(--primitive-border-radius-sm);
   flex-shrink: 0;
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .ui-multi-select-option--selected .ui-multi-select-checkbox {

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Navbar Component Styles
  */
 
@@ -46,7 +46,7 @@
   color: var(--semantic-text-primary);
   font-weight: var(--primitive-font-weight-semibold);
   font-size: var(--primitive-font-size-lg);
-  transition: opacity 0.2s ease-in-out;
+  transition: opacity var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .ui-navbar-brand-link:hover {
@@ -84,7 +84,7 @@
   color: var(--semantic-text-secondary);
   text-decoration: none;
   border-radius: var(--primitive-border-radius-md);
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
   white-space: nowrap;
 }
 
@@ -129,7 +129,7 @@
   cursor: pointer;
   color: var(--semantic-text-primary);
   border-radius: var(--primitive-border-radius-md);
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .ui-navbar-mobile-toggle:hover {
@@ -154,7 +154,7 @@
   flex-direction: column;
   padding: var(--primitive-spacing-4) var(--primitive-spacing-6);
   border-top: 1px solid var(--semantic-border-subtle);
-  animation: ui-navbar-mobile-menu-enter 0.2s ease-out;
+  animation: ui-navbar-mobile-menu-enter var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-decelerate, cubic-bezier(0, 0, 0.2, 1));
 }
 
 @keyframes ui-navbar-mobile-menu-enter {
@@ -185,7 +185,7 @@
   color: var(--semantic-text-secondary);
   text-decoration: none;
   border-radius: var(--primitive-border-radius-md);
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .ui-navbar-mobile-link:hover:not(.ui-navbar-mobile-link--disabled) {

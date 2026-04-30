@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Checkbox Component
  * 
  * A themable checkbox component with indeterminate state support.
@@ -16,14 +16,14 @@ import {
   ElementRef,
   viewChild,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 export type CheckboxSize = 'sm' | 'md' | 'lg';
 
 @Component({
   selector: 'ui-checkbox',
-  imports: [CommonModule, FormsModule],
+  imports: [NgClass, FormsModule],
   templateUrl: './checkbox.component.html',
   styleUrl: './checkbox.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

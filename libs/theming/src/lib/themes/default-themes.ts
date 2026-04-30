@@ -45,7 +45,16 @@ export const darkTheme: Theme = {
   },
   primitive: defaultPrimitiveTokens,
   semantic: defaultDarkSemanticTokens,
-  component: defaultComponentTokens,
+  component: {
+    ...defaultComponentTokens,
+    tooltip: {
+      ...defaultComponentTokens.tooltip,
+      // In dark mode the neutral-900 background blends with card surfaces;
+      // invert to a light tooltip so it stands out clearly.
+      background: 'var(--primitive-neutral-100)',
+      text: 'var(--primitive-neutral-900)',
+    },
+  },
 };
 
 /**

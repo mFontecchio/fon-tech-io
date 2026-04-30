@@ -1,4 +1,4 @@
-/**
+﻿/**
  * MultiSelect Component
  * 
  * An advanced select component with multi-selection, search/filtering, and tag creation.
@@ -18,7 +18,7 @@ import {
   HostListener,
   inject,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 export interface MultiSelectOption {
@@ -32,7 +32,7 @@ export type MultiSelectSize = 'sm' | 'md' | 'lg';
 
 @Component({
   selector: 'ui-multi-select',
-  imports: [CommonModule, FormsModule],
+  imports: [NgClass, FormsModule],
   templateUrl: './multi-select.component.html',
   styleUrl: './multi-select.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

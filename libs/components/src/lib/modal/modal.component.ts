@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Modal Component
  * 
  * A themable modal/dialog component with proper accessibility support.
@@ -16,14 +16,16 @@ import {
   ElementRef,
   viewChild,
   OnDestroy,
+  PLATFORM_ID,
+  inject,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { isPlatformBrowser, NgClass } from '@angular/common';
 
 export type ModalSize = 'sm' | 'md' | 'lg' | 'xl' | 'full';
 
 @Component({
   selector: 'ui-modal',
-  imports: [CommonModule],
+  imports: [NgClass],
   templateUrl: './modal.component.html',
   styleUrl: './modal.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -113,6 +115,8 @@ export class ModalComponent implements OnDestroy {
    */
   private originalBodyOverflow?: string;
 
+  private readonly platformId = inject(PLATFORM_ID);
+
   constructor() {
     // Sync open state and manage dialog
     effect(() => {
@@ -174,6 +178,7 @@ export class ModalComponent implements OnDestroy {
    * Prevent body scroll
    */
   private preventScroll(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
     this.originalBodyOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
   }
@@ -182,6 +187,7 @@ export class ModalComponent implements OnDestroy {
    * Restore body scroll
    */
   private restoreBodyScroll(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
     if (this.originalBodyOverflow !== undefined) {
       document.body.style.overflow = this.originalBodyOverflow;
       this.originalBodyOverflow = undefined;

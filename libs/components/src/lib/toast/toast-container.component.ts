@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Toast Container Component
  * 
  * Container component that displays all active toasts.
@@ -12,7 +12,7 @@ import {
   input,
   inject,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ToastService } from './toast.service';
 import { ToastComponent } from './toast.component';
 
@@ -26,7 +26,7 @@ export type ToastPosition =
 
 @Component({
   selector: 'ui-toast-container',
-  imports: [CommonModule, ToastComponent],
+  imports: [NgClass, ToastComponent],
   templateUrl: './toast-container.component.html',
   styleUrl: './toast-container.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

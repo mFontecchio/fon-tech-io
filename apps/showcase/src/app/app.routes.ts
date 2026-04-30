@@ -15,7 +15,7 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'theme-builder',
-    loadComponent: () => import('./pages/theme-builder/theme-builder.component').then(m => m.ThemeBuilderComponent),
+    loadComponent: () => import('@ui-suite/theme-builder').then(m => m.ThemeBuilderComponent),
   },
   {
     path: 'getting-started',

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Toast Component Styles
  */
 
@@ -13,7 +13,7 @@
   box-shadow: var(--primitive-shadow-lg);
   border-left: 4px solid;
   pointer-events: auto;
-  animation: ui-toast-enter 0.3s ease-out;
+  animation: ui-toast-enter var(--semantic-animation-duration-component, 250ms) var(--semantic-animation-easing-decelerate, cubic-bezier(0, 0, 0.2, 1));
 }
 
 /* Variants */
@@ -86,7 +86,7 @@
   cursor: pointer;
   color: var(--semantic-text-secondary);
   border-radius: var(--primitive-border-radius-sm);
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .ui-toast-close:hover {

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Alert Component Styles
  */
 
@@ -16,7 +16,7 @@
   padding: var(--primitive-spacing-4);
   border-radius: var(--primitive-border-radius-md);
   border: 1px solid transparent;
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 /* Sizes */
@@ -150,7 +150,7 @@
   color: currentColor;
   opacity: 0.6;
   border-radius: var(--primitive-border-radius-sm);
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .ui-alert-dismiss:hover {

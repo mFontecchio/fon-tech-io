@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Switch Component
  * 
  * A themable toggle switch component for boolean settings.
@@ -16,14 +16,14 @@ import {
   ElementRef,
   viewChild,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 export type SwitchSize = 'sm' | 'md' | 'lg';
 
 @Component({
   selector: 'ui-switch',
-  imports: [CommonModule, FormsModule],
+  imports: [NgClass, FormsModule],
   templateUrl: './switch.component.html',
   styleUrl: './switch.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

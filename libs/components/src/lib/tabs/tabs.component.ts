@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Tabs Component
  * 
  * A themable tabs component with keyboard navigation and ARIA support.
@@ -18,7 +18,7 @@ import {
   ElementRef,
   afterNextRender,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { TabComponent } from './tab.component';
 
 export type TabsOrientation = 'horizontal' | 'vertical';
@@ -26,7 +26,7 @@ export type TabsSize = 'sm' | 'md' | 'lg';
 
 @Component({
   selector: 'ui-tabs',
-  imports: [CommonModule],
+  imports: [NgClass],
   templateUrl: './tabs.component.html',
   styleUrl: './tabs.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -131,17 +131,17 @@ export class TabsComponent {
       
       // Only update after DOM is ready
       if (this.tabButtons().length > 0) {
-        setTimeout(() => {
+        requestAnimationFrame(() => {
           this.updateIndicator();
-        }, 0);
+        });
       }
     });
     
     // Initial calculation after first render
     afterNextRender(() => {
-      setTimeout(() => {
+      requestAnimationFrame(() => {
         this.updateIndicator();
-      }, 10);
+      });
     });
   }
 
@@ -188,9 +188,9 @@ export class TabsComponent {
       this.activeIndexChange.emit(index);
       
       // Manually trigger indicator update
-      setTimeout(() => {
+      requestAnimationFrame(() => {
         this.updateIndicator();
-      }, 0);
+      });
     }
   }
 
@@ -240,7 +240,7 @@ export class TabsComponent {
     if (newIndex !== currentIndex) {
       this.selectTab(newIndex);
       // Focus the new tab
-      setTimeout(() => {
+      requestAnimationFrame(() => {
         const buttons = document.querySelectorAll('.ui-tab-button');
         if (buttons[newIndex]) {
           (buttons[newIndex] as HTMLElement).focus();

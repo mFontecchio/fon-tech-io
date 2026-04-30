@@ -81,11 +81,17 @@
     "ts-node": "10.9.1",
     "tslib": "^2.8.1",
     "typescript": "~5.8.3",
-    "zone.js": "^0.15.1"
-  },
-  "dependencies": {
     "@types/prismjs": "1.26.5",
     "fuse.js": "7.1.0",
-    "prismjs": "1.30.0"
+    "prismjs": "1.30.0",
+    "zone.js": "^0.15.1"
+  },
+  "dependencies": {},
+   "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "24.15.0",
+      "onFail": "download"
+    }
   }
 }

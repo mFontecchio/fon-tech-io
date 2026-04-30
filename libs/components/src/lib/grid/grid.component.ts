@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Grid Component
  * 
  * A responsive grid layout component with customizable columns and gaps.
@@ -11,14 +11,13 @@ import {
   computed,
   input,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 export type GridColumns = 1 | 2 | 3 | 4 | 6 | 12 | 'auto';
 export type GridGap = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12;
 
 @Component({
   selector: 'ui-grid',
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './grid.component.html',
   styleUrl: './grid.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

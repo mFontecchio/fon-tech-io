@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Badge Component
  * 
  * A themable badge/label component for displaying status, counts, or categories.
@@ -11,14 +11,14 @@ import {
   computed,
   input,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 export type BadgeVariant = 'default' | 'primary' | 'success' | 'warning' | 'error' | 'info';
 export type BadgeSize = 'sm' | 'md' | 'lg';
 
 @Component({
   selector: 'ui-badge',
-  imports: [CommonModule],
+  imports: [NgClass],
   templateUrl: './badge.component.html',
   styleUrl: './badge.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

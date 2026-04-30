@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Accordion Component
  * 
  * A vertically stacked set of interactive headings with collapsible content panels.
@@ -15,14 +15,13 @@ import {
   contentChildren,
   effect,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { AccordionItemComponent } from './accordion-item.component';
 
 export type AccordionMode = 'single' | 'multiple';
 
 @Component({
   selector: 'ui-accordion',
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './accordion.component.html',
   styleUrl: './accordion.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Popover Component
  * 
  * A floating container that displays rich content when triggered.
@@ -16,14 +16,14 @@ import {
   inject,
   HostListener,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass, NgStyle } from '@angular/common';
 
 export type PopoverPosition = 'top' | 'right' | 'bottom' | 'left';
 export type PopoverTrigger = 'click' | 'hover';
 
 @Component({
   selector: 'ui-popover',
-  imports: [CommonModule],
+  imports: [NgClass, NgStyle],
   templateUrl: './popover.component.html',
   styleUrl: './popover.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

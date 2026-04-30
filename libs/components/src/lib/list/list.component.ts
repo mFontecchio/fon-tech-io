@@ -1,4 +1,4 @@
-/**
+﻿/**
  * List Component
  * 
  * A flexible list component for displaying collections of items.
@@ -12,7 +12,7 @@ import {
   input,
   output,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 export interface ListItem {
   id: string | number;
@@ -28,7 +28,7 @@ export type ListSize = 'sm' | 'md' | 'lg';
 
 @Component({
   selector: 'ui-list',
-  imports: [CommonModule],
+  imports: [NgClass],
   templateUrl: './list.component.html',
   styleUrl: './list.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

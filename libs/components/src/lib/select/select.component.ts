@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Select Component
  * 
  * A themable select/dropdown component built on native HTML select.
@@ -16,7 +16,7 @@ import {
   ElementRef,
   viewChild,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass, KeyValuePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 export type SelectSize = 'sm' | 'md' | 'lg';
@@ -30,7 +30,7 @@ export interface SelectOption {
 
 @Component({
   selector: 'ui-select',
-  imports: [CommonModule, FormsModule],
+  imports: [NgClass, FormsModule, KeyValuePipe],
   templateUrl: './select.component.html',
   styleUrl: './select.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -91,6 +91,24 @@ export interface SemanticFeedbackColors {
 }
 
 /**
+ * Animation semantic tokens
+ * Purpose-driven aliases over primitive animation tokens
+ */
+export interface SemanticAnimation {
+  duration: {
+    interactive: string;  // For hover/focus state changes (maps to fast)
+    component: string;    // For component enter/exit (maps to normal)
+    page: string;         // For page-level transitions (maps to slow)
+  };
+  easing: {
+    default: string;      // Standard easing for most transitions
+    decelerate: string;   // Elements entering the screen (ease-out)
+    accelerate: string;   // Elements leaving the screen (ease-in)
+    spring: string;       // Spring-like bounce for playful interactions
+  };
+}
+
+/**
  * Complete semantic token interface
  */
 export interface SemanticTokens {
@@ -100,6 +118,7 @@ export interface SemanticTokens {
   state: SemanticStateColors;
   brand: SemanticBrandColors;
   feedback: SemanticFeedbackColors;
+  animation: SemanticAnimation;
 }
 
 /**
@@ -166,6 +185,19 @@ export const defaultLightSemanticTokens: SemanticTokens = {
     info: 'var(--primitive-info-600)',
     infoSubtle: 'var(--primitive-info-50)',
   },
+  animation: {
+    duration: {
+      interactive: 'var(--primitive-animation-duration-fast)',
+      component: 'var(--primitive-animation-duration-normal)',
+      page: 'var(--primitive-animation-duration-slow)',
+    },
+    easing: {
+      default: 'var(--primitive-animation-easing-ease-in-out)',
+      decelerate: 'var(--primitive-animation-easing-ease-out)',
+      accelerate: 'var(--primitive-animation-easing-ease-in)',
+      spring: 'var(--primitive-animation-easing-spring)',
+    },
+  },
 };
 
 /**
@@ -230,6 +262,19 @@ export const defaultDarkSemanticTokens: SemanticTokens = {
     errorSubtle: 'var(--primitive-error-950)',
     info: 'var(--primitive-info-500)',
     infoSubtle: 'var(--primitive-info-950)',
+  },
+  animation: {
+    duration: {
+      interactive: 'var(--primitive-animation-duration-fast)',
+      component: 'var(--primitive-animation-duration-normal)',
+      page: 'var(--primitive-animation-duration-slow)',
+    },
+    easing: {
+      default: 'var(--primitive-animation-easing-ease-in-out)',
+      decelerate: 'var(--primitive-animation-easing-ease-out)',
+      accelerate: 'var(--primitive-animation-easing-ease-in)',
+      spring: 'var(--primitive-animation-easing-spring)',
+    },
   },
 };
 

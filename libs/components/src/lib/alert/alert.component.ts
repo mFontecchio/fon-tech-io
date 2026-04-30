@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Alert Component
  * 
  * A themable alert/banner component for displaying important messages.
@@ -13,14 +13,14 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 export type AlertVariant = 'info' | 'success' | 'warning' | 'error';
 export type AlertSize = 'sm' | 'md' | 'lg';
 
 @Component({
   selector: 'ui-alert',
-  imports: [CommonModule],
+  imports: [NgClass],
   templateUrl: './alert.component.html',
   styleUrl: './alert.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

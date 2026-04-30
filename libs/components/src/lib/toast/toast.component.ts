@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Toast Component
  * 
  * Individual toast notification component.
@@ -11,13 +11,13 @@ import {
   input,
   output,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 export type ToastVariant = 'info' | 'success' | 'warning' | 'error';
 
 @Component({
   selector: 'ui-toast',
-  imports: [CommonModule],
+  imports: [NgClass],
   templateUrl: './toast.component.html',
   styleUrl: './toast.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

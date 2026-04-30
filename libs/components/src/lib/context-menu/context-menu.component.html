@@ -25,6 +25,7 @@
             [attr.aria-haspopup]="item.submenu && item.submenu.length > 0"
             [attr.aria-expanded]="isSubmenuActive(item.id)"
             [attr.tabindex]="item.disabled ? -1 : 0"
+            [attr.data-item-id]="item.id"
             (click)="handleItemClick(item, $event)"
             (keydown.enter)="handleItemClick(item, $event)"
             (keydown.space)="$event.preventDefault(); handleItemClick(item, $event)"

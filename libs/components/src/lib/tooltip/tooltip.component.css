@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Tooltip Component Styles
  */
 
@@ -20,7 +20,7 @@
   pointer-events: none;
   opacity: 0;
   transform: scale(0.95);
-  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+  transition: opacity var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)), transform var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
   will-change: transform, opacity;
 }
 
@@ -35,8 +35,8 @@
 
 .ui-tooltip-content {
   padding: var(--primitive-spacing-2) var(--primitive-spacing-3);
-  background-color: var(--semantic-text-primary);
-  color: var(--semantic-text-inverse);
+  background-color: var(--component-tooltip-background);
+  color: var(--component-tooltip-text);
   font-size: var(--primitive-font-size-sm);
   line-height: var(--primitive-line-height-normal);
   border-radius: var(--primitive-border-radius-md);
@@ -66,7 +66,7 @@
   position: absolute;
   width: 0.5rem;
   height: 0.5rem;
-  background-color: var(--semantic-text-primary);
+  background-color: var(--component-tooltip-background);
   transform: rotate(45deg);
 }
 
@@ -98,7 +98,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .ui-tooltip {
-    transition: opacity 0.1s ease-in-out;
+    transition: opacity var(--primitive-animation-duration-fast, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
     transform: scale(1) !important;
   }
 

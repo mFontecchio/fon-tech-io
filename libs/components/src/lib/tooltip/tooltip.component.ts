@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Tooltip Component
  * 
  * A themable tooltip component with positioning support.
@@ -15,14 +15,14 @@ import {
   ElementRef,
   inject,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass, NgStyle } from '@angular/common';
 
 export type TooltipPosition = 'top' | 'right' | 'bottom' | 'left';
 export type TooltipSize = 'sm' | 'md' | 'lg';
 
 @Component({
   selector: 'ui-tooltip',
-  imports: [CommonModule],
+  imports: [NgClass, NgStyle],
   templateUrl: './tooltip.component.html',
   styleUrl: './tooltip.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

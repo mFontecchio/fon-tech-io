@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Menu Component
  *
  * A versatile menu component for dropdowns and context menus.
@@ -16,7 +16,7 @@ import {
   inject,
   HostListener,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass, NgStyle } from '@angular/common';
 
 export interface MenuItem {
   id: string;
@@ -32,7 +32,7 @@ export type MenuPosition = 'bottom-left' | 'bottom-right' | 'top-left' | 'top-ri
 
 @Component({
   selector: 'ui-menu',
-  imports: [CommonModule],
+  imports: [NgClass, NgStyle],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

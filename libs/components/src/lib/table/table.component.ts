@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Table Component
  * 
  * A data table component with sorting, filtering, and pagination support.
@@ -14,7 +14,7 @@ import {
   signal,
   effect,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 export interface TableColumn {
   key: string;
@@ -34,7 +34,7 @@ export type TableSize = 'sm' | 'md' | 'lg';
 
 @Component({
   selector: 'ui-table',
-  imports: [CommonModule],
+  imports: [NgClass],
   templateUrl: './table.component.html',
   styleUrl: './table.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

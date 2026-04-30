@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Progress Component
  * 
  * A themable progress bar component with determinate and indeterminate modes.
@@ -11,14 +11,14 @@ import {
   computed,
   input,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 export type ProgressVariant = 'default' | 'success' | 'warning' | 'error' | 'info';
 export type ProgressSize = 'sm' | 'md' | 'lg';
 
 @Component({
   selector: 'ui-progress',
-  imports: [CommonModule],
+  imports: [NgClass],
   templateUrl: './progress.component.html',
   styleUrl: './progress.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

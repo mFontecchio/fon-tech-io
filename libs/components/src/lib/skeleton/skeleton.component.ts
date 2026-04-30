@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Skeleton Component
  * 
  * A loading placeholder component that displays a shimmer effect
@@ -11,13 +11,13 @@ import {
   computed,
   input,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass, NgStyle } from '@angular/common';
 
 export type SkeletonVariant = 'text' | 'circular' | 'rectangular' | 'rounded';
 
 @Component({
   selector: 'ui-skeleton',
-  imports: [CommonModule],
+  imports: [NgClass, NgStyle],
   templateUrl: './skeleton.component.html',
   styleUrl: './skeleton.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

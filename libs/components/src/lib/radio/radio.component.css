@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Radio Component Styles
  */
 
@@ -49,7 +49,7 @@
   border: 2px solid var(--semantic-border-default);
   border-radius: 50%;
   background-color: var(--semantic-surface-card);
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .ui-radio--sm + .ui-radio-box {
@@ -94,7 +94,7 @@
   height: 0.625rem;
   border-radius: 50%;
   background-color: var(--semantic-brand-primary);
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .ui-radio--sm + .ui-radio-box .ui-radio-dot {

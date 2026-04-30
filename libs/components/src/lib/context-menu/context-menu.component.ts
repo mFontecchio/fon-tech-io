@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Context Menu Component
  *
  * A context menu that appears on right-click (contextmenu event).
@@ -15,10 +15,11 @@ import {
   ElementRef,
   inject,
   HostListener,
+  OnDestroy,
   Renderer2,
   afterNextRender,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass, NgStyle } from '@angular/common';
 
 export interface ContextMenuItem {
   id: string;
@@ -33,7 +34,7 @@ export interface ContextMenuItem {
 
 @Component({
   selector: 'ui-context-menu',
-  imports: [CommonModule],
+  imports: [NgClass, NgStyle],
   templateUrl: './context-menu.component.html',
   styleUrl: './context-menu.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -41,7 +42,7 @@ export interface ContextMenuItem {
     '[class.ui-context-menu-wrapper]': 'true',
   },
 })
-export class ContextMenuComponent {
+export class ContextMenuComponent implements OnDestroy {
   /**
    * Menu items
    */
@@ -104,6 +105,12 @@ export class ContextMenuComponent {
   private elementRef = inject(ElementRef);
   private renderer = inject(Renderer2);
 
+  /**
+   * Stored unlisten function for the contextmenu Renderer2 listener.
+   * Called in ngOnDestroy to prevent memory leaks.
+   */
+  private unlistenContextMenu?: () => void;
+
   constructor() {
     afterNextRender(() => {
       // Set up context menu listener on the content area
@@ -111,11 +118,19 @@ export class ContextMenuComponent {
         '.ui-context-menu-content'
       );
       if (contentElement) {
-        this.renderer.listen(contentElement, 'contextmenu', (event: MouseEvent) => {
-          this.handleContextMenu(event);
-        });
+        this.unlistenContextMenu = this.renderer.listen(
+          contentElement,
+          'contextmenu',
+          (event: MouseEvent) => {
+            this.handleContextMenu(event);
+          }
+        );
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.unlistenContextMenu?.();
   }
 
   /**
@@ -194,6 +209,72 @@ export class ContextMenuComponent {
   protected handleEscape(): void {
     if (this.isOpen()) {
       this.close();
+    }
+  }
+
+  /**
+   * Arrow key navigation (WAI-ARIA Menu pattern)
+   * ArrowDown/ArrowUp: traverse items
+   * ArrowRight: open submenu of focused item
+   * ArrowLeft: close active submenu
+   */
+  @HostListener('keydown', ['$event'])
+  protected handleKeyDown(event: KeyboardEvent): void {
+    if (!this.isOpen()) return;
+    if (!['ArrowDown', 'ArrowUp', 'ArrowRight', 'ArrowLeft'].includes(event.key)) return;
+
+    event.preventDefault();
+    const host = this.elementRef.nativeElement as HTMLElement;
+
+    switch (event.key) {
+      case 'ArrowDown':
+      case 'ArrowUp': {
+        const inSubmenu = !!this.activeSubmenu();
+        const containerSel = inSubmenu
+          ? '.ui-context-menu-item--submenu-open > .ui-context-menu-submenu'
+          : '.ui-context-menu-list';
+        const container = host.querySelector<HTMLElement>(containerSel);
+        if (!container) break;
+        const focusable = Array.from(
+          container.querySelectorAll<HTMLElement>(
+            ':scope > .ui-context-menu-item:not(.ui-context-menu-item--disabled)'
+          )
+        );
+        if (!focusable.length) break;
+        const current = focusable.indexOf(document.activeElement as HTMLElement);
+        const next =
+          event.key === 'ArrowDown'
+            ? (current + 1) % focusable.length
+            : (current - 1 + focusable.length) % focusable.length;
+        focusable[next]?.focus();
+        break;
+      }
+      case 'ArrowRight': {
+        const focused = document.activeElement as HTMLElement;
+        const itemId = focused?.getAttribute('data-item-id');
+        if (!itemId) break;
+        const item = this.items().find((i) => i.id === itemId);
+        if (item?.submenu?.length) {
+          this.activeSubmenu.set(itemId);
+          requestAnimationFrame(() => {
+            const first = host.querySelector<HTMLElement>(
+              '.ui-context-menu-item--submenu-open > .ui-context-menu-submenu .ui-context-menu-item:not(.ui-context-menu-item--disabled)'
+            );
+            first?.focus();
+          });
+        }
+        break;
+      }
+      case 'ArrowLeft': {
+        if (this.activeSubmenu()) {
+          const parentItem = host.querySelector<HTMLElement>(
+            '.ui-context-menu-item--submenu-open'
+          );
+          this.activeSubmenu.set(null);
+          requestAnimationFrame(() => parentItem?.focus());
+        }
+        break;
+      }
     }
   }
 

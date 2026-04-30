@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Avatar Component
  * 
  * A themable avatar component supporting images, initials, and icons.
@@ -12,7 +12,7 @@ import {
   input,
   signal,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass, NgStyle } from '@angular/common';
 
 export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
 export type AvatarShape = 'circle' | 'square';
@@ -20,7 +20,7 @@ export type AvatarStatus = 'online' | 'offline' | 'away' | 'busy';
 
 @Component({
   selector: 'ui-avatar',
-  imports: [CommonModule],
+  imports: [NgClass, NgStyle],
   templateUrl: './avatar.component.html',
   styleUrl: './avatar.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Spinner Component
  * 
  * A themable loading spinner component with multiple sizes and variants.
@@ -11,14 +11,14 @@ import {
   computed,
   input,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 export type SpinnerSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 export type SpinnerVariant = 'primary' | 'secondary' | 'inverse';
 
 @Component({
   selector: 'ui-spinner',
-  imports: [CommonModule],
+  imports: [NgClass],
   templateUrl: './spinner.component.html',
   styleUrl: './spinner.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

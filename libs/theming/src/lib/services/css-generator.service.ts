@@ -115,6 +115,16 @@ export class CssGeneratorService {
       vars.push(`  --primitive-z-index-${this.kebabCase(key)}: ${value};`);
     });
 
+    // Animation durations
+    Object.entries(primitive.animation.duration).forEach(([key, value]) => {
+      vars.push(`  --primitive-animation-duration-${this.kebabCase(key)}: ${value};`);
+    });
+
+    // Animation easings
+    Object.entries(primitive.animation.easing).forEach(([key, value]) => {
+      vars.push(`  --primitive-animation-easing-${this.kebabCase(key)}: ${value};`);
+    });
+
     return vars.join('\n');
   }
 
@@ -152,6 +162,14 @@ export class CssGeneratorService {
     // Feedback colors
     Object.entries(semantic.feedback).forEach(([key, value]) => {
       vars.push(`  --semantic-feedback-${this.kebabCase(key)}: ${value};`);
+    });
+
+    // Animation tokens
+    Object.entries(semantic.animation.duration).forEach(([key, value]) => {
+      vars.push(`  --semantic-animation-duration-${this.kebabCase(key)}: ${value};`);
+    });
+    Object.entries(semantic.animation.easing).forEach(([key, value]) => {
+      vars.push(`  --semantic-animation-easing-${this.kebabCase(key)}: ${value};`);
     });
 
     return vars.join('\n');
@@ -226,6 +244,16 @@ export class CssGeneratorService {
     Object.entries(primitive.zIndex).forEach(([key, value]) => {
       element.style.setProperty(`--primitive-z-index-${this.kebabCase(key)}`, String(value));
     });
+
+    // Animation durations
+    Object.entries(primitive.animation.duration).forEach(([key, value]) => {
+      element.style.setProperty(`--primitive-animation-duration-${this.kebabCase(key)}`, value);
+    });
+
+    // Animation easings
+    Object.entries(primitive.animation.easing).forEach(([key, value]) => {
+      element.style.setProperty(`--primitive-animation-easing-${this.kebabCase(key)}`, value);
+    });
   }
 
   /**
@@ -254,6 +282,13 @@ export class CssGeneratorService {
 
     Object.entries(semantic.feedback).forEach(([key, value]) => {
       element.style.setProperty(`--semantic-feedback-${this.kebabCase(key)}`, value);
+    });
+
+    Object.entries(semantic.animation.duration).forEach(([key, value]) => {
+      element.style.setProperty(`--semantic-animation-duration-${this.kebabCase(key)}`, value);
+    });
+    Object.entries(semantic.animation.easing).forEach(([key, value]) => {
+      element.style.setProperty(`--semantic-animation-easing-${this.kebabCase(key)}`, value);
     });
   }
 

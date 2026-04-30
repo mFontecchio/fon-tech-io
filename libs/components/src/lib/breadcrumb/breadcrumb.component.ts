@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Breadcrumb Component
  * 
  * A navigation component showing the user's location in a hierarchy.
@@ -12,7 +12,7 @@ import {
   input,
   output,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 export interface BreadcrumbItem {
   label: string;
@@ -25,7 +25,7 @@ export type BreadcrumbSize = 'sm' | 'md' | 'lg';
 
 @Component({
   selector: 'ui-breadcrumb',
-  imports: [CommonModule],
+  imports: [NgClass],
   templateUrl: './breadcrumb.component.html',
   styleUrl: './breadcrumb.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

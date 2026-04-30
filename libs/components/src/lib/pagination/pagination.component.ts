@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Pagination Component
  * 
  * A navigation component for paging through data.
@@ -14,13 +14,13 @@ import {
   signal,
   effect,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 export type PaginationSize = 'sm' | 'md' | 'lg';
 
 @Component({
   selector: 'ui-pagination',
-  imports: [CommonModule],
+  imports: [NgClass],
   templateUrl: './pagination.component.html',
   styleUrl: './pagination.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

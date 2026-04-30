@@ -2,12 +2,12 @@
 
 ## Project Overview
 
-Enterprise-grade Angular 20 component library (34 components) with a three-tier design token system, built in an Nx monorepo with pnpm. The library emphasizes HTML5-first architecture, signals-based reactivity, and comprehensive theming.
+Enterprise-grade Angular 20 component library (38 components) with a three-tier design token system, built in an Nx monorepo with pnpm. The library emphasizes HTML5-first architecture, signals-based reactivity, and comprehensive theming.
 
 **Master Implementation Plan**: `/documentation/plan/angular-component-library-suite.plan.md`
 
 - Comprehensive 8-phase plan covering foundation → components → theme builder → documentation
-- Current Status: **Phase 7 (Developer Experience)** - All 34 components complete, theming system implemented
+- Current Status: **Phase 7 (Developer Experience)** - All 38 components complete, theming system implemented
 - Target: 30+ components (achieved 34), complete design system, theme builder UI, showcase site
 
 ## Architecture Quick Reference
@@ -138,46 +138,35 @@ constructor(private themeService = inject(ThemeService)) {
 
 ### 3a. Theme Builder Integration
 
-The theme builder (`libs/theme-builder/`) provides UI components for visual theme creation:
+The theme builder (`libs/theme-builder/`) is a fully implemented library providing an interactive theme creation UI and utilities:
 
-**Key Components**:
+**Exported from `@ui-suite/theme-builder`**:
 
-- **ColorPickerComponent**: HEX/RGB/HSL input with palette generation
-- **TypographyEditorComponent**: Font family, size scales, preview
-- **SpacingEditorComponent**: Visual spacing scale editor
-- **ComponentPreviewComponent**: Real-time preview of all components
-- **ThemeExportComponent**: JSON/CSS/TypeScript export functionality
+- `ThemeBuilderComponent` — Full interactive theme builder UI (selector: `app-theme-builder`)
+- `ThemePreset`, `THEME_PRESETS` — Pre-configured theme presets
+- `convertPresetToTheme()` — Convert flat preset tokens to `Theme` objects
+- Color utilities: `getContrastRatio`, `lightenColor`, `darkenColor`, `getComplementaryColor`, `getAnalogousColors`, `isValidHexColor`, `generateShades`, `meetsWCAG`, `getWCAGLevel`
+- Storage utilities: `saveTheme`, `getSavedThemes`, `deleteTheme`
+- CSS utilities: `parseCSSVariables`
 
-**Theme Builder Workflow**:
+**Theme Builder Workflow** (lazy-load recommended):
 
 ```typescript
-// 1. Import theme builder components
-import {
-  ColorPickerComponent,
-  TypographyEditorComponent,
-  ComponentPreviewComponent
-} from '@ui-suite/theme-builder';
-
-// 2. Use in component
-@Component({
-  imports: [ColorPickerComponent, ComponentPreviewComponent],
-  // ...
-})
-
-// 3. Theme changes are reactive via signals
-readonly currentTheme = inject(ThemeService).currentTheme;
-
-// 4. Export theme
-const themeJson = JSON.stringify(this.currentTheme(), null, 2);
+// Lazy-load in routing (recommended)
+{
+  path: 'theme-builder',
+  loadComponent: () => import('@ui-suite/theme-builder').then(m => m.ThemeBuilderComponent),
+}
 ```
 
 **Theme Builder Features**:
 
-- Real-time preview with all 34 components visible
+- Real-time preview with all 38 components visible
 - Accessibility contrast checker (WCAG AA/AAA validation)
 - Import/export themes as JSON
-- Preset theme library (light, dark, high-contrast)
-- Responsive preview modes (mobile, tablet, desktop)
+- Preset theme library (Material, Bootstrap, Dark, Minimal, Ocean, Sunset, and more)
+- Dual light/dark mode editing
+- Undo/redo support
 - Copy-to-clipboard for theme configuration
 
 **Theme JSON Structure**:
@@ -304,7 +293,36 @@ const hoverColorDark = generateHoverColor('#3b82f6', 'dark'); // Lighter
 - **Color palette generation**: Create full 11-shade palette from single color
 - **Theme enhancement**: Apply improvements to existing themes without manual edits
 
-### 4. Accessibility Requirements
+### 3d. Animation Token System
+
+The theming library includes a full animation token system following the three-tier token hierarchy. All component CSS files use these tokens — never hardcode transition values.
+
+**Primitive animation tokens** (`libs/theming/src/lib/tokens/primitive-tokens.ts`):
+
+- `--primitive-animation-duration-fast`: `150ms`
+- `--primitive-animation-duration-normal`: `250ms`
+- `--primitive-animation-duration-slow`: `350ms`
+- `--primitive-animation-easing-default`: `ease-in-out`
+- `--primitive-animation-easing-spring`: `cubic-bezier(0.34, 1.56, 0.64, 1)`
+
+**Semantic animation tokens** (use these in component CSS):
+
+- `--animation-duration-fast`, `--animation-duration-normal`, `--animation-duration-slow`
+- `--animation-easing-default`, `--animation-easing-spring`
+
+**Usage in component CSS**:
+
+```css
+/* Correct */
+.ui-button {
+  transition: background-color var(--animation-duration-normal) var(--animation-easing-default);
+}
+
+/* Wrong - hardcoded values */
+.ui-button {
+  transition: background-color 0.2s ease-in-out;
+}
+```
 
 Every interactive component MUST include:
 
@@ -498,9 +516,11 @@ Uses lazy loading with `loadComponent`:
 - NO `@Input()` / `@Output()` decorators → Use `input()` / `output()` functions
 - NO `*ngIf` / `*ngFor` / `*ngSwitch` → Use `@if` / `@for` / `@switch`
 - NO hardcoded CSS values → Use `var(--token-name)`
+- NO hardcoded transition durations/easings → Use `var(--animation-duration-*)` / `var(--animation-easing-*)`
 - NO `ng-deep` or `::ng-deep` → Use design tokens or CSS layers
 - NO `any` types → Use proper TypeScript types
 - NO mixing programming paradigms → Maintain consistency with existing code
+- NO `<div role="dialog">` for overlays → Use native `<dialog>` element (Drawer and Modal already do this)
 
 ### ✅ TypeScript Best Practices
 
@@ -562,8 +582,8 @@ Configuration: `jest.config.ts` (root) + per-project configs in each lib/app
 - **Theme Interface**: `libs/theming/src/lib/tokens/theme.interface.ts`
 - **Default Themes**: `libs/theming/src/lib/themes/default-themes.ts`
 - **CSS Generator**: `libs/theming/src/lib/services/css-generator.service.ts` (converts tokens → CSS vars)
-- **Component Catalog**: All 34 components in `libs/components/src/lib/` (accordion, alert, avatar, badge, breadcrumb, button, card, checkbox, chip, code-block, date-picker, divider, drawer, file-upload, grid, input, list, menu, modal, multi-select, navbar, pagination, popover, progress, radio, select, skeleton, slider, spinner, stack, stepper, switch, table, tabs, textarea, toast, tooltip)
-- **Documentation Status**: `documentation/FINAL_100_PERCENT_COMPLETION.md` (all 34 components fully documented)
+- **Component Catalog**: All 38 components in `libs/components/src/lib/` (accordion, alert, avatar, badge, breadcrumb, button, card, checkbox, chip, code-block, context-menu, date-picker, divider, drawer, file-upload, grid, input, list, menu, modal, multi-select, navbar, pagination, popover, progress, radio, select, skeleton, slider, spinner, stack, stepper, switch, table, tabs, textarea, toast, tooltip)
+- **Documentation Status**: `documentation/FINAL_100_PERCENT_COMPLETION.md` (all 38 components fully documented)
 
 ## Project-Specific Context
 
@@ -572,7 +592,7 @@ Configuration: `jest.config.ts` (root) + per-project configs in each lib/app
 - **Nx Version**: 22.0.3 - monorepo tooling
 - **TypeScript**: Strict mode enabled - `noImplicitReturns`, `noFallthroughCasesInSwitch`, etc.
 - **Browser Target**: ES2022 - modern browsers only (Chrome, Firefox, Safari, Edge latest)
-- **Component Count**: 34 fully functional components (9 form, 8 layout, 8 data display, 5 feedback, 4 navigation)
+- **Component Count**: 38 fully functional components (11 form, 8 layout, 9 data display, 5 feedback, 5 navigation)
 - **Theming**: Supports light, dark, and high-contrast modes with system preference detection
 
 ## Code Quality Standards
@@ -691,7 +711,7 @@ Example:
 
 - ✅ Phase 1: Foundation Setup - Nx workspace, libraries, apps configured
 - ✅ Phase 2: Design System & Theming Engine - Three-tier tokens, ThemeService, CssGenerator
-- ✅ Phase 3: Core Component Library - All 34 components implemented and documented
+- ✅ Phase 3: Core Component Library - All 38 components implemented and documented
 - ✅ Phase 4: Theme Builder UI - Visual theme creator with real-time preview
 - ✅ Phase 5: Showcase & Documentation Site - Live demos, API docs, examples
 - ✅ Phase 6: Accessibility & Best Practices - WCAG 2.1 AA compliance, keyboard nav

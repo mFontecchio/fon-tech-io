@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Date Picker Component Styles
  */
 
@@ -51,7 +51,7 @@
   border: 1px solid var(--semantic-border-default);
   border-radius: var(--primitive-border-radius-md);
   outline: none;
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .ui-date-picker::placeholder {
@@ -63,7 +63,7 @@
   cursor: pointer;
   color: var(--semantic-text-secondary);
   opacity: 0.8;
-  transition: opacity 0.2s ease-in-out;
+  transition: opacity var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .ui-date-picker::-webkit-calendar-picker-indicator:hover {
@@ -125,7 +125,7 @@
   cursor: pointer;
   color: var(--semantic-text-secondary);
   border-radius: var(--primitive-border-radius-sm);
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .ui-date-picker-clear:hover {

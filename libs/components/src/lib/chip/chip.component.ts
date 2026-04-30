@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Chip Component
  * 
  * A compact element representing input, attribute, or action.
@@ -12,14 +12,14 @@ import {
   input,
   output,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 export type ChipVariant = 'default' | 'primary' | 'success' | 'warning' | 'error' | 'info';
 export type ChipSize = 'sm' | 'md' | 'lg';
 
 @Component({
   selector: 'ui-chip',
-  imports: [CommonModule],
+  imports: [NgClass],
   templateUrl: './chip.component.html',
   styleUrl: './chip.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

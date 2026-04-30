@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Switch Component Styles
  */
 
@@ -48,7 +48,7 @@
   height: 1.5rem;
   background-color: var(--semantic-border-default);
   border-radius: var(--primitive-border-radius-full);
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .ui-switch--sm + .ui-switch-track {
@@ -114,7 +114,7 @@
   background-color: var(--semantic-surface-card);
   border-radius: var(--primitive-border-radius-full);
   box-shadow: var(--primitive-shadow-sm);
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
   left: 0.125rem;
 }
 

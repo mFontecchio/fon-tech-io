@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Button Component
  * 
  * A themable button component with multiple variants, sizes, and full accessibility support.
@@ -13,7 +13,7 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 export type ButtonVariant = 'filled' | 'outlined' | 'text';
 export type ButtonSize = 'sm' | 'md' | 'lg';
@@ -21,7 +21,7 @@ export type ButtonType = 'button' | 'submit' | 'reset';
 
 @Component({
   selector: 'ui-button',
-  imports: [CommonModule],
+  imports: [NgClass],
   templateUrl: './button.component.html',
   styleUrl: './button.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

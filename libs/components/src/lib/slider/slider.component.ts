@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Slider Component
  * 
  * A range input component for selecting numeric values.
@@ -14,14 +14,14 @@ import {
   signal,
   effect,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass, NgStyle } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 export type SliderSize = 'sm' | 'md' | 'lg';
 
 @Component({
   selector: 'ui-slider',
-  imports: [CommonModule, FormsModule],
+  imports: [NgClass, NgStyle, FormsModule],
   templateUrl: './slider.component.html',
   styleUrl: './slider.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Slider Component Styles
  */
 
@@ -58,12 +58,12 @@
   height: 100%;
   background-color: var(--semantic-brand-primary);
   border-radius: var(--primitive-border-radius-full);
-  transition: width 0.1s ease-out;
+  transition: width var(--primitive-animation-duration-fast, 150ms) var(--primitive-animation-easing-ease-out, cubic-bezier(0, 0, 0.2, 1));
   pointer-events: none;
 }
 
 .ui-slider-fill--range {
-  transition: left 0.1s ease-out, width 0.1s ease-out;
+  transition: left var(--primitive-animation-duration-fast, 150ms) var(--primitive-animation-easing-ease-out, cubic-bezier(0, 0, 0.2, 1)), width var(--primitive-animation-duration-fast, 150ms) var(--primitive-animation-easing-ease-out, cubic-bezier(0, 0, 0.2, 1));
 }
 
 /* Input (native range) */
@@ -145,7 +145,7 @@
   border: 2px solid var(--semantic-surface-card);
   box-shadow: var(--primitive-shadow-sm);
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
   opacity: 1;
 }
 
@@ -157,7 +157,7 @@
   border: 2px solid var(--semantic-surface-card);
   box-shadow: var(--primitive-shadow-sm);
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .ui-slider-input:hover::-webkit-slider-thumb {
