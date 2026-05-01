@@ -8,6 +8,30 @@ import { parseHex, rgbToHex, hslToRgb, lightenColor, darkenColor, getContrastRat
 // Re-export shared color utilities to eliminate duplication
 export { getContrastRatio, lightenColor, darkenColor } from '@ui-suite/shared';
 
+const CUSTOM_THEME_STORAGE_KEY = 'custom-themes';
+
+export interface ThemeFamilyTokenBundleMetadata {
+  id: string;
+  name: string;
+  description?: string;
+  author?: string;
+  version?: string;
+}
+
+export interface ThemeFamilyTokenBundle {
+  metadata: ThemeFamilyTokenBundleMetadata;
+  light: Record<string, string>;
+  dark: Record<string, string>;
+  isIncomplete?: boolean;
+}
+
+export interface SavedThemeRecord {
+  name: string;
+  family: ThemeFamilyTokenBundle;
+  createdAt: string;
+  isIncomplete?: boolean;
+}
+
 /**
  * Check if contrast ratio meets WCAG standards
  */
@@ -94,25 +118,47 @@ function hslNormToHex(h: number, s: number, l: number): string {
 /**
  * Save theme to localStorage
  */
-export function saveTheme(name: string, tokens: Record<string, string>): void {
+export function saveTheme(name: string, family: ThemeFamilyTokenBundle): void {
   const savedThemes = getSavedThemes();
   savedThemes[name] = {
     name,
-    tokens,
+    family: {
+      ...family,
+      metadata: {
+        ...family.metadata,
+        id: family.metadata.id || slugifyThemeName(name),
+        name,
+      },
+    },
     createdAt: new Date().toISOString(),
+    isIncomplete: family.isIncomplete,
   };
-  localStorage.setItem('custom-themes', JSON.stringify(savedThemes));
+  localStorage.setItem(CUSTOM_THEME_STORAGE_KEY, JSON.stringify(savedThemes));
 }
 
 /**
  * Get all saved themes from localStorage
  */
-export function getSavedThemes(): Record<
-  string,
-  { name: string; tokens: Record<string, string>; createdAt: string }
-> {
-  const saved = localStorage.getItem('custom-themes');
-  return saved ? JSON.parse(saved) : {};
+export function getSavedThemes(): Record<string, SavedThemeRecord> {
+  const saved = localStorage.getItem(CUSTOM_THEME_STORAGE_KEY);
+  if (!saved) {
+    return {};
+  }
+
+  try {
+    const parsed = JSON.parse(saved) as Record<string, unknown>;
+
+    return Object.fromEntries(
+      Object.entries(parsed)
+        .map(([name, value]) => {
+          const record = normalizeSavedThemeRecord(name, value);
+          return record ? [name, record] : null;
+        })
+        .filter((entry): entry is [string, SavedThemeRecord] => entry !== null)
+    );
+  } catch {
+    return {};
+  }
 }
 
 /**
@@ -121,7 +167,80 @@ export function getSavedThemes(): Record<
 export function deleteTheme(name: string): void {
   const savedThemes = getSavedThemes();
   delete savedThemes[name];
-  localStorage.setItem('custom-themes', JSON.stringify(savedThemes));
+  localStorage.setItem(CUSTOM_THEME_STORAGE_KEY, JSON.stringify(savedThemes));
+}
+
+/**
+ * Create a normalized family token bundle.
+ */
+export function createThemeFamilyTokenBundle(
+  name: string,
+  light: Record<string, string>,
+  dark: Record<string, string>,
+  metadata: Partial<ThemeFamilyTokenBundleMetadata> = {}
+): ThemeFamilyTokenBundle {
+  const normalizedLight = { ...light };
+  const normalizedDark = Object.keys(dark).length > 0 ? { ...normalizedLight, ...dark } : { ...normalizedLight };
+
+  return {
+    metadata: {
+      id: metadata.id || slugifyThemeName(name),
+      name,
+      description: metadata.description,
+      author: metadata.author,
+      version: metadata.version,
+    },
+    light: normalizedLight,
+    dark: normalizedDark,
+    isIncomplete: Object.keys(dark).length === 0,
+  };
+}
+
+/**
+ * Normalize imported theme data into the builder family token schema.
+ */
+export function normalizeImportedThemeData(
+  input: unknown,
+  fallbackName: string = 'Imported Theme'
+): ThemeFamilyTokenBundle {
+  if (!isRecord(input)) {
+    throw new Error('Invalid theme data');
+  }
+
+  if (isTokenMap(input)) {
+    return createThemeFamilyTokenBundle(fallbackName, input, {}, { name: fallbackName });
+  }
+
+  const metadataValue = input['metadata'];
+  const metadataRecord = isRecord(metadataValue) ? metadataValue : {};
+  const themeName = typeof metadataRecord['name'] === 'string' ? metadataRecord['name'] : fallbackName;
+  const lightValue = input['light'];
+  const darkValue = input['dark'];
+  const light = isTokenMap(lightValue) ? lightValue : undefined;
+  const dark = isTokenMap(darkValue) ? darkValue : undefined;
+
+  if (light || dark) {
+    return createThemeFamilyTokenBundle(themeName, light ?? {}, dark ?? {}, {
+      id: typeof metadataRecord['id'] === 'string' ? metadataRecord['id'] : slugifyThemeName(themeName),
+      description:
+        typeof metadataRecord['description'] === 'string' ? metadataRecord['description'] : undefined,
+      author: typeof metadataRecord['author'] === 'string' ? metadataRecord['author'] : undefined,
+      version: typeof metadataRecord['version'] === 'string' ? metadataRecord['version'] : undefined,
+    });
+  }
+
+  const tokensValue = input['tokens'];
+  if (isTokenMap(tokensValue)) {
+    return createThemeFamilyTokenBundle(themeName, tokensValue, {}, {
+      id: typeof metadataRecord['id'] === 'string' ? metadataRecord['id'] : slugifyThemeName(themeName),
+      description:
+        typeof metadataRecord['description'] === 'string' ? metadataRecord['description'] : undefined,
+      author: typeof metadataRecord['author'] === 'string' ? metadataRecord['author'] : undefined,
+      version: typeof metadataRecord['version'] === 'string' ? metadataRecord['version'] : undefined,
+    });
+  }
+
+  throw new Error('Unsupported theme data format');
 }
 
 /**
@@ -164,4 +283,57 @@ export function generateShades(hex: string, count: number = 5): string[] {
   }
 
   return shades;
+}
+
+function normalizeSavedThemeRecord(name: string, value: unknown): SavedThemeRecord | null {
+  if (!isRecord(value)) {
+    return null;
+  }
+
+  const createdAt =
+    typeof value['createdAt'] === 'string' ? value['createdAt'] : new Date().toISOString();
+
+  const familyValue = value['family'];
+  if (isRecord(familyValue)) {
+    const family = normalizeImportedThemeData(familyValue, name);
+    return {
+      name,
+      family,
+      createdAt,
+      isIncomplete: family.isIncomplete,
+    };
+  }
+
+  const tokensValue = value['tokens'];
+  if (isTokenMap(tokensValue)) {
+    const family = createThemeFamilyTokenBundle(name, tokensValue, {}, { name });
+    return {
+      name,
+      family,
+      createdAt,
+      isIncomplete: true,
+    };
+  }
+
+  return null;
+}
+
+function slugifyThemeName(name: string): string {
+  return name
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '') || 'custom-theme';
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function isTokenMap(value: unknown): value is Record<string, string> {
+  if (!isRecord(value)) {
+    return false;
+  }
+
+  return Object.values(value).every((entry) => typeof entry === 'string');
 }

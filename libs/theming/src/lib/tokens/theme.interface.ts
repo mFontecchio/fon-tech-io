@@ -30,6 +30,27 @@ export interface Theme {
 }
 
 /**
+ * Theme family metadata
+ * Groups paired light and dark leaf themes under a stable family identity
+ */
+export interface ThemeFamilyMetadata {
+  id: string;
+  name: string;
+  description?: string;
+  author?: string;
+  version?: string;
+}
+
+/**
+ * Paired light and dark themes managed as one selectable family
+ */
+export interface ThemeFamily {
+  metadata: ThemeFamilyMetadata;
+  light: Theme;
+  dark: Theme;
+}
+
+/**
  * Partial theme definition for customization
  * Allows partial overrides of any token tier
  */
@@ -44,6 +65,11 @@ export type PartialTheme = {
  * Theme mode type
  */
 export type ThemeMode = 'light' | 'dark' | 'high-contrast';
+
+/**
+ * Supported family variants for paired themes
+ */
+export type ThemeFamilyMode = Extract<ThemeMode, 'light' | 'dark'>;
 
 /**
  * CSS custom property prefix

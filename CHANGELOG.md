@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- **Theme Family Model**: Moved theming engine, showcase, and theme builder to family-aware light/dark selection
+  - Added first-class `ThemeFamily` support above leaf `Theme` objects in `@ui-suite/theming`
+  - ThemeService now persists selected family and mode separately and switches light/dark within active family
+  - Showcase theme switcher now selects families independently from mode, with high-contrast preserved as a special mode
+  - Theme builder presets, saved themes, and import/export now use explicit light and dark variants instead of flat token maps
+
+### Added
+- **Theme Family Import/Export Schema**: Added engine-native `ThemeFamily` JSON and TypeScript export support
+  - Builder exports now round-trip paired light and dark variants with shared family metadata
+  - Legacy flat saved themes and imports migrate deterministically by seeding missing dark tokens from light variants and flagging incomplete bundles
+
 ### Added
 - **Whimsical Theme Presets**: Added playful themed color schemes to theme builder
   - Frog theme with vibrant lily pad greens and wetland tones (#22c55e primary, fresh green palette)

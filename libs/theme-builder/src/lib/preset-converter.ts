@@ -1,477 +1,218 @@
 /**
  * Preset Converter Utility
- * Converts flat CSS variable presets to proper Theme objects
+ * Converts preset families to engine-native theme families
  */
 
-import { Theme } from '@ui-suite/theming';
-import { ThemePreset } from './theme-presets';
+import { darkTheme, lightTheme, Theme, ThemeFamily } from '@ui-suite/theming';
+import { ThemePreset, ThemePresetTokens } from './theme-presets';
+
+const PRESET_THEME_VERSION = '1.0.0';
 
 /**
- * Convert a flat preset to a proper Theme object
+ * Convert a preset family to a proper ThemeFamily object.
  */
-export function convertPresetToTheme(preset: ThemePreset): Theme {
-  const tokens = preset.tokens;
-
-  // Extract values with fallbacks to defaults
-  const getPrimitive = (key: string, defaultValue: string) => tokens[key] || defaultValue;
-
-  const getSemantic = (key: string, defaultValue: string) => tokens[key] || defaultValue;
-
+export function convertPresetToThemeFamily(preset: ThemePreset): ThemeFamily {
   return {
     metadata: {
       id: preset.id,
       name: preset.name,
       description: preset.description,
-      mode: 'light',
-      version: '1.0.0',
+      author: preset.author,
+      version: PRESET_THEME_VERSION,
     },
-    primitive: {
-      colors: {
-        // We'll use simplified colors for presets
-        // In a full implementation, presets could include full palettes
-        primary: {
-          50: '#eff6ff',
-          100: '#dbeafe',
-          200: '#bfdbfe',
-          300: '#93c5fd',
-          400: '#60a5fa',
-          500: getSemantic('--semantic-brand-primary', '#3b82f6'),
-          600: getSemantic('--semantic-brand-primary', '#3b82f6'),
-          700: getSemantic('--semantic-brand-primary', '#3b82f6'),
-          800: '#1e40af',
-          900: '#1e3a8a',
-          950: '#172554',
-        },
-        secondary: {
-          50: '#f8fafc',
-          100: '#f1f5f9',
-          200: '#e2e8f0',
-          300: '#cbd5e1',
-          400: '#94a3b8',
-          500: getSemantic('--semantic-brand-secondary', '#64748b'),
-          600: getSemantic('--semantic-brand-secondary', '#64748b'),
-          700: getSemantic('--semantic-brand-secondary', '#64748b'),
-          800: '#1e293b',
-          900: '#0f172a',
-          950: '#020617',
-        },
-        accent: {
-          50: '#fdf4ff',
-          100: '#fae8ff',
-          200: '#f5d0fe',
-          300: '#f0abfc',
-          400: '#e879f9',
-          500: '#d946ef',
-          600: '#c026d3',
-          700: '#a21caf',
-          800: '#86198f',
-          900: '#701a75',
-          950: '#4a044e',
-        },
-        neutral: {
-          50: getPrimitive('--semantic-surface-background', '#fafafa'),
-          100: getPrimitive('--semantic-surface-subtle', '#f5f5f5'),
-          200: '#e5e5e5',
-          300: '#d4d4d4',
-          400: '#a3a3a3',
-          500: getSemantic('--semantic-text-tertiary', '#737373'),
-          600: getSemantic('--semantic-text-secondary', '#525252'),
-          700: '#404040',
-          800: '#262626',
-          900: getSemantic('--semantic-text-primary', '#171717'),
-          950: '#0a0a0a',
-        },
-        success: {
-          50: '#f0fdf4',
-          100: '#dcfce7',
-          200: '#bbf7d0',
-          300: '#86efac',
-          400: '#4ade80',
-          500: getSemantic('--semantic-success-primary', '#22c55e'),
-          600: getSemantic('--semantic-success-primary', '#22c55e'),
-          700: '#15803d',
-          800: '#166534',
-          900: '#14532d',
-          950: '#052e16',
-        },
-        warning: {
-          50: '#fffbeb',
-          100: '#fef3c7',
-          200: '#fde68a',
-          300: '#fcd34d',
-          400: '#fbbf24',
-          500: getSemantic('--semantic-warning-primary', '#f59e0b'),
-          600: getSemantic('--semantic-warning-primary', '#f59e0b'),
-          700: '#b45309',
-          800: '#92400e',
-          900: '#78350f',
-          950: '#451a03',
-        },
-        error: {
-          50: '#fef2f2',
-          100: '#fee2e2',
-          200: '#fecaca',
-          300: '#fca5a5',
-          400: '#f87171',
-          500: getSemantic('--semantic-error-primary', '#ef4444'),
-          600: getSemantic('--semantic-error-primary', '#ef4444'),
-          700: '#b91c1c',
-          800: '#991b1b',
-          900: '#7f1d1d',
-          950: '#450a0a',
-        },
-        info: {
-          50: '#eff6ff',
-          100: '#dbeafe',
-          200: '#bfdbfe',
-          300: '#93c5fd',
-          400: '#60a5fa',
-          500: getSemantic('--semantic-info-primary', '#3b82f6'),
-          600: getSemantic('--semantic-info-primary', '#3b82f6'),
-          700: '#1d4ed8',
-          800: '#1e40af',
-          900: '#1e3a8a',
-          950: '#172554',
-        },
-        white: '#ffffff',
-        black: '#000000',
-      },
-      spacing: {
-        0: '0',
-        1: getPrimitive('--primitive-spacing-1', '4px'),
-        2: getPrimitive('--primitive-spacing-2', '8px'),
-        3: getPrimitive('--primitive-spacing-3', '12px'),
-        4: getPrimitive('--primitive-spacing-4', '16px'),
-        5: '20px',
-        6: getPrimitive('--primitive-spacing-6', '24px'),
-        8: getPrimitive('--primitive-spacing-8', '32px'),
-        10: '40px',
-        12: '48px',
-        16: '64px',
-        20: '80px',
-        24: '96px',
-        32: '128px',
-        40: '160px',
-        48: '192px',
-        56: '224px',
-        64: '256px',
-      },
-      typography: {
-        fontFamily: {
-          sans: getPrimitive(
-            '--primitive-font-family-base',
-            '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
-          ),
-          serif: 'Georgia, Cambria, "Times New Roman", Times, serif',
-          mono: '"Fira Code", "Courier New", monospace',
-        },
-        fontSize: {
-          xs: getPrimitive('--primitive-font-size-xs', '0.75rem'),
-          sm: getPrimitive('--primitive-font-size-sm', '0.875rem'),
-          base: getPrimitive('--primitive-font-size-md', '1rem'),
-          lg: getPrimitive('--primitive-font-size-lg', '1.125rem'),
-          xl: getPrimitive('--primitive-font-size-xl', '1.25rem'),
-          '2xl': '1.5rem',
-          '3xl': '1.875rem',
-          '4xl': '2.25rem',
-          '5xl': '3rem',
-          '6xl': '3.75rem',
-          '7xl': '4.5rem',
-          '8xl': '6rem',
-          '9xl': '8rem',
-        },
-        fontWeight: {
-          thin: '100',
-          extralight: '200',
-          light: '300',
-          normal: '400',
-          medium: '500',
-          semibold: '600',
-          bold: '700',
-          extrabold: '800',
-          black: '900',
-        },
-        lineHeight: {
-          none: '1',
-          tight: '1.25',
-          snug: '1.375',
-          normal: '1.5',
-          relaxed: '1.625',
-          loose: '2',
-        },
-        letterSpacing: {
-          tighter: '-0.05em',
-          tight: '-0.025em',
-          normal: '0',
-          wide: '0.025em',
-          wider: '0.05em',
-          widest: '0.1em',
-        },
-      },
-      borderRadius: {
-        none: '0',
-        sm: getPrimitive('--primitive-border-radius-sm', '2px'),
-        md: getPrimitive('--primitive-border-radius-md', '4px'),
-        lg: getPrimitive('--primitive-border-radius-lg', '8px'),
-        xl: '12px',
-        '2xl': '16px',
-        '3xl': '24px',
-        full: getPrimitive('--primitive-border-radius-full', '9999px'),
-      },
-      shadows: {
-        none: 'none',
-        sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-        md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-        lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-        xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-        '2xl': '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-        inner: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
-      },
-      zIndex: {
-        base: 0,
-        dropdown: 1000,
-        sticky: 1100,
-        fixed: 1200,
-        modalBackdrop: 1300,
-        modal: 1400,
-        popover: 1500,
-        tooltip: 1600,
-        notification: 1700,
-      },
-      animation: {
-        duration: {
-          instant: '0ms',
-          fast: '150ms',
-          normal: '250ms',
-          slow: '350ms',
-          slower: '500ms',
-        },
-        easing: {
-          linear: 'linear',
-          easeIn: 'cubic-bezier(0.4, 0, 1, 1)',
-          easeOut: 'cubic-bezier(0, 0, 0.2, 1)',
-          easeInOut: 'cubic-bezier(0.4, 0, 0.2, 1)',
-          spring: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
-        },
-      },
-    },
-    semantic: {
-      surface: {
-        background: getSemantic('--semantic-surface-background', '#ffffff'),
-        backgroundSecondary: getSemantic('--semantic-surface-subtle', '#f5f5f5'),
-        card: getSemantic('--semantic-surface-card', '#ffffff'),
-        cardHover: getSemantic('--semantic-surface-subtle', '#f5f5f5'),
-        modal: getSemantic('--semantic-surface-card', '#ffffff'),
-        overlay: 'rgba(0, 0, 0, 0.5)',
-        elevated: getSemantic('--semantic-surface-card', '#ffffff'),
-      },
-      text: {
-        primary: getSemantic('--semantic-text-primary', '#171717'),
-        secondary: getSemantic('--semantic-text-secondary', '#525252'),
-        tertiary: getSemantic('--semantic-text-tertiary', '#737373'),
-        disabled: '#a3a3a3',
-        inverse: '#ffffff',
-        link: getSemantic('--semantic-brand-primary', '#3b82f6'),
-        linkHover: getSemantic('--semantic-brand-primary', '#2563eb'),
-        success: getSemantic('--semantic-success-primary', '#22c55e'),
-        warning: getSemantic('--semantic-warning-primary', '#f59e0b'),
-        error: getSemantic('--semantic-error-primary', '#ef4444'),
-        info: getSemantic('--semantic-info-primary', '#3b82f6'),
-      },
-      border: {
-        default: '#d4d4d4',
-        subtle: '#e5e5e5',
-        strong: '#a3a3a3',
-        focus: getSemantic('--semantic-brand-primary', '#3b82f6'),
-        error: getSemantic('--semantic-error-primary', '#ef4444'),
-        success: getSemantic('--semantic-success-primary', '#22c55e'),
-        warning: getSemantic('--semantic-warning-primary', '#f59e0b'),
-      },
-      state: {
-        hover: 'rgba(0, 0, 0, 0.04)',
-        active: 'rgba(0, 0, 0, 0.08)',
-        selected: getSemantic('--semantic-brand-subtle', '#eff6ff'),
-        disabled: '#f5f5f5',
-        focusRing: getSemantic('--semantic-brand-primary', '#3b82f6'),
-      },
-      brand: {
-        primary: getSemantic('--semantic-brand-primary', '#3b82f6'),
-        primaryHover: getSemantic('--semantic-brand-primary', '#2563eb'),
-        primaryActive: getSemantic('--semantic-brand-primary', '#1d4ed8'),
-        primarySubtle: getSemantic('--semantic-brand-subtle', '#eff6ff'),
-        secondary: getSemantic('--semantic-brand-secondary', '#64748b'),
-        secondaryHover: getSemantic('--semantic-brand-secondary', '#475569'),
-        secondaryActive: getSemantic('--semantic-brand-secondary', '#334155'),
-        accent: '#d946ef',
-        accentHover: '#c026d3',
-      },
-      feedback: {
-        success: getSemantic('--semantic-success-primary', '#22c55e'),
-        successSubtle: '#dcfce7',
-        warning: getSemantic('--semantic-warning-primary', '#f59e0b'),
-        warningSubtle: '#fef3c7',
-        error: getSemantic('--semantic-error-primary', '#ef4444'),
-        errorSubtle: '#fee2e2',
-        info: getSemantic('--semantic-info-primary', '#3b82f6'),
-        infoSubtle: '#dbeafe',
-      },
-      animation: {
-        duration: {
-          interactive: 'var(--primitive-animation-duration-fast)',
-          component: 'var(--primitive-animation-duration-normal)',
-          page: 'var(--primitive-animation-duration-slow)',
-        },
-        easing: {
-          default: 'var(--primitive-animation-easing-ease-in-out)',
-          decelerate: 'var(--primitive-animation-easing-ease-out)',
-          accelerate: 'var(--primitive-animation-easing-ease-in)',
-          spring: 'var(--primitive-animation-easing-spring)',
-        },
-      },
-    },
-    component: {
-      button: {
-        paddingX: 'var(--primitive-spacing-4)',
-        paddingY: 'var(--primitive-spacing-2)',
-        fontSize: 'var(--primitive-font-size-base)',
-        fontWeight: 'var(--primitive-font-weight-medium)',
-        borderRadius: 'var(--primitive-border-radius-md)',
-        borderWidth: '1px',
-        sizes: {
-          sm: {
-            paddingX: 'var(--primitive-spacing-3)',
-            paddingY: 'var(--primitive-spacing-1)',
-            fontSize: 'var(--primitive-font-size-sm)',
-          },
-          md: {
-            paddingX: 'var(--primitive-spacing-4)',
-            paddingY: 'var(--primitive-spacing-2)',
-            fontSize: 'var(--primitive-font-size-base)',
-          },
-          lg: {
-            paddingX: 'var(--primitive-spacing-6)',
-            paddingY: 'var(--primitive-spacing-3)',
-            fontSize: 'var(--primitive-font-size-lg)',
-          },
-        },
-        filled: {
-          background: 'var(--semantic-brand-primary)',
-          backgroundHover: 'var(--semantic-brand-primary-hover)',
-          backgroundActive: 'var(--semantic-brand-primary-active)',
-          text: 'var(--semantic-text-inverse)',
-          border: 'transparent',
-        },
-        outlined: {
-          background: 'transparent',
-          backgroundHover: 'var(--semantic-state-hover)',
-          text: 'var(--semantic-brand-primary)',
-          border: 'var(--semantic-brand-primary)',
-          borderHover: 'var(--semantic-brand-primary-hover)',
-        },
-        text: {
-          background: 'transparent',
-          backgroundHover: 'var(--semantic-state-hover)',
-          text: 'var(--semantic-brand-primary)',
-        },
-        disabled: {
-          background: 'var(--semantic-state-disabled)',
-          text: 'var(--semantic-text-disabled)',
-          border: 'var(--semantic-border-subtle)',
-          opacity: '0.6',
-        },
-      },
-      input: {
-        paddingX: 'var(--primitive-spacing-3)',
-        paddingY: 'var(--primitive-spacing-2)',
-        fontSize: 'var(--primitive-font-size-base)',
-        borderRadius: 'var(--primitive-border-radius-md)',
-        borderWidth: '1px',
-        default: {
-          background: 'var(--semantic-surface-card)',
-          text: 'var(--semantic-text-primary)',
-          border: 'var(--semantic-border-default)',
-          placeholder: 'var(--semantic-text-tertiary)',
-        },
-        hover: {
-          border: 'var(--semantic-border-strong)',
-        },
-        focus: {
-          border: 'var(--semantic-border-focus)',
-          ring: 'var(--semantic-state-focus-ring)',
-          ringWidth: '2px',
-        },
-        error: {
-          border: 'var(--semantic-border-error)',
-          text: 'var(--semantic-text-error)',
-        },
-        disabled: {
-          background: 'var(--semantic-state-disabled)',
-          text: 'var(--semantic-text-disabled)',
-          border: 'var(--semantic-border-subtle)',
-          opacity: '0.6',
-        },
-      },
-      card: {
-        background: 'var(--semantic-surface-card)',
-        border: 'var(--semantic-border-default)',
-        borderRadius: 'var(--primitive-border-radius-lg)',
-        padding: 'var(--primitive-spacing-6)',
-        shadow: 'var(--primitive-shadow-md)',
-        shadowHover: 'var(--primitive-shadow-lg)',
-      },
-      modal: {
-        background: 'var(--semantic-surface-modal)',
-        overlay: 'var(--semantic-surface-overlay)',
-        borderRadius: 'var(--primitive-border-radius-xl)',
-        padding: 'var(--primitive-spacing-6)',
-        shadow: 'var(--primitive-shadow-2xl)',
-        maxWidth: '32rem',
-      },
-      tooltip: {
-        background: 'var(--primitive-neutral-900)',
-        text: 'var(--primitive-white)',
-        borderRadius: 'var(--primitive-border-radius-md)',
-        padding: 'var(--primitive-spacing-2) var(--primitive-spacing-3)',
-        fontSize: 'var(--primitive-font-size-sm)',
-        shadow: 'var(--primitive-shadow-lg)',
-        zIndex: 1600,
-      },
-      badge: {
-        paddingX: 'var(--primitive-spacing-2)',
-        paddingY: 'var(--primitive-spacing-1)',
-        fontSize: 'var(--primitive-font-size-xs)',
-        fontWeight: 'var(--primitive-font-weight-medium)',
-        borderRadius: 'var(--primitive-border-radius-full)',
-        default: {
-          background: 'var(--semantic-brand-primary-subtle)',
-          text: 'var(--semantic-brand-primary)',
-        },
-        success: {
-          background: 'var(--semantic-feedback-success-subtle)',
-          text: 'var(--semantic-feedback-success)',
-        },
-        warning: {
-          background: 'var(--semantic-feedback-warning-subtle)',
-          text: 'var(--semantic-feedback-warning)',
-        },
-        error: {
-          background: 'var(--semantic-feedback-error-subtle)',
-          text: 'var(--semantic-feedback-error)',
-        },
-        info: {
-          background: 'var(--semantic-feedback-info-subtle)',
-          text: 'var(--semantic-feedback-info)',
-        },
-      },
-      table: {
-        headerBackground: 'var(--semantic-surface-background-secondary)',
-        headerText: 'var(--semantic-text-primary)',
-        rowBackground: 'var(--semantic-surface-card)',
-        rowBackgroundHover: 'var(--semantic-state-hover)',
-        rowBorder: 'var(--semantic-border-subtle)',
-        cellPadding: 'var(--primitive-spacing-3) var(--primitive-spacing-4)',
-        fontSize: 'var(--primitive-font-size-sm)',
-      },
-    },
+    light: convertPresetVariantToTheme(preset, 'light', preset.light),
+    dark: convertPresetVariantToTheme(preset, 'dark', preset.dark),
   };
+}
+
+/**
+ * Legacy compatibility wrapper until the builder registers full families.
+ */
+export function convertPresetToTheme(preset: ThemePreset): Theme {
+  return convertPresetToThemeFamily(preset).light;
+}
+
+function convertPresetVariantToTheme(
+  preset: ThemePreset,
+  mode: 'light' | 'dark',
+  tokens: ThemePresetTokens
+): Theme {
+  const theme = structuredClone(mode === 'dark' ? darkTheme : lightTheme);
+  const variantLabel = mode === 'light' ? 'Light' : 'Dark';
+
+  theme.metadata = {
+    id: `${preset.id}-${mode}`,
+    name: `${preset.name} ${variantLabel}`,
+    description: `${preset.description} (${variantLabel})`,
+    author: preset.author,
+    mode,
+    version: PRESET_THEME_VERSION,
+  };
+
+  applyPresetTokens(theme, tokens);
+
+  return theme;
+}
+
+function applyPresetTokens(theme: Theme, tokens: ThemePresetTokens): void {
+  const assign = (tokenName: string, apply: (value: string) => void): void => {
+    const value = tokens[tokenName];
+    if (value) {
+      apply(value);
+    }
+  };
+
+  assign('--semantic-brand-primary', (value) => {
+    theme.primitive.colors.primary[500] = value;
+    theme.primitive.colors.primary[600] = value;
+    theme.primitive.colors.primary[700] = value;
+    theme.semantic.brand.primary = value;
+    theme.semantic.brand.primaryHover = value;
+    theme.semantic.brand.primaryActive = value;
+    theme.semantic.text.link = value;
+    theme.semantic.text.linkHover = value;
+    theme.semantic.border.focus = value;
+    theme.semantic.state.focusRing = value;
+  });
+
+  assign('--semantic-brand-secondary', (value) => {
+    theme.primitive.colors.secondary[500] = value;
+    theme.primitive.colors.secondary[600] = value;
+    theme.primitive.colors.secondary[700] = value;
+    theme.semantic.brand.secondary = value;
+    theme.semantic.brand.secondaryHover = value;
+    theme.semantic.brand.secondaryActive = value;
+  });
+
+  assign('--semantic-brand-subtle', (value) => {
+    theme.semantic.brand.primarySubtle = value;
+    theme.semantic.state.selected = value;
+  });
+
+  assign('--semantic-success-primary', (value) => {
+    theme.primitive.colors.success[500] = value;
+    theme.primitive.colors.success[600] = value;
+    theme.semantic.feedback.success = value;
+    theme.semantic.text.success = value;
+    theme.semantic.border.success = value;
+  });
+
+  assign('--semantic-warning-primary', (value) => {
+    theme.primitive.colors.warning[500] = value;
+    theme.primitive.colors.warning[600] = value;
+    theme.semantic.feedback.warning = value;
+    theme.semantic.text.warning = value;
+    theme.semantic.border.warning = value;
+  });
+
+  assign('--semantic-error-primary', (value) => {
+    theme.primitive.colors.error[500] = value;
+    theme.primitive.colors.error[600] = value;
+    theme.semantic.feedback.error = value;
+    theme.semantic.text.error = value;
+    theme.semantic.border.error = value;
+  });
+
+  assign('--semantic-info-primary', (value) => {
+    theme.primitive.colors.info[500] = value;
+    theme.primitive.colors.info[600] = value;
+    theme.semantic.feedback.info = value;
+    theme.semantic.text.info = value;
+  });
+
+  assign('--semantic-surface-background', (value) => {
+    theme.primitive.colors.neutral[50] = value;
+    theme.semantic.surface.background = value;
+  });
+
+  assign('--semantic-surface-card', (value) => {
+    theme.semantic.surface.card = value;
+    theme.semantic.surface.modal = value;
+    theme.semantic.surface.elevated = value;
+  });
+
+  assign('--semantic-surface-subtle', (value) => {
+    theme.primitive.colors.neutral[100] = value;
+    theme.semantic.surface.backgroundSecondary = value;
+    theme.semantic.surface.cardHover = value;
+  });
+
+  assign('--semantic-text-primary', (value) => {
+    theme.primitive.colors.neutral[900] = value;
+    theme.semantic.text.primary = value;
+  });
+
+  assign('--semantic-text-secondary', (value) => {
+    theme.primitive.colors.neutral[600] = value;
+    theme.semantic.text.secondary = value;
+  });
+
+  assign('--semantic-text-tertiary', (value) => {
+    theme.primitive.colors.neutral[500] = value;
+    theme.semantic.text.tertiary = value;
+  });
+
+  assign('--primitive-font-family-base', (value) => {
+    theme.primitive.typography.fontFamily.sans = value;
+  });
+
+  assign('--primitive-font-size-xs', (value) => {
+    theme.primitive.typography.fontSize.xs = value;
+  });
+
+  assign('--primitive-font-size-sm', (value) => {
+    theme.primitive.typography.fontSize.sm = value;
+  });
+
+  assign('--primitive-font-size-md', (value) => {
+    theme.primitive.typography.fontSize.base = value;
+  });
+
+  assign('--primitive-font-size-lg', (value) => {
+    theme.primitive.typography.fontSize.lg = value;
+  });
+
+  assign('--primitive-font-size-xl', (value) => {
+    theme.primitive.typography.fontSize.xl = value;
+  });
+
+  assign('--primitive-spacing-1', (value) => {
+    theme.primitive.spacing[1] = value;
+  });
+
+  assign('--primitive-spacing-2', (value) => {
+    theme.primitive.spacing[2] = value;
+  });
+
+  assign('--primitive-spacing-3', (value) => {
+    theme.primitive.spacing[3] = value;
+  });
+
+  assign('--primitive-spacing-4', (value) => {
+    theme.primitive.spacing[4] = value;
+  });
+
+  assign('--primitive-spacing-6', (value) => {
+    theme.primitive.spacing[6] = value;
+  });
+
+  assign('--primitive-spacing-8', (value) => {
+    theme.primitive.spacing[8] = value;
+  });
+
+  assign('--primitive-border-radius-sm', (value) => {
+    theme.primitive.borderRadius.sm = value;
+  });
+
+  assign('--primitive-border-radius-md', (value) => {
+    theme.primitive.borderRadius.md = value;
+  });
+
+  assign('--primitive-border-radius-lg', (value) => {
+    theme.primitive.borderRadius.lg = value;
+  });
+
+  assign('--primitive-border-radius-full', (value) => {
+    theme.primitive.borderRadius.full = value;
+  });
 }

@@ -25,22 +25,26 @@ import {
   ModalComponent,
   SkeletonComponent,
 } from '@ui-suite/components';
-import { ThemeService, Theme } from '@ui-suite/theming';
+import { ThemeService, Theme, ThemeFamily } from '@ui-suite/theming';
 import { THEME_PRESETS, ThemePreset } from './theme-presets';
-import { convertPresetToTheme } from './preset-converter';
+import { convertPresetToThemeFamily } from './preset-converter';
 import {
-  getContrastRatio,
-  getWCAGLevel,
-  saveTheme,
-  getSavedThemes,
+  createThemeFamilyTokenBundle,
   deleteTheme,
-  parseCSSVariables,
-  isValidHexColor,
-  getComplementaryColor,
   getAnalogousColors,
+  getContrastRatio,
+  getSavedThemes,
+  getComplementaryColor,
+  getWCAGLevel,
+  SavedThemeRecord,
+  saveTheme,
+  ThemeFamilyTokenBundle,
+  normalizeImportedThemeData,
+  isValidHexColor,
   lightenColor,
   darkenColor,
   generateShades,
+  parseCSSVariables,
 } from './theme-utils';
 
 interface ThemeToken {
@@ -63,6 +67,14 @@ interface HistoryEntry {
   oldValue: string;
   newValue: string;
   timestamp: number;
+}
+
+interface EditableThemeFamilyMetadata {
+  id: string;
+  name: string;
+  description: string;
+  author: string;
+  version?: string;
 }
 
 @Component({
@@ -1769,9 +1781,14 @@ export class ThemeBuilderComponent {
   protected readonly showColorGenerator = signal(false);
   protected readonly saveThemeName = signal('');
   protected readonly themePresets = THEME_PRESETS;
-  protected readonly savedThemes = signal<
-    Array<{ name: string; tokens: Record<string, string>; createdAt: string }>
-  >([]);
+  protected readonly savedThemes = signal<SavedThemeRecord[]>([]);
+  protected readonly editableThemeFamilyMetadata = signal<EditableThemeFamilyMetadata>({
+    id: 'default',
+    name: 'Default',
+    description: 'Default paired light and dark theme family',
+    author: 'UI Suite',
+    version: '1.0.0',
+  });
 
   protected onPresetChange(event: Event): void {
     const select = event.target as HTMLSelectElement;
@@ -1783,8 +1800,10 @@ export class ThemeBuilderComponent {
     }
   }
 
-  // Preview Mode (for live preview panel)
-  protected readonly previewMode = signal<'light' | 'dark'>('light');
+  // Preview Mode follows the active ThemeService mode.
+  protected readonly previewMode = computed<'light' | 'dark'>(() =>
+    this.themeService.currentThemeMode() === 'dark' ? 'dark' : 'light'
+  );
   protected readonly isPreviewingDark = computed(() => this.previewMode() === 'dark');
 
   // Undo/Redo History
@@ -2059,26 +2078,23 @@ export class ThemeBuilderComponent {
     // Load saved themes from localStorage
     this.loadSavedThemesList();
 
-    // Initialize dark mode tokens with default values (if they don't exist)
-    this.initializeDarkTokens();
+    const initialFamily =
+      this.themeService.currentThemeFamily() ?? this.themeService.getThemeFamily('default');
+    if (initialFamily) {
+      this.loadThemeFamilyIntoEditor(initialFamily);
+    }
 
     // Initialize accessibility checks
     this.updateAccessibilityChecks();
 
-    // Apply token changes to document root
+    // Keep the active ThemeService family in sync with the editor state.
     effect(() => {
-      const colorCategories = this.colorCategories();
-      const typographyCategories = this.typographyCategories();
-      const spacingCategories = this.spacingCategories();
+      this.colorCategories();
+      this.typographyCategories();
+      this.spacingCategories();
 
-      // Apply light mode tokens
-      [...colorCategories, ...typographyCategories, ...spacingCategories].forEach((category) => {
-        category.tokens.forEach((token) => {
-          document.documentElement.style.setProperty(token.name, token.value);
-        });
-      });
+      this.syncThemeFamilyWithService();
 
-      // Update accessibility checks when colors change
       this.updateAccessibilityChecks();
     });
 
@@ -2088,49 +2104,77 @@ export class ThemeBuilderComponent {
     });
   }
 
-  private initializeDarkTokens(): void {
-    // Initialize dark tokens with defaults if they don't exist
-    const colorCategories = this.colorCategories();
+  private loadThemeFamilyIntoEditor(themeFamily: ThemeFamily): void {
+    this.editableThemeFamilyMetadata.set({
+      id: themeFamily.metadata.id,
+      name: themeFamily.metadata.name,
+      description: themeFamily.metadata.description || '',
+      author: themeFamily.metadata.author || themeFamily.light.metadata.author || 'UI Suite',
+      version: themeFamily.metadata.version,
+    });
+    this.refreshCategoriesFromTheme(themeFamily.light);
+    this.applyDarkThemeTokens(themeFamily.dark);
+  }
 
-    const darkDefaults: Record<string, string> = {
-      // Brand Colors - Dark mode typically uses slightly lighter/more vibrant versions
-      '--semantic-brand-primary': '#6B7FED',
-      '--semantic-brand-secondary': '#8B95A5',
-      '--semantic-brand-subtle': '#2A2E3F',
-
-      // Semantic Colors
-      '--semantic-success-primary': '#4ADE80',
-      '--semantic-warning-primary': '#FBBF24',
-      '--semantic-error-primary': '#F87171',
-      '--semantic-info-primary': '#60A5FA',
-
-      // Surface Colors - Dark backgrounds
-      '--semantic-surface-background': '#1A1D29',
-      '--semantic-surface-card': '#232734',
-      '--semantic-surface-subtle': '#2A2E3F',
-
-      // Text Colors - Light text on dark backgrounds
-      '--semantic-text-primary': '#E5E7EB',
-      '--semantic-text-secondary': '#9CA3AF',
-      '--semantic-text-tertiary': '#6B7280',
-
-      // Border Colors
-      '--semantic-border-default': '#374151',
-    };
-
-    colorCategories.forEach((category) => {
+  private applyDarkThemeTokens(theme: Theme): void {
+    this.colorCategories().forEach((category) => {
       category.tokens.forEach((token) => {
-        const darkTokenName = `${token.name}-dark`;
-        const existingDarkValue = getComputedStyle(document.documentElement)
-          .getPropertyValue(darkTokenName)
-          .trim();
-
-        // If no dark value exists, use the default or the light value as a starting point
-        if (!existingDarkValue) {
-          const defaultDarkValue = darkDefaults[token.name] || token.value;
-          document.documentElement.style.setProperty(darkTokenName, defaultDarkValue);
-        }
+        const value = this.getTokenValueFromTheme(theme, token.name) || token.value;
+        document.documentElement.style.setProperty(`${token.name}-dark`, value);
       });
+    });
+  }
+
+  private syncThemeFamilyWithService(activate: boolean = false): ThemeFamily {
+    const themeFamily = this.buildEditableThemeFamily();
+    this.themeService.registerThemeFamily(themeFamily);
+
+    if (activate || this.themeService.currentThemeFamilyId() !== themeFamily.metadata.id) {
+      this.themeService.setThemeFamily(themeFamily.metadata.id);
+    }
+
+    return themeFamily;
+  }
+
+  private buildEditableThemeFamily(metadata: EditableThemeFamilyMetadata = this.editableThemeFamilyMetadata()): ThemeFamily {
+    const bundle = this.buildCurrentThemeTokenBundle(metadata);
+
+    return convertPresetToThemeFamily({
+      id: bundle.metadata.id,
+      name: bundle.metadata.name,
+      description: bundle.metadata.description || '',
+      author: bundle.metadata.author || 'UI Suite',
+      light: bundle.light,
+      dark: bundle.dark,
+      tokens: bundle.light,
+    });
+  }
+
+  private buildCurrentThemeTokenBundle(
+    metadata: EditableThemeFamilyMetadata = this.editableThemeFamilyMetadata()
+  ): ThemeFamilyTokenBundle {
+    const allCategories = [
+      ...this.colorCategories(),
+      ...this.typographyCategories(),
+      ...this.spacingCategories(),
+    ];
+    const lightTokens: Record<string, string> = {};
+    const darkTokens: Record<string, string> = {};
+
+    allCategories.forEach((category) => {
+      category.tokens.forEach((token) => {
+        lightTokens[token.name] = token.value;
+        darkTokens[token.name] = token.category === 'brand' || token.type === 'color'
+          ? this.getDarkTokenValue(token.name)
+          : token.value;
+      });
+    });
+
+    return createThemeFamilyTokenBundle(metadata.name, lightTokens, darkTokens, {
+      id: metadata.id,
+      description: metadata.description,
+      author: metadata.author,
+      version: metadata.version,
     });
   }
 
@@ -2150,7 +2194,36 @@ export class ThemeBuilderComponent {
   }
 
   private getComputedToken(tokenName: string): string {
-    return getComputedStyle(document.documentElement).getPropertyValue(tokenName).trim();
+    const currentFamily = this.themeService.currentThemeFamily();
+    if (currentFamily) {
+      const familyValue = this.getTokenValueFromTheme(currentFamily.light, tokenName);
+      if (familyValue) {
+        return familyValue;
+      }
+    }
+
+    const resolvedThemeValue = this.getTokenValueFromTheme(this.themeService.getResolvedTheme(), tokenName);
+    if (resolvedThemeValue) {
+      return resolvedThemeValue;
+    }
+
+    const value = getComputedStyle(document.documentElement).getPropertyValue(tokenName).trim();
+    return this.resolveCssVariableReference(value);
+  }
+
+  private resolveCssVariableReference(value: string, depth: number = 0): string {
+    if (!value.startsWith('var(--') || depth > 8) {
+      return value;
+    }
+
+    const variableName = value.slice(4, -1).trim();
+    const resolvedValue = getComputedStyle(document.documentElement).getPropertyValue(variableName).trim();
+
+    if (!resolvedValue || resolvedValue === value) {
+      return value;
+    }
+
+    return this.resolveCssVariableReference(resolvedValue, depth + 1);
   }
 
   protected formatTokenName(name: string): string {
@@ -2255,74 +2328,15 @@ export class ThemeBuilderComponent {
   }
 
   protected exportAsJSON(): void {
-    const colorCategories = this.colorCategories();
-    const typographyCategories = this.typographyCategories();
-    const spacingCategories = this.spacingCategories();
-    const allCategories = [...colorCategories, ...typographyCategories, ...spacingCategories];
-
-    const themeLight: Record<string, string> = {};
-    const themeDark: Record<string, string> = {};
-
-    // All tokens go into light theme
-    allCategories.forEach((category) => {
-      category.tokens.forEach((token) => {
-        themeLight[token.name] = token.value;
-      });
-    });
-
-    // Only color tokens get dark variants
-    colorCategories.forEach((category) => {
-      category.tokens.forEach((token) => {
-        const darkValue =
-          getComputedStyle(document.documentElement)
-            .getPropertyValue(`${token.name}-dark`)
-            .trim() || token.value;
-        themeDark[token.name] = darkValue;
-      });
-    });
-
-    const fullTheme = {
-      light: themeLight,
-      dark: themeDark,
-    };
-
-    const json = JSON.stringify(fullTheme, null, 2);
+    const json = JSON.stringify(this.buildEditableThemeFamily(), null, 2);
     this.downloadFile('theme.json', json, 'application/json');
     this.closeExportModal();
   }
 
   protected exportAsTypeScript(): void {
-    const colorCategories = this.colorCategories();
-    const typographyCategories = this.typographyCategories();
-    const spacingCategories = this.spacingCategories();
-    const allCategories = [...colorCategories, ...typographyCategories, ...spacingCategories];
-
-    let ts = 'export const customTheme = {\n';
-    ts += '  light: {\n';
-    allCategories.forEach((category) => {
-      ts += `    // ${category.name}\n`;
-      category.tokens.forEach((token) => {
-        ts += `    '${token.name}': '${token.value}',\n`;
-      });
-      ts += '\n';
-    });
-    ts += '  },\n';
-
-    ts += '  dark: {\n';
-    // Only color tokens get dark variants
-    colorCategories.forEach((category) => {
-      ts += `    // ${category.name} - Dark\n`;
-      category.tokens.forEach((token) => {
-        const darkValue =
-          getComputedStyle(document.documentElement)
-            .getPropertyValue(`${token.name}-dark`)
-            .trim() || token.value;
-        ts += `    '${token.name}': '${darkValue}',\n`;
-      });
-      ts += '\n';
-    });
-    ts += '  },\n';
-    ts += '};\n';
+    const themeFamily = JSON.stringify(this.buildEditableThemeFamily(), null, 2);
+    let ts = "import type { ThemeFamily } from '@ui-suite/theming';\n\n";
+    ts += `export const customThemeFamily: ThemeFamily = ${themeFamily};\n`;
 
     this.downloadFile('theme.ts', ts, 'text/typescript');
     this.closeExportModal();
@@ -2342,14 +2356,10 @@ export class ThemeBuilderComponent {
 
   // Preset Management
   protected applyPreset(preset: ThemePreset): void {
-    // Convert preset to proper Theme object
-    const theme = convertPresetToTheme(preset);
+    const themeFamily = convertPresetToThemeFamily(preset);
 
-    // Apply through ThemeService for proper theme engine integration
-    this.themeService.setCustomTheme(theme);
-
-    // Update local category signals to reflect the new theme
-    this.refreshCategoriesFromTheme(theme);
+    this.loadThemeFamilyIntoEditor(themeFamily);
+    this.themeService.setCustomThemeFamily(themeFamily);
   }
 
   /**
@@ -2432,7 +2442,45 @@ export class ThemeBuilderComponent {
       '--primitive-border-radius-full': theme.primitive.borderRadius.full,
     };
 
-    return mapping[tokenName];
+    return this.resolveThemeTokenValue(theme, mapping[tokenName]);
+  }
+
+  private resolveThemeTokenValue(theme: Theme, value: string | undefined): string | undefined {
+    if (!value || !value.startsWith('var(--')) {
+      return value;
+    }
+
+    const variableName = value.slice(4, -1).trim();
+    if (!variableName.startsWith('--primitive-')) {
+      return value;
+    }
+
+    const primitivePath = variableName.replace('--primitive-', '').split('-');
+
+    if (primitivePath.length === 1) {
+      const [name] = primitivePath;
+      if (name === 'white') {
+        return theme.primitive.colors.white;
+      }
+
+      if (name === 'black') {
+        return theme.primitive.colors.black;
+      }
+    }
+
+    if (primitivePath.length === 2) {
+      const [group, key] = primitivePath;
+      const colorGroup = group as keyof Theme['primitive']['colors'];
+
+      if (colorGroup in theme.primitive.colors) {
+        const colorValue = theme.primitive.colors[colorGroup];
+        if (typeof colorValue === 'object' && key in colorValue) {
+          return (colorValue as unknown as Record<string, string>)[key];
+        }
+      }
+    }
+
+    return value;
   }
 
   // Save/Load Management
@@ -2451,20 +2499,12 @@ export class ThemeBuilderComponent {
       return;
     }
 
-    const allCategories = [
-      ...this.colorCategories(),
-      ...this.typographyCategories(),
-      ...this.spacingCategories(),
-    ];
+    const metadata = this.createEditableMetadata(this.saveThemeName());
+    const bundle = this.buildCurrentThemeTokenBundle(metadata);
 
-    const tokens: Record<string, string> = {};
-    allCategories.forEach((category) => {
-      category.tokens.forEach((token) => {
-        tokens[token.name] = token.value;
-      });
-    });
-
-    saveTheme(this.saveThemeName(), tokens);
+    this.editableThemeFamilyMetadata.set(metadata);
+    saveTheme(metadata.name, bundle);
+    this.syncThemeFamilyWithService(true);
     this.loadSavedThemesList();
     this.closeSaveModal();
   }
@@ -2474,9 +2514,11 @@ export class ThemeBuilderComponent {
     const theme = savedThemes[name];
 
     if (theme) {
-      Object.entries(theme.tokens).forEach(([tokenName, value]) => {
-        this.updateToken(tokenName, value);
-      });
+      this.applyImportedThemeBundle(theme.family);
+
+      if (theme.isIncomplete) {
+        alert('Loaded a legacy saved theme. Dark tokens were seeded from the light variant and should be reviewed.');
+      }
     }
   }
 
@@ -2490,6 +2532,89 @@ export class ThemeBuilderComponent {
   private loadSavedThemesList(): void {
     const savedThemes = getSavedThemes();
     this.savedThemes.set(Object.values(savedThemes));
+  }
+
+  private applyImportedThemeBundle(bundle: ThemeFamilyTokenBundle): void {
+    const themeFamily = this.buildThemeFamilyFromBundle(bundle);
+    this.loadThemeFamilyIntoEditor(themeFamily);
+    this.themeService.setCustomThemeFamily(themeFamily);
+  }
+
+  private buildThemeFamilyFromBundle(bundle: ThemeFamilyTokenBundle): ThemeFamily {
+    return convertPresetToThemeFamily({
+      id: bundle.metadata.id,
+      name: bundle.metadata.name,
+      description: bundle.metadata.description || '',
+      author: bundle.metadata.author || 'UI Suite',
+      light: bundle.light,
+      dark: bundle.dark,
+      tokens: bundle.light,
+    });
+  }
+
+  private convertThemeFamilyToTokenBundle(themeFamily: ThemeFamily): ThemeFamilyTokenBundle {
+    return createThemeFamilyTokenBundle(
+      themeFamily.metadata.name,
+      this.extractTokensFromTheme(themeFamily.light),
+      this.extractTokensFromTheme(themeFamily.dark),
+      {
+        id: themeFamily.metadata.id,
+        description: themeFamily.metadata.description,
+        author: themeFamily.metadata.author,
+        version: themeFamily.metadata.version,
+      }
+    );
+  }
+
+  private extractTokensFromTheme(theme: Theme): Record<string, string> {
+    const tokens: Record<string, string> = {};
+    const allCategories = [
+      ...this.colorCategories(),
+      ...this.typographyCategories(),
+      ...this.spacingCategories(),
+    ];
+
+    allCategories.forEach((category) => {
+      category.tokens.forEach((token) => {
+        const value = this.getTokenValueFromTheme(theme, token.name);
+        if (value) {
+          tokens[token.name] = value;
+        }
+      });
+    });
+
+    return tokens;
+  }
+
+  private createEditableMetadata(name: string): EditableThemeFamilyMetadata {
+    const currentMetadata = this.editableThemeFamilyMetadata();
+
+    return {
+      ...currentMetadata,
+      id: this.toThemeId(name),
+      name,
+    };
+  }
+
+  private toThemeId(value: string): string {
+    return value
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '') || 'custom-theme';
+  }
+
+  private getFileBaseName(fileName: string): string {
+    return fileName.replace(/\.[^.]+$/, '');
+  }
+
+  private isEngineThemeFamily(value: unknown): value is ThemeFamily {
+    if (!value || typeof value !== 'object') {
+      return false;
+    }
+
+    const candidate = value as Partial<ThemeFamily>;
+    return !!candidate.metadata && !!candidate.light && !!candidate.dark && 'metadata' in candidate.light && 'metadata' in candidate.dark;
   }
 
   // Import/Export
@@ -2509,23 +2634,30 @@ export class ThemeBuilderComponent {
     const reader = new FileReader();
     reader.onload = (e) => {
       const content = e.target?.result as string;
-      let tokens: Record<string, string> = {};
 
       try {
+        let importedTheme: ThemeFamilyTokenBundle;
+
         if (file.name.endsWith('.json')) {
-          tokens = JSON.parse(content);
+          const parsed = JSON.parse(content) as unknown;
+          importedTheme = this.isEngineThemeFamily(parsed)
+            ? this.convertThemeFamilyToTokenBundle(parsed)
+            : normalizeImportedThemeData(parsed, this.getFileBaseName(file.name));
         } else if (file.name.endsWith('.css')) {
-          tokens = parseCSSVariables(content);
+          importedTheme = normalizeImportedThemeData(
+            parseCSSVariables(content),
+            this.getFileBaseName(file.name)
+          );
+        } else {
+          throw new Error('Unsupported file format');
         }
 
-        // Apply imported tokens
-        Object.entries(tokens).forEach(([tokenName, value]) => {
-          if (tokenName.startsWith('--')) {
-            this.updateToken(tokenName, value);
-          }
-        });
-
-        alert(`Successfully imported ${Object.keys(tokens).length} tokens!`);
+        this.applyImportedThemeBundle(importedTheme);
+        alert(
+          importedTheme.isIncomplete
+            ? `Imported legacy theme family "${importedTheme.metadata.name}". Dark tokens were seeded from the light variant and should be reviewed.`
+            : `Successfully imported theme family "${importedTheme.metadata.name}".`
+        );
       } catch (error) {
         alert('Error importing theme file. Please check the format.');
         console.error('Import error:', error);
@@ -2664,15 +2796,13 @@ export class ThemeBuilderComponent {
 
   // Preview Mode Toggle (for live preview panel only)
   protected togglePreviewMode(): void {
-    this.previewMode.update((mode) => (mode === 'light' ? 'dark' : 'light'));
-    // Update accessibility checks for the current preview mode
+    this.themeService.setThemeMode(this.isPreviewingDark() ? 'light' : 'dark');
     this.updateAccessibilityChecks();
   }
 
   // Set specific preview mode
   protected setPreviewMode(mode: 'light' | 'dark'): void {
-    this.previewMode.set(mode);
-    // Update accessibility checks for the current preview mode
+    this.themeService.setThemeMode(mode);
     this.updateAccessibilityChecks();
   }
 
@@ -2713,6 +2843,9 @@ export class ThemeBuilderComponent {
     if (oldValue !== value) {
       this.addToHistory(darkTokenName, oldValue, value);
     }
+
+    this.syncThemeFamilyWithService();
+    this.updateAccessibilityChecks();
   }
 
   // Color Generator Methods

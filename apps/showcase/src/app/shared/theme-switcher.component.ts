@@ -1,18 +1,16 @@
 /**
  * Theme Switcher Component
- * Dropdown for selecting between light, dark, and high-contrast themes
+ * Dropdown for selecting theme families plus light, dark, and high-contrast modes
  */
 
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ThemeService } from '@ui-suite/theming';
 
-interface ThemeOption {
+interface ThemeFamilyOption {
   id: string;
   name: string;
-  mode: 'light' | 'dark' | 'high-contrast';
   description: string;
-  icon: string;
 }
 
 @Component({
@@ -78,37 +76,29 @@ interface ThemeOption {
           <div class="theme-dropdown-header">
             <span class="theme-dropdown-title">Select Theme</span>
           </div>
+          <div class="theme-dropdown-section">
+            <span class="theme-dropdown-label">Family</span>
+          </div>
           <div class="theme-options">
-            @for (option of themeOptions; track option.id) {
+            @for (option of themeFamilyOptions(); track option.id) {
               <button
                 class="theme-option"
-                [class.theme-option--active]="currentThemeId() === option.id"
-                (click)="selectTheme(option.id)"
+                [class.theme-option--active]="currentThemeFamilyId() === option.id && !themeService.isHighContrastMode()"
+                (click)="selectThemeFamily(option.id)"
                 [attr.aria-label]="option.name + ': ' + option.description"
               >
                 <div class="theme-option-icon">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    @if (option.mode === 'light') {
-                      <!-- Sun icon -->
-                      <circle cx="12" cy="12" r="5" />
-                      <path
-                        d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72 1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
-                      />
-                    } @else if (option.mode === 'dark') {
-                      <!-- Moon icon -->
-                      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-                    } @else {
-                      <!-- High contrast icon -->
-                      <circle cx="12" cy="12" r="10" />
-                      <path d="M12 2v20" />
-                    }
+                    <path d="M12 3l7 4v10l-7 4-7-4V7l7-4z" />
+                    <path d="M12 7v10" />
+                    <path d="M8.5 9 12 11l3.5-2" />
                   </svg>
                 </div>
                 <div class="theme-option-content">
                   <div class="theme-option-name">{{ option.name }}</div>
                   <div class="theme-option-description">{{ option.description }}</div>
                 </div>
-                @if (currentThemeId() === option.id) {
+                @if (currentThemeFamilyId() === option.id && !themeService.isHighContrastMode()) {
                   <svg
                     class="theme-option-check"
                     width="16"
@@ -122,6 +112,61 @@ interface ThemeOption {
                 }
               </button>
             }
+          </div>
+
+          <div class="theme-dropdown-section">
+            <span class="theme-dropdown-label">Mode</span>
+            <div class="theme-mode-options">
+              <button
+                class="theme-mode-option"
+                [class.theme-mode-option--active]="currentThemeMode() === 'light' && !themeService.isHighContrastMode()"
+                (click)="selectThemeMode('light')"
+                aria-label="Use light mode"
+              >
+                Light
+              </button>
+              <button
+                class="theme-mode-option"
+                [class.theme-mode-option--active]="currentThemeMode() === 'dark' && !themeService.isHighContrastMode()"
+                (click)="selectThemeMode('dark')"
+                aria-label="Use dark mode"
+              >
+                Dark
+              </button>
+            </div>
+          </div>
+
+          <div class="theme-dropdown-section theme-dropdown-section--contrast">
+            <span class="theme-dropdown-label">Accessibility</span>
+            <button
+              class="theme-option"
+              [class.theme-option--active]="themeService.isHighContrastMode()"
+              (click)="activateHighContrast()"
+              aria-label="Use high contrast mode"
+            >
+              <div class="theme-option-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M12 2v20" />
+                </svg>
+              </div>
+              <div class="theme-option-content">
+                <div class="theme-option-name">High Contrast</div>
+                <div class="theme-option-description">Maximum readability</div>
+              </div>
+              @if (themeService.isHighContrastMode()) {
+                <svg
+                  class="theme-option-check"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              }
+            </button>
           </div>
         </div>
       }
@@ -289,7 +334,7 @@ interface ThemeOption {
         position: absolute;
         top: calc(100% + var(--primitive-spacing-2));
         right: 0;
-        width: 280px;
+        width: 320px;
         background-color: var(--semantic-surface-card);
         border: 1px solid var(--semantic-border-default);
         border-radius: var(--primitive-border-radius-lg);
@@ -338,6 +383,53 @@ interface ThemeOption {
 
       .theme-options {
         padding: var(--primitive-spacing-2);
+        max-height: 18rem;
+        overflow-y: auto;
+      }
+
+      .theme-dropdown-section {
+        padding: 0 var(--primitive-spacing-4) var(--primitive-spacing-2);
+      }
+
+      .theme-dropdown-section--contrast {
+        padding-bottom: var(--primitive-spacing-4);
+      }
+
+      .theme-dropdown-label {
+        display: block;
+        font-size: var(--primitive-font-size-xs);
+        font-weight: var(--primitive-font-weight-semibold);
+        color: var(--semantic-text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .theme-mode-options {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--primitive-spacing-2);
+        margin-top: var(--primitive-spacing-2);
+      }
+
+      .theme-mode-option {
+        border: 1px solid var(--semantic-border-default);
+        background: var(--semantic-surface-background);
+        color: var(--semantic-text-secondary);
+        border-radius: var(--primitive-border-radius-md);
+        padding: var(--primitive-spacing-2) var(--primitive-spacing-3);
+        cursor: pointer;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .theme-mode-option:hover {
+        color: var(--semantic-text-primary);
+        border-color: var(--semantic-brand-primary);
+      }
+
+      .theme-mode-option--active {
+        background: var(--semantic-brand-primary);
+        border-color: var(--semantic-brand-primary);
+        color: var(--semantic-text-inverse);
       }
 
       /* Staggered animation for theme options */
@@ -511,35 +603,29 @@ export class ThemeSwitcherComponent {
   protected readonly themeService = inject(ThemeService);
   protected readonly isOpen = signal(false);
 
-  protected readonly currentThemeId = this.themeService.currentThemeId;
+  protected readonly currentThemeFamilyId = this.themeService.currentThemeFamilyId;
+  protected readonly currentThemeMode = this.themeService.currentThemeMode;
   protected readonly currentThemeName = computed(() => {
-    const id = this.currentThemeId();
-    return this.themeOptions.find((opt) => opt.id === id)?.name || 'Light';
+    if (this.themeService.isHighContrastMode()) {
+      return 'High Contrast';
+    }
+
+    const family = this.themeService.currentThemeFamily();
+    if (!family) {
+      return 'Default';
+    }
+
+    const modeLabel = this.currentThemeMode() === 'dark' ? 'Dark' : 'Light';
+    return `${family.metadata.name} ${modeLabel}`;
   });
 
-  protected readonly themeOptions: ThemeOption[] = [
-    {
-      id: 'light',
-      name: 'Light',
-      mode: 'light',
-      description: 'Clean and bright interface',
-      icon: 'sun',
-    },
-    {
-      id: 'dark',
-      name: 'Dark',
-      mode: 'dark',
-      description: 'Easy on the eyes',
-      icon: 'moon',
-    },
-    {
-      id: 'high-contrast',
-      name: 'High Contrast',
-      mode: 'high-contrast',
-      description: 'Maximum readability',
-      icon: 'contrast',
-    },
-  ];
+  protected readonly themeFamilyOptions = computed<ThemeFamilyOption[]>(() =>
+    Array.from(this.themeService.availableFamilies().values()).map((family) => ({
+      id: family.metadata.id,
+      name: family.metadata.name,
+      description: family.metadata.description || `${family.metadata.name} light and dark variants`,
+    }))
+  );
 
   protected toggleDropdown(): void {
     this.isOpen.update((open) => !open);
@@ -549,8 +635,17 @@ export class ThemeSwitcherComponent {
     this.isOpen.set(false);
   }
 
-  protected selectTheme(themeId: string): void {
-    this.themeService.setTheme(themeId);
+  protected selectThemeFamily(themeFamilyId: string): void {
+    this.themeService.setThemeFamily(themeFamilyId);
+    this.closeDropdown();
+  }
+
+  protected selectThemeMode(mode: 'light' | 'dark'): void {
+    this.themeService.setThemeMode(mode);
+  }
+
+  protected activateHighContrast(): void {
+    this.themeService.setThemeMode('high-contrast');
     this.closeDropdown();
   }
 }
