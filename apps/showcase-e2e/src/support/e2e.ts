@@ -1,3 +1,5 @@
+/// <reference types="cypress-axe" />
+
 // ***********************************************************
 // This example support/e2e.ts is processed and
 // loaded automatically before your test files.
@@ -12,6 +14,8 @@
 // You can read more here:
 // https://on.cypress.io/configuration
 // ***********************************************************
+
+import 'cypress-axe';
 
 // Import commands.ts using ES2015 syntax:
 import './commands';

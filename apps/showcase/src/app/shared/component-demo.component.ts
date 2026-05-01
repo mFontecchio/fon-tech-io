@@ -35,6 +35,8 @@ import {
   PaginationComponent,
   TableComponent,
   ListComponent,
+  CarouselComponent,
+  CarouselSlideComponent,
   CodeBlockComponent,
   SpinnerComponent,
   ProgressComponent,
@@ -81,6 +83,8 @@ import {
     PaginationComponent,
     TableComponent,
     ListComponent,
+    CarouselComponent,
+    CarouselSlideComponent,
     CodeBlockComponent,
     SpinnerComponent,
     ProgressComponent,
@@ -1415,6 +1419,98 @@ import {
             }
           }
 
+          <!-- CAROUSEL DEMOS -->
+          @case ('carousel') {
+            @if (exampleTitle() === 'Basic Carousel') {
+              <ui-carousel class="carousel-demo" ariaLabel="Featured highlights">
+                @for (slide of carouselSlides(); track slide.title) {
+                  <ui-carousel-slide [label]="slide.title">
+                    <article class="carousel-slide-card" [style.--carousel-accent]="slide.accent">
+                      <p class="carousel-slide-eyebrow">{{ slide.eyebrow }}</p>
+                      <h3 class="carousel-slide-title">{{ slide.title }}</h3>
+                      <p class="carousel-slide-description">{{ slide.description }}</p>
+                    </article>
+                  </ui-carousel-slide>
+                }
+              </ui-carousel>
+            }
+            @if (exampleTitle() === 'Fade Transition') {
+              <ui-carousel class="carousel-demo" variant="fade" ariaLabel="Fade transition example">
+                @for (slide of carouselSlides(); track slide.title) {
+                  <ui-carousel-slide [label]="slide.title">
+                    <article class="carousel-slide-card" [style.--carousel-accent]="slide.accent">
+                      <p class="carousel-slide-eyebrow">{{ slide.eyebrow }}</p>
+                      <h3 class="carousel-slide-title">{{ slide.title }}</h3>
+                      <p class="carousel-slide-description">{{ slide.description }}</p>
+                    </article>
+                  </ui-carousel-slide>
+                }
+              </ui-carousel>
+            }
+            @if (exampleTitle() === 'Autoplay with Pause Control') {
+              <ui-carousel
+                class="carousel-demo"
+                [autoplay]="true"
+                [autoplayDelay]="3500"
+                ariaLabel="Autoplaying customer stories"
+              >
+                @for (slide of carouselSlides(); track slide.title) {
+                  <ui-carousel-slide [label]="slide.title">
+                    <article class="carousel-slide-card" [style.--carousel-accent]="slide.accent">
+                      <p class="carousel-slide-eyebrow">{{ slide.eyebrow }}</p>
+                      <h3 class="carousel-slide-title">{{ slide.title }}</h3>
+                      <p class="carousel-slide-description">{{ slide.description }}</p>
+                    </article>
+                  </ui-carousel-slide>
+                }
+              </ui-carousel>
+            }
+            @if (exampleTitle() === 'Multiple Visible Slides') {
+              <ui-carousel
+                class="carousel-demo"
+                [visibleSlides]="2"
+                ariaLabel="Product cards"
+              >
+                @for (slide of carouselSlides(); track slide.title) {
+                  <ui-carousel-slide [label]="slide.title">
+                    <article class="carousel-slide-card carousel-slide-card--compact" [style.--carousel-accent]="slide.accent">
+                      <p class="carousel-slide-eyebrow">{{ slide.eyebrow }}</p>
+                      <h3 class="carousel-slide-title">{{ slide.title }}</h3>
+                      <p class="carousel-slide-description">{{ slide.description }}</p>
+                      <p class="carousel-slide-metric">{{ slide.metric }}</p>
+                    </article>
+                  </ui-carousel-slide>
+                }
+              </ui-carousel>
+            }
+            @if (exampleTitle() === 'Thumbnail Navigation') {
+              <ui-carousel class="carousel-demo" [showThumbnails]="true" ariaLabel="Release highlights">
+                @for (slide of carouselSlides(); track slide.title) {
+                  <ui-carousel-slide [label]="slide.title" [thumbnail]="slide.thumbnail" [thumbnailAlt]="slide.title">
+                    <article class="carousel-slide-card" [style.--carousel-accent]="slide.accent">
+                      <p class="carousel-slide-eyebrow">{{ slide.eyebrow }}</p>
+                      <h3 class="carousel-slide-title">{{ slide.title }}</h3>
+                      <p class="carousel-slide-description">{{ slide.description }}</p>
+                    </article>
+                  </ui-carousel-slide>
+                }
+              </ui-carousel>
+            }
+            @if (exampleTitle() === 'No Loop') {
+              <ui-carousel class="carousel-demo" [loop]="false" ariaLabel="Non-looping updates">
+                @for (slide of carouselSlides(); track slide.title) {
+                  <ui-carousel-slide [label]="slide.title">
+                    <article class="carousel-slide-card" [style.--carousel-accent]="slide.accent">
+                      <p class="carousel-slide-eyebrow">{{ slide.eyebrow }}</p>
+                      <h3 class="carousel-slide-title">{{ slide.title }}</h3>
+                      <p class="carousel-slide-description">{{ slide.description }}</p>
+                    </article>
+                  </ui-carousel-slide>
+                }
+              </ui-carousel>
+            }
+          }
+
           <!-- CODE BLOCK DEMOS -->
           @case ('code-block') {
             @if (exampleTitle() === 'Basic Code Block') {
@@ -1558,6 +1654,11 @@ Sample text for editing</textarea
   `,
   styles: [
     `
+      :host {
+        display: block;
+        width: 100%;
+      }
+
       .component-demo {
         width: 100%;
       }
@@ -1615,6 +1716,58 @@ Sample text for editing</textarea
       :host ::ng-deep ui-grid {
         width: 100%;
         max-width: 600px;
+      }
+
+      :host ::ng-deep ui-carousel {
+        width: 100%;
+        max-width: 720px;
+      }
+
+      .carousel-demo {
+        width: 100%;
+      }
+
+      .carousel-slide-card {
+        display: grid;
+        align-content: end;
+        gap: var(--primitive-spacing-3);
+        min-height: 18rem;
+        padding: var(--primitive-spacing-6);
+        background:
+          linear-gradient(145deg, color-mix(in srgb, var(--carousel-accent) 22%, white), transparent 70%),
+          linear-gradient(180deg, var(--semantic-surface-card), color-mix(in srgb, var(--carousel-accent) 12%, var(--semantic-surface-background-secondary)));
+        color: var(--semantic-text-primary);
+      }
+
+      .carousel-slide-card--compact {
+        min-height: 16rem;
+        border-right: 1px solid var(--semantic-border-subtle);
+      }
+
+      .carousel-slide-eyebrow {
+        margin: 0;
+        color: var(--semantic-text-secondary);
+        font-size: var(--primitive-font-size-sm);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .carousel-slide-title {
+        margin: 0;
+        font-size: clamp(1.5rem, 2.5vw, 2.25rem);
+        line-height: 1.1;
+      }
+
+      .carousel-slide-description {
+        margin: 0;
+        max-width: 42ch;
+        color: var(--semantic-text-secondary);
+      }
+
+      .carousel-slide-metric {
+        margin: 0;
+        color: var(--semantic-brand-primary);
+        font-weight: var(--primitive-font-weight-semibold);
       }
 
       /* Context menu demo styles */
@@ -1804,6 +1957,44 @@ export class ComponentDemoComponent {
     { id: 1, label: 'First item' },
     { id: 2, label: 'Second item' },
     { id: 3, label: 'Third item' },
+  ]);
+
+  /**
+   * Sample carousel slides.
+   */
+  protected readonly carouselSlides = signal([
+    {
+      eyebrow: 'Accessibility',
+      title: 'Built for keyboard-first navigation',
+      description: 'Arrow keys, Home, End, focus visibility, autoplay pause, and reduced-motion support are built in.',
+      metric: 'WCAG 2.1 AA aligned',
+      accent: '#0f766e',
+      thumbnail: 'A11y',
+    },
+    {
+      eyebrow: 'Composition',
+      title: 'Project any semantic slide content',
+      description: 'Slides accept native media, cards, marketing content, or custom layouts without a rigid slide data schema.',
+      metric: 'Content-first API',
+      accent: '#c2410c',
+      thumbnail: 'API',
+    },
+    {
+      eyebrow: 'Theming',
+      title: 'Tokens drive every visual state',
+      description: 'Controls, indicators, thumbnails, and surfaces inherit primitive and semantic token values from the active theme.',
+      metric: 'Theme-aware by default',
+      accent: '#1d4ed8',
+      thumbnail: 'Theme',
+    },
+    {
+      eyebrow: 'Responsive',
+      title: 'Single-slide or multi-slide layouts',
+      description: 'Use one visible slide for hero content or increase visibleSlides to preview adjacent content collections.',
+      metric: 'Adaptive layouts',
+      accent: '#7c3aed',
+      thumbnail: 'Grid',
+    },
   ]);
 
   /**

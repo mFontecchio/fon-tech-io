@@ -256,6 +256,7 @@ export class SidebarComponent {
         { label: 'Pagination', path: '/components/data-display/pagination' },
         { label: 'Table', path: '/components/data-display/table' },
         { label: 'List', path: '/components/data-display/list' },
+        { label: 'Carousel', path: '/components/data-display/carousel' },
         { label: 'Code Block', path: '/components/data-display/code-block' },
       ],
     },

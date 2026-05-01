@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Theme builder presets, saved themes, and import/export now use explicit light and dark variants instead of flat token maps
 
 ### Added
+- **Carousel Component**: Added a composition-based carousel for projected slide content
+  - Supports slide and fade transitions with keyboard navigation, swipe gestures, indicators, thumbnails, and optional autoplay
+  - Uses native button controls, live status announcements, pause/resume controls, and reduced-motion handling for WCAG-aligned interaction
+  - Added showcase documentation, live demos, and component token definitions for carousel surfaces
+  - Added focused Cypress accessibility coverage for the carousel documentation page and an Nx build target for the components library
+
 - **Theme Family Import/Export Schema**: Added engine-native `ThemeFamily` JSON and TypeScript export support
   - Builder exports now round-trip paired light and dark variants with shared family metadata
   - Legacy flat saved themes and imports migrate deterministically by seeding missing dark tokens from light variants and flagging incomplete bundles

@@ -2733,6 +2733,195 @@ handleClick(item: ListItem) {
   ],
 };
 
+const CAROUSEL_METADATA: ComponentMetadata = {
+  id: 'carousel',
+  name: 'Carousel',
+  category: 'data-display',
+  description:
+    'A composition-based carousel component for rotating projected content with keyboard navigation, autoplay controls, indicators, thumbnails, and reduced-motion support.',
+  selector: 'ui-carousel',
+  inputs: [
+    {
+      name: 'variant',
+      type: "'slide' | 'fade'",
+      description: 'Transition style used when slides change.',
+      defaultValue: "'slide'",
+    },
+    {
+      name: 'size',
+      type: "'sm' | 'md' | 'lg'",
+      description: 'Control button size.',
+      defaultValue: "'md'",
+    },
+    {
+      name: 'loop',
+      type: 'boolean',
+      description: 'Whether navigation wraps from the end back to the beginning.',
+      defaultValue: 'true',
+    },
+    {
+      name: 'autoplay',
+      type: 'boolean',
+      description: 'Automatically advances slides on a timer.',
+      defaultValue: 'false',
+    },
+    {
+      name: 'autoplayDelay',
+      type: 'number',
+      description: 'Delay between automatic slide changes in milliseconds.',
+      defaultValue: '5000',
+    },
+    {
+      name: 'showControls',
+      type: 'boolean',
+      description: 'Shows previous and next navigation buttons.',
+      defaultValue: 'true',
+    },
+    {
+      name: 'showIndicators',
+      type: 'boolean',
+      description: 'Shows dot indicators for slide navigation.',
+      defaultValue: 'true',
+    },
+    {
+      name: 'showThumbnails',
+      type: 'boolean',
+      description: 'Shows thumbnail navigation below the carousel.',
+      defaultValue: 'false',
+    },
+    {
+      name: 'visibleSlides',
+      type: 'number',
+      description: 'Number of visible slides in slide mode.',
+      defaultValue: '1',
+    },
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      description: 'Accessible label announced for the carousel region.',
+      defaultValue: "'Carousel'",
+    },
+    {
+      name: 'activeIndex',
+      type: 'number',
+      description: 'Controlled active slide index.',
+      defaultValue: '0',
+    },
+  ],
+  outputs: [
+    {
+      name: 'activeIndexChange',
+      type: 'number',
+      description: 'Emits the active slide index whenever navigation changes.',
+    },
+    {
+      name: 'slideChanged',
+      type: '{ from: number; to: number }',
+      description: 'Emits the previous and next slide indices after a transition.',
+    },
+  ],
+  examples: [
+    {
+      title: 'Basic Carousel',
+      description: 'Default slide transition with controls and indicators.',
+      template: `<ui-carousel ariaLabel="Featured highlights">
+  <ui-carousel-slide label="Built for keyboard-first navigation">
+    <article>
+      <h3>Built for keyboard-first navigation</h3>
+      <p>Arrow keys, Home, End, focus visibility, autoplay pause, and reduced-motion support are built in.</p>
+    </article>
+  </ui-carousel-slide>
+  <ui-carousel-slide label="Project any semantic slide content">
+    <article>
+      <h3>Project any semantic slide content</h3>
+      <p>Slides accept media, cards, marketing content, or custom layouts without a rigid data schema.</p>
+    </article>
+  </ui-carousel-slide>
+  <ui-carousel-slide label="Tokens drive every visual state">
+    <article>
+      <h3>Tokens drive every visual state</h3>
+      <p>Controls, indicators, thumbnails, and surfaces inherit the active theme.</p>
+    </article>
+  </ui-carousel-slide>
+</ui-carousel>`,
+    },
+    {
+      title: 'Fade Transition',
+      description: 'Cross-fades between slides instead of translating the track.',
+      template: `<ui-carousel variant="fade" ariaLabel="Fade transition example">
+  <ui-carousel-slide label="Slide one">...</ui-carousel-slide>
+  <ui-carousel-slide label="Slide two">...</ui-carousel-slide>
+  <ui-carousel-slide label="Slide three">...</ui-carousel-slide>
+</ui-carousel>`,
+    },
+    {
+      title: 'Autoplay with Pause Control',
+      description: 'Automatically rotates while exposing an explicit pause/resume button.',
+      template: `<ui-carousel [autoplay]="true" [autoplayDelay]="3500" ariaLabel="Autoplaying customer stories">
+  <ui-carousel-slide label="Customer story one">...</ui-carousel-slide>
+  <ui-carousel-slide label="Customer story two">...</ui-carousel-slide>
+  <ui-carousel-slide label="Customer story three">...</ui-carousel-slide>
+</ui-carousel>`,
+    },
+    {
+      title: 'Multiple Visible Slides',
+      description: 'Shows adjacent cards at the same time in slide mode.',
+      template: `<ui-carousel [visibleSlides]="2" ariaLabel="Product cards">
+  <ui-carousel-slide label="Card one">...</ui-carousel-slide>
+  <ui-carousel-slide label="Card two">...</ui-carousel-slide>
+  <ui-carousel-slide label="Card three">...</ui-carousel-slide>
+  <ui-carousel-slide label="Card four">...</ui-carousel-slide>
+</ui-carousel>`,
+    },
+    {
+      title: 'Thumbnail Navigation',
+      description: 'Uses the slide thumbnail inputs to render a secondary navigation strip.',
+      template: `<ui-carousel [showThumbnails]="true" ariaLabel="Release highlights">
+  <ui-carousel-slide label="Accessibility" thumbnail="A11y" thumbnailAlt="Accessibility highlight">...</ui-carousel-slide>
+  <ui-carousel-slide label="Composition" thumbnail="API" thumbnailAlt="Composition highlight">...</ui-carousel-slide>
+  <ui-carousel-slide label="Theming" thumbnail="Theme" thumbnailAlt="Theming highlight">...</ui-carousel-slide>
+</ui-carousel>`,
+    },
+    {
+      title: 'No Loop',
+      description: 'Disables wrap-around so the first and last slides behave like hard stops.',
+      template: `<ui-carousel [loop]="false" ariaLabel="Non-looping updates">
+  <ui-carousel-slide label="Update one">...</ui-carousel-slide>
+  <ui-carousel-slide label="Update two">...</ui-carousel-slide>
+  <ui-carousel-slide label="Update three">...</ui-carousel-slide>
+</ui-carousel>`,
+    },
+  ],
+  accessibility: {
+    ariaSupport: [
+      'role="region" with aria-roledescription="carousel" on the host',
+      'aria-label on the carousel region for landmark identification',
+      'Live status text announces slide changes with aria-live="polite" when autoplay is paused',
+      'Each slide uses role="group" with aria-roledescription="slide" and a synthesized "Slide N of M" label',
+      'Inactive slides expose aria-hidden and inert to keep off-screen content out of the accessibility tree and tab order',
+      'Controls, indicators, thumbnails, and autoplay toggle use native button elements with descriptive labels',
+    ],
+    keyboardNavigation: [
+      { key: 'Arrow Left / Arrow Up', description: 'Move to the previous slide' },
+      { key: 'Arrow Right / Arrow Down', description: 'Move to the next slide' },
+      { key: 'Home', description: 'Jump to the first slide' },
+      { key: 'End', description: 'Jump to the last available slide position' },
+      { key: 'Tab', description: 'Move between carousel controls, indicators, thumbnails, and interactive slide content' },
+    ],
+    screenReaderNotes:
+      'The carousel region is announced once with its label. Slide changes announce a concise status update instead of re-reading the entire slide content. Autoplay pauses on hover or focus and exposes an explicit pause button for motion control.',
+  },
+  bestPractices: [
+    'Use carousel only when the content is sequential and users benefit from viewing one or a few items at a time',
+    'Provide concise, unique slide labels so indicator and thumbnail controls remain understandable to screen-reader users',
+    'Prefer manual navigation for critical content and enable autoplay only for supplementary or promotional content',
+    'Pause autoplay whenever the carousel receives focus or hover so users can read and interact without time pressure',
+    'Keep the number of visible slides low enough that each slide remains legible on smaller screens',
+    'Respect reduced-motion preferences and avoid using carousels for essential form or transactional workflows',
+  ],
+  relatedComponents: ['tabs', 'card', 'list'],
+};
+
 const CODE_BLOCK_METADATA: ComponentMetadata = {
   id: 'code-block',
   name: 'Code Block',
@@ -3698,6 +3887,7 @@ const COMPONENT_METADATA_MAP = new Map<string, ComponentMetadata>([
   ['pagination', PAGINATION_METADATA],
   ['table', TABLE_METADATA],
   ['list', LIST_METADATA],
+  ['carousel', CAROUSEL_METADATA],
   ['code-block', CODE_BLOCK_METADATA],
   // Feedback Components
   ['alert', ALERT_METADATA],
