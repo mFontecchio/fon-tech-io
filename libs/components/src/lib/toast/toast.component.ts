@@ -42,15 +42,21 @@ export class ToastComponent {
   readonly dismissible = input<boolean>(true);
 
   /**
-   * Dismissed event
+   * Whether the toast is currently playing its dismiss animation
    */
-  readonly dismissed = output<void>();
+  readonly dismissing = input<boolean>(false);
+
+  /**
+   * Dismiss request event
+   */
+  readonly dismissRequested = output<void>();
 
   /**
    * Computed CSS classes
    */
   protected readonly toastClasses = computed(() => ({
     'ui-toast': true,
+    'ui-toast--dismissing': this.dismissing(),
     [`ui-toast--${this.variant()}`]: true,
   }));
 
@@ -82,10 +88,10 @@ export class ToastComponent {
   });
 
   /**
-   * Handle dismiss
+   * Handle dismiss request
    */
   protected handleDismiss(): void {
-    this.dismissed.emit();
+    this.dismissRequested.emit();
   }
 }
 

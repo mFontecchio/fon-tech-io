@@ -9,10 +9,12 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  ElementRef,
   input,
   output,
   signal,
   effect,
+  viewChild,
 } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -113,6 +115,11 @@ export class DatePickerComponent {
   protected readonly internalValue = signal<string | undefined>(undefined);
 
   /**
+   * Reference to native date input
+   */
+  protected readonly inputElement = viewChild<ElementRef<HTMLInputElement>>('input');
+
+  /**
    * Computed error state
    */
   protected readonly hasError = computed(() => !!this.errorMessage());
@@ -183,6 +190,26 @@ export class DatePickerComponent {
   protected clear(): void {
     this.internalValue.set(undefined);
     this.valueChange.emit('');
+  }
+
+  /**
+   * Open native date picker with custom trigger button.
+   */
+  protected openPicker(): void {
+    const input = this.inputElement()?.nativeElement;
+
+    if (!input || this.disabled()) {
+      return;
+    }
+
+    input.focus();
+
+    if (typeof input.showPicker === 'function') {
+      input.showPicker();
+      return;
+    }
+
+    input.click();
   }
 }
 

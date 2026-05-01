@@ -31,6 +31,7 @@
 .ui-spinner {
   display: block;
   animation: ui-spinner-rotate 2s linear infinite;
+  will-change: transform;
 }
 
 /* Sizes */
@@ -74,7 +75,6 @@
   stroke-linecap: round;
   stroke-dasharray: 90, 150;
   stroke-dashoffset: 0;
-  transform-origin: center;
   animation: ui-spinner-dash 1.5s ease-in-out infinite;
 }
 

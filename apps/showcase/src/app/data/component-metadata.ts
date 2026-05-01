@@ -157,10 +157,16 @@ const INPUT_METADATA: ComponentMetadata = {
       description: 'Whether the input is required',
       defaultValue: 'false',
     },
-    { name: 'error', type: 'string', description: 'Error message to display' },
+    { name: 'errorMessage', type: 'string', description: 'Error message to display' },
     { name: 'helperText', type: 'string', description: 'Helper text displayed below the input' },
     { name: 'prefixIcon', type: 'string', description: 'Icon to display before the input text' },
     { name: 'suffixIcon', type: 'string', description: 'Icon to display after the input text' },
+    {
+      name: 'showPasswordToggle',
+      type: 'boolean',
+      description: 'Shows a built-in reveal button when the input type is password',
+      defaultValue: 'false',
+    },
     {
       name: 'fullWidth',
       type: 'boolean',
@@ -209,12 +215,30 @@ const INPUT_METADATA: ComponentMetadata = {
 />`,
     },
     {
+      title: 'Input with Custom Affixes',
+      description: 'Project custom text, icons, or other content into the prefix and suffix areas',
+      template: `<ui-input label="Website" placeholder="your-site">
+  <span prefix>https://</span>
+  <span suffix>.com</span>
+</ui-input>`,
+    },
+    {
+      title: 'Password Reveal Toggle',
+      description: 'Opt into a built-in password visibility toggle',
+      template: `<ui-input 
+  label="Password" 
+  type="password"
+  placeholder="Enter password"
+  [showPasswordToggle]="true"
+/>`,
+    },
+    {
       title: 'Input with Error',
       description: 'Display validation errors',
       template: `<ui-input 
   label="Email" 
   value="invalid-email"
-  error="Please enter a valid email address"
+  errorMessage="Please enter a valid email address"
 />`,
     },
     {

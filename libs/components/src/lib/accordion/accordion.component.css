@@ -114,11 +114,14 @@
 .ui-accordion-content {
   overflow: hidden;
   min-height: 0;
-  padding: var(--primitive-spacing-4) var(--primitive-spacing-5);
   color: var(--semantic-text-primary);
   line-height: var(--primitive-line-height-relaxed);
   transform: translateY(-8px);
   transition: transform var(--semantic-animation-duration-component, 250ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+.ui-accordion-content-body {
+  padding: var(--primitive-spacing-4) var(--primitive-spacing-5);
 }
 
 .ui-accordion-item--expanded .ui-accordion-content {

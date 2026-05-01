@@ -13,12 +13,20 @@
     </label>
   }
 
-  <div class="ui-input-field-wrapper">
-    <ng-content select="[prefix]" />
+  <div
+    class="ui-input-field-wrapper"
+    [class.ui-input-field-wrapper--focused]="isFocused()"
+    [class.ui-input-field-wrapper--error]="hasError()"
+    [class.ui-input-field-wrapper--disabled]="disabled()"
+    [class.ui-input-field-wrapper--with-action]="shouldShowPasswordToggle()"
+  >
+    <div class="ui-input-prefix">@if (prefixIcon()) {
+      <span class="ui-input-icon" aria-hidden="true">{{ prefixIcon() }}</span>
+    }<ng-content select="[prefix]" /></div>
     
     <input
       #input
-      [type]="type()"
+      [type]="resolvedInputType()"
       [id]="inputId()"
       [name]="name()"
       [value]="internalValue()"
@@ -40,7 +48,22 @@
       (blur)="handleBlur($event)"
     />
     
-    <ng-content select="[suffix]" />
+    <div class="ui-input-suffix">@if (suffixIcon()) {
+      <span class="ui-input-icon" aria-hidden="true">{{ suffixIcon() }}</span>
+    }<ng-content select="[suffix]" />
+
+    @if (shouldShowPasswordToggle()) {
+      <button
+        type="button"
+        class="ui-input-affix-action ui-input-password-toggle"
+        [disabled]="disabled()"
+        [attr.aria-label]="passwordToggleLabel()"
+        [attr.aria-pressed]="isPasswordVisible()"
+        (click)="togglePasswordVisibility()"
+      >
+        {{ isPasswordVisible() ? 'Hide' : 'Show' }}
+      </button>
+    }</div>
   </div>
 
   @if (helperText() && !hasError()) {
@@ -59,7 +82,7 @@
       role="alert"
       aria-live="polite"
     >
-      {{ errorMessage() }}
+      {{ displayedErrorMessage() }}
     </div>
   }
 </div>

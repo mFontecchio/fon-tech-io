@@ -41,7 +41,9 @@
         [attr.aria-hidden]="!isExpanded($index)"
       >
         <div class="ui-accordion-content">
-          <ng-content></ng-content>
+          <div class="ui-accordion-content-body">
+            <ng-content></ng-content>
+          </div>
         </div>
       </div>
     </div>

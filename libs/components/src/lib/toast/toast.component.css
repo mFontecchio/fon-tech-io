@@ -112,6 +112,21 @@
   }
 }
 
+@keyframes ui-toast-exit {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-1rem);
+  }
+}
+
+.ui-toast--dismissing {
+  animation: ui-toast-exit 250ms var(--semantic-animation-easing-accelerate, cubic-bezier(0.4, 0, 1, 1)) forwards;
+}
+
 /* Responsive */
 
 @media (max-width: 640px) {
@@ -126,6 +141,10 @@
 @media (prefers-reduced-motion: reduce) {
   .ui-toast {
     animation: none;
+  }
+
+  .ui-toast--dismissing {
+    animation-duration: 1ms;
   }
 
   .ui-toast-close {

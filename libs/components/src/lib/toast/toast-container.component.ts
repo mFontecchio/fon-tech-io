@@ -72,7 +72,7 @@ export class ToastContainerComponent {
    * Dismiss toast
    */
   protected dismissToast(id: string): void {
-    this.toastService.dismiss(id);
+    this.toastService.dismissWithAnimation(id);
   }
 }
 

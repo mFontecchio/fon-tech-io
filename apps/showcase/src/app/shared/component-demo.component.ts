@@ -142,21 +142,35 @@ import {
               </div>
             }
             @if (exampleTitle() === 'Input with Prefix Icon') {
-              <ui-input label="Search" placeholder="Search..." prefixIcon="�" />
+              <ui-input label="Search" placeholder="Search..." prefixIcon="🔍" />
             }
             @if (exampleTitle() === 'Input with Suffix Icon') {
               <ui-input
                 label="Password"
                 type="password"
                 placeholder="Enter password"
-                suffixIcon="�"
+                suffixIcon="👁️"
+              />
+            }
+            @if (exampleTitle() === 'Input with Custom Affixes') {
+              <ui-input label="Website" placeholder="your-site" helperText="Projected prefix and suffix content stay inside the field.">
+                <span prefix>https://</span>
+                <span suffix>.com</span>
+              </ui-input>
+            }
+            @if (exampleTitle() === 'Password Reveal Toggle') {
+              <ui-input
+                label="Password"
+                type="password"
+                placeholder="Enter password"
+                [showPasswordToggle]="true"
               />
             }
             @if (exampleTitle() === 'Input with Error') {
               <ui-input
                 label="Email"
                 value="invalid-email"
-                error="Please enter a valid email address"
+                errorMessage="Please enter a valid email address"
               />
             }
             @if (exampleTitle() === 'Input with Helper Text') {

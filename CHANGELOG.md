@@ -57,6 +57,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Full support for prefers-reduced-motion accessibility preference
 
 ### Fixed
+- **Component Visual Regressions**: Corrected dark-mode and interaction defects across multiple UI components
+  - Tooltip now relies on theme tokens for dark-mode background and text colors without OS-level override flashes
+  - Accordion panels now fully collapse without leaving a residual padding gap
+  - Input prefix and suffix slots now use scoped wrapper elements instead of `::ng-deep`, preserving icon color in light and dark themes
+  - Empty input prefix and suffix wrappers now collapse completely when no projected content is present
+  - Toast notifications now play a dismiss animation before removal and respect reduced-motion preferences
+  - Spinner animation now avoids compositor jitter during continuous rotation
+- **Input, Toast, and Date Picker Regressions**: Restored expected behavior for form feedback and themed controls
+  - Input now renders `prefixIcon` and `suffixIcon` inputs, preserves projected prefix/suffix content, and surfaces built-in native validation messages after interaction
+  - Input affixes now support richer projected prefix/suffix content and offer an opt-in built-in password reveal control
+  - Showcase input demos now use the correct `errorMessage` API and render icon examples consistently
+  - Toast timeout dismissal now follows the same animated exit path as manual close actions
+  - Date picker now uses a themed custom calendar trigger so icon contrast stays correct in dark mode
 - **Accordion Animation**: Removed hidden attribute that prevented CSS transitions from working, replaced with aria-hidden for accessibility while maintaining smooth animations
 - **Menu Positioning**: Added scroll and resize listeners to keep menu attached to trigger button during page scroll, preventing menu from detaching from its initiator
 

@@ -43,7 +43,7 @@
 
 .ui-date-picker {
   width: 100%;
-  padding: var(--primitive-spacing-3) var(--primitive-spacing-4);
+  padding: var(--primitive-spacing-3) calc(var(--primitive-spacing-4) + 4.75rem) var(--primitive-spacing-3) var(--primitive-spacing-4);
   font-size: var(--primitive-font-size-base);
   font-family: inherit;
   color: var(--semantic-text-primary);
@@ -58,16 +58,10 @@
   color: var(--semantic-text-placeholder);
 }
 
-/* Calendar icon from browser */
+/* Hide browser indicator in favor of themed trigger */
 .ui-date-picker::-webkit-calendar-picker-indicator {
-  cursor: pointer;
-  color: var(--semantic-text-secondary);
-  opacity: 0.8;
-  transition: opacity var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
-}
-
-.ui-date-picker::-webkit-calendar-picker-indicator:hover {
-  opacity: 1;
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* States */
@@ -109,11 +103,45 @@
   font-size: var(--primitive-font-size-lg);
 }
 
+/* Calendar trigger */
+
+.ui-date-picker-calendar {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--semantic-text-secondary);
+  border-radius: var(--primitive-border-radius-sm);
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+.ui-date-picker-calendar:hover:not(:disabled) {
+  color: var(--semantic-text-primary);
+  background-color: var(--semantic-surface-subtle);
+}
+
+.ui-date-picker-calendar:focus-visible {
+  outline: 2px solid var(--semantic-state-focus-ring);
+  outline-offset: 2px;
+}
+
+.ui-date-picker-calendar:disabled {
+  cursor: not-allowed;
+  color: var(--semantic-text-disabled);
+}
+
 /* Clear button */
 
 .ui-date-picker-clear {
   position: absolute;
-  right: 2.5rem;
+  right: 2.75rem;
   top: 50%;
   transform: translateY(-50%);
   display: inline-flex;
@@ -158,6 +186,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .ui-date-picker,
+  .ui-date-picker-calendar,
   .ui-date-picker-clear,
   .ui-date-picker::-webkit-calendar-picker-indicator {
     transition: none;
