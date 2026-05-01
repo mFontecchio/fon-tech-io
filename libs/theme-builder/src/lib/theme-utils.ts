@@ -245,6 +245,11 @@ export function normalizeImportedThemeData(
 
 /**
  * Parse CSS custom properties from a CSS string
+ *
+ * Returns a flat map of all custom properties found in the CSS. Properties in
+ * dark-mode blocks overwrite earlier light-mode definitions. For round-trip
+ * import of exported themes use {@link parseCSSVariablesByBlock} instead,
+ * which preserves the light/dark separation.
  */
 export function parseCSSVariables(css: string): Record<string, string> {
   const tokens: Record<string, string> = {};
@@ -256,6 +261,45 @@ export function parseCSSVariables(css: string): Record<string, string> {
   }
 
   return tokens;
+}
+
+/**
+ * Parse CSS custom properties from a CSS string, preserving light/dark block
+ * separation.
+ *
+ * Selectors that contain the word "dark" (e.g. `[data-theme-mode="dark"]`)
+ * are treated as dark-mode overrides. All other selectors contribute to the
+ * light token map. This enables a correct round-trip import of CSS files
+ * exported by the theme builder.
+ */
+export function parseCSSVariablesByBlock(css: string): {
+  light: Record<string, string>;
+  dark: Record<string, string>;
+} {
+  const light: Record<string, string> = {};
+  const dark: Record<string, string> = {};
+
+  // Strip CSS block comments before processing
+  const stripped = css.replace(/\/\*[\s\S]*?\*\//g, '');
+
+  // Match each selector { ... } block (non-nested rules only)
+  const blockRegex = /([^{}]+)\{([^{}]*)\}/g;
+  const tokenRegex = /--([\w-]+):\s*([^;]+);/g;
+
+  let blockMatch: RegExpExecArray | null;
+  while ((blockMatch = blockRegex.exec(stripped)) !== null) {
+    const selector = blockMatch[1].trim();
+    const blockContent = blockMatch[2];
+    const target = /dark/.test(selector) ? dark : light;
+
+    tokenRegex.lastIndex = 0;
+    let tokenMatch: RegExpExecArray | null;
+    while ((tokenMatch = tokenRegex.exec(blockContent)) !== null) {
+      target[`--${tokenMatch[1]}`] = tokenMatch[2].trim();
+    }
+  }
+
+  return { light, dark };
 }
 
 /**

@@ -1,13 +1,10 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { NxWelcome } from './nx-welcome';
+import { ThemeBuilderComponent } from '@ui-suite/theme-builder';
 
 @Component({
-  imports: [NxWelcome, RouterModule],
+  imports: [ThemeBuilderComponent],
   selector: 'app-root',
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
-export class App {
-  protected title = 'theme-builder-app';
-}
+export class App {}

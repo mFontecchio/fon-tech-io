@@ -133,12 +133,12 @@ const INPUT_METADATA: ComponentMetadata = {
   name: 'Input',
   category: 'form',
   description:
-    'A themable text input component with validation states, icons, and helper text support.',
+    'A themable text input component with validation states, projected affixes, native validity feedback, and optional password reveal support.',
   selector: 'ui-input',
   inputs: [
     {
       name: 'type',
-      type: "'text' | 'email' | 'password' | 'number' | 'tel' | 'url'",
+      type: "'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search'",
       description: 'HTML input type',
       defaultValue: "'text'",
     },
@@ -161,6 +161,16 @@ const INPUT_METADATA: ComponentMetadata = {
     { name: 'helperText', type: 'string', description: 'Helper text displayed below the input' },
     { name: 'prefixIcon', type: 'string', description: 'Icon to display before the input text' },
     { name: 'suffixIcon', type: 'string', description: 'Icon to display after the input text' },
+    { name: 'readonly', type: 'boolean', description: 'Whether the input is read-only', defaultValue: 'false' },
+    { name: 'autoFocus', type: 'boolean', description: 'Whether the input should receive focus on mount', defaultValue: 'false' },
+    { name: 'maxLength', type: 'number', description: 'Maximum number of characters allowed' },
+    { name: 'minLength', type: 'number', description: 'Minimum number of characters required' },
+    { name: 'pattern', type: 'string', description: 'Native HTML validation pattern' },
+    { name: 'autocomplete', type: 'string', description: 'Native autocomplete attribute value' },
+    { name: 'name', type: 'string', description: 'Native input name attribute' },
+    { name: 'id', type: 'string', description: 'ID attribute for label association and testing hooks' },
+    { name: 'ariaLabel', type: 'string', description: 'Accessible name when a visual label is not present' },
+    { name: 'ariaDescribedBy', type: 'string', description: 'Additional element IDs announced by assistive technology' },
     {
       name: 'showPasswordToggle',
       type: 'boolean',
@@ -179,6 +189,21 @@ const INPUT_METADATA: ComponentMetadata = {
       name: 'valueChange',
       type: 'string | number',
       description: 'Emitted when input value changes',
+    },
+    {
+      name: 'blurred',
+      type: 'FocusEvent',
+      description: 'Emitted when the input loses focus',
+    },
+    {
+      name: 'focused',
+      type: 'FocusEvent',
+      description: 'Emitted when the input receives focus',
+    },
+    {
+      name: 'inputted',
+      type: 'Event',
+      description: 'Emitted on every native input event',
     },
   ],
   examples: [
@@ -486,13 +511,13 @@ const RADIO_METADATA: ComponentMetadata = {
   name: 'Radio',
   category: 'form',
   description:
-    'A themable radio button component for mutually exclusive selections. Uses model-based approach with Angular signals, following PrimeNG pattern.',
+    'A themable radio button component for mutually exclusive selections using Angular model binding for group state.',
   selector: 'ui-radio',
   inputs: [
     {
       name: 'modelValue',
       type: 'model<string | undefined>',
-      description: 'Two-way binding for selected value (like PrimeNG ngModel)',
+      description: 'Two-way model binding for the selected value across the radio group',
       defaultValue: 'undefined',
     },
     { name: 'value', type: 'string', description: 'Value for this radio button', required: true },
@@ -709,12 +734,13 @@ const SELECT_METADATA: ComponentMetadata = {
   id: 'select',
   name: 'Select',
   category: 'form',
-  description: 'A dropdown select component with search and keyboard navigation support.',
+  description: 'A native HTML select component with enhanced styling, grouped options, helper text, and validation messaging.',
   selector: 'ui-select',
   inputs: [
     { name: 'label', type: 'string', description: 'Label text displayed above select' },
     { name: 'placeholder', type: 'string', description: 'Placeholder text when no selection' },
     { name: 'value', type: 'string', description: 'Currently selected value' },
+    { name: 'helperText', type: 'string', description: 'Helper text displayed below the select' },
     {
       name: 'disabled',
       type: 'boolean',
@@ -728,14 +754,49 @@ const SELECT_METADATA: ComponentMetadata = {
       defaultValue: 'false',
     },
     {
+      name: 'size',
+      type: "'sm' | 'md' | 'lg'",
+      description: 'Visual size of the select control',
+      defaultValue: "'md'",
+    },
+    {
+      name: 'fullWidth',
+      type: 'boolean',
+      description: 'Whether the select expands to the container width',
+      defaultValue: 'false',
+    },
+    {
+      name: 'name',
+      type: 'string',
+      description: 'Native select name attribute',
+    },
+    {
+      name: 'id',
+      type: 'string',
+      description: 'ID attribute for label association and testing hooks',
+    },
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      description: 'Accessible name when a visible label is not present',
+    },
+    {
       name: 'options',
       type: 'SelectOption[]',
-      description: 'Array of selectable options { value, label }',
+      description: 'Array of selectable options with optional disabled and group metadata',
       required: true,
     },
-    { name: 'error', type: 'string', description: 'Error message to display' },
+    { name: 'errorMessage', type: 'string', description: 'Error message to display' },
   ],
   outputs: [{ name: 'valueChange', type: 'string', description: 'Emitted when selection changes' }],
+  methods: [
+    {
+      name: 'focus',
+      parameters: '',
+      returnType: 'void',
+      description: 'Programmatically focus the native select element',
+    },
+  ],
   examples: [
     {
       title: 'Basic Select',
@@ -792,7 +853,7 @@ const SELECT_METADATA: ComponentMetadata = {
   label="Country" 
   [options]="countries" 
   placeholder="Select country" 
-  error="Country is required" 
+  errorMessage="Country is required" 
 />`,
     },
     {
@@ -1051,7 +1112,7 @@ const DATEPICKER_METADATA: ComponentMetadata = {
   name: 'Date Picker',
   category: 'form',
   description:
-    'A comprehensive date picker component with calendar popup, keyboard input support, and date range validation. Supports min/max dates, custom placeholders, and helper text.',
+    'A native HTML date input with a themed trigger button, helper text, and support for min/max validation in ISO date format.',
   selector: 'ui-date-picker',
   inputs: [
     { name: 'label', type: 'string', description: 'Label text displayed above the date picker' },
@@ -1093,6 +1154,9 @@ const DATEPICKER_METADATA: ComponentMetadata = {
       description: 'Whether to take full width',
       defaultValue: 'false',
     },
+    { name: 'name', type: 'string', description: 'Native input name attribute' },
+    { name: 'id', type: 'string', description: 'ID attribute for label association and testing hooks' },
+    { name: 'ariaLabel', type: 'string', description: 'Accessible name when a visible label is not present' },
   ],
   outputs: [
     { name: 'valueChange', type: 'string', description: 'Emitted when date changes (ISO format)' },
@@ -1176,21 +1240,18 @@ const DATEPICKER_METADATA: ComponentMetadata = {
   ],
   accessibility: {
     ariaSupport: [
-      'Calendar grid navigation with arrow keys',
-      'Date format announced to screen readers',
-      'Selected date clearly indicated',
-      'Required fields marked with aria-required',
+      'Native date input semantics and browser accessibility support',
+      'aria-required for mandatory fields',
+      'aria-describedby links helper and error text to the input',
+      'Themed trigger button opens the native picker when supported by the browser',
     ],
     keyboardNavigation: [
-      { key: 'Arrow Keys', description: 'Navigate between dates in the calendar' },
-      { key: 'Enter/Space', description: 'Select the focused date' },
-      { key: 'Escape', description: 'Close the calendar popup' },
-      { key: 'Tab', description: 'Move focus to next/previous focusable element' },
-      { key: 'Home/End', description: 'Jump to first/last day of month' },
-      { key: 'PageUp/PageDown', description: 'Navigate to previous/next month' },
+      { key: 'Tab', description: 'Move focus between the input, trigger button, and surrounding controls' },
+      { key: 'Enter/Space', description: 'Open the native date picker from the trigger button when supported' },
+      { key: 'Arrow Keys', description: 'Navigate the browser-provided date UI when the native picker is open' },
     ],
     screenReaderNotes:
-      'Selected date and format announced. Calendar month and year announced. Available and disabled dates indicated. Date range restrictions communicated clearly.',
+      'The label, helper text, errors, and selected ISO date value are announced by assistive technology. Native browser date controls determine the detailed calendar narration.',
   },
   bestPractices: [
     'Always provide a clear label describing what date is being selected',

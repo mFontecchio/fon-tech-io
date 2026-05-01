@@ -23,7 +23,7 @@ dialog.ui-drawer-dialog {
 }
 
 dialog.ui-drawer-dialog::backdrop {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--semantic-surface-overlay);
   transition: opacity var(--semantic-animation-duration-component, 250ms)
     var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }

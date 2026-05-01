@@ -7,6 +7,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ButtonComponent, CardComponent } from '@ui-suite/components';
+import { getAllComponentMetadata } from '../../data/component-metadata';
 
 @Component({
   selector: 'app-home',
@@ -14,11 +15,10 @@ import { ButtonComponent, CardComponent } from '@ui-suite/components';
   imports: [CommonModule, RouterLink, ButtonComponent, CardComponent],
   template: `
     <div class="home-page">
-      <!-- Hero Section -->
       <section class="hero">
         <h1 class="hero-title">UI Component Suite</h1>
         <p class="hero-description">
-          A comprehensive collection of 36 accessible, themable Angular components
+          A comprehensive collection of {{ componentCount }} accessible, themable Angular components
           built with Angular 20+ and modern best practices.
         </p>
         <div class="hero-actions">
@@ -35,7 +35,6 @@ import { ButtonComponent, CardComponent } from '@ui-suite/components';
         </div>
       </section>
 
-      <!-- Features -->
       <section class="features">
         <ui-card class="feature-card">
           <h3>Fully Themable</h3>
@@ -53,7 +52,7 @@ import { ButtonComponent, CardComponent } from '@ui-suite/components';
         </ui-card>
 
         <ui-card class="feature-card">
-          <h3>36 Components</h3>
+          <h3>{{ componentCount }} Components</h3>
           <p>Forms, layouts, data display, feedback, and navigation</p>
         </ui-card>
 
@@ -68,7 +67,6 @@ import { ButtonComponent, CardComponent } from '@ui-suite/components';
         </ui-card>
       </section>
 
-      <!-- Quick Links -->
       <section class="quick-links">
         <h2>Quick Links</h2>
         <div class="link-grid">
@@ -76,150 +74,150 @@ import { ButtonComponent, CardComponent } from '@ui-suite/components';
             <h3>Installation</h3>
             <p>Get up and running in minutes</p>
           </a>
-          
+
           <a routerLink="/theme-builder" class="link-card">
             <h3>Theme Builder</h3>
             <p>Create your custom theme</p>
           </a>
-          
+
           <a routerLink="/components/form/button" class="link-card">
             <h3>Components</h3>
-            <p>Explore all 36 components</p>
+            <p>Explore all {{ componentCount }} documented components</p>
           </a>
         </div>
       </section>
     </div>
   `,
-  styles: [`
-    .home-page {
-      padding: var(--primitive-spacing-8) var(--primitive-spacing-6);
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+  styles: [
+    `
+      .home-page {
+        padding: var(--primitive-spacing-8) var(--primitive-spacing-6);
+        max-width: 1200px;
+        margin: 0 auto;
+      }
 
-    /* Hero */
-    .hero {
-      text-align: center;
-      padding: var(--primitive-spacing-12) 0;
-      margin-bottom: var(--primitive-spacing-12);
-    }
+      .hero {
+        text-align: center;
+        padding: var(--primitive-spacing-12) 0;
+        margin-bottom: var(--primitive-spacing-12);
+      }
 
-    .hero-title {
-      font-size: 3.5rem;
-      font-weight: var(--primitive-font-weight-bold);
-      color: var(--semantic-text-primary);
-      margin-bottom: var(--primitive-spacing-4);
-      background: linear-gradient(
-        135deg,
-        var(--semantic-brand-primary),
-        var(--primitive-color-purple-600)
-      );
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .hero-description {
-      font-size: var(--primitive-font-size-xl);
-      color: var(--semantic-text-secondary);
-      max-width: 700px;
-      margin: 0 auto var(--primitive-spacing-8);
-      line-height: 1.6;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: var(--primitive-spacing-4);
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .hero-actions a {
-      text-decoration: none;
-    }
-
-    /* Features */
-    .features {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: var(--primitive-spacing-6);
-      margin-bottom: var(--primitive-spacing-12);
-    }
-
-    .feature-card {
-      text-align: center;
-      padding: var(--primitive-spacing-6);
-    }
-
-    .feature-card h3 {
-      font-size: var(--primitive-font-size-lg);
-      font-weight: var(--primitive-font-weight-bold);
-      margin-bottom: var(--primitive-spacing-3);
-      color: var(--semantic-text-primary);
-    }
-
-    .feature-card p {
-      color: var(--semantic-text-secondary);
-      font-size: var(--primitive-font-size-sm);
-    }
-
-    /* Quick Links */
-    .quick-links {
-      margin-bottom: var(--primitive-spacing-8);
-    }
-
-    .quick-links h2 {
-      text-align: center;
-      font-size: 2rem;
-      margin-bottom: var(--primitive-spacing-6);
-      color: var(--semantic-text-primary);
-    }
-
-    .link-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: var(--primitive-spacing-6);
-    }
-
-    .link-card {
-      padding: var(--primitive-spacing-6);
-      background-color: var(--semantic-surface-card);
-      border: 1px solid var(--semantic-border-default);
-      border-radius: var(--primitive-border-radius-lg);
-      text-decoration: none;
-      transition: all 0.2s;
-    }
-
-    .link-card:hover {
-      border-color: var(--semantic-brand-primary);
-      box-shadow: var(--primitive-shadow-md);
-      transform: translateY(-2px);
-    }
-
-    .link-card h3 {
-      font-size: var(--primitive-font-size-lg);
-      font-weight: var(--primitive-font-weight-bold);
-      margin-bottom: var(--primitive-spacing-2);
-      color: var(--semantic-text-primary);
-    }
-
-    .link-card p {
-      color: var(--semantic-text-secondary);
-      font-size: var(--primitive-font-size-sm);
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
       .hero-title {
-        font-size: 2.5rem;
+        font-size: 3.5rem;
+        font-weight: var(--primitive-font-weight-bold);
+        color: var(--semantic-text-primary);
+        margin-bottom: var(--primitive-spacing-4);
+        background: linear-gradient(
+          135deg,
+          var(--semantic-brand-primary),
+          var(--primitive-color-purple-600)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
       }
 
       .hero-description {
-        font-size: var(--primitive-font-size-lg);
+        font-size: var(--primitive-font-size-xl);
+        color: var(--semantic-text-secondary);
+        max-width: 700px;
+        margin: 0 auto var(--primitive-spacing-8);
+        line-height: 1.6;
       }
-    }
-  `],
+
+      .hero-actions {
+        display: flex;
+        gap: var(--primitive-spacing-4);
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .hero-actions a {
+        text-decoration: none;
+      }
+
+      .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: var(--primitive-spacing-6);
+        margin-bottom: var(--primitive-spacing-12);
+      }
+
+      .feature-card {
+        text-align: center;
+        padding: var(--primitive-spacing-6);
+      }
+
+      .feature-card h3 {
+        font-size: var(--primitive-font-size-lg);
+        font-weight: var(--primitive-font-weight-bold);
+        margin-bottom: var(--primitive-spacing-3);
+        color: var(--semantic-text-primary);
+      }
+
+      .feature-card p {
+        color: var(--semantic-text-secondary);
+        font-size: var(--primitive-font-size-sm);
+      }
+
+      .quick-links {
+        margin-bottom: var(--primitive-spacing-8);
+      }
+
+      .quick-links h2 {
+        text-align: center;
+        font-size: 2rem;
+        margin-bottom: var(--primitive-spacing-6);
+        color: var(--semantic-text-primary);
+      }
+
+      .link-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: var(--primitive-spacing-6);
+      }
+
+      .link-card {
+        padding: var(--primitive-spacing-6);
+        background-color: var(--semantic-surface-card);
+        border: 1px solid var(--semantic-border-default);
+        border-radius: var(--primitive-border-radius-lg);
+        text-decoration: none;
+        transition: all 0.2s;
+      }
+
+      .link-card:hover {
+        border-color: var(--semantic-brand-primary);
+        box-shadow: var(--primitive-shadow-md);
+        transform: translateY(-2px);
+      }
+
+      .link-card h3 {
+        font-size: var(--primitive-font-size-lg);
+        font-weight: var(--primitive-font-weight-bold);
+        margin-bottom: var(--primitive-spacing-2);
+        color: var(--semantic-text-primary);
+      }
+
+      .link-card p {
+        color: var(--semantic-text-secondary);
+        font-size: var(--primitive-font-size-sm);
+      }
+
+      @media (max-width: 768px) {
+        .hero-title {
+          font-size: 2.5rem;
+        }
+
+        .hero-description {
+          font-size: var(--primitive-font-size-lg);
+        }
+      }
+    `,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomeComponent {}
+export class HomeComponent {
+  protected readonly componentCount = getAllComponentMetadata().length;
+}
 

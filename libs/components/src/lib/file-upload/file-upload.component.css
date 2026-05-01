@@ -41,12 +41,12 @@
 
 .ui-file-upload-dropzone:hover:not(.ui-file-upload-dropzone--disabled) {
   border-color: var(--semantic-brand-primary);
-  background-color: rgba(59, 130, 246, 0.05);
+  background-color: var(--semantic-brand-primary-subtle);
 }
 
 .ui-file-upload-dropzone--drag-over {
   border-color: var(--semantic-brand-primary);
-  background-color: rgba(59, 130, 246, 0.1);
+  background-color: var(--semantic-feedback-info-subtle);
   transform: scale(1.02);
 }
 
@@ -151,7 +151,7 @@
 
 .ui-file-upload-item--error {
   border-color: var(--semantic-border-error);
-  background-color: rgba(239, 68, 68, 0.05);
+  background-color: var(--semantic-feedback-error-subtle);
 }
 
 /* Preview */

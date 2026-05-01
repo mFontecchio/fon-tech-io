@@ -44,7 +44,7 @@
 /* Variants */
 
 .ui-alert--info {
-  background-color: rgba(59, 130, 246, 0.1);
+  background-color: var(--semantic-feedback-info-subtle);
   border-color: var(--semantic-feedback-info);
   color: var(--semantic-text-primary);
 }
@@ -54,7 +54,7 @@
 }
 
 .ui-alert--success {
-  background-color: rgba(34, 197, 94, 0.1);
+  background-color: var(--semantic-feedback-success-subtle);
   border-color: var(--semantic-feedback-success);
   color: var(--semantic-text-primary);
 }
@@ -64,7 +64,7 @@
 }
 
 .ui-alert--warning {
-  background-color: rgba(251, 191, 36, 0.1);
+  background-color: var(--semantic-feedback-warning-subtle);
   border-color: var(--semantic-feedback-warning);
   color: var(--semantic-text-primary);
 }
@@ -74,7 +74,7 @@
 }
 
 .ui-alert--error {
-  background-color: rgba(239, 68, 68, 0.1);
+  background-color: var(--semantic-feedback-error-subtle);
   border-color: var(--semantic-feedback-error);
   color: var(--semantic-text-primary);
 }

@@ -402,7 +402,7 @@ import {
                 label="Country"
                 [options]="sampleOptions()"
                 placeholder="Select country"
-                error="Country is required"
+                errorMessage="Country is required"
               />
             }
             @if (exampleTitle() === 'Disabled Select') {

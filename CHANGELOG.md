@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - ThemeService now persists selected family and mode separately and switches light/dark within active family
   - Showcase theme switcher now selects families independently from mode, with high-contrast preserved as a special mode
   - Theme builder presets, saved themes, and import/export now use explicit light and dark variants instead of flat token maps
+  - Showcase now preserves the active family when users switch into high-contrast and return after a reload
+  - Getting Started content is now split into dedicated Installation, Usage, and Theming guides instead of a shared placeholder page
+  - Home page component counts now derive from the showcase metadata registry so feature copy stays aligned with the documented surface
 
 ### Added
 - **Carousel Component**: Added a composition-based carousel for projected slide content
@@ -63,6 +66,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Full support for prefers-reduced-motion accessibility preference
 
 ### Fixed
+- **Showcase Alignment Review**: Brought showcase content, metadata, and browser coverage back in line with the current shared libraries
+  - Updated Input, Select, Radio, and Date Picker metadata to match current component inputs, methods, and runtime behavior
+  - Fixed the Select showcase demo and API example to use the current `errorMessage` input instead of the removed `error` input
+  - Repaired showcase Cypress project discovery so support files and spec files resolve correctly from the workspace root
+  - Added Cypress coverage for theme persistence through high-contrast reloads and for the dedicated getting-started guide pages
 - **Component Visual Regressions**: Corrected dark-mode and interaction defects across multiple UI components
   - Tooltip now relies on theme tokens for dark-mode background and text colors without OS-level override flashes
   - Accordion panels now fully collapse without leaving a residual padding gap

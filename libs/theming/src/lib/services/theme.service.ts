@@ -19,6 +19,7 @@ import { CssGeneratorService } from './css-generator.service';
 const THEME_STORAGE_KEY = 'ui-suite-theme';
 const THEME_FAMILY_STORAGE_KEY = 'ui-suite-theme-family';
 const THEME_MODE_STORAGE_KEY = 'ui-suite-theme-mode';
+const CUSTOM_FAMILIES_STORAGE_KEY = 'ui-suite-custom-families';
 const DEFAULT_THEME_FAMILY_ID = 'default';
 const HIGH_CONTRAST_THEME_ID = 'high-contrast';
 
@@ -177,6 +178,11 @@ export class ThemeService {
    */
   setThemeMode(mode: ThemeMode): void {
     if (mode === 'high-contrast') {
+      const currentFamilyId = this.currentThemeFamilyId();
+      if (currentFamilyId) {
+        this._preferredThemeFamilyId.set(currentFamilyId);
+      }
+
       this._selection.set({ kind: 'theme', themeId: HIGH_CONTRAST_THEME_ID });
       this._currentMode.set(mode);
       return;
@@ -251,6 +257,9 @@ export class ThemeService {
       newFamilies.set(themeFamily.metadata.id, themeFamily);
       return newFamilies;
     });
+    if (this.isBrowser) {
+      this.persistCustomFamilies();
+    }
   }
 
   /**
@@ -273,6 +282,9 @@ export class ThemeService {
       newFamilies.delete(familyId);
       return newFamilies;
     });
+    if (this.isBrowser) {
+      this.persistCustomFamilies();
+    }
   }
 
   /**
@@ -357,11 +369,19 @@ export class ThemeService {
    * Initialize theme from storage or system preference
    */
   private initializeTheme(): void {
+    // Restore persisted custom families before resolving selection
+    this.loadCustomFamiliesFromStorage();
+
     const savedThemeFamilyId = this.getStoredThemeFamilyId();
     const savedThemeMode = this.getStoredThemeMode();
     const savedThemeId = this.getStoredThemeId();
 
     if (savedThemeMode === 'high-contrast') {
+      const familyId = this.resolvePreferredFamilyId(savedThemeFamilyId);
+      if (familyId) {
+        this._preferredThemeFamilyId.set(familyId);
+      }
+
       this.setThemeMode('high-contrast');
       return;
     }
@@ -377,6 +397,11 @@ export class ThemeService {
     }
 
     if (savedThemeId) {
+      const familyId = this.resolvePreferredFamilyId(savedThemeFamilyId);
+      if (familyId) {
+        this._preferredThemeFamilyId.set(familyId);
+      }
+
       this.setTheme(savedThemeId);
       return;
     }
@@ -397,7 +422,7 @@ export class ThemeService {
       localStorage.setItem(THEME_STORAGE_KEY, theme.metadata.id);
       localStorage.setItem(THEME_MODE_STORAGE_KEY, theme.metadata.mode);
 
-      const familyId = this.currentThemeFamilyId();
+      const familyId = this.resolvePreferredFamilyId(this.currentThemeFamilyId());
       if (familyId) {
         localStorage.setItem(THEME_FAMILY_STORAGE_KEY, familyId);
       } else {
@@ -462,7 +487,7 @@ export class ThemeService {
   }
 
   /**
-   * Clear stored theme preference
+   * Clear stored theme preference and any persisted custom families
    */
   clearStoredTheme(): void {
     if (!this.isBrowser) {
@@ -473,8 +498,55 @@ export class ThemeService {
       localStorage.removeItem(THEME_STORAGE_KEY);
       localStorage.removeItem(THEME_FAMILY_STORAGE_KEY);
       localStorage.removeItem(THEME_MODE_STORAGE_KEY);
+      localStorage.removeItem(CUSTOM_FAMILIES_STORAGE_KEY);
     } catch (error) {
       console.warn('Failed to clear theme from localStorage:', error);
+    }
+  }
+
+  /**
+   * Persist all registered custom theme families to localStorage
+   */
+  private persistCustomFamilies(): void {
+    try {
+      const serializable: Record<string, ThemeFamily> = {};
+      this._customThemeFamilies().forEach((family, id) => {
+        serializable[id] = family;
+      });
+      localStorage.setItem(CUSTOM_FAMILIES_STORAGE_KEY, JSON.stringify(serializable));
+    } catch (error) {
+      console.warn('Failed to persist custom theme families to localStorage:', error);
+    }
+  }
+
+  /**
+   * Restore custom theme families from localStorage
+   */
+  private loadCustomFamiliesFromStorage(): void {
+    try {
+      const stored = localStorage.getItem(CUSTOM_FAMILIES_STORAGE_KEY);
+      if (!stored) {
+        return;
+      }
+      const parsed = JSON.parse(stored) as Record<string, unknown>;
+      Object.values(parsed).forEach((value) => {
+        const family = value as ThemeFamily;
+        if (
+          family &&
+          typeof family === 'object' &&
+          family.metadata?.id &&
+          family.light?.metadata &&
+          family.dark?.metadata
+        ) {
+          this._customThemeFamilies.update((families) => {
+            const newFamilies = new Map(families);
+            newFamilies.set(family.metadata.id, family);
+            return newFamilies;
+          });
+        }
+      });
+    } catch (error) {
+      console.warn('Failed to load custom theme families from localStorage:', error);
     }
   }
 
@@ -526,6 +598,26 @@ export class ThemeService {
     }
 
     return undefined;
+  }
+
+  /**
+   * Resolve the last valid family ID for persistence and recovery
+   */
+  private resolvePreferredFamilyId(candidateFamilyId: string | null): string | null {
+    if (candidateFamilyId && this.availableFamilies().has(candidateFamilyId)) {
+      return candidateFamilyId;
+    }
+
+    const preferredFamilyId = this._preferredThemeFamilyId();
+    if (this.availableFamilies().has(preferredFamilyId)) {
+      return preferredFamilyId;
+    }
+
+    if (this.availableFamilies().has(DEFAULT_THEME_FAMILY_ID)) {
+      return DEFAULT_THEME_FAMILY_ID;
+    }
+
+    return null;
   }
 }
 

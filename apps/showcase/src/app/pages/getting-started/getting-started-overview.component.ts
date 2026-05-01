@@ -14,27 +14,30 @@ import { CardComponent } from '@ui-suite/components';
   template: `
     <div class="getting-started-overview">
       <h1>Getting Started</h1>
-      <p class="subtitle">Learn how to install, use, and customize the UI Component Suite</p>
+      <p class="subtitle">
+        Learn how to install, use, and theme the UI Component Suite with Angular 20 standalone components,
+        signal-friendly APIs, and family-aware runtime theming.
+      </p>
 
       <div class="guides-grid">
         <a routerLink="/getting-started/installation" class="guide-card">
           <ui-card>
             <h2>Installation</h2>
-            <p>Step-by-step guide to installing and configuring the component library in your Angular project.</p>
+            <p>Set up the workspace locally or consume the published packages in another Angular application.</p>
           </ui-card>
         </a>
 
         <a routerLink="/getting-started/usage" class="guide-card">
           <ui-card>
             <h2>Usage</h2>
-            <p>Learn how to import and use components in your application with practical examples.</p>
+            <p>Import standalone components, wire signals to inputs and outputs, and compose views that match the shared libraries.</p>
           </ui-card>
         </a>
 
         <a routerLink="/getting-started/theming" class="guide-card">
           <ui-card>
             <h2>Theming</h2>
-            <p>Customize the look and feel of components using our powerful theming system.</p>
+            <p>Use ThemeService to select theme families, toggle light and dark modes, and preserve user preference across reloads.</p>
           </ui-card>
         </a>
       </div>

@@ -19,7 +19,7 @@
 }
 
 .ui-modal::backdrop {
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: var(--semantic-surface-overlay);
   backdrop-filter: blur(2px);
   animation: ui-modal-backdrop-fade-in var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-decelerate, cubic-bezier(0, 0, 0.2, 1));
 }

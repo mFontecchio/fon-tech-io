@@ -259,6 +259,12 @@
 .ui-input:-webkit-autofill:focus {
   -webkit-text-fill-color: var(--component-input-default-text);
   -webkit-box-shadow: 0 0 0 1000px transparent inset;
+  /*
+   * Intentional browser workaround: A very long transition duration effectively
+   * prevents the browser from rendering its default autofill background color,
+   * allowing the component's own background token to show through. This is a
+   * well-known CSS technique and is not subject to the animation token system.
+   */
   transition: background-color 5000s ease-in-out 0s;
 }
 

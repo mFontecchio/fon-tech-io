@@ -44,7 +44,7 @@ import {
   lightenColor,
   darkenColor,
   generateShades,
-  parseCSSVariables,
+  parseCSSVariablesByBlock,
 } from './theme-utils';
 
 interface ThemeToken {
@@ -2234,7 +2234,12 @@ export class ThemeBuilderComponent {
   }
 
   // Direct token update (handles both light and dark)
-  protected updateTokenDirect(tokenName: string, value: string, isDark: boolean): void {
+  protected updateTokenDirect(
+    tokenName: string,
+    value: string,
+    isDark: boolean,
+    recordHistory: boolean = true
+  ): void {
     // Get old value for history
     const oldValue = getComputedStyle(document.documentElement).getPropertyValue(tokenName).trim();
 
@@ -2269,7 +2274,7 @@ export class ThemeBuilderComponent {
     document.documentElement.style.setProperty(tokenName, value);
 
     // Record in history
-    if (oldValue !== value) {
+    if (recordHistory && oldValue !== value) {
       this.addToHistory(tokenName, oldValue, value);
     }
   }
@@ -2308,7 +2313,7 @@ export class ThemeBuilderComponent {
     });
     css += '}\n\n';
 
-    css += '/* Dark Mode */\n:root[data-theme="dark"],\n[data-theme="dark"] {\n';
+    css += '/* Dark Mode */\n:root[data-theme-mode="dark"],\n[data-theme-mode="dark"] {\n';
     // Only export dark variants for color tokens
     colorCategories.forEach((category) => {
       css += `  /* ${category.name} - Dark */\n`;
@@ -2645,7 +2650,7 @@ export class ThemeBuilderComponent {
             : normalizeImportedThemeData(parsed, this.getFileBaseName(file.name));
         } else if (file.name.endsWith('.css')) {
           importedTheme = normalizeImportedThemeData(
-            parseCSSVariables(content),
+            parseCSSVariablesByBlock(content),
             this.getFileBaseName(file.name)
           );
         } else {
@@ -2704,12 +2709,24 @@ export class ThemeBuilderComponent {
     this.canRedo.set(this.historyIndex < this.history.length - 1);
   }
 
+  private applyHistoryEntry(entry: HistoryEntry, value: string): void {
+    const isDark = entry.tokenName.endsWith('-dark');
+
+    if (isDark) {
+      document.documentElement.style.setProperty(entry.tokenName, value);
+    } else {
+      this.updateTokenDirect(entry.tokenName, value, false, false);
+    }
+
+    this.syncThemeFamilyWithService();
+    this.updateAccessibilityChecks();
+  }
+
   protected undo(): void {
     if (!this.canUndo()) return;
 
     const entry = this.history[this.historyIndex];
-    const isDark = entry.tokenName.endsWith('-dark');
-    document.documentElement.style.setProperty(entry.tokenName, entry.oldValue);
+    this.applyHistoryEntry(entry, entry.oldValue);
     this.historyIndex--;
     this.updateHistoryButtons();
   }
@@ -2719,8 +2736,7 @@ export class ThemeBuilderComponent {
 
     this.historyIndex++;
     const entry = this.history[this.historyIndex];
-    const isDark = entry.tokenName.endsWith('-dark');
-    document.documentElement.style.setProperty(entry.tokenName, entry.newValue);
+    this.applyHistoryEntry(entry, entry.newValue);
     this.updateHistoryButtons();
   }
 
