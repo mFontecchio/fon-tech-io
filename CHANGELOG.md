@@ -17,6 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Getting Started content is now split into dedicated Installation, Usage, and Theming guides instead of a shared placeholder page
   - Home page component counts now derive from the showcase metadata registry so feature copy stays aligned with the documented surface
 
+### Fixed
+- **Theme Builder Header Switchback**: Prevented the builder sync effect from reactivating the edited family when users switch away from presets such as Axolotl through the showcase header picker
+
 ### Added
 - **Carousel Component**: Added a composition-based carousel for projected slide content
   - Supports slide and fade transitions with keyboard navigation, swipe gestures, indicators, thumbnails, and optional autoplay

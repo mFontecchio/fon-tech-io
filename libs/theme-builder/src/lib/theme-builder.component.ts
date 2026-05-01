@@ -12,6 +12,7 @@ import {
   HostListener,
   afterNextRender,
   inject,
+  untracked,
 } from '@angular/core';
 
 import {
@@ -2093,9 +2094,10 @@ export class ThemeBuilderComponent {
       this.typographyCategories();
       this.spacingCategories();
 
-      this.syncThemeFamilyWithService();
-
-      this.updateAccessibilityChecks();
+      untracked(() => {
+        this.syncThemeFamilyWithService();
+        this.updateAccessibilityChecks();
+      });
     });
 
     // Hide skeleton loaders after the next render cycle (Angular best practice)
@@ -2129,7 +2131,7 @@ export class ThemeBuilderComponent {
     const themeFamily = this.buildEditableThemeFamily();
     this.themeService.registerThemeFamily(themeFamily);
 
-    if (activate || this.themeService.currentThemeFamilyId() !== themeFamily.metadata.id) {
+    if (activate) {
       this.themeService.setThemeFamily(themeFamily.metadata.id);
     }
 
