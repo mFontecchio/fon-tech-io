@@ -1,0 +1,10 @@
+<div
+  class="ui-tab-panel"
+  [class.ui-tab-panel--active]="isActive()"
+  [attr.role]="'tabpanel'"
+  [attr.aria-labelledby]="'ui-tab-' + index()"
+  [attr.id]="'ui-tab-panel-' + index()"
+  [attr.hidden]="!isActive() ? true : null"
+>
+  <ng-content />
+</div>

@@ -1,18 +1,12 @@
 ﻿/**
  * Avatar Component
- * 
+ *
  * A themable avatar component supporting images, initials, and icons.
  * Includes status indicator and multiple sizes.
  */
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  input,
-  signal,
-} from '@angular/core';
-import { NgClass, NgStyle } from '@angular/common';
+import { ChangeDetectionStrategy, Component, computed, input, signal } from '@angular/core';
+import { NgClass } from '@angular/common';
 
 export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
 export type AvatarShape = 'circle' | 'square';
@@ -20,12 +14,14 @@ export type AvatarStatus = 'online' | 'offline' | 'away' | 'busy';
 
 @Component({
   selector: 'ui-avatar',
-  imports: [NgClass, NgStyle],
+  imports: [NgClass],
   templateUrl: './avatar.component.html',
   styleUrl: './avatar.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class]': 'hostClasses()',
+    '[style.--ui-avatar-bg]': 'backgroundColor() || null',
+    '[style.--ui-avatar-color]': 'textColor() || null',
   },
 })
 export class AvatarComponent {
@@ -143,17 +139,17 @@ export class AvatarComponent {
    */
   protected readonly inlineStyles = computed(() => {
     const styles: Record<string, string> = {};
-    
+
     const bgColor = this.backgroundColor();
     const textColor = this.textColor();
-    
+
     if (bgColor) {
       styles['backgroundColor'] = bgColor;
     }
     if (textColor) {
       styles['color'] = textColor;
     }
-    
+
     return styles;
   });
 
@@ -164,4 +160,3 @@ export class AvatarComponent {
     this.imageError.set(true);
   }
 }
-

@@ -54,9 +54,11 @@
 
 .ui-progress-bar {
   height: 100%;
+  width: var(--ui-progress-width, 0%);
   background-color: var(--semantic-brand-primary);
   border-radius: var(--primitive-border-radius-full);
-  transition: width var(--semantic-animation-duration-component, 250ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
+  transition: width var(--semantic-animation-duration-component, 250ms)
+    var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -107,7 +109,8 @@
     transparent 100%
   );
   background-size: 200% 100%;
-  animation: ui-progress-indeterminate 1.5s ease-in-out infinite;
+  animation: ui-progress-indeterminate var(--semantic-animation-duration-shimmer, 1.5s)
+    var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)) infinite;
 }
 
 .ui-progress-bar--indeterminate.ui-progress-bar--success {
@@ -173,7 +176,8 @@
 /* Animated stripes */
 
 .ui-progress-bar--animated {
-  animation: ui-progress-stripes 1s linear infinite;
+  animation: ui-progress-stripes var(--semantic-animation-duration-spin, 1s)
+    var(--semantic-animation-easing-linear, linear) infinite;
 }
 
 /* Animations */
@@ -220,5 +224,3 @@
     border-right: 2px solid var(--semantic-text-primary);
   }
 }
-
-

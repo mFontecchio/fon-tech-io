@@ -1,46 +1,16 @@
 /**
  * Tab Component
- * 
+ *
  * Individual tab item used within Tabs component.
  * This component is for configuration only; content is projected in the parent.
  */
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  input,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, signal } from '@angular/core';
 
 @Component({
   selector: 'ui-tab',
-  template: `
-    <div 
-      class="ui-tab-panel"
-      [class.ui-tab-panel--active]="isActive()"
-      [attr.role]="'tabpanel'"
-      [attr.aria-labelledby]="'ui-tab-' + index()"
-      [attr.id]="'ui-tab-panel-' + index()"
-      [attr.hidden]="!isActive() ? true : null"
-      [style.display]="isActive() ? 'block' : 'none'"
-    >
-      <ng-content />
-    </div>
-  `,
-  styles: [`
-    .ui-tab-panel {
-      animation: fadeIn 0.2s ease-in;
-    }
-    
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
-  `],
+  templateUrl: './tab.component.html',
+  styleUrl: './tab.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
@@ -96,4 +66,3 @@ export class TabComponent {
     return this.isActive();
   }
 }
-

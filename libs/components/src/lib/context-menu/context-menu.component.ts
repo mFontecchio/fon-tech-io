@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Context Menu Component
  *
  * A context menu that appears on right-click (contextmenu event).
@@ -14,12 +14,11 @@ import {
   signal,
   ElementRef,
   inject,
-  HostListener,
   OnDestroy,
   Renderer2,
   afterNextRender,
 } from '@angular/core';
-import { NgClass, NgStyle } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 export interface ContextMenuItem {
   id: string;
@@ -34,12 +33,17 @@ export interface ContextMenuItem {
 
 @Component({
   selector: 'ui-context-menu',
-  imports: [NgClass, NgStyle],
+  imports: [NgClass],
   templateUrl: './context-menu.component.html',
   styleUrl: './context-menu.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class.ui-context-menu-wrapper]': 'true',
+    '(document:click)': 'handleClickOutside($event)',
+    '(keydown.escape)': 'handleEscape()',
+    '(keydown)': 'handleKeyDown($event)',
+    '(window:scroll)': 'handleScrollOrResize()',
+    '(window:resize)': 'handleScrollOrResize()',
   },
 })
 export class ContextMenuComponent implements OnDestroy {
@@ -91,17 +95,6 @@ export class ContextMenuComponent implements OnDestroy {
     'ui-context-menu--open': this.isOpen(),
   }));
 
-  /**
-   * Computed menu styles
-   */
-  protected readonly menuStyles = computed(() => {
-    const pos = this.menuPosition();
-    return {
-      left: `${pos.x}px`,
-      top: `${pos.y}px`,
-    };
-  });
-
   private elementRef = inject(ElementRef);
   private renderer = inject(Renderer2);
 
@@ -113,7 +106,6 @@ export class ContextMenuComponent implements OnDestroy {
 
   constructor() {
     afterNextRender(() => {
-      // Set up context menu listener on the content area
       const contentElement = this.elementRef.nativeElement.querySelector(
         '.ui-context-menu-content'
       );
@@ -142,15 +134,12 @@ export class ContextMenuComponent implements OnDestroy {
     event.preventDefault();
     event.stopPropagation();
 
-    // Calculate position
     const { clientX, clientY } = event;
     this.menuPosition.set({ x: clientX, y: clientY });
 
-    // Open menu
     this.isOpen.set(true);
     this.opened.emit(event);
 
-    // Adjust position if menu goes off-screen
     setTimeout(() => this.adjustMenuPosition(), 0);
   }
 
@@ -172,10 +161,8 @@ export class ContextMenuComponent implements OnDestroy {
     if (item.disabled || item.divider) return;
 
     if (item.submenu && item.submenu.length > 0) {
-      // Toggle submenu
       this.activeSubmenu.set(this.activeSubmenu() === item.id ? null : item.id);
     } else {
-      // Emit click event and close menu
       this.itemClick.emit(item);
       this.close();
     }
@@ -191,7 +178,6 @@ export class ContextMenuComponent implements OnDestroy {
   /**
    * Click outside to close
    */
-  @HostListener('document:click', ['$event'])
   protected handleClickOutside(event: Event): void {
     const target = event.target as HTMLElement;
     const hostElement = this.elementRef.nativeElement;
@@ -205,7 +191,6 @@ export class ContextMenuComponent implements OnDestroy {
   /**
    * Handle escape key
    */
-  @HostListener('keydown.escape')
   protected handleEscape(): void {
     if (this.isOpen()) {
       this.close();
@@ -218,7 +203,6 @@ export class ContextMenuComponent implements OnDestroy {
    * ArrowRight: open submenu of focused item
    * ArrowLeft: close active submenu
    */
-  @HostListener('keydown', ['$event'])
   protected handleKeyDown(event: KeyboardEvent): void {
     if (!this.isOpen()) return;
     if (!['ArrowDown', 'ArrowUp', 'ArrowRight', 'ArrowLeft'].includes(event.key)) return;
@@ -267,9 +251,7 @@ export class ContextMenuComponent implements OnDestroy {
       }
       case 'ArrowLeft': {
         if (this.activeSubmenu()) {
-          const parentItem = host.querySelector<HTMLElement>(
-            '.ui-context-menu-item--submenu-open'
-          );
+          const parentItem = host.querySelector<HTMLElement>('.ui-context-menu-item--submenu-open');
           this.activeSubmenu.set(null);
           requestAnimationFrame(() => parentItem?.focus());
         }
@@ -281,8 +263,6 @@ export class ContextMenuComponent implements OnDestroy {
   /**
    * Update position on scroll/resize
    */
-  @HostListener('window:scroll')
-  @HostListener('window:resize')
   protected handleScrollOrResize(): void {
     if (this.isOpen()) {
       this.close();
@@ -301,27 +281,22 @@ export class ContextMenuComponent implements OnDestroy {
     const pos = this.menuPosition();
     let { x, y } = pos;
 
-    // Check right edge
     if (menuRect.right > window.innerWidth) {
       x = window.innerWidth - menuRect.width - 8;
     }
 
-    // Check bottom edge
     if (menuRect.bottom > window.innerHeight) {
       y = window.innerHeight - menuRect.height - 8;
     }
 
-    // Check left edge
     if (x < 8) {
       x = 8;
     }
 
-    // Check top edge
     if (y < 8) {
       y = 8;
     }
 
-    // Update position if adjusted
     if (x !== pos.x || y !== pos.y) {
       this.menuPosition.set({ x, y });
     }

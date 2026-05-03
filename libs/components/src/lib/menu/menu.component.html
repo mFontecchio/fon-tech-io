@@ -1,25 +1,19 @@
 <div class="ui-menu-container">
   <!-- Trigger -->
-  <div
+  <button
+    type="button"
     class="ui-menu-trigger"
     [attr.aria-haspopup]="true"
     [attr.aria-expanded]="isOpen()"
-    [attr.tabindex]="disabled() ? -1 : 0"
+    [disabled]="disabled()"
     (click)="toggle()"
-    (keydown.enter)="toggle()"
-    (keydown.space)="$event.preventDefault(); toggle()"
   >
     <ng-content select="[trigger]"></ng-content>
-  </div>
+  </button>
 
   <!-- Menu dropdown -->
   @if (isOpen()) {
-    <div
-      [ngClass]="menuClasses()"
-      [ngStyle]="menuStyles()"
-      [attr.role]="'menu'"
-      [attr.aria-orientation]="'vertical'"
-    >
+    <div [ngClass]="menuClasses()" [attr.role]="'menu'" [attr.aria-orientation]="'vertical'">
       <ul class="ui-menu-list">
         @for (item of items(); track item.id) {
           @if (item.divider) {
@@ -35,6 +29,7 @@
               [attr.aria-haspopup]="item.submenu && item.submenu.length > 0"
               [attr.aria-expanded]="isSubmenuActive(item.id)"
               [attr.tabindex]="item.disabled ? -1 : 0"
+              [attr.data-item-id]="item.id"
               (click)="handleItemClick(item, $event)"
               (keydown.enter)="handleItemClick(item, $event)"
               (keydown.space)="$event.preventDefault(); handleItemClick(item, $event)"
@@ -46,8 +41,21 @@
               }
               <span class="ui-menu-item-label">{{ item.label }}</span>
               @if (item.submenu && item.submenu.length > 0) {
-                <svg class="ui-menu-item-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                  <path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <svg
+                  class="ui-menu-item-arrow"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M6 4L10 8L6 12"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
                 </svg>
               }
 
@@ -86,4 +94,3 @@
     </div>
   }
 </div>
-

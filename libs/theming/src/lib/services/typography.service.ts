@@ -1,6 +1,6 @@
 /**
  * Typography Service
- * 
+ *
  * Service for managing responsive typography and providing utilities
  * for calculating font sizes, line heights, and other typography properties
  */
@@ -96,23 +96,27 @@ export class TypographyService {
   }
 
   /**
-   * Apply typography CSS to document
+   * Apply typography CSS to document via CSSOM (CSP-safe — no style injection)
    */
   applyTypographyCss(): void {
     if (typeof document === 'undefined') {
       return;
     }
 
-    const styleId = 'ui-suite-typography';
-    let styleElement = document.getElementById(styleId) as HTMLStyleElement;
+    const toKebab = (str: string): string =>
+      str
+        .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+        .replace(/([A-Z])([A-Z][a-z])/g, '$1-$2')
+        .toLowerCase();
 
-    if (!styleElement) {
-      styleElement = document.createElement('style');
-      styleElement.id = styleId;
-      document.head.appendChild(styleElement);
-    }
+    const root = document.documentElement;
 
-    styleElement.textContent = this.generateCss();
+    Object.entries(TYPE_SCALES).forEach(([name, scale]) => {
+      const kebab = toKebab(name);
+      root.style.setProperty(`--font-size-${kebab}`, fluidFontSize(scale));
+      root.style.setProperty(`--line-height-${kebab}`, String(calculateLineHeight(scale.min)));
+      root.style.setProperty(`--letter-spacing-${kebab}`, calculateLetterSpacing(scale.min));
+    });
   }
 
   /**
@@ -168,4 +172,3 @@ export class TypographyService {
     return minOrMax === 'min' ? width >= breakpointWidth : width <= breakpointWidth;
   }
 }
-

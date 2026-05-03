@@ -3,7 +3,7 @@
  * Left sidebar with categorized component navigation
  */
 
-import { ChangeDetectionStrategy, Component, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
@@ -31,7 +31,7 @@ interface NavCategory {
       id="showcase-sidebar"
       class="app-sidebar"
       [class.mobile-open]="mobileNavigationOpen()"
-      [attr.aria-hidden]="mobileNavigationOpen() ? null : 'true'"
+      [attr.aria-hidden]="ariaHiddenAttr()"
       aria-label="Primary navigation"
     >
       <div class="sidebar-content">
@@ -305,18 +305,23 @@ interface NavCategory {
           pointer-events: none;
           box-shadow: none;
           transition:
-            transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
-            opacity 220ms ease,
-            box-shadow 320ms cubic-bezier(0.22, 1, 0.36, 1),
-            visibility 0s linear 320ms;
+            transform var(--semantic-animation-duration-page, 350ms)
+              var(--semantic-animation-easing-spring, cubic-bezier(0.34, 1.56, 0.64, 1)),
+            opacity var(--semantic-animation-duration-component, 250ms)
+              var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+            box-shadow var(--semantic-animation-duration-page, 350ms)
+              var(--semantic-animation-easing-spring, cubic-bezier(0.34, 1.56, 0.64, 1)),
+            visibility 0s linear var(--semantic-animation-duration-page, 350ms);
         }
 
         .sidebar-content {
           opacity: 0;
           transform: translate3d(calc(var(--primitive-spacing-4) * -1), 0, 0);
           transition:
-            transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
-            opacity 220ms ease;
+            transform var(--semantic-animation-duration-page, 350ms)
+              var(--semantic-animation-easing-spring, cubic-bezier(0.34, 1.56, 0.64, 1)),
+            opacity var(--semantic-animation-duration-component, 250ms)
+              var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
         }
 
         .app-sidebar.mobile-open {
@@ -331,7 +336,7 @@ interface NavCategory {
         .app-sidebar.mobile-open .sidebar-content {
           opacity: 1;
           transform: translate3d(0, 0, 0);
-          transition-delay: 70ms;
+          transition-delay: var(--semantic-animation-duration-interactive, 150ms);
         }
 
         .nav-section--mobile-only {
@@ -386,6 +391,19 @@ interface NavCategory {
 export class SidebarComponent {
   readonly mobileNavigationOpen = input(false);
   readonly closeNavigation = output<void>();
+
+  private readonly _isMobile = signal(typeof window !== 'undefined' && window.innerWidth < 768);
+
+  constructor() {
+    if (typeof window !== 'undefined') {
+      window.addEventListener('resize', () => this._isMobile.set(window.innerWidth < 768));
+    }
+  }
+
+  /** aria-hidden only when sidebar is off-screen (mobile viewport, menu closed) */
+  protected readonly ariaHiddenAttr = computed(() =>
+    this._isMobile() && !this.mobileNavigationOpen() ? 'true' : null
+  );
 
   protected readonly topLevelItems: NavItem[] = [
     { label: 'Components', path: '/components' },

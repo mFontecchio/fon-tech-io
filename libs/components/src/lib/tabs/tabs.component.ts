@@ -1,6 +1,6 @@
 ﻿/**
  * Tabs Component
- * 
+ *
  * A themable tabs component with keyboard navigation and ARIA support.
  * Supports horizontal and vertical orientations.
  */
@@ -32,8 +32,6 @@ export type TabsSize = 'sm' | 'md' | 'lg';
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class]': 'hostClasses()',
-    '[attr.role]': '"tablist"',
-    '[attr.aria-orientation]': 'orientation()',
   },
 })
 export class TabsComponent {
@@ -117,7 +115,7 @@ export class TabsComponent {
     effect(() => {
       const activeIdx = this.internalActiveIndex();
       const tabsList = this.tabs();
-      
+
       tabsList.forEach((tab, index) => {
         tab.setActive(index === activeIdx);
         tab.setIndex(index);
@@ -128,7 +126,7 @@ export class TabsComponent {
     effect(() => {
       // Track the active index change
       const activeIdx = this.internalActiveIndex();
-      
+
       // Only update after DOM is ready
       if (this.tabButtons().length > 0) {
         requestAnimationFrame(() => {
@@ -136,7 +134,7 @@ export class TabsComponent {
         });
       }
     });
-    
+
     // Initial calculation after first render
     afterNextRender(() => {
       requestAnimationFrame(() => {
@@ -161,14 +159,14 @@ export class TabsComponent {
           // For horizontal tabs, position from left and use width
           const position = button.offsetLeft;
           const size = button.offsetWidth;
-          
+
           this.indicatorPosition.set(position);
           this.indicatorSize.set(size);
         } else {
           // For vertical tabs, position from top and use height
           const position = button.offsetTop;
           const size = button.offsetHeight;
-          
+
           this.indicatorPosition.set(position);
           this.indicatorSize.set(size);
         }
@@ -182,11 +180,11 @@ export class TabsComponent {
   protected selectTab(index: number): void {
     const tabsList = this.tabs();
     const tab = tabsList[index];
-    
+
     if (tab && !tab.disabled()) {
       this.internalActiveIndex.set(index);
       this.activeIndexChange.emit(index);
-      
+
       // Manually trigger indicator update
       requestAnimationFrame(() => {
         this.updateIndicator();
@@ -301,4 +299,3 @@ export class TabsComponent {
     return tabsList.length - 1;
   }
 }
-

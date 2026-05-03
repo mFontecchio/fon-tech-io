@@ -1,5 +1,5 @@
 <div [ngClass]="tabsClasses()">
-  <div class="ui-tabs-list">
+  <div class="ui-tabs-list" role="tablist" [attr.aria-orientation]="orientation()">
     @for (tab of tabs(); track $index) {
       <button
         #tabButton
@@ -26,12 +26,10 @@
       </button>
     }
     @if (indicatorSize() > 0) {
-      <div 
+      <div
         class="ui-tabs-indicator"
-        [style.left]="orientation() === 'horizontal' ? indicatorPosition() + 'px' : 'auto'"
-        [style.top]="orientation() === 'vertical' ? indicatorPosition() + 'px' : 'auto'"
-        [style.width]="orientation() === 'horizontal' ? indicatorSize() + 'px' : '2px'"
-        [style.height]="orientation() === 'vertical' ? indicatorSize() + 'px' : '2px'"
+        [style.--ui-tabs-indicator-pos]="indicatorPosition() + 'px'"
+        [style.--ui-tabs-indicator-size]="indicatorSize() + 'px'"
       ></div>
     }
   </div>
@@ -40,4 +38,3 @@
     <ng-content></ng-content>
   </div>
 </div>
-

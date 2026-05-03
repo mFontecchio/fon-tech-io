@@ -1,6 +1,6 @@
 ﻿/**
  * Tooltip Component
- * 
+ *
  * A themable tooltip component with positioning support.
  * Uses CSS for positioning with fallback for viewport constraints.
  */
@@ -11,23 +11,26 @@ import {
   computed,
   input,
   signal,
-  HostListener,
   ElementRef,
   inject,
 } from '@angular/core';
-import { NgClass, NgStyle } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 export type TooltipPosition = 'top' | 'right' | 'bottom' | 'left';
 export type TooltipSize = 'sm' | 'md' | 'lg';
 
 @Component({
   selector: 'ui-tooltip',
-  imports: [NgClass, NgStyle],
+  imports: [NgClass],
   templateUrl: './tooltip.component.html',
   styleUrl: './tooltip.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class.ui-tooltip-wrapper]': 'true',
+    '(mouseenter)': 'handleMouseEnter()',
+    '(mouseleave)': 'handleMouseLeave()',
+    '(focusin)': 'handleFocusIn()',
+    '(focusout)': 'handleFocusOut()',
   },
 })
 export class TooltipComponent {
@@ -67,11 +70,6 @@ export class TooltipComponent {
   protected readonly isVisible = signal(false);
 
   /**
-   * Dynamic position styles
-   */
-  protected readonly tooltipStyles = signal<Record<string, string>>({});
-
-  /**
    * Show timeout ID
    */
   private showTimeoutId?: number;
@@ -94,12 +92,11 @@ export class TooltipComponent {
   /**
    * Handle mouse enter
    */
-  @HostListener('mouseenter')
   protected handleMouseEnter(): void {
     if (this.disabled()) return;
 
     this.clearHideTimeout();
-    
+
     this.showTimeoutId = window.setTimeout(() => {
       this.updatePosition();
       this.isVisible.set(true);
@@ -109,12 +106,11 @@ export class TooltipComponent {
   /**
    * Handle mouse leave
    */
-  @HostListener('mouseleave')
   protected handleMouseLeave(): void {
     if (this.disabled()) return;
 
     this.clearShowTimeout();
-    
+
     this.hideTimeoutId = window.setTimeout(() => {
       this.isVisible.set(false);
     }, this.hideDelay());
@@ -123,7 +119,6 @@ export class TooltipComponent {
   /**
    * Handle focus (for keyboard accessibility)
    */
-  @HostListener('focusin')
   protected handleFocusIn(): void {
     if (this.disabled()) return;
 
@@ -135,7 +130,6 @@ export class TooltipComponent {
   /**
    * Handle blur
    */
-  @HostListener('focusout')
   protected handleFocusOut(): void {
     if (this.disabled()) return;
 
@@ -174,32 +168,36 @@ export class TooltipComponent {
     const position = this.position();
     const gap = 8; // 0.5rem
 
-    const styles: Record<string, string> = {};
+    let left = 0;
+    let top = 0;
+    let transform = 'none';
 
     switch (position) {
       case 'top':
-        styles['left'] = `${rect.left + rect.width / 2}px`;
-        styles['top'] = `${rect.top - gap}px`;
-        styles['transform'] = 'translate(-50%, -100%)';
+        left = rect.left + rect.width / 2;
+        top = rect.top - gap;
+        transform = 'translate(-50%, -100%)';
         break;
       case 'bottom':
-        styles['left'] = `${rect.left + rect.width / 2}px`;
-        styles['top'] = `${rect.bottom + gap}px`;
-        styles['transform'] = 'translateX(-50%)';
+        left = rect.left + rect.width / 2;
+        top = rect.bottom + gap;
+        transform = 'translateX(-50%)';
         break;
       case 'left':
-        styles['left'] = `${rect.left - gap}px`;
-        styles['top'] = `${rect.top + rect.height / 2}px`;
-        styles['transform'] = 'translate(-100%, -50%)';
+        left = rect.left - gap;
+        top = rect.top + rect.height / 2;
+        transform = 'translate(-100%, -50%)';
         break;
       case 'right':
-        styles['left'] = `${rect.right + gap}px`;
-        styles['top'] = `${rect.top + rect.height / 2}px`;
-        styles['transform'] = 'translateY(-50%)';
+        left = rect.right + gap;
+        top = rect.top + rect.height / 2;
+        transform = 'translateY(-50%)';
         break;
     }
 
-    this.tooltipStyles.set(styles);
+    hostElement.style.setProperty('--ui-tooltip-left', `${left}px`);
+    hostElement.style.setProperty('--ui-tooltip-top', `${top}px`);
+    hostElement.style.setProperty('--ui-tooltip-transform', transform);
   }
 
   /**
@@ -212,4 +210,3 @@ export class TooltipComponent {
 
   private elementRef = inject(ElementRef);
 }
-

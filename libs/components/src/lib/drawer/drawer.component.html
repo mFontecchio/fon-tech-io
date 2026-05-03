@@ -2,7 +2,8 @@
   #dialog
   class="ui-drawer-dialog"
   [class.ui-drawer-dialog--no-backdrop]="!showBackdrop()"
-  [attr.aria-label]="title() || 'Drawer'"
+  [attr.aria-labelledby]="title() ? 'ui-drawer-title' : null"
+  [attr.aria-label]="!title() ? 'Drawer' : null"
   (click)="handleBackdropClick($event)"
   (cancel)="handleCancel($event)"
 >
@@ -11,15 +12,15 @@
     <!-- Header -->
     @if (title()) {
       <div class="ui-drawer-header">
-        <h2 class="ui-drawer-title">{{ title() }}</h2>
-        <button
-          type="button"
-          class="ui-drawer-close"
-          aria-label="Close drawer"
-          (click)="close()"
-        >
+        <h2 class="ui-drawer-title" id="ui-drawer-title">{{ title() }}</h2>
+        <button type="button" class="ui-drawer-close" aria-label="Close drawer" (click)="close()">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path
+              d="M18 6L6 18M6 6L18 18"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
           </svg>
         </button>
       </div>
@@ -31,7 +32,12 @@
         (click)="close()"
       >
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path
+            d="M18 6L6 18M6 6L18 18"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
         </svg>
       </button>
     }
@@ -47,4 +53,3 @@
     </div>
   </div>
 </dialog>
-

@@ -16,6 +16,12 @@
 .ui-menu-trigger {
   display: inline-block;
   cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
 }
 
 .ui-menu-trigger:focus-visible {
@@ -29,6 +35,10 @@
 .ui-menu {
   position: fixed;
   z-index: 9999;
+  top: var(--ui-menu-top, auto);
+  left: var(--ui-menu-left, auto);
+  right: var(--ui-menu-right, auto);
+  bottom: var(--ui-menu-bottom, auto);
   min-width: 12rem;
   background-color: var(--semantic-surface-card);
   border: 1px solid var(--semantic-border-default);
@@ -38,9 +48,11 @@
   transform: scale(0.95) translateY(-8px);
   transform-origin: top;
   transition:
-    opacity var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
-    transform var(--semantic-animation-duration-component, 250ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
-    visibility 0s linear 0.25s;
+    opacity var(--semantic-animation-duration-interactive, 150ms)
+      var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+    transform var(--semantic-animation-duration-component, 250ms)
+      var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+    visibility 0s linear var(--semantic-animation-duration-component, 250ms);
   pointer-events: none;
   visibility: hidden;
 }
@@ -49,8 +61,10 @@
   opacity: 1;
   transform: scale(1) translateY(0);
   transition:
-    opacity var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
-    transform var(--semantic-animation-duration-component, 250ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+    opacity var(--semantic-animation-duration-interactive, 150ms)
+      var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+    transform var(--semantic-animation-duration-component, 250ms)
+      var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
     visibility 0s linear 0s;
   pointer-events: auto;
   visibility: visible;
@@ -77,9 +91,12 @@
   border-radius: var(--primitive-border-radius-sm);
   cursor: pointer;
   transition:
-    background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1),
-    color 0.15s cubic-bezier(0.4, 0, 0.2, 1),
-    transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    background-color var(--semantic-animation-duration-interactive, 150ms)
+      var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+    color var(--semantic-animation-duration-interactive, 150ms)
+      var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+    transform var(--semantic-animation-duration-interactive, 150ms)
+      var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
   user-select: none;
 }
 
@@ -160,9 +177,11 @@
   opacity: 0;
   transform: translateX(-8px);
   transition:
-    opacity var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
-    transform var(--semantic-animation-duration-component, 250ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
-    visibility 0s linear 0.25s;
+    opacity var(--semantic-animation-duration-interactive, 150ms)
+      var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+    transform var(--semantic-animation-duration-component, 250ms)
+      var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+    visibility 0s linear var(--semantic-animation-duration-component, 250ms);
   visibility: hidden;
   pointer-events: none;
 }
@@ -171,8 +190,10 @@
   opacity: 1;
   transform: translateX(0);
   transition:
-    opacity var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
-    transform var(--semantic-animation-duration-component, 250ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+    opacity var(--semantic-animation-duration-interactive, 150ms)
+      var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+    transform var(--semantic-animation-duration-component, 250ms)
+      var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
     visibility 0s linear 0s;
   visibility: visible;
   pointer-events: auto;
@@ -180,7 +201,8 @@
 
 /* Staggered animation for menu items */
 .ui-menu--open .ui-menu-list > li {
-  animation: ui-menu-item-fade-in var(--semantic-animation-duration-component, 250ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)) backwards;
+  animation: ui-menu-item-fade-in var(--semantic-animation-duration-component, 250ms)
+    var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)) backwards;
 }
 
 .ui-menu--open .ui-menu-list > li:nth-child(1) {
@@ -301,4 +323,3 @@
     outline-width: 3px;
   }
 }
-

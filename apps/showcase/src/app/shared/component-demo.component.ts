@@ -157,7 +157,11 @@ import {
               />
             }
             @if (exampleTitle() === 'Input with Custom Affixes') {
-              <ui-input label="Website" placeholder="your-site" helperText="Projected prefix and suffix content stay inside the field.">
+              <ui-input
+                label="Website"
+                placeholder="your-site"
+                helperText="Projected prefix and suffix content stay inside the field."
+              >
                 <span prefix>https://</span>
                 <span suffix>.com</span>
               </ui-input>
@@ -853,14 +857,13 @@ import {
           <!-- DIVIDER DEMOS -->
           @case ('divider') {
             @if (exampleTitle() === 'Horizontal Divider') {
-              <div class="demo-column" style="width: 100%;">
-                <div>Section 1</div>
+              <div class="demo-column demo-column--full">
                 <ui-divider />
                 <div>Section 2</div>
               </div>
             }
             @if (exampleTitle() === 'Divider Variants') {
-              <div class="demo-column" style="width: 100%;">
+              <div class="demo-column demo-column--full">
                 <p>Solid (default):</p>
                 <ui-divider />
                 <p>Dashed:</p>
@@ -870,11 +873,11 @@ import {
               </div>
             }
             @if (exampleTitle() === 'Vertical Divider') {
-              <div style="display: flex; align-items: center; gap: 16px;">
+              <div class="demo-flex-row">
                 <span>Item 1</span>
-                <ui-divider orientation="vertical" style="height: 24px;" />
+                <ui-divider orientation="vertical" class="demo-divider-height" />
                 <span>Item 2</span>
-                <ui-divider orientation="vertical" style="height: 24px;" />
+                <ui-divider orientation="vertical" class="demo-divider-height" />
                 <span>Item 3</span>
               </div>
             }
@@ -884,59 +887,23 @@ import {
           @case ('stack') {
             @if (exampleTitle() === 'Vertical Stack') {
               <ui-stack direction="vertical" [spacing]="4">
-                <div
-                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
-                >
-                  Item 1
-                </div>
-                <div
-                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
-                >
-                  Item 2
-                </div>
-                <div
-                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
-                >
-                  Item 3
-                </div>
+                <div class="demo-box">Item 1</div>
+                <div class="demo-box">Item 2</div>
+                <div class="demo-box">Item 3</div>
               </ui-stack>
             }
             @if (exampleTitle() === 'Horizontal Stack') {
               <ui-stack direction="horizontal" [spacing]="4">
-                <div
-                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
-                >
-                  Item 1
-                </div>
-                <div
-                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
-                >
-                  Item 2
-                </div>
-                <div
-                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
-                >
-                  Item 3
-                </div>
+                <div class="demo-box">Item 1</div>
+                <div class="demo-box">Item 2</div>
+                <div class="demo-box">Item 3</div>
               </ui-stack>
             }
             @if (exampleTitle() === 'Stack with Alignment') {
               <ui-stack direction="vertical" [spacing]="3" align="center">
-                <div
-                  style="padding: 0.5rem 2rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
-                >
-                  Centered Item 1
-                </div>
-                <div
-                  style="padding: 0.5rem 3rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
-                >
-                  Centered Item 2
-                </div>
-                <div
-                  style="padding: 0.5rem 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
-                >
-                  Centered Item 3
-                </div>
+                <div class="demo-box demo-box--wide">Centered Item 1</div>
+                <div class="demo-box demo-box--wider">Centered Item 2</div>
+                <div class="demo-box demo-box--narrow">Centered Item 3</div>
               </ui-stack>
             }
           }
@@ -945,80 +912,24 @@ import {
           @case ('grid') {
             @if (exampleTitle() === '3-Column Grid') {
               <ui-grid [columns]="3" [gap]="4">
-                <div
-                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
-                >
-                  Item 1
-                </div>
-                <div
-                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
-                >
-                  Item 2
-                </div>
-                <div
-                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
-                >
-                  Item 3
-                </div>
-                <div
-                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
-                >
-                  Item 4
-                </div>
-                <div
-                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
-                >
-                  Item 5
-                </div>
-                <div
-                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
-                >
-                  Item 6
-                </div>
+                <div class="demo-box">Item 1</div>
+                <div class="demo-box">Item 2</div>
+                <div class="demo-box">Item 3</div>
+                <div class="demo-box">Item 4</div>
+                <div class="demo-box">Item 5</div>
+                <div class="demo-box">Item 6</div>
               </ui-grid>
             }
             @if (exampleTitle() === '4-Column Grid') {
               <ui-grid [columns]="4" [gap]="3">
-                <div
-                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
-                >
-                  Item 1
-                </div>
-                <div
-                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
-                >
-                  Item 2
-                </div>
-                <div
-                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
-                >
-                  Item 3
-                </div>
-                <div
-                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
-                >
-                  Item 4
-                </div>
-                <div
-                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
-                >
-                  Item 5
-                </div>
-                <div
-                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
-                >
-                  Item 6
-                </div>
-                <div
-                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
-                >
-                  Item 7
-                </div>
-                <div
-                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
-                >
-                  Item 8
-                </div>
+                <div class="demo-box">Item 1</div>
+                <div class="demo-box">Item 2</div>
+                <div class="demo-box">Item 3</div>
+                <div class="demo-box">Item 4</div>
+                <div class="demo-box">Item 5</div>
+                <div class="demo-box">Item 6</div>
+                <div class="demo-box">Item 7</div>
+                <div class="demo-box">Item 8</div>
               </ui-grid>
             }
           }
@@ -1145,31 +1056,10 @@ import {
                   position="left"
                   (openChange)="drawerLeft.set($event)"
                 >
-                  <nav style="display: flex; flex-direction: column; gap: 12px;">
-                    <a
-                      href="#"
-                      style="padding: 8px; text-decoration: none; color: var(--semantic-text-primary); border-radius: 4px; transition: background 0.2s;"
-                      onmouseover="this.style.background='var(--semantic-surface-background-secondary)'"
-                      onmouseout="this.style.background='transparent'"
-                    >
-                      Dashboard</a
-                    >
-                    <a
-                      href="#"
-                      style="padding: 8px; text-decoration: none; color: var(--semantic-text-primary); border-radius: 4px; transition: background 0.2s;"
-                      onmouseover="this.style.background='var(--semantic-surface-background-secondary)'"
-                      onmouseout="this.style.background='transparent'"
-                    >
-                      Settings</a
-                    >
-                    <a
-                      href="#"
-                      style="padding: 8px; text-decoration: none; color: var(--semantic-text-primary); border-radius: 4px; transition: background 0.2s;"
-                      onmouseover="this.style.background='var(--semantic-surface-background-secondary)'"
-                      onmouseout="this.style.background='transparent'"
-                    >
-                      Profile</a
-                    >
+                  <nav class="demo-drawer-nav">
+                    <a href="#" class="demo-drawer-nav__link">Dashboard</a>
+                    <a href="#" class="demo-drawer-nav__link">Settings</a>
+                    <a href="#" class="demo-drawer-nav__link">Profile</a>
                   </nav>
                 </ui-drawer>
               </div>
@@ -1183,21 +1073,13 @@ import {
                   position="right"
                   (openChange)="drawerRight.set($event)"
                 >
-                  <div style="display: flex; flex-direction: column; gap: 16px;">
+                  <div class="demo-flex-col">
                     <div>
-                      <h4
-                        style="margin: 0 0 8px 0; font-size: 14px; color: var(--semantic-text-secondary);"
-                      >
-                        Appearance
-                      </h4>
+                      <h4 class="demo-section-label">Appearance</h4>
                       <ui-switch label="Dark Mode" />
                     </div>
                     <div>
-                      <h4
-                        style="margin: 0 0 8px 0; font-size: 14px; color: var(--semantic-text-secondary);"
-                      >
-                        Notifications
-                      </h4>
+                      <h4 class="demo-section-label">Notifications</h4>
                       <ui-switch label="Email Notifications" [checked]="true" />
                       <ui-switch label="Push Notifications" />
                     </div>
@@ -1215,36 +1097,18 @@ import {
                   size="sm"
                   (openChange)="drawerTop.set($event)"
                 >
-                  <div style="display: flex; flex-direction: column; gap: 12px;">
-                    <div
-                      style="padding: 12px; background: var(--semantic-surface-background-secondary); border-radius: 6px;"
-                    >
+                  <div class="demo-flex-col demo-flex-col--sm">
+                    <div class="demo-notification-item">
                       <strong>New message from John</strong>
-                      <p
-                        style="margin: 4px 0 0 0; color: var(--semantic-text-secondary); font-size: 14px;"
-                      >
-                        Hey, are you available for a call?
-                      </p>
+                      <p class="demo-notification-desc">Hey, are you available for a call?</p>
                     </div>
-                    <div
-                      style="padding: 12px; background: var(--semantic-surface-background-secondary); border-radius: 6px;"
-                    >
+                    <div class="demo-notification-item">
                       <strong>System Update</strong>
-                      <p
-                        style="margin: 4px 0 0 0; color: var(--semantic-text-secondary); font-size: 14px;"
-                      >
-                        Your system will update tonight at 2 AM
-                      </p>
+                      <p class="demo-notification-desc">Your system will update tonight at 2 AM</p>
                     </div>
-                    <div
-                      style="padding: 12px; background: var(--semantic-surface-background-secondary); border-radius: 6px;"
-                    >
+                    <div class="demo-notification-item">
                       <strong>Task completed</strong>
-                      <p
-                        style="margin: 4px 0 0 0; color: var(--semantic-text-secondary); font-size: 14px;"
-                      >
-                        Your report has been generated
-                      </p>
+                      <p class="demo-notification-desc">Your report has been generated</p>
                     </div>
                   </div>
                 </ui-drawer>
@@ -1260,7 +1124,7 @@ import {
                   size="sm"
                   (openChange)="drawerBottom.set($event)"
                 >
-                  <div style="display: flex; flex-direction: column; gap: 8px;">
+                  <div class="demo-flex-col demo-flex-col--xs">
                     <ui-button [fullWidth]="true"> Edit Item</ui-button>
                     <ui-button [fullWidth]="true" variant="outlined"> Duplicate</ui-button>
                     <ui-button [fullWidth]="true" variant="outlined"> Share</ui-button>
@@ -1277,7 +1141,7 @@ import {
                   title="Edit Profile"
                   (openChange)="drawerWithFooter.set($event)"
                 >
-                  <div style="display: flex; flex-direction: column; gap: 16px;">
+                  <div class="demo-flex-col">
                     <ui-input label="Full Name" placeholder="John Doe" value="John Doe" />
                     <ui-input
                       label="Email"
@@ -1288,7 +1152,7 @@ import {
                     <ui-input label="Phone" type="tel" placeholder="+1 234 567 8900" />
                     <ui-textarea label="Bio" placeholder="Tell us about yourself..." [rows]="4" />
                   </div>
-                  <div footer style="display: flex; gap: 8px; justify-content: flex-end;">
+                  <div footer class="demo-footer-actions">
                     <ui-button variant="text" (clicked)="drawerWithFooter.set(false)"
                       >Cancel</ui-button
                     >
@@ -1466,14 +1330,13 @@ import {
               </ui-carousel>
             }
             @if (exampleTitle() === 'Multiple Visible Slides') {
-              <ui-carousel
-                class="carousel-demo"
-                [visibleSlides]="2"
-                ariaLabel="Product cards"
-              >
+              <ui-carousel class="carousel-demo" [visibleSlides]="2" ariaLabel="Product cards">
                 @for (slide of carouselSlides(); track slide.title) {
                   <ui-carousel-slide [label]="slide.title">
-                    <article class="carousel-slide-card carousel-slide-card--compact" [style.--carousel-accent]="slide.accent">
+                    <article
+                      class="carousel-slide-card carousel-slide-card--compact"
+                      [style.--carousel-accent]="slide.accent"
+                    >
                       <p class="carousel-slide-eyebrow">{{ slide.eyebrow }}</p>
                       <h3 class="carousel-slide-title">{{ slide.title }}</h3>
                       <p class="carousel-slide-description">{{ slide.description }}</p>
@@ -1484,9 +1347,17 @@ import {
               </ui-carousel>
             }
             @if (exampleTitle() === 'Thumbnail Navigation') {
-              <ui-carousel class="carousel-demo" [showThumbnails]="true" ariaLabel="Release highlights">
+              <ui-carousel
+                class="carousel-demo"
+                [showThumbnails]="true"
+                ariaLabel="Release highlights"
+              >
                 @for (slide of carouselSlides(); track slide.title) {
-                  <ui-carousel-slide [label]="slide.title" [thumbnail]="slide.thumbnail" [thumbnailAlt]="slide.title">
+                  <ui-carousel-slide
+                    [label]="slide.title"
+                    [thumbnail]="slide.thumbnail"
+                    [thumbnailAlt]="slide.title"
+                  >
                     <article class="carousel-slide-card" [style.--carousel-accent]="slide.accent">
                       <p class="carousel-slide-eyebrow">{{ slide.eyebrow }}</p>
                       <h3 class="carousel-slide-title">{{ slide.title }}</h3>
@@ -1585,9 +1456,7 @@ import {
                 (itemClick)="handleContextMenuClick($event)"
               >
                 <div class="context-menu-demo-area">
-                  <p
-                    style="text-align: center; padding: 3rem 2rem; color: var(--semantic-text-secondary);"
-                  >
+                  <p class="demo-context-hint">
                     Right-click anywhere in this area<br />
                     to open the context menu
                   </p>
@@ -1663,6 +1532,25 @@ Sample text for editing</textarea
         width: 100%;
       }
 
+      .demo-drawer-nav {
+        display: flex;
+        flex-direction: column;
+        gap: var(--primitive-spacing-3);
+      }
+
+      .demo-drawer-nav__link {
+        padding: var(--primitive-spacing-2);
+        text-decoration: none;
+        color: var(--semantic-text-primary);
+        border-radius: var(--component-button-border-radius, 4px);
+        transition: background var(--animation-duration-normal, 250ms)
+          var(--animation-easing-default, ease-in-out);
+      }
+
+      .demo-drawer-nav__link:hover {
+        background: var(--semantic-surface-background-secondary);
+      }
+
       .demo-container {
         display: flex;
         align-items: center;
@@ -1734,8 +1622,20 @@ Sample text for editing</textarea
         min-height: 18rem;
         padding: var(--primitive-spacing-6);
         background:
-          linear-gradient(145deg, color-mix(in srgb, var(--carousel-accent) 22%, white), transparent 70%),
-          linear-gradient(180deg, var(--semantic-surface-card), color-mix(in srgb, var(--carousel-accent) 12%, var(--semantic-surface-background-secondary)));
+          linear-gradient(
+            145deg,
+            color-mix(in srgb, var(--carousel-accent) 22%, white),
+            transparent 70%
+          ),
+          linear-gradient(
+            180deg,
+            var(--semantic-surface-card),
+            color-mix(
+              in srgb,
+              var(--carousel-accent) 12%,
+              var(--semantic-surface-background-secondary)
+            )
+          );
         color: var(--semantic-text-primary);
       }
 
@@ -1779,7 +1679,8 @@ Sample text for editing</textarea
         border-radius: var(--primitive-border-radius-md);
         background-color: var(--semantic-surface-background-secondary);
         cursor: context-menu;
-        transition: all 0.2s ease;
+        transition: all var(--semantic-animation-duration-interactive, 150ms)
+          var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
       }
 
       .context-menu-demo-area:hover {
@@ -1797,7 +1698,8 @@ Sample text for editing</textarea
         background-color: var(--semantic-surface-card);
         cursor: context-menu;
         max-width: 400px;
-        transition: all 0.2s ease;
+        transition: all var(--semantic-animation-duration-interactive, 150ms)
+          var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
       }
 
       .file-item-demo:hover {
@@ -1839,6 +1741,86 @@ Sample text for editing</textarea
       .editor-demo:focus {
         outline: 2px solid var(--semantic-state-focus-ring);
         outline-offset: 2px;
+      }
+
+      /* Layout utility classes (replaces static inline styles) */
+      .demo-column--full {
+        width: 100%;
+      }
+
+      .demo-flex-row {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .demo-divider-height {
+        height: 24px;
+      }
+
+      .demo-box {
+        padding: 1rem;
+        background: var(--semantic-surface-background-secondary);
+        border-radius: 4px;
+      }
+
+      .demo-box--wide {
+        padding-inline: 2rem;
+        padding-block: 0.5rem;
+      }
+
+      .demo-box--wider {
+        padding-inline: 3rem;
+        padding-block: 0.5rem;
+      }
+
+      .demo-box--narrow {
+        padding-inline: 1rem;
+        padding-block: 0.5rem;
+      }
+
+      .demo-flex-col {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .demo-flex-col--sm {
+        gap: 12px;
+      }
+
+      .demo-flex-col--xs {
+        gap: 8px;
+      }
+
+      .demo-section-label {
+        margin: 0 0 8px 0;
+        font-size: 14px;
+        color: var(--semantic-text-secondary);
+      }
+
+      .demo-notification-item {
+        padding: 12px;
+        background: var(--semantic-surface-background-secondary);
+        border-radius: 6px;
+      }
+
+      .demo-notification-desc {
+        margin: 4px 0 0 0;
+        color: var(--semantic-text-secondary);
+        font-size: 14px;
+      }
+
+      .demo-footer-actions {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+      }
+
+      .demo-context-hint {
+        text-align: center;
+        padding: 3rem 2rem;
+        color: var(--semantic-text-secondary);
       }
     `,
   ],
@@ -1966,7 +1948,8 @@ export class ComponentDemoComponent {
     {
       eyebrow: 'Accessibility',
       title: 'Built for keyboard-first navigation',
-      description: 'Arrow keys, Home, End, focus visibility, autoplay pause, and reduced-motion support are built in.',
+      description:
+        'Arrow keys, Home, End, focus visibility, autoplay pause, and reduced-motion support are built in.',
       metric: 'WCAG 2.1 AA aligned',
       accent: '#0f766e',
       thumbnail: 'A11y',
@@ -1974,7 +1957,8 @@ export class ComponentDemoComponent {
     {
       eyebrow: 'Composition',
       title: 'Project any semantic slide content',
-      description: 'Slides accept native media, cards, marketing content, or custom layouts without a rigid slide data schema.',
+      description:
+        'Slides accept native media, cards, marketing content, or custom layouts without a rigid slide data schema.',
       metric: 'Content-first API',
       accent: '#c2410c',
       thumbnail: 'API',
@@ -1982,7 +1966,8 @@ export class ComponentDemoComponent {
     {
       eyebrow: 'Theming',
       title: 'Tokens drive every visual state',
-      description: 'Controls, indicators, thumbnails, and surfaces inherit primitive and semantic token values from the active theme.',
+      description:
+        'Controls, indicators, thumbnails, and surfaces inherit primitive and semantic token values from the active theme.',
       metric: 'Theme-aware by default',
       accent: '#1d4ed8',
       thumbnail: 'Theme',
@@ -1990,7 +1975,8 @@ export class ComponentDemoComponent {
     {
       eyebrow: 'Responsive',
       title: 'Single-slide or multi-slide layouts',
-      description: 'Use one visible slide for hero content or increase visibleSlides to preview adjacent content collections.',
+      description:
+        'Use one visible slide for hero content or increase visibleSlides to preview adjacent content collections.',
       metric: 'Adaptive layouts',
       accent: '#7c3aed',
       thumbnail: 'Grid',
@@ -2198,4 +2184,3 @@ export class ExampleComponent {}`);
     this.toastService.info(`Action: ${item.label}`);
   }
 }
-

@@ -5,16 +5,20 @@
     </label>
   }
 
-    <div class="ui-slider-control">
-      <div [ngClass]="sliderClasses()">
-        <!-- Visual track -->
-        <div class="ui-slider-track">
-          @if (isRange()) {
-            <div class="ui-slider-fill ui-slider-fill--range" [ngStyle]="rangeFillStyle()"></div>
-          } @else {
-            <div class="ui-slider-fill" [style.width.%]="fillPercentage()"></div>
-          }
-        </div>
+  <div class="ui-slider-control">
+    <div [ngClass]="sliderClasses()">
+      <!-- Visual track -->
+      <div class="ui-slider-track">
+        @if (isRange()) {
+          <div
+            class="ui-slider-fill ui-slider-fill--range"
+            [style.--ui-slider-range-left]="rangeFillLeft()"
+            [style.--ui-slider-range-width]="rangeFillWidth()"
+          ></div>
+        } @else {
+          <div class="ui-slider-fill" [style.--ui-slider-fill]="fillPercentage() + '%'"></div>
+        }
+      </div>
 
       <!-- Single handle or start handle -->
       <input
@@ -81,4 +85,3 @@
     }
   </div>
 </div>
-

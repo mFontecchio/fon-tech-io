@@ -15,7 +15,7 @@ import { getAllComponentMetadata } from '../../data/component-metadata';
   imports: [CommonModule, RouterLink, ButtonComponent, CardComponent],
   template: `
     <div class="home-page">
-      <section class="hero">
+      <section class="hero" aria-label="Introduction">
         <h1 class="hero-title">
           Fon.tech.io <br /><span class="hero-subtitle">UI Component Suite</span>
         </h1>
@@ -33,7 +33,7 @@ import { getAllComponentMetadata } from '../../data/component-metadata';
         </div>
       </section>
 
-      <section class="features">
+      <section class="features" aria-label="Features">
         <ui-card class="feature-card">
           <h3>Fully Themable</h3>
           <p>Customize every aspect with our 3-tier design token system</p>
@@ -65,7 +65,7 @@ import { getAllComponentMetadata } from '../../data/component-metadata';
         </ui-card>
       </section>
 
-      <section class="quick-links">
+      <section class="quick-links" aria-label="Quick links">
         <h2>Quick Links</h2>
         <div class="link-grid">
           <a routerLink="/getting-started/installation" class="link-card">
@@ -118,7 +118,8 @@ import { getAllComponentMetadata } from '../../data/component-metadata';
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        animation: hero-gradient-shift 14s ease-in-out infinite;
+        animation: hero-gradient-shift var(--semantic-animation-duration-showcase-gradient, 14s)
+          var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)) infinite;
       }
 
       @keyframes hero-gradient-shift {
@@ -199,7 +200,8 @@ import { getAllComponentMetadata } from '../../data/component-metadata';
         border: 1px solid var(--semantic-border-default);
         border-radius: var(--primitive-border-radius-lg);
         text-decoration: none;
-        transition: all 0.2s;
+        transition: all var(--semantic-animation-duration-interactive, 150ms)
+          var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
       }
 
       .link-card:hover {

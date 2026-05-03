@@ -9,8 +9,8 @@
   justify-content: center;
   flex-shrink: 0;
   overflow: hidden;
-  background-color: var(--semantic-surface-background-secondary);
-  color: var(--semantic-text-primary);
+  background-color: var(--ui-avatar-bg, var(--semantic-surface-background-secondary));
+  color: var(--ui-avatar-color, var(--semantic-text-primary));
   font-weight: var(--primitive-font-weight-medium);
   user-select: none;
 }
@@ -155,5 +155,3 @@
     border-width: 3px;
   }
 }
-
-

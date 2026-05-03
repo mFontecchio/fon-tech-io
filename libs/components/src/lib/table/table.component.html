@@ -2,7 +2,11 @@
   <div class="ui-table-scroll">
     <table [ngClass]="tableClasses()">
       @if (caption()) {
-        <caption>{{ caption() }}</caption>
+        <caption>
+          {{
+            caption()
+          }}
+        </caption>
       }
 
       <thead class="ui-table-head">
@@ -24,8 +28,14 @@
             <th
               class="ui-table-cell ui-table-cell--header"
               [class.ui-table-cell--sortable]="column.sortable"
-              [style.width]="column.width"
-              [attr.aria-sort]="sortState().column === column.key ? (sortState().direction === 'asc' ? 'ascending' : 'descending') : 'none'"
+              [style.--ui-col-width]="column.width"
+              [attr.aria-sort]="
+                sortState().column === column.key
+                  ? sortState().direction === 'asc'
+                    ? 'ascending'
+                    : 'descending'
+                  : 'none'
+              "
               (click)="handleSort(column)"
             >
               <div class="ui-table-header-content">
@@ -34,16 +44,16 @@
                   <span class="ui-table-sort-icon" aria-hidden="true">
                     @if (getSortIcon(column) === 'sort-asc') {
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                        <path d="M8 4L12 8H4L8 4Z" fill="currentColor"/>
+                        <path d="M8 4L12 8H4L8 4Z" fill="currentColor" />
                       </svg>
                     } @else if (getSortIcon(column) === 'sort-desc') {
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                        <path d="M8 12L4 8H12L8 12Z" fill="currentColor"/>
+                        <path d="M8 12L4 8H12L8 12Z" fill="currentColor" />
                       </svg>
                     } @else {
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                        <path d="M8 4L12 8H4L8 4Z" fill="currentColor" opacity="0.3"/>
-                        <path d="M8 12L4 8H12L8 12Z" fill="currentColor" opacity="0.3"/>
+                        <path d="M8 4L12 8H4L8 4Z" fill="currentColor" opacity="0.3" />
+                        <path d="M8 12L4 8H12L8 12Z" fill="currentColor" opacity="0.3" />
                       </svg>
                     }
                   </span>
@@ -103,4 +113,3 @@
     </table>
   </div>
 </div>
-

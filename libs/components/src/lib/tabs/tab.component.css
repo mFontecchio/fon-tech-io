@@ -1,0 +1,13 @@
+.ui-tab-panel {
+  animation: fadeIn var(--animation-duration-normal, 250ms)
+    var(--animation-easing-default, ease-in-out);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

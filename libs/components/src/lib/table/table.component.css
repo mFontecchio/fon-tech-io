@@ -71,12 +71,14 @@
   font-weight: var(--primitive-font-weight-semibold);
   color: var(--semantic-text-primary);
   white-space: nowrap;
+  width: var(--ui-col-width);
 }
 
 .ui-table-cell--sortable {
   cursor: pointer;
   user-select: none;
-  transition: background-color var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
+  transition: background-color var(--semantic-animation-duration-interactive, 150ms)
+    var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .ui-table-cell--sortable:hover {
@@ -110,7 +112,8 @@
 /* Row */
 
 .ui-table-row {
-  transition: background-color var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
+  transition: background-color var(--semantic-animation-duration-interactive, 150ms)
+    var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .ui-table--hoverable .ui-table-row:hover {
@@ -187,7 +190,8 @@
   border: 3px solid var(--semantic-surface-background-secondary);
   border-top-color: var(--semantic-brand-primary);
   border-radius: var(--primitive-border-radius-full);
-  animation: ui-table-spinner 0.8s linear infinite;
+  animation: ui-table-spinner var(--semantic-animation-duration-loading, 0.8s)
+    var(--semantic-animation-easing-linear, linear) infinite;
 }
 
 @keyframes ui-table-spinner {
@@ -241,5 +245,3 @@
     border-right-width: 2px;
   }
 }
-
-

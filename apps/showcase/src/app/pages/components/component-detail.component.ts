@@ -39,15 +39,15 @@ import { getComponentMetadata } from '../../data/component-metadata';
     ResponsivePreviewComponent,
   ],
   template: `
-    <div class="component-detail-page">
+    <article class="component-detail-page">
       <!-- Header -->
-      <div class="component-header">
+      <header class="component-header">
         <h1>{{ componentName() }}</h1>
         <p class="category-badge">{{ category() }}</p>
         @if (metadata()) {
           <p class="component-description">{{ metadata()!.description }}</p>
         }
-      </div>
+      </header>
 
       <!-- Documentation Tabs -->
       @if (metadata()) {
@@ -149,7 +149,8 @@ import { getComponentMetadata } from '../../data/component-metadata';
                   class="responsive-toggle"
                   [class.responsive-toggle--active]="showResponsivePreview()"
                   (click)="toggleResponsivePreview()"
-                  title="Toggle responsive preview"
+                  aria-label="Toggle responsive preview"
+                  [attr.aria-pressed]="showResponsivePreview()"
                 >
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                     <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
@@ -243,7 +244,7 @@ import { getComponentMetadata } from '../../data/component-metadata';
           Documentation for <strong>{{ componentName() }}</strong> is in progress or not found.
         </ui-alert>
       }
-    </div>
+    </article>
   `,
   styles: [
     `
@@ -373,7 +374,8 @@ import { getComponentMetadata } from '../../data/component-metadata';
         text-decoration: none;
         color: var(--semantic-text-primary);
         font-size: var(--primitive-font-size-sm);
-        transition: all 0.2s;
+        transition: all var(--semantic-animation-duration-interactive, 150ms)
+          var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
         text-transform: capitalize;
       }
 
@@ -402,7 +404,8 @@ import { getComponentMetadata } from '../../data/component-metadata';
         color: var(--semantic-text-secondary);
         border-radius: var(--primitive-border-radius-md);
         cursor: pointer;
-        transition: all 0.2s;
+        transition: all var(--semantic-animation-duration-interactive, 150ms)
+          var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
         font-size: var(--primitive-font-size-sm);
         font-weight: var(--primitive-font-weight-medium);
       }
@@ -513,4 +516,3 @@ export class ComponentDetailComponent implements OnInit {
     return `${this.componentId()}-${cleanTitle}.${extension}`;
   }
 }
-

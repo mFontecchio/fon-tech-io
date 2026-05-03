@@ -72,7 +72,13 @@ interface ThemeFamilyOption {
       </button>
 
       @if (isOpen()) {
-        <div class="theme-dropdown" (click)="$event.stopPropagation()">
+        <div
+          class="theme-dropdown"
+          role="menu"
+          aria-label="Theme options"
+          (click)="$event.stopPropagation()"
+          (keydown)="handleDropdownKeyDown($event)"
+        >
           <div class="theme-dropdown-header">
             <span class="theme-dropdown-title">Select Theme</span>
           </div>
@@ -83,11 +89,16 @@ interface ThemeFamilyOption {
             @for (option of themeFamilyOptions(); track option.id) {
               <button
                 class="theme-option"
+                role="menuitem"
+                [attr.tabindex]="isOpen() ? 0 : -1"
                 [class.theme-option--active]="
                   currentThemeFamilyId() === option.id && !themeService.isHighContrastMode()
                 "
                 (click)="selectThemeFamily(option.id)"
                 [attr.aria-label]="option.name + ': ' + option.description"
+                [attr.aria-pressed]="
+                  currentThemeFamilyId() === option.id && !themeService.isHighContrastMode()
+                "
               >
                 <div class="theme-option-icon">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -121,21 +132,31 @@ interface ThemeFamilyOption {
             <div class="theme-mode-options">
               <button
                 class="theme-mode-option"
+                role="menuitem"
+                [attr.tabindex]="isOpen() ? 0 : -1"
                 [class.theme-mode-option--active]="
                   currentThemeMode() === 'light' && !themeService.isHighContrastMode()
                 "
                 (click)="selectThemeMode('light')"
                 aria-label="Use light mode"
+                [attr.aria-pressed]="
+                  currentThemeMode() === 'light' && !themeService.isHighContrastMode()
+                "
               >
                 Light
               </button>
               <button
                 class="theme-mode-option"
+                role="menuitem"
+                [attr.tabindex]="isOpen() ? 0 : -1"
                 [class.theme-mode-option--active]="
                   currentThemeMode() === 'dark' && !themeService.isHighContrastMode()
                 "
                 (click)="selectThemeMode('dark')"
                 aria-label="Use dark mode"
+                [attr.aria-pressed]="
+                  currentThemeMode() === 'dark' && !themeService.isHighContrastMode()
+                "
               >
                 Dark
               </button>
@@ -146,9 +167,12 @@ interface ThemeFamilyOption {
             <span class="theme-dropdown-label">Accessibility</span>
             <button
               class="theme-option"
+              role="menuitem"
+              [attr.tabindex]="isOpen() ? 0 : -1"
               [class.theme-option--active]="themeService.isHighContrastMode()"
               (click)="activateHighContrast()"
               aria-label="Use high contrast mode"
+              [attr.aria-pressed]="themeService.isHighContrastMode()"
             >
               <div class="theme-option-icon">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -195,7 +219,8 @@ interface ThemeFamilyOption {
         color: var(--semantic-text-secondary);
         border-radius: var(--primitive-border-radius-md);
         cursor: pointer;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all var(--semantic-animation-duration-page, 350ms)
+          var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
         position: relative;
         overflow: visible;
       }
@@ -206,8 +231,19 @@ interface ThemeFamilyOption {
         transform: scale(1.05);
       }
 
+      .theme-toggle:focus-visible {
+        outline: 2px solid var(--semantic-state-focus-ring, var(--semantic-brand-primary));
+        outline-offset: 2px;
+      }
+
       .theme-toggle:active {
         transform: scale(0.95);
+      }
+
+      .theme-option:focus-visible,
+      .theme-mode-option:focus-visible {
+        outline: 2px solid var(--semantic-state-focus-ring, var(--semantic-brand-primary));
+        outline-offset: 2px;
       }
 
       /* Icon wrapper for animations */
@@ -220,17 +256,20 @@ interface ThemeFamilyOption {
 
       .theme-icon {
         stroke-width: 2;
-        animation: iconFadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        animation: iconFadeIn var(--semantic-animation-duration-page, 350ms)
+          var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
       }
 
       /* Sun animations */
       .sun-core {
-        animation: sunPulse 2s ease-in-out infinite;
+        animation: sunPulse var(--semantic-animation-duration-spinner, 2s)
+          var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)) infinite;
         transform-origin: center;
       }
 
       .sun-rays {
-        animation: sunRotate 8s linear infinite;
+        animation: sunRotate var(--semantic-animation-duration-decorative, 8s)
+          var(--semantic-animation-easing-linear, linear) infinite;
         transform-origin: center;
       }
 
@@ -257,7 +296,8 @@ interface ThemeFamilyOption {
 
       /* Moon animations */
       .moon-crescent {
-        animation: moonFloat 3s ease-in-out infinite;
+        animation: moonFloat var(--semantic-animation-duration-floating, 3s)
+          var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)) infinite;
         transform-origin: center;
       }
 
@@ -273,11 +313,13 @@ interface ThemeFamilyOption {
 
       /* Contrast icon animations */
       .contrast-circle {
-        animation: contrastPulse 1.5s ease-in-out infinite;
+        animation: contrastPulse var(--semantic-animation-duration-pulse, 1.5s)
+          var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)) infinite;
       }
 
       .contrast-split {
-        animation: contrastShift 2s ease-in-out infinite;
+        animation: contrastShift var(--semantic-animation-duration-spinner, 2s)
+          var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)) infinite;
       }
 
       @keyframes contrastPulse {
@@ -320,7 +362,8 @@ interface ThemeFamilyOption {
         width: 12px;
         height: 12px;
         stroke-width: 2;
-        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: transform var(--semantic-animation-duration-page, 350ms)
+          var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
       }
 
       .chevron-open {
@@ -347,7 +390,8 @@ interface ThemeFamilyOption {
         box-shadow: var(--primitive-shadow-xl);
         z-index: 1000;
         overflow: hidden;
-        animation: dropdownSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        animation: dropdownSlideIn var(--semantic-animation-duration-page, 350ms)
+          var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
       }
 
       @keyframes dropdownSlideIn {
@@ -367,7 +411,8 @@ interface ThemeFamilyOption {
       .theme-dropdown-header {
         padding: var(--primitive-spacing-4);
         border-bottom: 1px solid var(--semantic-border-default);
-        animation: headerFadeIn 0.4s ease-out;
+        animation: headerFadeIn var(--semantic-animation-duration-page, 350ms)
+          var(--semantic-animation-easing-decelerate, cubic-bezier(0, 0, 0.2, 1));
       }
 
       @keyframes headerFadeIn {
@@ -424,7 +469,8 @@ interface ThemeFamilyOption {
         border-radius: var(--primitive-border-radius-md);
         padding: var(--primitive-spacing-2) var(--primitive-spacing-3);
         cursor: pointer;
-        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all var(--semantic-animation-duration-interactive, 150ms)
+          var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
       }
 
       .theme-mode-option:hover {
@@ -455,9 +501,11 @@ interface ThemeFamilyOption {
         background: transparent;
         border-radius: var(--primitive-border-radius-md);
         cursor: pointer;
-        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all var(--semantic-animation-duration-interactive, 150ms)
+          var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
         text-align: left;
-        animation: optionSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) backwards;
+        animation: optionSlideIn var(--semantic-animation-duration-page, 350ms)
+          var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)) backwards;
       }
 
       .theme-option:nth-child(1) {
@@ -510,7 +558,8 @@ interface ThemeFamilyOption {
         background-color: var(--semantic-surface-background-secondary);
         color: var(--semantic-text-secondary);
         flex-shrink: 0;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all var(--semantic-animation-duration-page, 350ms)
+          var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
       }
 
       .theme-option:hover .theme-option-icon {
@@ -520,7 +569,8 @@ interface ThemeFamilyOption {
       .theme-option--active .theme-option-icon {
         background-color: var(--semantic-brand-primary);
         color: var(--semantic-text-inverse);
-        animation: iconBounce 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        animation: iconBounce var(--primitive-animation-duration-slower, 500ms)
+          var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
       }
 
       @keyframes iconBounce {
@@ -547,7 +597,8 @@ interface ThemeFamilyOption {
         font-weight: var(--primitive-font-weight-medium);
         color: var(--semantic-text-primary);
         margin-bottom: 2px;
-        transition: transform 0.2s ease;
+        transition: transform var(--semantic-animation-duration-interactive, 150ms)
+          var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
       }
 
       .theme-option:hover .theme-option-name {
@@ -564,7 +615,8 @@ interface ThemeFamilyOption {
         color: var(--semantic-brand-primary);
         stroke-width: 3;
         flex-shrink: 0;
-        animation: checkSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        animation: checkSlideIn var(--semantic-animation-duration-page, 350ms)
+          var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
       }
 
       @keyframes checkSlideIn {
@@ -608,6 +660,7 @@ interface ThemeFamilyOption {
   ],
   host: {
     '(document:click)': 'closeDropdown()',
+    '(document:keydown.escape)': 'closeDropdown()',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -645,6 +698,43 @@ export class ThemeSwitcherComponent {
 
   protected closeDropdown(): void {
     this.isOpen.set(false);
+  }
+
+  /**
+   * Arrow key navigation within the dropdown menu (WAI-ARIA menu pattern)
+   */
+  protected handleDropdownKeyDown(event: KeyboardEvent): void {
+    if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) return;
+    event.preventDefault();
+    event.stopPropagation();
+
+    const menu = event.currentTarget as HTMLElement;
+    const items = Array.from(
+      menu.querySelectorAll<HTMLElement>('[role="menuitem"]:not([disabled])')
+    );
+    if (!items.length) return;
+
+    const current = items.indexOf(document.activeElement as HTMLElement);
+    let next: number;
+
+    switch (event.key) {
+      case 'ArrowDown':
+        next = (current + 1) % items.length;
+        break;
+      case 'ArrowUp':
+        next = (current - 1 + items.length) % items.length;
+        break;
+      case 'Home':
+        next = 0;
+        break;
+      case 'End':
+        next = items.length - 1;
+        break;
+      default:
+        return;
+    }
+
+    items[next]?.focus();
   }
 
   protected selectThemeFamily(themeFamilyId: string): void {

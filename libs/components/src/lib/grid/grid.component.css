@@ -4,6 +4,8 @@
 
 :host {
   display: grid;
+  grid-template-columns: var(--ui-grid-columns, repeat(12, 1fr));
+  gap: var(--ui-grid-gap, 0);
 }
 
 :host.ui-grid--full-width {
@@ -16,23 +18,23 @@
   :host.ui-grid--cols-md-1 {
     grid-template-columns: repeat(1, 1fr);
   }
-  
+
   :host.ui-grid--cols-md-2 {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   :host.ui-grid--cols-md-3 {
     grid-template-columns: repeat(3, 1fr);
   }
-  
+
   :host.ui-grid--cols-md-4 {
     grid-template-columns: repeat(4, 1fr);
   }
-  
+
   :host.ui-grid--cols-md-6 {
     grid-template-columns: repeat(6, 1fr);
   }
-  
+
   :host.ui-grid--cols-md-12 {
     grid-template-columns: repeat(12, 1fr);
   }
@@ -42,23 +44,23 @@
   :host.ui-grid--cols-lg-1 {
     grid-template-columns: repeat(1, 1fr);
   }
-  
+
   :host.ui-grid--cols-lg-2 {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   :host.ui-grid--cols-lg-3 {
     grid-template-columns: repeat(3, 1fr);
   }
-  
+
   :host.ui-grid--cols-lg-4 {
     grid-template-columns: repeat(4, 1fr);
   }
-  
+
   :host.ui-grid--cols-lg-6 {
     grid-template-columns: repeat(6, 1fr);
   }
-  
+
   :host.ui-grid--cols-lg-12 {
     grid-template-columns: repeat(12, 1fr);
   }
@@ -89,4 +91,3 @@
 :host ::ng-deep .ui-grid-span-full {
   grid-column: 1 / -1;
 }
-

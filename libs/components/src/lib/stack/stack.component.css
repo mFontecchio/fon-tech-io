@@ -4,6 +4,9 @@
 
 .ui-stack {
   display: flex;
+  gap: var(--ui-stack-gap, 0);
+  align-items: var(--ui-stack-align, stretch);
+  justify-content: var(--ui-stack-justify, flex-start);
 }
 
 /* Direction */
@@ -51,4 +54,3 @@
     border-width: 2px;
   }
 }
-

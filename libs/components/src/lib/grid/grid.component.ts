@@ -1,16 +1,11 @@
 ﻿/**
  * Grid Component
- * 
+ *
  * A responsive grid layout component with customizable columns and gaps.
  * Built with CSS Grid for modern, flexible layouts.
  */
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
 export type GridColumns = 1 | 2 | 3 | 4 | 6 | 12 | 'auto';
 export type GridGap = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12;
@@ -23,8 +18,8 @@ export type GridGap = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12;
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class]': 'hostClasses()',
-    '[style.grid-template-columns]': 'columnsValue()',
-    '[style.gap]': 'gapValue()',
+    '[style.--ui-grid-columns]': 'columnsValue()',
+    '[style.--ui-grid-gap]': 'gapValue()',
   },
 })
 export class GridComponent {
@@ -93,11 +88,11 @@ export class GridComponent {
    */
   protected readonly columnsValue = computed(() => {
     const columns = this.columns();
-    
+
     if (columns === 'auto') {
       return `repeat(auto-fit, minmax(${this.minColumnWidth()}rem, 1fr))`;
     }
-    
+
     return `repeat(${columns}, 1fr)`;
   });
 
@@ -107,12 +102,11 @@ export class GridComponent {
   protected readonly gapValue = computed(() => {
     const rowGap = this.rowGap() ?? this.gap();
     const columnGap = this.columnGap() ?? this.gap();
-    
+
     if (rowGap === columnGap) {
       return `var(--primitive-spacing-${this.gap()})`;
     }
-    
+
     return `var(--primitive-spacing-${rowGap}) var(--primitive-spacing-${columnGap})`;
   });
 }
-

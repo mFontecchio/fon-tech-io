@@ -1,6 +1,6 @@
 ﻿/**
  * Slider Component
- * 
+ *
  * A range input component for selecting numeric values.
  * Supports single value or dual-handle range selection.
  */
@@ -14,14 +14,14 @@ import {
   signal,
   effect,
 } from '@angular/core';
-import { NgClass, NgStyle } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 export type SliderSize = 'sm' | 'md' | 'lg';
 
 @Component({
   selector: 'ui-slider',
-  imports: [NgClass, NgStyle, FormsModule],
+  imports: [NgClass, FormsModule],
   templateUrl: './slider.component.html',
   styleUrl: './slider.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -152,33 +152,37 @@ export class SliderComponent {
     const max = this.max();
     const value = this.internalValue();
     const range = max - min;
-    
+
     if (range === 0) return 0;
-    
+
     return ((value - min) / range) * 100;
   });
 
   /**
-   * Range fill style (for dual handle)
+   * CSS left offset for range fill (dual handle)
    */
-  protected readonly rangeFillStyle = computed(() => {
-    if (!this.isRange()) return {};
-    
+  protected readonly rangeFillLeft = computed(() => {
+    if (!this.isRange()) return null;
+    const min = this.min();
+    const max = this.max();
+    const start = this.internalValue();
+    const range = max - min;
+    if (range === 0) return null;
+    return `${((start - min) / range) * 100}%`;
+  });
+
+  /**
+   * CSS width for range fill (dual handle)
+   */
+  protected readonly rangeFillWidth = computed(() => {
+    if (!this.isRange()) return null;
     const min = this.min();
     const max = this.max();
     const start = this.internalValue();
     const end = this.internalValueEnd() || max;
     const range = max - min;
-    
-    if (range === 0) return {};
-    
-    const leftPercent = ((start - min) / range) * 100;
-    const widthPercent = ((end - start) / range) * 100;
-    
-    return {
-      left: `${leftPercent}%`,
-      width: `${widthPercent}%`,
-    };
+    if (range === 0) return null;
+    return `${((end - start) / range) * 100}%`;
   });
 
   constructor() {
@@ -198,7 +202,7 @@ export class SliderComponent {
   protected handleValueChange(value: number): void {
     // Ensure value is within min/max bounds
     value = Math.max(this.min(), Math.min(this.max(), value));
-    
+
     // In range mode, ensure start doesn't exceed end
     if (this.isRange()) {
       const endValue = this.internalValueEnd();
@@ -207,7 +211,7 @@ export class SliderComponent {
         value = endValue;
       }
     }
-    
+
     this.internalValue.set(value);
     this.valueChange.emit(value);
   }
@@ -218,13 +222,13 @@ export class SliderComponent {
   protected handleValueEndChange(value: number): void {
     // Ensure value is within min/max bounds
     value = Math.max(this.min(), Math.min(this.max(), value));
-    
+
     // Ensure end doesn't go below start (handles can't swap)
     const startValue = this.internalValue();
     if (value < startValue) {
       value = startValue;
     }
-    
+
     this.internalValueEnd.set(value);
     this.valueEndChange.emit(value);
   }
@@ -235,7 +239,7 @@ export class SliderComponent {
   protected onStartHandleMouseDown(event: MouseEvent | TouchEvent): void {
     event.stopPropagation();
     this.activeHandle.set('start');
-    
+
     // Reset on mouse/touch up
     const resetHandle = () => {
       this.activeHandle.set(null);
@@ -252,7 +256,7 @@ export class SliderComponent {
   protected onEndHandleMouseDown(event: MouseEvent | TouchEvent): void {
     event.stopPropagation();
     this.activeHandle.set('end');
-    
+
     // Reset on mouse/touch up
     const resetHandle = () => {
       this.activeHandle.set(null);
@@ -263,4 +267,3 @@ export class SliderComponent {
     document.addEventListener('touchend', resetHandle);
   }
 }
-

@@ -30,7 +30,8 @@
 
 .ui-spinner {
   display: block;
-  animation: ui-spinner-rotate 2s linear infinite;
+  animation: ui-spinner-rotate var(--semantic-animation-duration-spinner, 2s)
+    var(--semantic-animation-easing-linear, linear) infinite;
   will-change: transform;
 }
 
@@ -75,7 +76,8 @@
   stroke-linecap: round;
   stroke-dasharray: 90, 150;
   stroke-dashoffset: 0;
-  animation: ui-spinner-dash 1.5s ease-in-out infinite;
+  animation: ui-spinner-dash var(--semantic-animation-duration-shimmer, 1.5s)
+    var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)) infinite;
 }
 
 /* Variants */
@@ -128,12 +130,12 @@
     stroke-dasharray: 1, 150;
     stroke-dashoffset: 0;
   }
-  
+
   50% {
     stroke-dasharray: 90, 150;
     stroke-dashoffset: -35;
   }
-  
+
   100% {
     stroke-dasharray: 90, 150;
     stroke-dashoffset: -124;
@@ -144,7 +146,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .ui-spinner {
-    animation: ui-spinner-rotate 3s linear infinite;
+    animation: ui-spinner-rotate var(--semantic-animation-duration-spinner-reduced, 3s)
+      var(--semantic-animation-easing-linear, linear) infinite;
   }
 
   .ui-spinner-path {
@@ -164,4 +167,3 @@
     stroke-width: 6;
   }
 }
-

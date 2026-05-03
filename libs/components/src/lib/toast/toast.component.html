@@ -1,6 +1,20 @@
-<div [ngClass]="toastClasses()" role="alert" aria-live="polite">
+<div
+  [ngClass]="toastClasses()"
+  [attr.role]="variant() === 'error' || variant() === 'warning' ? 'alert' : 'status'"
+  [attr.aria-live]="variant() === 'error' || variant() === 'warning' ? 'assertive' : 'polite'"
+>
   <div class="ui-toast-icon">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
       <path [attr.d]="icon()"></path>
     </svg>
   </div>
@@ -17,9 +31,13 @@
       (click)="handleDismiss()"
     >
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-        <path d="M12 4L4 12M4 4L12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path
+          d="M12 4L4 12M4 4L12 12"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
       </svg>
     </button>
   }
 </div>
-

@@ -1,21 +1,22 @@
 ﻿/**
  * Stack Component
- * 
+ *
  * A layout component for arranging items in a vertical or horizontal stack
  * with consistent spacing between items.
  */
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { NgClass } from '@angular/common';
 
 export type StackDirection = 'vertical' | 'horizontal';
 export type StackAlign = 'start' | 'center' | 'end' | 'stretch';
-export type StackJustify = 'start' | 'center' | 'end' | 'space-between' | 'space-around' | 'space-evenly';
+export type StackJustify =
+  | 'start'
+  | 'center'
+  | 'end'
+  | 'space-between'
+  | 'space-around'
+  | 'space-evenly';
 export type StackSpacing = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12;
 
 @Component({
@@ -26,9 +27,9 @@ export type StackSpacing = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12;
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class]': 'hostClasses()',
-    '[style.gap]': 'gapValue()',
-    '[style.align-items]': 'alignValue()',
-    '[style.justify-content]': 'justifyValue()',
+    '[style.--ui-stack-gap]': 'gapValue()',
+    '[style.--ui-stack-align]': 'alignValue()',
+    '[style.--ui-stack-justify]': 'justifyValue()',
   },
 })
 export class StackComponent {
@@ -116,4 +117,3 @@ export class StackComponent {
     return justify;
   });
 }
-

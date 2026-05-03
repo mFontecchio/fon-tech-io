@@ -16,6 +16,12 @@
 .ui-popover-trigger {
   display: inline-block;
   cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
 }
 
 .ui-popover-trigger:focus-visible {
@@ -29,14 +35,22 @@
 .ui-popover {
   position: fixed;
   z-index: 9999;
+  left: var(--ui-popover-left, 0);
+  top: var(--ui-popover-top, 0);
+  margin: 0;
+  padding: 0;
   max-width: 20rem;
   background-color: var(--semantic-surface-card);
   border: 1px solid var(--semantic-border-default);
   border-radius: var(--primitive-border-radius-md);
   box-shadow: var(--primitive-shadow-lg);
   opacity: 0;
-  transform: scale(0.95);
-  transition: opacity var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)), transform var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
+  transform: var(--ui-popover-transform, none) scale(0.95);
+  transition:
+    opacity var(--semantic-animation-duration-interactive, 150ms)
+      var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+    transform var(--semantic-animation-duration-interactive, 150ms)
+      var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
   pointer-events: none;
 }
 
@@ -46,7 +60,7 @@
 
 .ui-popover--visible {
   opacity: 1;
-  transform: scale(1);
+  transform: var(--ui-popover-transform, none) scale(1);
   pointer-events: auto;
 }
 
@@ -127,7 +141,8 @@
   cursor: pointer;
   color: var(--semantic-text-secondary);
   border-radius: var(--primitive-border-radius-sm);
-  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
+  transition: all var(--semantic-animation-duration-interactive, 150ms)
+    var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .ui-popover-close:hover {
@@ -199,5 +214,3 @@
     border-bottom-width: 2px;
   }
 }
-
-

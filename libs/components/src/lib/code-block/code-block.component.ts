@@ -118,7 +118,8 @@ import 'prismjs/components/prism-json';
         border: 1px solid var(--semantic-border-default);
         border-radius: var(--primitive-border-radius-sm);
         cursor: pointer;
-        transition: all 0.2s ease-in-out;
+        transition: all var(--semantic-animation-duration-interactive, 150ms)
+          var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
       }
 
       .ui-code-block-copy:hover,

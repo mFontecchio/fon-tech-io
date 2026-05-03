@@ -1,24 +1,22 @@
 <div class="ui-popover-container">
   <!-- Trigger -->
-  <div
+  <button
+    type="button"
     class="ui-popover-trigger"
     [attr.aria-haspopup]="true"
     [attr.aria-expanded]="isOpen()"
-    [attr.tabindex]="disabled() ? -1 : 0"
+    [attr.disabled]="disabled() ? true : null"
     (click)="handleTriggerClick()"
     (mouseenter)="handleTriggerMouseEnter()"
     (mouseleave)="handleTriggerMouseLeave()"
-    (keydown.enter)="handleTriggerClick()"
-    (keydown.space)="$event.preventDefault(); handleTriggerClick()"
   >
     <ng-content select="[trigger]"></ng-content>
-  </div>
+  </button>
 
   <!-- Popover content -->
-  <div
+  <dialog
     [ngClass]="popoverClasses()"
-    [ngStyle]="popoverStyles()"
-    [attr.role]="'dialog'"
+    [attr.open]="isOpen() ? true : null"
     [attr.aria-modal]="false"
     [attr.hidden]="!isOpen() ? true : null"
   >
@@ -37,7 +35,12 @@
             (click)="close()"
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <path d="M12 4L4 12M4 4L12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path
+                d="M12 4L4 12M4 4L12 12"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
             </svg>
           </button>
         </div>
@@ -47,6 +50,5 @@
         <ng-content></ng-content>
       </div>
     </div>
-  </div>
+  </dialog>
 </div>
-

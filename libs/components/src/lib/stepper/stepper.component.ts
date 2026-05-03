@@ -1,6 +1,6 @@
 ﻿/**
  * Stepper Component
- * 
+ *
  * A step-by-step progress indicator component.
  * Supports linear and non-linear navigation through steps.
  */
@@ -14,7 +14,6 @@ import {
   signal,
   effect,
   ElementRef,
-  HostListener,
   inject,
 } from '@angular/core';
 import { NgClass } from '@angular/common';
@@ -38,6 +37,7 @@ export type StepperOrientation = 'horizontal' | 'vertical';
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class]': 'hostClasses()',
+    '(keydown)': 'handleKeyDown($event)',
   },
 })
 export class StepperComponent {
@@ -109,7 +109,6 @@ export class StepperComponent {
    * Vertical orientation:   ArrowUp  / ArrowDown
    * Home / End move to the first / last focusable step.
    */
-  @HostListener('keydown', ['$event'])
   protected handleKeyDown(event: KeyboardEvent): void {
     const isHorizontal = this.orientation() === 'horizontal';
     const prevKey = isHorizontal ? 'ArrowLeft' : 'ArrowUp';
@@ -224,4 +223,3 @@ export class StepperComponent {
     return 'pending';
   }
 }
-

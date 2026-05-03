@@ -103,7 +103,7 @@ interface EditableThemeFamilyMetadata {
       </div>
 
       <!-- Dual Theme Info -->
-      <ui-alert variant="info" style="margin-bottom: var(--primitive-spacing-6);">
+      <ui-alert variant="info" class="dual-theme-alert">
         <strong>Dual Theme System:</strong> Edit both Light and Dark color modes simultaneously!
         Each color token has two inputs side-by-side - Light (left) and Dark (right). Typography and
         spacing tokens are shared between both themes. Use the Light/Dark toggle buttons in the Live
@@ -280,7 +280,7 @@ interface EditableThemeFamilyMetadata {
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
-                    style="margin-right: 6px;"
+                    class="icon-inline"
                   >
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                     <polyline points="17 8 12 3 7 8" />
@@ -295,7 +295,7 @@ interface EditableThemeFamilyMetadata {
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
-                    style="margin-right: 6px;"
+                    class="icon-inline"
                   >
                     <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
                     <polyline points="17 21 17 13 7 13 7 21" />
@@ -555,7 +555,7 @@ interface EditableThemeFamilyMetadata {
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    style="margin-right: 6px; vertical-align: middle;"
+                    class="icon-inline icon-inline--middle"
                   >
                     <circle cx="12" cy="12" r="5" />
                     <line x1="12" y1="1" x2="12" y2="3" />
@@ -583,7 +583,7 @@ interface EditableThemeFamilyMetadata {
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    style="margin-right: 6px; vertical-align: middle;"
+                    class="icon-inline icon-inline--middle"
                   >
                     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
                   </svg>
@@ -644,25 +644,16 @@ interface EditableThemeFamilyMetadata {
               <div class="preview-section">
                 <h4>Color Palette</h4>
                 <div class="color-swatches">
-                  <div class="color-swatch" style="background-color: var(--semantic-brand-primary)">
+                  <div class="color-swatch color-swatch--brand">
                     <span>Brand</span>
                   </div>
-                  <div
-                    class="color-swatch"
-                    style="background-color: var(--semantic-feedback-success)"
-                  >
+                  <div class="color-swatch color-swatch--success">
                     <span>Success</span>
                   </div>
-                  <div
-                    class="color-swatch"
-                    style="background-color: var(--semantic-feedback-warning)"
-                  >
+                  <div class="color-swatch color-swatch--warning">
                     <span>Warning</span>
                   </div>
-                  <div
-                    class="color-swatch"
-                    style="background-color: var(--semantic-feedback-error)"
-                  >
+                  <div class="color-swatch color-swatch--error">
                     <span>Error</span>
                   </div>
                 </div>
@@ -871,7 +862,7 @@ interface EditableThemeFamilyMetadata {
       <input
         type="file"
         #fileInput
-        style="display: none"
+        class="file-input-hidden"
         accept=".json,.css"
         (change)="handleFileImport($event)"
       />
@@ -902,6 +893,38 @@ interface EditableThemeFamilyMetadata {
 
       .theme-builder-header {
         margin-bottom: var(--primitive-spacing-6);
+      }
+
+      .dual-theme-alert {
+        margin-bottom: var(--primitive-spacing-6);
+      }
+
+      .icon-inline {
+        margin-right: var(--primitive-spacing-1);
+      }
+
+      .icon-inline--middle {
+        vertical-align: middle;
+      }
+
+      .color-swatch--brand {
+        background-color: var(--semantic-brand-primary);
+      }
+
+      .color-swatch--success {
+        background-color: var(--semantic-feedback-success);
+      }
+
+      .color-swatch--warning {
+        background-color: var(--semantic-feedback-warning);
+      }
+
+      .color-swatch--error {
+        background-color: var(--semantic-feedback-error);
+      }
+
+      .file-input-hidden {
+        display: none;
       }
 
       h1 {

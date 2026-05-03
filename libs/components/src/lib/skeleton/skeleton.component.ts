@@ -1,23 +1,18 @@
 ﻿/**
  * Skeleton Component
- * 
+ *
  * A loading placeholder component that displays a shimmer effect
  * while content is being loaded.
  */
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  input,
-} from '@angular/core';
-import { NgClass, NgStyle } from '@angular/common';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { NgClass } from '@angular/common';
 
 export type SkeletonVariant = 'text' | 'circular' | 'rectangular' | 'rounded';
 
 @Component({
   selector: 'ui-skeleton',
-  imports: [NgClass, NgStyle],
+  imports: [NgClass],
   templateUrl: './skeleton.component.html',
   styleUrl: './skeleton.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -58,29 +53,9 @@ export class SkeletonComponent {
   }));
 
   /**
-   * Computed inline styles
-   */
-  protected readonly inlineStyles = computed(() => {
-    const styles: Record<string, string> = {};
-    
-    const width = this.width();
-    const height = this.height();
-    
-    if (width) {
-      styles['width'] = width;
-    }
-    if (height) {
-      styles['height'] = height;
-    }
-    
-    return styles;
-  });
-
-  /**
    * Array for rendering multiple lines
    */
   protected readonly lineArray = computed(() => {
     return Array.from({ length: this.lines() }, (_, i) => i);
   });
 }
-

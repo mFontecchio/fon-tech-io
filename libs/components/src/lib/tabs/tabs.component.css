@@ -60,7 +60,8 @@
   background: none;
   border: none;
   cursor: pointer;
-  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
+  transition: all var(--semantic-animation-duration-interactive, 150ms)
+    var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
   white-space: nowrap;
   min-width: fit-content;
   z-index: 1; /* Ensure text is above indicator */
@@ -148,10 +149,15 @@
 .ui-tabs-indicator {
   position: absolute;
   background-color: var(--semantic-brand-primary);
-  transition: left var(--semantic-animation-duration-component, 250ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
-              top var(--semantic-animation-duration-component, 250ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
-              width var(--semantic-animation-duration-component, 250ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
-              height var(--semantic-animation-duration-component, 250ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
+  transition:
+    left var(--semantic-animation-duration-component, 250ms)
+      var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+    top var(--semantic-animation-duration-component, 250ms)
+      var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+    width var(--semantic-animation-duration-component, 250ms)
+      var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+    height var(--semantic-animation-duration-component, 250ms)
+      var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
   z-index: 0;
   pointer-events: none;
   will-change: left, top, width, height;
@@ -161,13 +167,17 @@
   bottom: 0;
   right: auto;
   height: 2px;
+  left: var(--ui-tabs-indicator-pos, 0px);
+  width: var(--ui-tabs-indicator-size, 0px);
 }
 
 .ui-tabs--vertical .ui-tabs-indicator {
   right: 0;
-  left: auto !important;
+  left: auto;
   bottom: auto;
   width: 2px;
+  top: var(--ui-tabs-indicator-pos, 0px);
+  height: var(--ui-tabs-indicator-size, 0px);
 }
 
 /* Tab panels */
@@ -186,7 +196,8 @@
 .ui-tab-panel {
   display: none;
   padding: var(--primitive-spacing-4);
-  animation: ui-tab-fade-in var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-decelerate, cubic-bezier(0, 0, 0.2, 1));
+  animation: ui-tab-fade-in var(--semantic-animation-duration-interactive, 150ms)
+    var(--semantic-animation-easing-decelerate, cubic-bezier(0, 0, 0.2, 1));
   width: 100%;
   box-sizing: border-box;
 }
@@ -249,5 +260,3 @@
     outline-width: 3px;
   }
 }
-
-
