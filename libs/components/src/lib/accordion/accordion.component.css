@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Accordion Component Styles
  */
 
@@ -42,7 +42,7 @@
 }
 
 .ui-accordion-header:hover:not(:disabled) {
-  background-color: var(--semantic-surface-subtle);
+  background-color: var(--semantic-surface-background-secondary);
 }
 
 .ui-accordion-header:focus-visible {
@@ -57,7 +57,7 @@
 }
 
 .ui-accordion-item--expanded .ui-accordion-header {
-  background-color: var(--semantic-surface-subtle);
+  background-color: var(--semantic-surface-background-secondary);
 }
 
 /* Title */
@@ -171,3 +171,4 @@
     outline-width: 3px;
   }
 }
+

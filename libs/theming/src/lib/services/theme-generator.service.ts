@@ -231,7 +231,7 @@ export class ThemeGeneratorService {
       if (varName) {
         // Try to find the value in primitive tokens
         // This is a simplified lookup - in production, you'd want a more robust resolver
-        if (varName.startsWith('primitive-color-primary')) {
+        if (varName.startsWith('primitive-primary')) {
           const shade = varName.split('-').pop();
           const shadeKey = shade as unknown as keyof typeof theme.primitive.colors.primary;
           return theme.primitive.colors.primary[shadeKey] || '#3b82f6';
@@ -313,3 +313,4 @@ export class ThemeGeneratorService {
     return this.enhanceTheme(theme);
   }
 }
+

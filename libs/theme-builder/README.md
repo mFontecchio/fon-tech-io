@@ -70,14 +70,14 @@ import {
 } from '@ui-suite/theme-builder';
 
 // WCAG compliance
-const ratio = getContrastRatio('#3b82f6', '#ffffff');  // 3.7
-const level = getWCAGLevel(ratio);                      // 'Fail'
-const passes = meetsWCAG(ratio, 'AA', 'normal');        // false
+const ratio = getContrastRatio('#3b82f6', '#ffffff'); // 3.7
+const level = getWCAGLevel(ratio); // 'Fail'
+const passes = meetsWCAG(ratio, 'AA', 'normal'); // false
 
 // Color generation
-const complement = getComplementaryColor('#3b82f6');    // complementary hex
-const analogous = getAnalogousColors('#3b82f6');        // [hex, hex, hex]
-const shades = generateShades('#3b82f6', 5);            // 5 shades lighter → darker
+const complement = getComplementaryColor('#3b82f6'); // complementary hex
+const analogous = getAnalogousColors('#3b82f6'); // [hex, hex, hex]
+const shades = generateShades('#3b82f6', 5); // 5 shades lighter → darker
 ```
 
 ## Storage Utilities
@@ -86,7 +86,7 @@ const shades = generateShades('#3b82f6', 5);            // 5 shades lighter → 
 import { saveTheme, getSavedThemes, deleteTheme } from '@ui-suite/theme-builder';
 
 // Save theme tokens to localStorage
-saveTheme('my-theme', { '--primitive-color-primary-500': '#0066cc' });
+saveTheme('my-theme', { '--primitive-primary-500': '#0066cc' });
 
 // Retrieve all saved themes
 const themes = getSavedThemes();

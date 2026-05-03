@@ -84,12 +84,12 @@ function applyPresetTokens(theme: Theme, tokens: ThemePresetTokens): void {
     theme.semantic.brand.secondaryActive = value;
   });
 
-  assign('--semantic-brand-subtle', (value) => {
+  assign('--semantic-brand-primary-subtle', (value) => {
     theme.semantic.brand.primarySubtle = value;
     theme.semantic.state.selected = value;
   });
 
-  assign('--semantic-success-primary', (value) => {
+  assign('--semantic-feedback-success', (value) => {
     theme.primitive.colors.success[500] = value;
     theme.primitive.colors.success[600] = value;
     theme.semantic.feedback.success = value;
@@ -97,7 +97,7 @@ function applyPresetTokens(theme: Theme, tokens: ThemePresetTokens): void {
     theme.semantic.border.success = value;
   });
 
-  assign('--semantic-warning-primary', (value) => {
+  assign('--semantic-feedback-warning', (value) => {
     theme.primitive.colors.warning[500] = value;
     theme.primitive.colors.warning[600] = value;
     theme.semantic.feedback.warning = value;
@@ -105,7 +105,7 @@ function applyPresetTokens(theme: Theme, tokens: ThemePresetTokens): void {
     theme.semantic.border.warning = value;
   });
 
-  assign('--semantic-error-primary', (value) => {
+  assign('--semantic-feedback-error', (value) => {
     theme.primitive.colors.error[500] = value;
     theme.primitive.colors.error[600] = value;
     theme.semantic.feedback.error = value;
@@ -113,7 +113,7 @@ function applyPresetTokens(theme: Theme, tokens: ThemePresetTokens): void {
     theme.semantic.border.error = value;
   });
 
-  assign('--semantic-info-primary', (value) => {
+  assign('--semantic-feedback-info', (value) => {
     theme.primitive.colors.info[500] = value;
     theme.primitive.colors.info[600] = value;
     theme.semantic.feedback.info = value;
@@ -131,7 +131,7 @@ function applyPresetTokens(theme: Theme, tokens: ThemePresetTokens): void {
     theme.semantic.surface.elevated = value;
   });
 
-  assign('--semantic-surface-subtle', (value) => {
+  assign('--semantic-surface-background-secondary', (value) => {
     theme.primitive.colors.neutral[100] = value;
     theme.semantic.surface.backgroundSecondary = value;
     theme.semantic.surface.cardHover = value;
@@ -152,7 +152,7 @@ function applyPresetTokens(theme: Theme, tokens: ThemePresetTokens): void {
     theme.semantic.text.tertiary = value;
   });
 
-  assign('--primitive-font-family-base', (value) => {
+  assign('--primitive-font-family-sans', (value) => {
     theme.primitive.typography.fontFamily.sans = value;
   });
 
@@ -164,7 +164,7 @@ function applyPresetTokens(theme: Theme, tokens: ThemePresetTokens): void {
     theme.primitive.typography.fontSize.sm = value;
   });
 
-  assign('--primitive-font-size-md', (value) => {
+  assign('--primitive-font-size-base', (value) => {
     theme.primitive.typography.fontSize.base = value;
   });
 
@@ -216,3 +216,4 @@ function applyPresetTokens(theme: Theme, tokens: ThemePresetTokens): void {
     theme.primitive.borderRadius.full = value;
   });
 }
+

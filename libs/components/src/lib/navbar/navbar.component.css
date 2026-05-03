@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Navbar Component Styles
  */
 
@@ -90,7 +90,7 @@
 
 .ui-navbar-link:hover:not(.ui-navbar-link--disabled) {
   color: var(--semantic-text-primary);
-  background-color: var(--semantic-surface-subtle);
+  background-color: var(--semantic-surface-background-secondary);
 }
 
 .ui-navbar-link:focus-visible {
@@ -133,7 +133,7 @@
 }
 
 .ui-navbar-mobile-toggle:hover {
-  background-color: var(--semantic-surface-subtle);
+  background-color: var(--semantic-surface-background-secondary);
 }
 
 .ui-navbar-mobile-toggle:focus-visible {
@@ -190,7 +190,7 @@
 
 .ui-navbar-mobile-link:hover:not(.ui-navbar-mobile-link--disabled) {
   color: var(--semantic-text-primary);
-  background-color: var(--semantic-surface-subtle);
+  background-color: var(--semantic-surface-background-secondary);
 }
 
 .ui-navbar-mobile-link--active {
@@ -234,4 +234,5 @@
     outline-width: 3px;
   }
 }
+
 

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * List Component Styles
  */
 
@@ -45,7 +45,7 @@
 }
 
 .ui-list--interactive .ui-list-item:hover:not(.ui-list-item--disabled) {
-  background-color: var(--semantic-surface-subtle);
+  background-color: var(--semantic-surface-background-secondary);
 }
 
 .ui-list--interactive .ui-list-item:focus-visible {
@@ -167,4 +167,5 @@
     outline-width: 3px;
   }
 }
+
 

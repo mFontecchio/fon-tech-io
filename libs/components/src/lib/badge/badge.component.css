@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Badge Component Styles
  */
 
@@ -39,7 +39,7 @@
 /* Variants */
 
 .ui-badge--default {
-  background-color: var(--semantic-surface-subtle);
+  background-color: var(--semantic-surface-background-secondary);
   color: var(--semantic-text-primary);
   border: 1px solid var(--semantic-border-default);
 }
@@ -185,4 +185,5 @@
     border: 2px solid currentColor;
   }
 }
+
 

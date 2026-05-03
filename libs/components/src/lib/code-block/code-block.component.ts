@@ -1,4 +1,4 @@
-﻿/**
+/**
  * CodeBlock Component
  * Displays formatted code with syntax highlighting, copy-to-clipboard, and download functionality
  */
@@ -69,7 +69,9 @@ import 'prismjs/components/prism-json';
           </div>
         </div>
       }
-      <pre class="ui-code-block-content"><code #codeElement [class]="'language-' + language()"></code></pre>
+      <pre
+        class="ui-code-block-content"
+      ><code #codeElement [class]="'language-' + language()"></code></pre>
     </div>
   `,
   styles: [
@@ -79,7 +81,7 @@ import 'prismjs/components/prism-json';
         border: 1px solid var(--semantic-border-default);
         border-radius: var(--primitive-border-radius-md);
         overflow: hidden;
-        background-color: var(--semantic-surface-code);
+        background-color: var(--semantic-surface-card);
       }
 
       .ui-code-block-header {
@@ -87,7 +89,7 @@ import 'prismjs/components/prism-json';
         align-items: center;
         justify-content: space-between;
         padding: var(--primitive-spacing-3) var(--primitive-spacing-4);
-        background-color: var(--semantic-surface-subtle);
+        background-color: var(--semantic-surface-background-secondary);
         border-bottom: 1px solid var(--semantic-border-default);
       }
 
@@ -142,9 +144,9 @@ import 'prismjs/components/prism-json';
         margin: 0;
         padding: var(--primitive-spacing-4);
         overflow-x: auto;
-        font-size: var(--primitive-font-size-sm);
+        font-size: var(--primitive-font-size-base);
         line-height: 1.6;
-        background-color: var(--semantic-surface-code);
+        background-color: var(--semantic-surface-card);
       }
 
       .ui-code-block-content code {
@@ -156,21 +158,29 @@ import 'prismjs/components/prism-json';
       :host ::ng-deep code .token.comment,
       :host ::ng-deep code .token.prolog,
       :host ::ng-deep code .token.doctype,
-      :host ::ng-deep code .token.cdata { color: #7c8891; }
-      :host ::ng-deep code .token.punctuation { color: #c5d4dd; }
+      :host ::ng-deep code .token.cdata {
+        color: #7c8891;
+      }
+      :host ::ng-deep code .token.punctuation {
+        color: #c5d4dd;
+      }
       :host ::ng-deep code .token.property,
       :host ::ng-deep code .token.tag,
       :host ::ng-deep code .token.boolean,
       :host ::ng-deep code .token.number,
       :host ::ng-deep code .token.constant,
       :host ::ng-deep code .token.symbol,
-      :host ::ng-deep code .token.deleted { color: #79c0ff; }
+      :host ::ng-deep code .token.deleted {
+        color: #79c0ff;
+      }
       :host ::ng-deep code .token.selector,
       :host ::ng-deep code .token.attr-name,
       :host ::ng-deep code .token.string,
       :host ::ng-deep code .token.char,
       :host ::ng-deep code .token.builtin,
-      :host ::ng-deep code .token.inserted { color: #a5d6ff; }
+      :host ::ng-deep code .token.inserted {
+        color: #a5d6ff;
+      }
       :host ::ng-deep code .token.operator,
       :host ::ng-deep code .token.entity,
       :host ::ng-deep code .token.url,
@@ -178,78 +188,112 @@ import 'prismjs/components/prism-json';
       :host ::ng-deep code .style .token.string,
       :host ::ng-deep code .token.atrule,
       :host ::ng-deep code .token.attr-value,
-      :host ::ng-deep code .token.keyword { color: #ff7b72; }
+      :host ::ng-deep code .token.keyword {
+        color: #ff7b72;
+      }
       :host ::ng-deep code .token.function,
-      :host ::ng-deep code .token.class-name { color: #d2a8ff; }
+      :host ::ng-deep code .token.class-name {
+        color: #d2a8ff;
+      }
       :host ::ng-deep code .token.regex,
       :host ::ng-deep code .token.important,
-      :host ::ng-deep code .token.variable { color: #ffa657; }
+      :host ::ng-deep code .token.variable {
+        color: #ffa657;
+      }
 
       /* Prism Theme - Light Mode */
-      :host-context([data-theme='light']) ::ng-deep code .token.comment,
-      :host-context([data-theme='light']) ::ng-deep code .token.prolog,
-      :host-context([data-theme='light']) ::ng-deep code .token.doctype,
-      :host-context([data-theme='light']) ::ng-deep code .token.cdata { color: #6a737d; }
-      :host-context([data-theme='light']) ::ng-deep code .token.punctuation { color: #24292e; }
-      :host-context([data-theme='light']) ::ng-deep code .token.property,
-      :host-context([data-theme='light']) ::ng-deep code .token.tag,
-      :host-context([data-theme='light']) ::ng-deep code .token.boolean,
-      :host-context([data-theme='light']) ::ng-deep code .token.number,
-      :host-context([data-theme='light']) ::ng-deep code .token.constant,
-      :host-context([data-theme='light']) ::ng-deep code .token.symbol,
-      :host-context([data-theme='light']) ::ng-deep code .token.deleted { color: #005cc5; }
-      :host-context([data-theme='light']) ::ng-deep code .token.selector,
-      :host-context([data-theme='light']) ::ng-deep code .token.attr-name,
-      :host-context([data-theme='light']) ::ng-deep code .token.string,
-      :host-context([data-theme='light']) ::ng-deep code .token.char,
-      :host-context([data-theme='light']) ::ng-deep code .token.builtin,
-      :host-context([data-theme='light']) ::ng-deep code .token.inserted { color: #032f62; }
-      :host-context([data-theme='light']) ::ng-deep code .token.operator,
-      :host-context([data-theme='light']) ::ng-deep code .token.entity,
-      :host-context([data-theme='light']) ::ng-deep code .token.url,
-      :host-context([data-theme='light']) ::ng-deep code .language-css .token.string,
-      :host-context([data-theme='light']) ::ng-deep code .style .token.string,
-      :host-context([data-theme='light']) ::ng-deep code .token.atrule,
-      :host-context([data-theme='light']) ::ng-deep code .token.attr-value,
-      :host-context([data-theme='light']) ::ng-deep code .token.keyword { color: #d73a49; }
-      :host-context([data-theme='light']) ::ng-deep code .token.function,
-      :host-context([data-theme='light']) ::ng-deep code .token.class-name { color: #6f42c1; }
-      :host-context([data-theme='light']) ::ng-deep code .token.regex,
-      :host-context([data-theme='light']) ::ng-deep code .token.important,
-      :host-context([data-theme='light']) ::ng-deep code .token.variable { color: #e36209; }
+      :host-context([data-theme-mode='light']) ::ng-deep code .token.comment,
+      :host-context([data-theme-mode='light']) ::ng-deep code .token.prolog,
+      :host-context([data-theme-mode='light']) ::ng-deep code .token.doctype,
+      :host-context([data-theme-mode='light']) ::ng-deep code .token.cdata {
+        color: #6a737d;
+      }
+      :host-context([data-theme-mode='light']) ::ng-deep code .token.punctuation {
+        color: #24292e;
+      }
+      :host-context([data-theme-mode='light']) ::ng-deep code .token.property,
+      :host-context([data-theme-mode='light']) ::ng-deep code .token.tag,
+      :host-context([data-theme-mode='light']) ::ng-deep code .token.boolean,
+      :host-context([data-theme-mode='light']) ::ng-deep code .token.number,
+      :host-context([data-theme-mode='light']) ::ng-deep code .token.constant,
+      :host-context([data-theme-mode='light']) ::ng-deep code .token.symbol,
+      :host-context([data-theme-mode='light']) ::ng-deep code .token.deleted {
+        color: #005cc5;
+      }
+      :host-context([data-theme-mode='light']) ::ng-deep code .token.selector,
+      :host-context([data-theme-mode='light']) ::ng-deep code .token.attr-name,
+      :host-context([data-theme-mode='light']) ::ng-deep code .token.string,
+      :host-context([data-theme-mode='light']) ::ng-deep code .token.char,
+      :host-context([data-theme-mode='light']) ::ng-deep code .token.builtin,
+      :host-context([data-theme-mode='light']) ::ng-deep code .token.inserted {
+        color: #032f62;
+      }
+      :host-context([data-theme-mode='light']) ::ng-deep code .token.operator,
+      :host-context([data-theme-mode='light']) ::ng-deep code .token.entity,
+      :host-context([data-theme-mode='light']) ::ng-deep code .token.url,
+      :host-context([data-theme-mode='light']) ::ng-deep code .language-css .token.string,
+      :host-context([data-theme-mode='light']) ::ng-deep code .style .token.string,
+      :host-context([data-theme-mode='light']) ::ng-deep code .token.atrule,
+      :host-context([data-theme-mode='light']) ::ng-deep code .token.attr-value,
+      :host-context([data-theme-mode='light']) ::ng-deep code .token.keyword {
+        color: #d73a49;
+      }
+      :host-context([data-theme-mode='light']) ::ng-deep code .token.function,
+      :host-context([data-theme-mode='light']) ::ng-deep code .token.class-name {
+        color: #6f42c1;
+      }
+      :host-context([data-theme-mode='light']) ::ng-deep code .token.regex,
+      :host-context([data-theme-mode='light']) ::ng-deep code .token.important,
+      :host-context([data-theme-mode='light']) ::ng-deep code .token.variable {
+        color: #b45309;
+      }
 
       /* Prism Theme - High Contrast Mode */
-      :host-context([data-theme='high-contrast']) ::ng-deep code .token.comment,
-      :host-context([data-theme='high-contrast']) ::ng-deep code .token.prolog,
-      :host-context([data-theme='high-contrast']) ::ng-deep code .token.doctype,
-      :host-context([data-theme='high-contrast']) ::ng-deep code .token.cdata { color: #9ca3af; }
-      :host-context([data-theme='high-contrast']) ::ng-deep code .token.punctuation { color: #f3f4f6; }
-      :host-context([data-theme='high-contrast']) ::ng-deep code .token.property,
-      :host-context([data-theme='high-contrast']) ::ng-deep code .token.tag,
-      :host-context([data-theme='high-contrast']) ::ng-deep code .token.boolean,
-      :host-context([data-theme='high-contrast']) ::ng-deep code .token.number,
-      :host-context([data-theme='high-contrast']) ::ng-deep code .token.constant,
-      :host-context([data-theme='high-contrast']) ::ng-deep code .token.symbol,
-      :host-context([data-theme='high-contrast']) ::ng-deep code .token.deleted { color: #60a5fa; }
-      :host-context([data-theme='high-contrast']) ::ng-deep code .token.selector,
-      :host-context([data-theme='high-contrast']) ::ng-deep code .token.attr-name,
-      :host-context([data-theme='high-contrast']) ::ng-deep code .token.string,
-      :host-context([data-theme='high-contrast']) ::ng-deep code .token.char,
-      :host-context([data-theme='high-contrast']) ::ng-deep code .token.builtin,
-      :host-context([data-theme='high-contrast']) ::ng-deep code .token.inserted { color: #93c5fd; }
-      :host-context([data-theme='high-contrast']) ::ng-deep code .token.operator,
-      :host-context([data-theme='high-contrast']) ::ng-deep code .token.entity,
-      :host-context([data-theme='high-contrast']) ::ng-deep code .token.url,
-      :host-context([data-theme='high-contrast']) ::ng-deep code .language-css .token.string,
-      :host-context([data-theme='high-contrast']) ::ng-deep code .style .token.string,
-      :host-context([data-theme='high-contrast']) ::ng-deep code .token.atrule,
-      :host-context([data-theme='high-contrast']) ::ng-deep code .token.attr-value,
-      :host-context([data-theme='high-contrast']) ::ng-deep code .token.keyword { color: #fca5a5; }
-      :host-context([data-theme='high-contrast']) ::ng-deep code .token.function,
-      :host-context([data-theme='high-contrast']) ::ng-deep code .token.class-name { color: #e9d5ff; }
-      :host-context([data-theme='high-contrast']) ::ng-deep code .token.regex,
-      :host-context([data-theme='high-contrast']) ::ng-deep code .token.important,
-      :host-context([data-theme='high-contrast']) ::ng-deep code .token.variable { color: #fdba74; }
+      :host-context([data-theme-mode='high-contrast']) ::ng-deep code .token.comment,
+      :host-context([data-theme-mode='high-contrast']) ::ng-deep code .token.prolog,
+      :host-context([data-theme-mode='high-contrast']) ::ng-deep code .token.doctype,
+      :host-context([data-theme-mode='high-contrast']) ::ng-deep code .token.cdata {
+        color: #9ca3af;
+      }
+      :host-context([data-theme-mode='high-contrast']) ::ng-deep code .token.punctuation {
+        color: #f3f4f6;
+      }
+      :host-context([data-theme-mode='high-contrast']) ::ng-deep code .token.property,
+      :host-context([data-theme-mode='high-contrast']) ::ng-deep code .token.tag,
+      :host-context([data-theme-mode='high-contrast']) ::ng-deep code .token.boolean,
+      :host-context([data-theme-mode='high-contrast']) ::ng-deep code .token.number,
+      :host-context([data-theme-mode='high-contrast']) ::ng-deep code .token.constant,
+      :host-context([data-theme-mode='high-contrast']) ::ng-deep code .token.symbol,
+      :host-context([data-theme-mode='high-contrast']) ::ng-deep code .token.deleted {
+        color: #60a5fa;
+      }
+      :host-context([data-theme-mode='high-contrast']) ::ng-deep code .token.selector,
+      :host-context([data-theme-mode='high-contrast']) ::ng-deep code .token.attr-name,
+      :host-context([data-theme-mode='high-contrast']) ::ng-deep code .token.string,
+      :host-context([data-theme-mode='high-contrast']) ::ng-deep code .token.char,
+      :host-context([data-theme-mode='high-contrast']) ::ng-deep code .token.builtin,
+      :host-context([data-theme-mode='high-contrast']) ::ng-deep code .token.inserted {
+        color: #93c5fd;
+      }
+      :host-context([data-theme-mode='high-contrast']) ::ng-deep code .token.operator,
+      :host-context([data-theme-mode='high-contrast']) ::ng-deep code .token.entity,
+      :host-context([data-theme-mode='high-contrast']) ::ng-deep code .token.url,
+      :host-context([data-theme-mode='high-contrast']) ::ng-deep code .language-css .token.string,
+      :host-context([data-theme-mode='high-contrast']) ::ng-deep code .style .token.string,
+      :host-context([data-theme-mode='high-contrast']) ::ng-deep code .token.atrule,
+      :host-context([data-theme-mode='high-contrast']) ::ng-deep code .token.attr-value,
+      :host-context([data-theme-mode='high-contrast']) ::ng-deep code .token.keyword {
+        color: #fca5a5;
+      }
+      :host-context([data-theme-mode='high-contrast']) ::ng-deep code .token.function,
+      :host-context([data-theme-mode='high-contrast']) ::ng-deep code .token.class-name {
+        color: #e9d5ff;
+      }
+      :host-context([data-theme-mode='high-contrast']) ::ng-deep code .token.regex,
+      :host-context([data-theme-mode='high-contrast']) ::ng-deep code .token.important,
+      :host-context([data-theme-mode='high-contrast']) ::ng-deep code .token.variable {
+        color: #fdba74;
+      }
 
       /* Scrollbar Styling */
       .ui-code-block-content::-webkit-scrollbar {
@@ -371,4 +415,3 @@ export class CodeBlockComponent {
     return extensionMap[language] || '.txt';
   }
 }
-

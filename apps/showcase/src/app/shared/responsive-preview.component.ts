@@ -124,7 +124,7 @@ const VIEWPORT_PRESETS: ViewportPreset[] = [
       display: flex;
       flex-direction: column;
       height: 100%;
-      background-color: var(--semantic-surface-subtle);
+      background-color: var(--semantic-surface-background-secondary);
       border-radius: var(--primitive-border-radius-lg);
       overflow: hidden;
     }
@@ -161,7 +161,7 @@ const VIEWPORT_PRESETS: ViewportPreset[] = [
     }
 
     .preview-device-button:hover {
-      background-color: var(--semantic-surface-subtle);
+      background-color: var(--semantic-surface-background-secondary);
       color: var(--semantic-text-primary);
       border-color: var(--semantic-border-strong);
     }
@@ -192,7 +192,7 @@ const VIEWPORT_PRESETS: ViewportPreset[] = [
 
     .preview-zoom {
       padding: 2px 6px;
-      background-color: var(--semantic-surface-subtle);
+      background-color: var(--semantic-surface-background-secondary);
       border-radius: var(--primitive-border-radius-sm);
     }
 
@@ -210,7 +210,7 @@ const VIEWPORT_PRESETS: ViewportPreset[] = [
     }
 
     .preview-rotate-button:hover {
-      background-color: var(--semantic-surface-subtle);
+      background-color: var(--semantic-surface-background-secondary);
       color: var(--semantic-text-primary);
       border-color: var(--semantic-border-strong);
     }
@@ -354,4 +354,5 @@ export class ResponsivePreviewComponent {
     }
   }
 }
+
 

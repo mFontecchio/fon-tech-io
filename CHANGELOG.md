@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- **Showcase responsive navigation**: Moved mobile navigation state into the showcase shell, added an accessible header menu toggle, converted the sidebar into an animated off-canvas drawer for smaller screens, and preserved navigation actions with token-based motion and keyboard-dismiss behavior.
+- **Canonical token migration**: Migrated the showcase, component library, and theme builder off legacy theme variable names and back onto the rebuilt token model, then removed the temporary compatibility aliases from the theming generator.
+- **Showcase home hero title**: Replaced a removed primitive color token in the landing page gradient so the hero heading renders correctly in light and dark themes.
+- **Theme preset accessibility compliance**: Darkened the light-mode brand and secondary text tokens in the Material, Ocean, Sunset, Frog, and Axolotl presets so the built-in WCAG audit passes against their surface backgrounds, and aligned the theme builder checker with the inverse text token used by filled buttons.
+- **Code block readability**: Switched the code block surface to the card background, increased code text sizing, and darkened the light-mode syntax variable color so Prism-highlighted snippets remain legible across themes.
+- **Showcase mode selector contrast**: Kept active mode button text on the inverse token during hover so the Light and Dark buttons remain readable against the brand background.
+- **Showcase mobile sidebar motion**: Refined the small-screen navigation drawer so the sidebar panel, its content, and the backdrop animate together with a clear slide-in and slide-out transition.
+
+### Added
+- **GitHub Pages deployment workflow**: Added `.github/workflows/deploy-showcase.yml` to build the showcase with a repo-scoped base href (`/ui-component-suite/`) and deploy to GitHub Pages on every push to `main`, using OIDC-based Pages token and a `404.html` redirect for SPA deep-link routing.
+- **CI workflow**: Added `.github/workflows/build-and-test.yml` to lint, build all libraries and the showcase application, and run tests on every push and pull request targeting `main`.
+- **npm publish workflow**: Added `.github/workflows/publish-packages.yml` triggered by GitHub Release tags to build all libraries in dependency order, inject the release version into each package manifest, and publish `@ui-suite/theming`, `@ui-suite/shared`, `@ui-suite/components`, and `@ui-suite/theme-builder` to npmjs.org with OIDC provenance.
+- **Library package manifests**: Added `package.json` to each publishable library (`theming`, `shared`, `components`, `theme-builder`) with package name, description, ESM entry points, peer dependencies, and `publishConfig` for public npm access.
+- **GitHub Pages build configuration**: Added `github-pages` build configuration to `apps/showcase/project.json` with `baseHref: /ui-component-suite/` to correctly resolve static assets at the repository sub-path.
+
+### Changed
+- **Library build targets**: Added `build` targets to `libs/theming/project.json`, `libs/shared/project.json`, and `libs/theme-builder/project.json` using `ngc` in the same pattern as the `components` library.
+- **Library tsconfig outDir**: Updated `outDir` in `tsconfig.lib.json` for `theming`, `shared`, and `theme-builder` from `../../dist/out-tsc` to per-library paths (`dist/libs/theming`, `dist/libs/shared`, `dist/libs/theme-builder`) so distribution artifacts land in predictable, isolated directories.
+
 ### Changed
 - **Theme Family Model**: Moved theming engine, showcase, and theme builder to family-aware light/dark selection
   - Added first-class `ThemeFamily` support above leaf `Theme` objects in `@ui-suite/theming`

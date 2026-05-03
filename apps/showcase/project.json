@@ -21,12 +21,26 @@
           }
         ],
         "styles": ["apps/showcase/src/styles.css"],
-        "allowedCommonJsDependencies": [
-          "prismjs"
-        ]
+        "allowedCommonJsDependencies": ["prismjs"]
       },
       "configurations": {
         "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "24kb",
+              "maximumError": "256kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "github-pages": {
+          "baseHref": "/ui-component-suite/",
           "budgets": [
             {
               "type": "initial",

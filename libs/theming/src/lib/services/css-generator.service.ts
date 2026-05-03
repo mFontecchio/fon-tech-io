@@ -1,6 +1,6 @@
 /**
  * CSS Generator Service
- * 
+ *
  * Converts theme tokens to CSS custom properties
  */
 
@@ -337,4 +337,3 @@ export class CssGeneratorService {
       .toLowerCase();
   }
 }
-

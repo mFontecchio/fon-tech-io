@@ -885,17 +885,17 @@ import {
             @if (exampleTitle() === 'Vertical Stack') {
               <ui-stack direction="vertical" [spacing]="4">
                 <div
-                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
                 >
                   Item 1
                 </div>
                 <div
-                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
                 >
                   Item 2
                 </div>
                 <div
-                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
                 >
                   Item 3
                 </div>
@@ -904,17 +904,17 @@ import {
             @if (exampleTitle() === 'Horizontal Stack') {
               <ui-stack direction="horizontal" [spacing]="4">
                 <div
-                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
                 >
                   Item 1
                 </div>
                 <div
-                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
                 >
                   Item 2
                 </div>
                 <div
-                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
                 >
                   Item 3
                 </div>
@@ -923,17 +923,17 @@ import {
             @if (exampleTitle() === 'Stack with Alignment') {
               <ui-stack direction="vertical" [spacing]="3" align="center">
                 <div
-                  style="padding: 0.5rem 2rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                  style="padding: 0.5rem 2rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
                 >
                   Centered Item 1
                 </div>
                 <div
-                  style="padding: 0.5rem 3rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                  style="padding: 0.5rem 3rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
                 >
                   Centered Item 2
                 </div>
                 <div
-                  style="padding: 0.5rem 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                  style="padding: 0.5rem 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
                 >
                   Centered Item 3
                 </div>
@@ -946,32 +946,32 @@ import {
             @if (exampleTitle() === '3-Column Grid') {
               <ui-grid [columns]="3" [gap]="4">
                 <div
-                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
                 >
                   Item 1
                 </div>
                 <div
-                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
                 >
                   Item 2
                 </div>
                 <div
-                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
                 >
                   Item 3
                 </div>
                 <div
-                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
                 >
                   Item 4
                 </div>
                 <div
-                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
                 >
                   Item 5
                 </div>
                 <div
-                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
                 >
                   Item 6
                 </div>
@@ -980,42 +980,42 @@ import {
             @if (exampleTitle() === '4-Column Grid') {
               <ui-grid [columns]="4" [gap]="3">
                 <div
-                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
                 >
                   Item 1
                 </div>
                 <div
-                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
                 >
                   Item 2
                 </div>
                 <div
-                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
                 >
                   Item 3
                 </div>
                 <div
-                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
                 >
                   Item 4
                 </div>
                 <div
-                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
                 >
                   Item 5
                 </div>
                 <div
-                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
                 >
                   Item 6
                 </div>
                 <div
-                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
                 >
                   Item 7
                 </div>
                 <div
-                  style="padding: 1rem; background: var(--semantic-surface-subtle); border-radius: 4px;"
+                  style="padding: 1rem; background: var(--semantic-surface-background-secondary); border-radius: 4px;"
                 >
                   Item 8
                 </div>
@@ -1149,7 +1149,7 @@ import {
                     <a
                       href="#"
                       style="padding: 8px; text-decoration: none; color: var(--semantic-text-primary); border-radius: 4px; transition: background 0.2s;"
-                      onmouseover="this.style.background='var(--semantic-surface-subtle)'"
+                      onmouseover="this.style.background='var(--semantic-surface-background-secondary)'"
                       onmouseout="this.style.background='transparent'"
                     >
                       Dashboard</a
@@ -1157,7 +1157,7 @@ import {
                     <a
                       href="#"
                       style="padding: 8px; text-decoration: none; color: var(--semantic-text-primary); border-radius: 4px; transition: background 0.2s;"
-                      onmouseover="this.style.background='var(--semantic-surface-subtle)'"
+                      onmouseover="this.style.background='var(--semantic-surface-background-secondary)'"
                       onmouseout="this.style.background='transparent'"
                     >
                       Settings</a
@@ -1165,7 +1165,7 @@ import {
                     <a
                       href="#"
                       style="padding: 8px; text-decoration: none; color: var(--semantic-text-primary); border-radius: 4px; transition: background 0.2s;"
-                      onmouseover="this.style.background='var(--semantic-surface-subtle)'"
+                      onmouseover="this.style.background='var(--semantic-surface-background-secondary)'"
                       onmouseout="this.style.background='transparent'"
                     >
                       Profile</a
@@ -1217,7 +1217,7 @@ import {
                 >
                   <div style="display: flex; flex-direction: column; gap: 12px;">
                     <div
-                      style="padding: 12px; background: var(--semantic-surface-subtle); border-radius: 6px;"
+                      style="padding: 12px; background: var(--semantic-surface-background-secondary); border-radius: 6px;"
                     >
                       <strong>New message from John</strong>
                       <p
@@ -1227,7 +1227,7 @@ import {
                       </p>
                     </div>
                     <div
-                      style="padding: 12px; background: var(--semantic-surface-subtle); border-radius: 6px;"
+                      style="padding: 12px; background: var(--semantic-surface-background-secondary); border-radius: 6px;"
                     >
                       <strong>System Update</strong>
                       <p
@@ -1237,7 +1237,7 @@ import {
                       </p>
                     </div>
                     <div
-                      style="padding: 12px; background: var(--semantic-surface-subtle); border-radius: 6px;"
+                      style="padding: 12px; background: var(--semantic-surface-background-secondary); border-radius: 6px;"
                     >
                       <strong>Task completed</strong>
                       <p
@@ -1777,7 +1777,7 @@ Sample text for editing</textarea
         max-width: 500px;
         border: 2px dashed var(--semantic-border-default);
         border-radius: var(--primitive-border-radius-md);
-        background-color: var(--semantic-surface-subtle);
+        background-color: var(--semantic-surface-background-secondary);
         cursor: context-menu;
         transition: all 0.2s ease;
       }
@@ -1801,7 +1801,7 @@ Sample text for editing</textarea
       }
 
       .file-item-demo:hover {
-        background-color: var(--semantic-surface-subtle);
+        background-color: var(--semantic-surface-background-secondary);
         border-color: var(--semantic-brand-primary);
       }
 
@@ -2198,3 +2198,4 @@ export class ExampleComponent {}`);
     this.toastService.info(`Action: ${item.label}`);
   }
 }
+

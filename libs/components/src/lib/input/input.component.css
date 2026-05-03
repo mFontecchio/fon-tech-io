@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Input Component Styles
  * 
  * Uses design tokens from the theming system
@@ -210,7 +210,7 @@
 
 .ui-input-affix-action:hover:not(:disabled) {
   color: var(--semantic-text-primary);
-  background-color: var(--semantic-surface-subtle);
+  background-color: var(--semantic-surface-background-secondary);
 }
 
 .ui-input-affix-action:focus-visible {
@@ -288,4 +288,5 @@
     outline-offset: 2px;
   }
 }
+
 

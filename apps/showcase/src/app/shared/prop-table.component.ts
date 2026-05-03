@@ -76,7 +76,7 @@ import { InputMetadata, OutputMetadata } from '../data/component-metadata.types'
     }
 
     thead {
-      background-color: var(--semantic-surface-subtle);
+      background-color: var(--semantic-surface-background-secondary);
     }
 
     th {
@@ -101,7 +101,7 @@ import { InputMetadata, OutputMetadata } from '../data/component-metadata.types'
     }
 
     tbody tr:hover {
-      background-color: var(--semantic-surface-subtle);
+      background-color: var(--semantic-surface-background-secondary);
     }
 
     code {
@@ -118,12 +118,12 @@ import { InputMetadata, OutputMetadata } from '../data/component-metadata.types'
     }
 
     .prop-type {
-      background-color: var(--semantic-surface-subtle);
+      background-color: var(--semantic-surface-background-secondary);
       color: var(--semantic-text-tertiary);
     }
 
     .prop-default {
-      background-color: var(--semantic-surface-subtle);
+      background-color: var(--semantic-surface-background-secondary);
       color: var(--semantic-text-secondary);
     }
 
@@ -166,4 +166,5 @@ export class PropTableComponent {
   readonly outputs = input<OutputMetadata[]>([]);
   readonly showDefault = input<boolean>(true);
 }
+
 

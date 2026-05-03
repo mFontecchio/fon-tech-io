@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Date Picker Component Styles
  */
 
@@ -124,7 +124,7 @@
 
 .ui-date-picker-calendar:hover:not(:disabled) {
   color: var(--semantic-text-primary);
-  background-color: var(--semantic-surface-subtle);
+  background-color: var(--semantic-surface-background-secondary);
 }
 
 .ui-date-picker-calendar:focus-visible {
@@ -158,7 +158,7 @@
 
 .ui-date-picker-clear:hover {
   color: var(--semantic-text-primary);
-  background-color: var(--semantic-surface-subtle);
+  background-color: var(--semantic-surface-background-secondary);
 }
 
 .ui-date-picker-clear:focus-visible {
@@ -205,4 +205,5 @@
     outline-offset: 2px;
   }
 }
+
 

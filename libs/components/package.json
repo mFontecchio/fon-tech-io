@@ -1,0 +1,44 @@
+{
+  "name": "@ui-suite/components",
+  "version": "0.1.0",
+  "description": "Enterprise-grade Angular 20 component library — 38 UI components with full theming and accessibility support",
+  "keywords": [
+    "angular",
+    "components",
+    "ui",
+    "design-system",
+    "theming",
+    "accessibility"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "main": "src/index.js",
+  "types": "src/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./src/index.js",
+      "types": "./src/index.d.ts"
+    }
+  },
+  "sideEffects": false,
+  "peerDependencies": {
+    "@angular/core": ">=20.0.0",
+    "@angular/common": ">=20.0.0",
+    "@angular/forms": ">=20.0.0",
+    "@ui-suite/theming": ">=0.1.0",
+    "@ui-suite/shared": ">=0.1.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mFontecchio/ui-component-suite.git",
+    "directory": "libs/components"
+  },
+  "homepage": "https://mfontecchio.github.io/ui-component-suite",
+  "bugs": {
+    "url": "https://github.com/mFontecchio/ui-component-suite/issues"
+  }
+}

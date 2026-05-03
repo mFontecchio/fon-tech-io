@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Modal Component Styles
  */
 
@@ -101,7 +101,7 @@
 
 .ui-modal-close:hover {
   color: var(--semantic-text-primary);
-  background-color: var(--semantic-surface-subtle);
+  background-color: var(--semantic-surface-background-secondary);
 }
 
 .ui-modal-close:focus-visible {
@@ -168,7 +168,7 @@
 }
 
 .ui-modal-body::-webkit-scrollbar-track {
-  background: var(--semantic-surface-subtle);
+  background: var(--semantic-surface-background-secondary);
   border-radius: var(--primitive-border-radius-full);
 }
 
@@ -234,4 +234,5 @@
     border-width: 2px;
   }
 }
+
 

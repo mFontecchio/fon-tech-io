@@ -87,7 +87,7 @@ interface ComponentCategory {
     .component-count {
       display: inline-block;
       padding: var(--primitive-spacing-1) var(--primitive-spacing-3);
-      background-color: var(--semantic-brand-subtle);
+      background-color: var(--semantic-brand-primary-subtle);
       color: var(--semantic-brand-primary);
       border-radius: var(--primitive-border-radius-full);
       font-size: var(--primitive-font-size-sm);
@@ -130,4 +130,5 @@ export class ComponentsOverviewComponent {
     },
   ];
 }
+
 

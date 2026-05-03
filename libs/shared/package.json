@@ -1,0 +1,39 @@
+{
+  "name": "@ui-suite/shared",
+  "version": "0.1.0",
+  "description": "Shared utilities and types for ui-component-suite — color utils, typography helpers, and common types",
+  "keywords": [
+    "angular",
+    "utilities",
+    "color",
+    "typography",
+    "design-system"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "main": "src/index.js",
+  "types": "src/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./src/index.js",
+      "types": "./src/index.d.ts"
+    }
+  },
+  "sideEffects": false,
+  "peerDependencies": {
+    "@angular/core": ">=20.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mFontecchio/ui-component-suite.git",
+    "directory": "libs/shared"
+  },
+  "homepage": "https://mfontecchio.github.io/ui-component-suite",
+  "bugs": {
+    "url": "https://github.com/mFontecchio/ui-component-suite/issues"
+  }
+}

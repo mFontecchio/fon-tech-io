@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Breadcrumb Component Styles
  */
 
@@ -47,7 +47,7 @@
 
 .ui-breadcrumb-link:hover:not(.ui-breadcrumb-link--current):not(.ui-breadcrumb-link--disabled) {
   color: var(--semantic-text-primary);
-  background-color: var(--semantic-surface-subtle);
+  background-color: var(--semantic-surface-background-secondary);
 }
 
 .ui-breadcrumb-link:focus-visible {
@@ -113,4 +113,5 @@
     outline-width: 3px;
   }
 }
+
 

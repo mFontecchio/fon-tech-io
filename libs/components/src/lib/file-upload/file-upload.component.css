@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File Upload Component Styles
  */
 
@@ -34,7 +34,7 @@
   padding: var(--primitive-spacing-8) var(--primitive-spacing-6);
   border: 2px dashed var(--semantic-border-default);
   border-radius: var(--primitive-border-radius-md);
-  background-color: var(--semantic-surface-subtle);
+  background-color: var(--semantic-surface-background-secondary);
   transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
   cursor: pointer;
 }
@@ -170,7 +170,7 @@
   justify-content: center;
   width: 3rem;
   height: 3rem;
-  background-color: var(--semantic-surface-subtle);
+  background-color: var(--semantic-surface-background-secondary);
   border-radius: var(--primitive-border-radius-sm);
   color: var(--semantic-text-secondary);
   flex-shrink: 0;
@@ -272,4 +272,5 @@
     border-width: 2px;
   }
 }
+
 

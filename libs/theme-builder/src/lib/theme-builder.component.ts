@@ -348,9 +348,9 @@ interface EditableThemeFamilyMetadata {
                       ' 0%, ' +
                       preset.tokens['--semantic-brand-primary'] +
                       ' 50%, ' +
-                      preset.tokens['--semantic-success-primary'] +
+                      preset.tokens['--semantic-feedback-success'] +
                       ' 50%, ' +
-                      preset.tokens['--semantic-success-primary'] +
+                      preset.tokens['--semantic-feedback-success'] +
                       ' 100%)'
                     "
                   ></div>
@@ -649,17 +649,20 @@ interface EditableThemeFamilyMetadata {
                   </div>
                   <div
                     class="color-swatch"
-                    style="background-color: var(--semantic-success-primary)"
+                    style="background-color: var(--semantic-feedback-success)"
                   >
                     <span>Success</span>
                   </div>
                   <div
                     class="color-swatch"
-                    style="background-color: var(--semantic-warning-primary)"
+                    style="background-color: var(--semantic-feedback-warning)"
                   >
                     <span>Warning</span>
                   </div>
-                  <div class="color-swatch" style="background-color: var(--semantic-error-primary)">
+                  <div
+                    class="color-swatch"
+                    style="background-color: var(--semantic-feedback-error)"
+                  >
                     <span>Error</span>
                   </div>
                 </div>
@@ -1109,7 +1112,7 @@ interface EditableThemeFamilyMetadata {
       }
       .wcag-info {
         padding: var(--primitive-spacing-3);
-        background: var(--semantic-surface-subtle);
+        background: var(--semantic-surface-background-secondary);
         border-radius: var(--primitive-border-radius-md);
       }
       .wcag-info h4 {
@@ -1172,7 +1175,7 @@ interface EditableThemeFamilyMetadata {
         flex-wrap: wrap;
       }
       .generated-colors h4 {
-        font-size: var(--primitive-font-size-md);
+        font-size: var(--primitive-font-size-base);
         margin-bottom: var(--primitive-spacing-3);
       }
       .generated-color-grid {
@@ -1193,7 +1196,7 @@ interface EditableThemeFamilyMetadata {
       }
       .generated-color-item:hover {
         border-color: var(--semantic-brand-primary);
-        background: var(--semantic-surface-subtle);
+        background: var(--semantic-surface-background-secondary);
       }
       .generated-color-preview {
         width: 48px;
@@ -1242,7 +1245,7 @@ interface EditableThemeFamilyMetadata {
         gap: var(--primitive-spacing-3);
         margin-bottom: var(--primitive-spacing-4);
         padding: var(--primitive-spacing-4);
-        background-color: var(--semantic-surface-subtle);
+        background-color: var(--semantic-surface-background-secondary);
         border-radius: var(--primitive-border-radius-lg);
       }
 
@@ -1376,11 +1379,11 @@ interface EditableThemeFamilyMetadata {
 
       /* Delete button in saved themes - custom color override */
       .saved-theme-card ui-button svg {
-        color: var(--semantic-error-primary);
+        color: var(--semantic-feedback-error);
       }
 
       .saved-theme-card ui-button:hover svg {
-        color: var(--semantic-error-primary);
+        color: var(--semantic-feedback-error);
       }
 
       .theme-builder-layout {
@@ -1547,7 +1550,7 @@ interface EditableThemeFamilyMetadata {
         padding: var(--primitive-spacing-4);
         border: 1px solid var(--semantic-border-default);
         border-radius: var(--primitive-border-radius-md);
-        background-color: var(--semantic-surface-subtle);
+        background-color: var(--semantic-surface-background-secondary);
         transition:
           background-color 0.3s ease,
           border-color 0.3s ease;
@@ -1558,18 +1561,21 @@ interface EditableThemeFamilyMetadata {
         /* Semantic: Brand Colors */
         --semantic-brand-primary: var(--semantic-brand-primary-dark, #6b7fed);
         --semantic-brand-secondary: var(--semantic-brand-secondary-dark, #8b95a5);
-        --semantic-brand-subtle: var(--semantic-brand-subtle-dark, #2a2e3f);
+        --semantic-brand-primary-subtle: var(--semantic-brand-primary-subtle-dark, #2a2e3f);
 
         /* Semantic: Feedback Colors */
-        --semantic-success-primary: var(--semantic-success-primary-dark, #4ade80);
-        --semantic-warning-primary: var(--semantic-warning-primary-dark, #fbbf24);
-        --semantic-error-primary: var(--semantic-error-primary-dark, #f87171);
-        --semantic-info-primary: var(--semantic-info-primary-dark, #60a5fa);
+        --semantic-feedback-success: var(--semantic-feedback-success-dark, #4ade80);
+        --semantic-feedback-warning: var(--semantic-feedback-warning-dark, #fbbf24);
+        --semantic-feedback-error: var(--semantic-feedback-error-dark, #f87171);
+        --semantic-feedback-info: var(--semantic-feedback-info-dark, #60a5fa);
 
         /* Semantic: Surface Colors */
         --semantic-surface-background: var(--semantic-surface-background-dark, #1a1d29);
         --semantic-surface-card: var(--semantic-surface-card-dark, #232734);
-        --semantic-surface-subtle: var(--semantic-surface-subtle-dark, #2a2e3f);
+        --semantic-surface-background-secondary: var(
+          --semantic-surface-background-secondary-dark,
+          #2a2e3f
+        );
         --semantic-surface-background-secondary: var(
           --semantic-surface-background-secondary-dark,
           #2a2e3f
@@ -1599,7 +1605,10 @@ interface EditableThemeFamilyMetadata {
         --component-input-focus-border: var(--semantic-brand-primary-dark, #6b7fed);
 
         /* Component: Alert */
-        --component-alert-info-background: var(--semantic-surface-subtle-dark, #2a2e3f);
+        --component-alert-info-background: var(
+          --semantic-surface-background-secondary-dark,
+          #2a2e3f
+        );
         --component-alert-info-text: var(--semantic-text-primary-dark, #e5e7eb);
         --component-alert-info-border: var(--semantic-border-default-dark, #374151);
       }
@@ -1621,7 +1630,7 @@ interface EditableThemeFamilyMetadata {
       }
 
       .preview-section h4 {
-        font-size: var(--primitive-font-size-md);
+        font-size: var(--primitive-font-size-base);
         margin-bottom: var(--primitive-spacing-3);
         color: var(--semantic-text-primary);
       }
@@ -1695,7 +1704,7 @@ interface EditableThemeFamilyMetadata {
           padding: var(--primitive-spacing-3);
           border: 1px solid var(--semantic-border-default);
           border-radius: var(--primitive-border-radius-md);
-          background-color: var(--semantic-surface-subtle);
+          background-color: var(--semantic-surface-background-secondary);
         }
       }
 
@@ -1842,8 +1851,8 @@ export class ThemeBuilderComponent {
           category: 'brand',
         },
         {
-          name: '--semantic-brand-subtle',
-          value: this.getComputedToken('--semantic-brand-subtle'),
+          name: '--semantic-brand-primary-subtle',
+          value: this.getComputedToken('--semantic-brand-primary-subtle'),
           type: 'color',
           category: 'brand',
         },
@@ -1855,26 +1864,26 @@ export class ThemeBuilderComponent {
       description: 'Success, warning, error, and info colors',
       tokens: [
         {
-          name: '--semantic-success-primary',
-          value: this.getComputedToken('--semantic-success-primary'),
+          name: '--semantic-feedback-success',
+          value: this.getComputedToken('--semantic-feedback-success'),
           type: 'color',
           category: 'semantic',
         },
         {
-          name: '--semantic-warning-primary',
-          value: this.getComputedToken('--semantic-warning-primary'),
+          name: '--semantic-feedback-warning',
+          value: this.getComputedToken('--semantic-feedback-warning'),
           type: 'color',
           category: 'semantic',
         },
         {
-          name: '--semantic-error-primary',
-          value: this.getComputedToken('--semantic-error-primary'),
+          name: '--semantic-feedback-error',
+          value: this.getComputedToken('--semantic-feedback-error'),
           type: 'color',
           category: 'semantic',
         },
         {
-          name: '--semantic-info-primary',
-          value: this.getComputedToken('--semantic-info-primary'),
+          name: '--semantic-feedback-info',
+          value: this.getComputedToken('--semantic-feedback-info'),
           type: 'color',
           category: 'semantic',
         },
@@ -1898,8 +1907,8 @@ export class ThemeBuilderComponent {
           category: 'surfaces',
         },
         {
-          name: '--semantic-surface-subtle',
-          value: this.getComputedToken('--semantic-surface-subtle'),
+          name: '--semantic-surface-background-secondary',
+          value: this.getComputedToken('--semantic-surface-background-secondary'),
           type: 'color',
           category: 'surfaces',
         },
@@ -1939,8 +1948,8 @@ export class ThemeBuilderComponent {
       description: 'Typography font stacks',
       tokens: [
         {
-          name: '--primitive-font-family-base',
-          value: this.getComputedToken('--primitive-font-family-base'),
+          name: '--primitive-font-family-sans',
+          value: this.getComputedToken('--primitive-font-family-sans'),
           type: 'font',
           category: 'fonts',
         },
@@ -1970,8 +1979,8 @@ export class ThemeBuilderComponent {
           category: 'sizes',
         },
         {
-          name: '--primitive-font-size-md',
-          value: this.getComputedToken('--primitive-font-size-md'),
+          name: '--primitive-font-size-base',
+          value: this.getComputedToken('--primitive-font-size-base'),
           type: 'size',
           category: 'sizes',
         },
@@ -2138,7 +2147,9 @@ export class ThemeBuilderComponent {
     return themeFamily;
   }
 
-  private buildEditableThemeFamily(metadata: EditableThemeFamilyMetadata = this.editableThemeFamilyMetadata()): ThemeFamily {
+  private buildEditableThemeFamily(
+    metadata: EditableThemeFamilyMetadata = this.editableThemeFamilyMetadata()
+  ): ThemeFamily {
     const bundle = this.buildCurrentThemeTokenBundle(metadata);
 
     return convertPresetToThemeFamily({
@@ -2166,9 +2177,10 @@ export class ThemeBuilderComponent {
     allCategories.forEach((category) => {
       category.tokens.forEach((token) => {
         lightTokens[token.name] = token.value;
-        darkTokens[token.name] = token.category === 'brand' || token.type === 'color'
-          ? this.getDarkTokenValue(token.name)
-          : token.value;
+        darkTokens[token.name] =
+          token.category === 'brand' || token.type === 'color'
+            ? this.getDarkTokenValue(token.name)
+            : token.value;
       });
     });
 
@@ -2204,7 +2216,10 @@ export class ThemeBuilderComponent {
       }
     }
 
-    const resolvedThemeValue = this.getTokenValueFromTheme(this.themeService.getResolvedTheme(), tokenName);
+    const resolvedThemeValue = this.getTokenValueFromTheme(
+      this.themeService.getResolvedTheme(),
+      tokenName
+    );
     if (resolvedThemeValue) {
       return resolvedThemeValue;
     }
@@ -2219,7 +2234,9 @@ export class ThemeBuilderComponent {
     }
 
     const variableName = value.slice(4, -1).trim();
-    const resolvedValue = getComputedStyle(document.documentElement).getPropertyValue(variableName).trim();
+    const resolvedValue = getComputedStyle(document.documentElement)
+      .getPropertyValue(variableName)
+      .trim();
 
     if (!resolvedValue || resolvedValue === value) {
       return value;
@@ -2419,22 +2436,22 @@ export class ThemeBuilderComponent {
     const mapping: Record<string, string> = {
       '--semantic-brand-primary': theme.semantic.brand.primary,
       '--semantic-brand-secondary': theme.semantic.brand.secondary,
-      '--semantic-brand-subtle': theme.semantic.brand.primarySubtle,
-      '--semantic-success-primary': theme.semantic.feedback.success,
-      '--semantic-warning-primary': theme.semantic.feedback.warning,
-      '--semantic-error-primary': theme.semantic.feedback.error,
-      '--semantic-info-primary': theme.semantic.feedback.info,
+      '--semantic-brand-primary-subtle': theme.semantic.brand.primarySubtle,
+      '--semantic-feedback-success': theme.semantic.feedback.success,
+      '--semantic-feedback-warning': theme.semantic.feedback.warning,
+      '--semantic-feedback-error': theme.semantic.feedback.error,
+      '--semantic-feedback-info': theme.semantic.feedback.info,
       '--semantic-surface-background': theme.semantic.surface.background,
       '--semantic-surface-card': theme.semantic.surface.card,
-      '--semantic-surface-subtle': theme.semantic.surface.backgroundSecondary,
+      '--semantic-surface-background-secondary': theme.semantic.surface.backgroundSecondary,
       '--semantic-text-primary': theme.semantic.text.primary,
       '--semantic-text-secondary': theme.semantic.text.secondary,
       '--semantic-text-tertiary': theme.semantic.text.tertiary,
-      '--primitive-font-family-base': theme.primitive.typography.fontFamily.sans,
+      '--primitive-font-family-sans': theme.primitive.typography.fontFamily.sans,
       '--primitive-font-family-mono': theme.primitive.typography.fontFamily.mono,
       '--primitive-font-size-xs': theme.primitive.typography.fontSize.xs,
       '--primitive-font-size-sm': theme.primitive.typography.fontSize.sm,
-      '--primitive-font-size-md': theme.primitive.typography.fontSize.base,
+      '--primitive-font-size-base': theme.primitive.typography.fontSize.base,
       '--primitive-font-size-lg': theme.primitive.typography.fontSize.lg,
       '--primitive-font-size-xl': theme.primitive.typography.fontSize.xl,
       '--primitive-spacing-1': theme.primitive.spacing[1],
@@ -2524,7 +2541,9 @@ export class ThemeBuilderComponent {
       this.applyImportedThemeBundle(theme.family);
 
       if (theme.isIncomplete) {
-        alert('Loaded a legacy saved theme. Dark tokens were seeded from the light variant and should be reviewed.');
+        alert(
+          'Loaded a legacy saved theme. Dark tokens were seeded from the light variant and should be reviewed.'
+        );
       }
     }
   }
@@ -2604,11 +2623,13 @@ export class ThemeBuilderComponent {
   }
 
   private toThemeId(value: string): string {
-    return value
-      .trim()
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '') || 'custom-theme';
+    return (
+      value
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '') || 'custom-theme'
+    );
   }
 
   private getFileBaseName(fileName: string): string {
@@ -2621,7 +2642,13 @@ export class ThemeBuilderComponent {
     }
 
     const candidate = value as Partial<ThemeFamily>;
-    return !!candidate.metadata && !!candidate.light && !!candidate.dark && 'metadata' in candidate.light && 'metadata' in candidate.dark;
+    return (
+      !!candidate.metadata &&
+      !!candidate.light &&
+      !!candidate.dark &&
+      'metadata' in candidate.light &&
+      'metadata' in candidate.dark
+    );
   }
 
   // Import/Export
@@ -2769,6 +2796,7 @@ export class ThemeBuilderComponent {
     const card = getTokenValue('--semantic-surface-card');
     const primary = getTokenValue('--semantic-text-primary');
     const secondary = getTokenValue('--semantic-text-secondary');
+    const inverse = getTokenValue('--semantic-text-inverse');
     const brandPrimary = getTokenValue('--semantic-brand-primary');
 
     const checks = [
@@ -2801,11 +2829,11 @@ export class ThemeBuilderComponent {
         level: getWCAGLevel(getContrastRatio(brandPrimary, bg), 'normal'),
       },
       {
-        label: 'White Text on Brand Primary',
-        foreground: '#ffffff',
+        label: 'Inverse Text on Brand Primary',
+        foreground: inverse,
         background: brandPrimary,
-        ratio: getContrastRatio('#ffffff', brandPrimary),
-        level: getWCAGLevel(getContrastRatio('#ffffff', brandPrimary), 'normal'),
+        ratio: getContrastRatio(inverse, brandPrimary),
+        level: getWCAGLevel(getContrastRatio(inverse, brandPrimary), 'normal'),
       },
     ];
 

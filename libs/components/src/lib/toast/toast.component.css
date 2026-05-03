@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Toast Component Styles
  */
 
@@ -90,7 +90,7 @@
 }
 
 .ui-toast-close:hover {
-  background-color: var(--semantic-surface-subtle);
+  background-color: var(--semantic-surface-background-secondary);
   color: var(--semantic-text-primary);
 }
 
@@ -160,4 +160,5 @@
     border: 2px solid var(--semantic-border-default);
   }
 }
+
 

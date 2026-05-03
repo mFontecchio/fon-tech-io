@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Pagination Component Styles
  */
 
@@ -46,7 +46,7 @@
 }
 
 .ui-pagination-button:hover:not(:disabled) {
-  background-color: var(--semantic-surface-subtle);
+  background-color: var(--semantic-surface-background-secondary);
   border-color: var(--semantic-border-strong);
 }
 
@@ -205,4 +205,5 @@
     outline-width: 3px;
   }
 }
+
 

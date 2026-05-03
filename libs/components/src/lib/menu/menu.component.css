@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Menu Component Styles
  */
 
@@ -88,7 +88,7 @@
 }
 
 .ui-menu-item:hover:not(.ui-menu-item--disabled) {
-  background-color: var(--semantic-surface-subtle);
+  background-color: var(--semantic-surface-background-secondary);
 }
 
 .ui-menu-item:focus-visible {
@@ -301,3 +301,4 @@
     outline-width: 3px;
   }
 }
+

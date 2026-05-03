@@ -35,8 +35,8 @@ interface ThemeFamilyOption {
             stroke="currentColor"
             class="theme-icon"
           >
-            @if (themeService.isDarkMode()) {
-              <!-- Sun icon for dark mode -->
+            @if (themeService.isLightMode()) {
+              <!-- Sun icon for light mode -->
               <circle cx="12" cy="12" r="5" class="sun-core" />
               <g class="sun-rays">
                 <line x1="12" y1="1" x2="12" y2="3" />
@@ -53,7 +53,7 @@ interface ThemeFamilyOption {
               <circle cx="12" cy="12" r="10" class="contrast-circle" />
               <path d="M12 2v20" class="contrast-split" />
             } @else {
-              <!-- Moon icon for light mode -->
+              <!-- Moon icon for dark mode -->
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" class="moon-crescent" />
             }
           </svg>
@@ -83,7 +83,9 @@ interface ThemeFamilyOption {
             @for (option of themeFamilyOptions(); track option.id) {
               <button
                 class="theme-option"
-                [class.theme-option--active]="currentThemeFamilyId() === option.id && !themeService.isHighContrastMode()"
+                [class.theme-option--active]="
+                  currentThemeFamilyId() === option.id && !themeService.isHighContrastMode()
+                "
                 (click)="selectThemeFamily(option.id)"
                 [attr.aria-label]="option.name + ': ' + option.description"
               >
@@ -119,7 +121,9 @@ interface ThemeFamilyOption {
             <div class="theme-mode-options">
               <button
                 class="theme-mode-option"
-                [class.theme-mode-option--active]="currentThemeMode() === 'light' && !themeService.isHighContrastMode()"
+                [class.theme-mode-option--active]="
+                  currentThemeMode() === 'light' && !themeService.isHighContrastMode()
+                "
                 (click)="selectThemeMode('light')"
                 aria-label="Use light mode"
               >
@@ -127,7 +131,9 @@ interface ThemeFamilyOption {
               </button>
               <button
                 class="theme-mode-option"
-                [class.theme-mode-option--active]="currentThemeMode() === 'dark' && !themeService.isHighContrastMode()"
+                [class.theme-mode-option--active]="
+                  currentThemeMode() === 'dark' && !themeService.isHighContrastMode()
+                "
                 (click)="selectThemeMode('dark')"
                 aria-label="Use dark mode"
               >
@@ -196,7 +202,7 @@ interface ThemeFamilyOption {
 
       .theme-toggle:hover {
         color: var(--semantic-text-primary);
-        background-color: var(--semantic-surface-subtle);
+        background-color: var(--semantic-surface-background-secondary);
         transform: scale(1.05);
       }
 
@@ -432,6 +438,12 @@ interface ThemeFamilyOption {
         color: var(--semantic-text-inverse);
       }
 
+      .theme-mode-option--active:hover {
+        background: var(--semantic-brand-primary);
+        border-color: var(--semantic-brand-primary);
+        color: var(--semantic-text-inverse);
+      }
+
       /* Staggered animation for theme options */
       .theme-option {
         display: flex;
@@ -470,7 +482,7 @@ interface ThemeFamilyOption {
       }
 
       .theme-option:hover {
-        background-color: var(--semantic-surface-subtle);
+        background-color: var(--semantic-surface-background-secondary);
         transform: translateX(4px);
       }
 
@@ -479,11 +491,11 @@ interface ThemeFamilyOption {
       }
 
       .theme-option--active {
-        background-color: var(--semantic-brand-subtle);
+        background-color: var(--semantic-brand-primary-subtle);
       }
 
       .theme-option--active:hover {
-        background-color: var(--semantic-brand-subtle);
+        background-color: var(--semantic-brand-primary-subtle);
         transform: translateX(4px);
       }
 
@@ -495,7 +507,7 @@ interface ThemeFamilyOption {
         width: 32px;
         height: 32px;
         border-radius: var(--primitive-border-radius-md);
-        background-color: var(--semantic-surface-subtle);
+        background-color: var(--semantic-surface-background-secondary);
         color: var(--semantic-text-secondary);
         flex-shrink: 0;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Drawer Component Styles
  */
 
@@ -173,7 +173,7 @@ dialog.ui-drawer-dialog--no-backdrop::backdrop {
 }
 
 .ui-drawer-close:hover {
-  background-color: var(--semantic-surface-subtle);
+  background-color: var(--semantic-surface-background-secondary);
   color: var(--semantic-text-primary);
 }
 
@@ -202,7 +202,7 @@ dialog.ui-drawer-dialog--no-backdrop::backdrop {
 }
 
 .ui-drawer-content::-webkit-scrollbar-track {
-  background: var(--semantic-surface-subtle);
+  background: var(--semantic-surface-background-secondary);
 }
 
 .ui-drawer-content::-webkit-scrollbar-thumb {
@@ -272,4 +272,5 @@ dialog.ui-drawer-dialog--no-backdrop::backdrop {
     border-width: 2px;
   }
 }
+
 

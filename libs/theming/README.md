@@ -10,11 +10,11 @@ pnpm add @ui-suite/theming
 
 ## Three-Tier Token System
 
-| Tier | Prefix | Purpose | Example |
-|------|--------|---------|---------|
-| Primitive | `--primitive-*` | Raw values — colors, spacing, scale | `--primitive-color-primary-500: #3b82f6` |
-| Semantic | `--semantic-*` | Purpose-driven mappings | `--semantic-text-primary` |
-| Component | `--component-*` | Component-specific overrides | `--component-button-filled-background` |
+| Tier      | Prefix          | Purpose                             | Example                                |
+| --------- | --------------- | ----------------------------------- | -------------------------------------- |
+| Primitive | `--primitive-*` | Raw values — colors, spacing, scale | `--primitive-primary-500: #3b82f6`     |
+| Semantic  | `--semantic-*`  | Purpose-driven mappings             | `--semantic-text-primary`              |
+| Component | `--component-*` | Component-specific overrides        | `--component-button-filled-background` |
 
 Always reference tokens in component CSS — never hardcode values:
 
@@ -32,13 +32,13 @@ The library includes a full animation token system following the three-tier hier
 
 **Primitive tokens** (`--primitive-animation-*`):
 
-| Token | Value |
-|-------|-------|
-| `--primitive-animation-duration-fast` | `150ms` |
-| `--primitive-animation-duration-normal` | `250ms` |
-| `--primitive-animation-duration-slow` | `350ms` |
-| `--primitive-animation-easing-default` | `ease-in-out` |
-| `--primitive-animation-easing-spring` | `cubic-bezier(0.34, 1.56, 0.64, 1)` |
+| Token                                   | Value                               |
+| --------------------------------------- | ----------------------------------- |
+| `--primitive-animation-duration-fast`   | `150ms`                             |
+| `--primitive-animation-duration-normal` | `250ms`                             |
+| `--primitive-animation-duration-slow`   | `350ms`                             |
+| `--primitive-animation-easing-default`  | `ease-in-out`                       |
+| `--primitive-animation-easing-spring`   | `cubic-bezier(0.34, 1.56, 0.64, 1)` |
 
 **Semantic tokens** (use these in component CSS):
 
@@ -100,7 +100,7 @@ const cssGen = inject(CssGeneratorService);
 
 // Generate CSS string
 const css = cssGen.generateCssVariables(theme);
-// Returns: ":root { --primitive-color-primary-500: #3b82f6; ... }"
+// Returns: ":root { --primitive-primary-500: #3b82f6; ... }"
 
 // Apply to document root
 cssGen.applyTheme(theme);
@@ -151,7 +151,7 @@ const myTheme: Theme = {
     },
   },
   semantic: {
-    brand: { primary: 'var(--primitive-color-primary-500)' },
+    brand: { primary: 'var(--primitive-primary-500)' },
   },
   component: {
     button: { borderRadius: '8px' },

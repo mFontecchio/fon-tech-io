@@ -16,21 +16,19 @@ import { getAllComponentMetadata } from '../../data/component-metadata';
   template: `
     <div class="home-page">
       <section class="hero">
-        <h1 class="hero-title">UI Component Suite</h1>
+        <h1 class="hero-title">
+          Fon.tech.io <br /><span class="hero-subtitle">UI Component Suite</span>
+        </h1>
         <p class="hero-description">
           A comprehensive collection of {{ componentCount }} accessible, themable Angular components
           built with Angular 20+ and modern best practices.
         </p>
         <div class="hero-actions">
           <a routerLink="/getting-started/installation">
-            <ui-button variant="filled" size="lg">
-              Get Started
-            </ui-button>
+            <ui-button variant="filled" size="lg"> Get Started </ui-button>
           </a>
           <a routerLink="/components/form/button">
-            <ui-button variant="outlined" size="lg">
-              Browse Components
-            </ui-button>
+            <ui-button variant="outlined" size="lg"> Browse Components </ui-button>
           </a>
         </div>
       </section>
@@ -103,18 +101,36 @@ import { getAllComponentMetadata } from '../../data/component-metadata';
       }
 
       .hero-title {
-        font-size: 3.5rem;
+        font-size: clamp(2rem, 8vw + 1rem, 4.5rem);
+        line-height: 1.2;
         font-weight: var(--primitive-font-weight-bold);
         color: var(--semantic-text-primary);
         margin-bottom: var(--primitive-spacing-4);
         background: linear-gradient(
           135deg,
-          var(--semantic-brand-primary),
-          var(--primitive-color-purple-600)
+          var(--semantic-brand-primary) 0%,
+          var(--primitive-accent-600) 25%,
+          var(--semantic-brand-primary) 50%,
+          var(--primitive-accent-600) 75%,
+          var(--semantic-brand-primary) 100%
         );
+        background-size: 200% 200%;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
+        animation: hero-gradient-shift 14s ease-in-out infinite;
+      }
+
+      @keyframes hero-gradient-shift {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
       }
 
       .hero-description {
@@ -220,4 +236,3 @@ import { getAllComponentMetadata } from '../../data/component-metadata';
 export class HomeComponent {
   protected readonly componentCount = getAllComponentMetadata().length;
 }
-

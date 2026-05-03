@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Popover Component Styles
  */
 
@@ -131,7 +131,7 @@
 }
 
 .ui-popover-close:hover {
-  background-color: var(--semantic-surface-subtle);
+  background-color: var(--semantic-surface-background-secondary);
   color: var(--semantic-text-primary);
 }
 
@@ -156,7 +156,7 @@
 }
 
 .ui-popover-content::-webkit-scrollbar-track {
-  background: var(--semantic-surface-subtle);
+  background: var(--semantic-surface-background-secondary);
 }
 
 .ui-popover-content::-webkit-scrollbar-thumb {
@@ -199,4 +199,5 @@
     border-bottom-width: 2px;
   }
 }
+
 

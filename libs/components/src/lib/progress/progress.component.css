@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Progress Component Styles
  */
 
@@ -31,7 +31,7 @@
 .ui-progress {
   position: relative;
   width: 100%;
-  background-color: var(--semantic-surface-subtle);
+  background-color: var(--semantic-surface-background-secondary);
   border-radius: var(--primitive-border-radius-full);
   overflow: hidden;
 }
@@ -220,4 +220,5 @@
     border-right: 2px solid var(--semantic-text-primary);
   }
 }
+
 

@@ -9,7 +9,7 @@
   justify-content: center;
   flex-shrink: 0;
   overflow: hidden;
-  background-color: var(--semantic-surface-subtle);
+  background-color: var(--semantic-surface-background-secondary);
   color: var(--semantic-text-primary);
   font-weight: var(--primitive-font-weight-medium);
   user-select: none;
@@ -155,4 +155,5 @@
     border-width: 3px;
   }
 }
+
 

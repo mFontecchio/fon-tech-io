@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Chip Component Styles
  */
 
@@ -42,7 +42,7 @@
 /* Variants */
 
 .ui-chip--default {
-  background-color: var(--semantic-surface-subtle);
+  background-color: var(--semantic-surface-background-secondary);
   color: var(--semantic-text-primary);
   border: 1px solid var(--semantic-border-default);
 }
@@ -213,4 +213,5 @@
     outline-width: 3px;
   }
 }
+
 

@@ -3,7 +3,7 @@
  * Left sidebar with categorized component navigation
  */
 
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
@@ -23,30 +23,60 @@ interface NavCategory {
   selector: 'app-sidebar',
   standalone: true,
   imports: [CommonModule, RouterLink, RouterLinkActive],
+  host: {
+    '(document:keydown.escape)': 'handleEscape()',
+  },
   template: `
-    <aside class="app-sidebar" [class.mobile-open]="mobileMenuOpen()">
+    <aside
+      id="showcase-sidebar"
+      class="app-sidebar"
+      [class.mobile-open]="mobileNavigationOpen()"
+      [attr.aria-hidden]="mobileNavigationOpen() ? null : 'true'"
+      aria-label="Primary navigation"
+    >
       <div class="sidebar-content">
+        <nav class="nav-section nav-section--mobile-only" aria-label="Top-level navigation">
+          <h3 class="nav-section-title">Navigate</h3>
+          <div class="nav-items">
+            @for (item of topLevelItems; track item.path) {
+              <a
+                [routerLink]="item.path"
+                routerLinkActive="active"
+                class="nav-link nav-link--primary"
+                (click)="handleNavigationSelection()"
+              >
+                {{ item.label }}
+              </a>
+            }
+          </div>
+        </nav>
+
         <!-- Getting Started -->
         <nav class="nav-section">
           <h3 class="nav-section-title">Getting Started</h3>
-          <a routerLink="/getting-started/installation" routerLinkActive="active" class="nav-link">
-            Installation
-          </a>
-          <a routerLink="/getting-started/usage" routerLinkActive="active" class="nav-link">
-            Usage
-          </a>
-          <a routerLink="/getting-started/theming" routerLinkActive="active" class="nav-link">
-            Theming
-          </a>
+          <div class="nav-items">
+            @for (item of gettingStartedItems; track item.path) {
+              <a
+                [routerLink]="item.path"
+                routerLinkActive="active"
+                class="nav-link"
+                (click)="handleNavigationSelection()"
+              >
+                {{ item.label }}
+              </a>
+            }
+          </div>
         </nav>
 
         <!-- Components by Category -->
-        @for (category of categories(); track category.label) {
+        @for (category of categories(); track category.label; let categoryIndex = $index) {
           <nav class="nav-section">
             <button
+              type="button"
               class="nav-section-title expandable"
               (click)="toggleCategory(category)"
               [attr.aria-expanded]="category.expanded"
+              [attr.aria-controls]="'nav-category-' + categoryIndex"
             >
               <span>{{ category.label }}</span>
               <svg
@@ -61,10 +91,19 @@ interface NavCategory {
               </svg>
             </button>
 
-            @if (category.expanded) {
+            <div
+              class="nav-items-shell"
+              [class.nav-items-shell--expanded]="category.expanded"
+              [id]="'nav-category-' + categoryIndex"
+            >
               <div class="nav-items">
                 @for (item of category.items; track item.path) {
-                  <a [routerLink]="item.path" routerLinkActive="active" class="nav-link">
+                  <a
+                    [routerLink]="item.path"
+                    routerLinkActive="active"
+                    class="nav-link"
+                    (click)="handleNavigationSelection()"
+                  >
                     @if (item.icon) {
                       <span class="nav-icon">{{ item.icon }}</span>
                     }
@@ -72,45 +111,71 @@ interface NavCategory {
                   </a>
                 }
               </div>
-            }
+            </div>
           </nav>
         }
 
         <!-- Theme Builder -->
         <nav class="nav-section">
           <h3 class="nav-section-title">Tools</h3>
-          <a routerLink="/theme-builder" routerLinkActive="active" class="nav-link">
-            Theme Builder
-          </a>
+          <div class="nav-items">
+            @for (item of toolItems; track item.path) {
+              <a
+                [routerLink]="item.path"
+                routerLinkActive="active"
+                class="nav-link"
+                (click)="handleNavigationSelection()"
+              >
+                {{ item.label }}
+              </a>
+            }
+          </div>
         </nav>
       </div>
-
-      <!-- Mobile Overlay -->
-      @if (mobileMenuOpen()) {
-        <div class="sidebar-overlay" (click)="closeMobileMenu()"></div>
-      }
     </aside>
+
+    <button
+      type="button"
+      class="sidebar-overlay"
+      [class.sidebar-overlay--visible]="mobileNavigationOpen()"
+      [attr.aria-hidden]="mobileNavigationOpen() ? null : 'true'"
+      [attr.tabindex]="mobileNavigationOpen() ? '0' : '-1'"
+      aria-label="Close navigation menu"
+      (click)="requestCloseNavigation()"
+    ></button>
   `,
   styles: [
     `
       .app-sidebar {
         position: fixed;
         left: 0;
-        top: 4rem;
+        top: 4.5rem;
         bottom: 0;
         width: 280px;
         background-color: var(--semantic-surface-card);
         border-right: 1px solid var(--semantic-border-default);
         overflow-y: auto;
-        z-index: 50;
+        z-index: 90;
+        will-change: transform;
+        transition:
+          transform var(--animation-duration-normal) var(--animation-easing-default),
+          box-shadow var(--animation-duration-normal) var(--animation-easing-default);
       }
 
       .sidebar-content {
+        display: flex;
+        flex-direction: column;
+        gap: var(--primitive-spacing-6);
         padding: var(--primitive-spacing-6) var(--primitive-spacing-4);
+        padding-bottom: calc(var(--primitive-spacing-8) + env(safe-area-inset-bottom, 0px));
       }
 
       .nav-section {
-        margin-bottom: var(--primitive-spacing-6);
+        margin-bottom: 0;
+      }
+
+      .nav-section--mobile-only {
+        display: none;
       }
 
       .nav-section-title {
@@ -134,25 +199,52 @@ interface NavCategory {
         width: 100%;
         padding: var(--primitive-spacing-2);
         border-radius: var(--primitive-border-radius-md);
-        transition: background-color 0.2s;
+        transition:
+          background-color var(--animation-duration-fast) var(--animation-easing-default),
+          color var(--animation-duration-fast) var(--animation-easing-default);
       }
 
       .nav-section-title.expandable:hover {
-        background-color: var(--semantic-surface-subtle);
+        background-color: var(--semantic-surface-background-secondary);
+        color: var(--semantic-text-primary);
       }
 
       .nav-section-title svg {
-        transition: transform 0.2s;
+        flex-shrink: 0;
+        transition: transform var(--animation-duration-fast) var(--animation-easing-default);
       }
 
       .nav-section-title svg.rotated {
         transform: rotate(180deg);
       }
 
+      .nav-section-title.expandable:focus-visible,
+      .nav-link:focus-visible,
+      .sidebar-overlay:focus-visible {
+        outline: 2px solid var(--semantic-border-focus);
+        outline-offset: 2px;
+      }
+
+      .nav-items-shell {
+        display: grid;
+        grid-template-rows: 0fr;
+        opacity: 0.5;
+        transition:
+          grid-template-rows var(--animation-duration-normal) var(--animation-easing-default),
+          opacity var(--animation-duration-fast) var(--animation-easing-default);
+      }
+
+      .nav-items-shell--expanded {
+        grid-template-rows: 1fr;
+        opacity: 1;
+      }
+
       .nav-items {
         display: flex;
         flex-direction: column;
         gap: var(--primitive-spacing-1);
+        min-height: 0;
+        overflow: hidden;
       }
 
       .nav-link {
@@ -164,17 +256,25 @@ interface NavCategory {
         color: var(--semantic-text-primary);
         border-radius: var(--primitive-border-radius-md);
         font-size: var(--primitive-font-size-sm);
-        transition: all 0.2s;
+        transition:
+          background-color var(--animation-duration-fast) var(--animation-easing-default),
+          color var(--animation-duration-fast) var(--animation-easing-default),
+          transform var(--animation-duration-fast) var(--animation-easing-default);
       }
 
       .nav-link:hover {
-        background-color: var(--semantic-surface-subtle);
+        background-color: var(--semantic-surface-background-secondary);
         color: var(--semantic-brand-primary);
+        transform: translateX(2px);
       }
 
       .nav-link.active {
-        background-color: var(--semantic-brand-subtle);
+        background-color: var(--semantic-brand-primary-subtle);
         color: var(--semantic-brand-primary);
+        font-weight: var(--primitive-font-weight-medium);
+      }
+
+      .nav-link--primary {
         font-weight: var(--primitive-font-weight-medium);
       }
 
@@ -182,27 +282,101 @@ interface NavCategory {
         font-size: 1rem;
       }
 
-      /* Mobile */
       .sidebar-overlay {
         display: none;
       }
 
-      @media (max-width: 768px) {
+      @keyframes sidebar-overlay-in {
+        from {
+          opacity: 0;
+        }
+
+        to {
+          opacity: 1;
+        }
+      }
+
+      @media (max-width: 1024px) {
         .app-sidebar {
-          transform: translateX(-100%);
-          transition: transform 0.3s;
+          width: min(20rem, calc(100vw - var(--primitive-spacing-8)));
+          transform: translate3d(calc(-100% - var(--primitive-spacing-5)), 0, 0);
+          opacity: 0;
+          visibility: hidden;
+          pointer-events: none;
+          box-shadow: none;
+          transition:
+            transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
+            opacity 220ms ease,
+            box-shadow 320ms cubic-bezier(0.22, 1, 0.36, 1),
+            visibility 0s linear 320ms;
+        }
+
+        .sidebar-content {
+          opacity: 0;
+          transform: translate3d(calc(var(--primitive-spacing-4) * -1), 0, 0);
+          transition:
+            transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
+            opacity 220ms ease;
         }
 
         .app-sidebar.mobile-open {
-          transform: translateX(0);
+          transform: translate3d(0, 0, 0);
+          opacity: 1;
+          visibility: visible;
+          pointer-events: auto;
+          box-shadow: var(--primitive-shadow-xl);
+          transition-delay: 0s, 0s, 0s, 0s;
+        }
+
+        .app-sidebar.mobile-open .sidebar-content {
+          opacity: 1;
+          transform: translate3d(0, 0, 0);
+          transition-delay: 70ms;
+        }
+
+        .nav-section--mobile-only {
+          display: block;
         }
 
         .sidebar-overlay {
           display: block;
+          appearance: none;
+          border: none;
+          padding: 0;
           position: fixed;
-          inset: 0;
+          top: 4.5rem;
+          right: 0;
+          bottom: 0;
+          left: 0;
           background-color: rgba(0, 0, 0, 0.5);
-          z-index: 40;
+          backdrop-filter: blur(2px);
+          z-index: 80;
+          opacity: 0;
+          visibility: hidden;
+          pointer-events: none;
+          transition:
+            opacity 220ms ease,
+            visibility 0s linear 220ms;
+        }
+
+        .sidebar-overlay--visible {
+          opacity: 1;
+          visibility: visible;
+          pointer-events: auto;
+          transition-delay: 0s, 0s;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .app-sidebar,
+        .sidebar-content,
+        .nav-section-title.expandable,
+        .nav-section-title svg,
+        .nav-items-shell,
+        .nav-link,
+        .sidebar-overlay {
+          transition: none;
+          animation: none;
         }
       }
     `,
@@ -210,9 +384,16 @@ interface NavCategory {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidebarComponent {
-  protected mobileMenuOpen = signal(false);
+  readonly mobileNavigationOpen = input(false);
+  readonly closeNavigation = output<void>();
 
-  protected categories = signal<NavCategory[]>([
+  protected readonly topLevelItems: NavItem[] = [
+    { label: 'Components', path: '/components' },
+    { label: 'Theme Builder', path: '/theme-builder' },
+    { label: 'Getting Started', path: '/getting-started' },
+  ];
+
+  protected readonly categories = signal<NavCategory[]>([
     {
       label: 'Form Components',
       expanded: true,
@@ -284,17 +465,37 @@ export class SidebarComponent {
     },
   ]);
 
+  protected readonly gettingStartedItems = [
+    { label: 'Installation', path: '/getting-started/installation' },
+    { label: 'Usage', path: '/getting-started/usage' },
+    { label: 'Theming', path: '/getting-started/theming' },
+  ];
+
+  protected readonly toolItems: NavItem[] = [{ label: 'Theme Builder', path: '/theme-builder' }];
+
   protected toggleCategory(category: NavCategory): void {
-    category.expanded = !category.expanded;
-    // Trigger change detection
-    this.categories.set([...this.categories()]);
+    this.categories.update((categories) =>
+      categories.map((currentCategory) =>
+        currentCategory.label === category.label
+          ? { ...currentCategory, expanded: !currentCategory.expanded }
+          : currentCategory
+      )
+    );
   }
 
-  protected openMobileMenu(): void {
-    this.mobileMenuOpen.set(true);
+  protected handleNavigationSelection(): void {
+    if (this.mobileNavigationOpen()) {
+      this.requestCloseNavigation();
+    }
   }
 
-  protected closeMobileMenu(): void {
-    this.mobileMenuOpen.set(false);
+  protected requestCloseNavigation(): void {
+    this.closeNavigation.emit();
+  }
+
+  protected handleEscape(): void {
+    if (this.mobileNavigationOpen()) {
+      this.requestCloseNavigation();
+    }
   }
 }

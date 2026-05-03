@@ -265,7 +265,7 @@ import { getComponentMetadata } from '../../data/component-metadata';
 
       .category-badge {
         display: inline-block;
-        background-color: var(--semantic-surface-subtle);
+        background-color: var(--semantic-surface-background-secondary);
         color: var(--semantic-text-secondary);
         padding: var(--primitive-spacing-1) var(--primitive-spacing-3);
         border-radius: var(--primitive-border-radius-full);
@@ -302,7 +302,7 @@ import { getComponentMetadata } from '../../data/component-metadata';
 
       .tab-content p,
       .tab-content ul {
-        font-size: var(--primitive-font-size-md);
+        font-size: var(--primitive-font-size-base);
         line-height: var(--primitive-line-height-lg);
         color: var(--semantic-text-secondary);
         margin-bottom: var(--primitive-spacing-4);
@@ -327,7 +327,7 @@ import { getComponentMetadata } from '../../data/component-metadata';
       }
 
       .method-item {
-        background-color: var(--semantic-surface-subtle);
+        background-color: var(--semantic-surface-background-secondary);
         border-left: 4px solid var(--semantic-brand-primary);
         padding: var(--primitive-spacing-4);
         border-radius: var(--primitive-border-radius-md);
@@ -351,7 +351,7 @@ import { getComponentMetadata } from '../../data/component-metadata';
       }
 
       .method-item .return-type {
-        font-size: var(--primitive-font-size-md);
+        font-size: var(--primitive-font-size-base);
         color: var(--semantic-text-tertiary);
         margin-left: var(--primitive-spacing-3);
       }
@@ -368,7 +368,7 @@ import { getComponentMetadata } from '../../data/component-metadata';
 
       .related-chip {
         padding: var(--primitive-spacing-2) var(--primitive-spacing-4);
-        background-color: var(--semantic-surface-subtle);
+        background-color: var(--semantic-surface-background-secondary);
         border-radius: var(--primitive-border-radius-md);
         text-decoration: none;
         color: var(--semantic-text-primary);
@@ -378,7 +378,7 @@ import { getComponentMetadata } from '../../data/component-metadata';
       }
 
       .related-chip:hover {
-        background-color: var(--semantic-brand-subtle);
+        background-color: var(--semantic-brand-primary-subtle);
         color: var(--semantic-brand-primary);
       }
 
@@ -408,7 +408,7 @@ import { getComponentMetadata } from '../../data/component-metadata';
       }
 
       .responsive-toggle:hover {
-        background-color: var(--semantic-surface-subtle);
+        background-color: var(--semantic-surface-background-secondary);
         color: var(--semantic-text-primary);
         border-color: var(--semantic-border-strong);
       }
@@ -513,3 +513,4 @@ export class ComponentDetailComponent implements OnInit {
     return `${this.componentId()}-${cleanTitle}.${extension}`;
   }
 }
+

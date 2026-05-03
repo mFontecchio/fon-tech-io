@@ -188,7 +188,7 @@ interface SearchResult {
       display: flex;
       align-items: center;
       gap: var(--primitive-spacing-3);
-      background-color: var(--semantic-surface-subtle);
+      background-color: var(--semantic-surface-background-secondary);
       border-radius: var(--primitive-border-radius-md);
       padding: var(--primitive-spacing-3);
     }
@@ -228,7 +228,7 @@ interface SearchResult {
 
     .search-clear:hover,
     .search-close:hover {
-      background-color: var(--semantic-surface-subtle);
+      background-color: var(--semantic-surface-background-secondary);
       color: var(--semantic-text-primary);
     }
 
@@ -241,7 +241,7 @@ interface SearchResult {
       padding: 2px 6px;
       font-size: 11px;
       font-family: var(--primitive-font-family-mono);
-      background-color: var(--semantic-surface-subtle);
+      background-color: var(--semantic-surface-background-secondary);
       border: 1px solid var(--semantic-border-default);
       border-radius: 4px;
       box-shadow: 0 1px 0 var(--semantic-border-default);
@@ -287,7 +287,7 @@ interface SearchResult {
 
     .search-result-item:hover,
     .search-result-item--selected {
-      background-color: var(--semantic-surface-subtle);
+      background-color: var(--semantic-surface-background-secondary);
     }
 
     .search-result-content {
@@ -315,7 +315,7 @@ interface SearchResult {
       font-size: var(--primitive-font-size-xs);
       font-weight: var(--primitive-font-weight-medium);
       color: var(--semantic-text-secondary);
-      background-color: var(--semantic-surface-subtle);
+      background-color: var(--semantic-surface-background-secondary);
       border-radius: var(--primitive-border-radius-sm);
       flex-shrink: 0;
     }
@@ -365,7 +365,7 @@ interface SearchResult {
     .search-footer {
       padding: var(--primitive-spacing-3) var(--primitive-spacing-4);
       border-top: 1px solid var(--semantic-border-default);
-      background-color: var(--semantic-surface-subtle);
+      background-color: var(--semantic-surface-background-secondary);
     }
 
     .search-shortcuts {
@@ -579,4 +579,5 @@ export class SearchModalComponent {
     return category.charAt(0).toUpperCase() + category.slice(1) + ' Components';
   }
 }
+
 
