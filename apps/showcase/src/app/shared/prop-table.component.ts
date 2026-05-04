@@ -165,7 +165,7 @@ import { InputMetadata, OutputMetadata } from '../data/component-metadata.types'
         font-size: var(--primitive-font-size-xs);
         font-weight: var(--primitive-font-weight-medium);
         color: var(--semantic-text-inverse);
-        background-color: var(--semantic-state-error);
+        background-color: var(--semantic-feedback-error);
         border-radius: var(--primitive-border-radius-sm);
         text-transform: uppercase;
         letter-spacing: 0.5px;

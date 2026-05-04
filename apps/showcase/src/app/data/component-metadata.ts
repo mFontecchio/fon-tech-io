@@ -59,6 +59,11 @@ const BUTTON_METADATA: ComponentMetadata = {
       description: 'Whether button contains only an icon (removes text padding)',
       defaultValue: 'false',
     },
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      description: 'ARIA label for accessibility (use when button has no visible text)',
+    },
   ],
   outputs: [
     {
@@ -334,8 +339,21 @@ const TEXTAREA_METADATA: ComponentMetadata = {
       description: 'Whether input is required',
       defaultValue: 'false',
     },
+    {
+      name: 'readonly',
+      type: 'boolean',
+      description: 'Whether the textarea is read-only',
+      defaultValue: 'false',
+    },
     { name: 'rows', type: 'number', description: 'Number of visible text rows', defaultValue: '3' },
+    {
+      name: 'autoResize',
+      type: 'boolean',
+      description: 'Automatically grow the textarea to fit its content',
+      defaultValue: 'false',
+    },
     { name: 'maxLength', type: 'number', description: 'Maximum character count' },
+    { name: 'minLength', type: 'number', description: 'Minimum character count' },
     {
       name: 'showCharacterCount',
       type: 'boolean',
@@ -344,6 +362,10 @@ const TEXTAREA_METADATA: ComponentMetadata = {
     },
     { name: 'errorMessage', type: 'string', description: 'Error message to display' },
     { name: 'helperText', type: 'string', description: 'Helper text below input' },
+    { name: 'name', type: 'string', description: 'Native textarea name attribute' },
+    { name: 'id', type: 'string', description: 'ID attribute for label association' },
+    { name: 'ariaLabel', type: 'string', description: 'ARIA label when no visible label is present' },
+    { name: 'fullWidth', type: 'boolean', description: 'Whether textarea takes full width', defaultValue: 'false' },
   ],
   outputs: [{ name: 'valueChange', type: 'string', description: 'Emitted when value changes' }],
   examples: [
@@ -452,6 +474,14 @@ const CHECKBOX_METADATA: ComponentMetadata = {
       defaultValue: 'false',
     },
     { name: 'label', type: 'string', description: 'Label text displayed next to checkbox' },
+    { name: 'required', type: 'boolean', description: 'Whether the field is required', defaultValue: 'false' },
+    { name: 'size', type: "'sm' | 'md' | 'lg'", description: 'Checkbox size', defaultValue: "'md'" },
+    { name: 'helperText', type: 'string', description: 'Helper text displayed below the checkbox' },
+    { name: 'errorMessage', type: 'string', description: 'Error message displayed below the checkbox' },
+    { name: 'name', type: 'string', description: 'Native input name attribute for form grouping' },
+    { name: 'value', type: 'string', description: 'Value attribute submitted with the form' },
+    { name: 'id', type: 'string', description: 'ID attribute for label association' },
+    { name: 'ariaLabel', type: 'string', description: 'ARIA label when no visible label is present' },
   ],
   outputs: [
     { name: 'checkedChange', type: 'boolean', description: 'Emitted when checked state changes' },
@@ -675,8 +705,22 @@ const SWITCH_METADATA: ComponentMetadata = {
       defaultValue: 'false',
     },
     { name: 'disabled', type: 'boolean', description: 'Whether disabled', defaultValue: 'false' },
+    { name: 'required', type: 'boolean', description: 'Whether the field is required', defaultValue: 'false' },
     { name: 'label', type: 'string', description: 'Label text displayed next to switch' },
     { name: 'size', type: "'sm' | 'md' | 'lg'", description: 'Switch size', defaultValue: "'md'" },
+    { name: 'helperText', type: 'string', description: 'Helper text displayed below the switch' },
+    { name: 'errorMessage', type: 'string', description: 'Error message to display' },
+    { name: 'name', type: 'string', description: 'Native input name attribute' },
+    { name: 'id', type: 'string', description: 'ID attribute for label association' },
+    { name: 'ariaLabel', type: 'string', description: 'ARIA label when no visible label is present' },
+    {
+      name: 'showLabels',
+      type: 'boolean',
+      description: 'Show ON/OFF text labels on the switch track',
+      defaultValue: 'false',
+    },
+    { name: 'onLabel', type: 'string', description: 'Custom label for the on state', defaultValue: "'ON'" },
+    { name: 'offLabel', type: 'string', description: 'Custom label for the off state', defaultValue: "'OFF'" },
   ],
   outputs: [
     { name: 'checkedChange', type: 'boolean', description: 'Emitted when checked state changes' },
@@ -922,8 +966,34 @@ const MULTI_SELECT_METADATA: ComponentMetadata = {
       defaultValue: 'false',
     },
     {
+      name: 'required',
+      type: 'boolean',
+      description: 'Whether the field is required',
+      defaultValue: 'false',
+    },
+    {
+      name: 'size',
+      type: "'sm' | 'md' | 'lg'",
+      description: 'Size of the select control',
+      defaultValue: "'md'",
+    },
+    {
+      name: 'fullWidth',
+      type: 'boolean',
+      description: 'Whether the select expands to container width',
+      defaultValue: 'false',
+    },
+    {
+      name: 'searchable',
+      type: 'boolean',
+      description: 'Enable search/filtering of options',
+      defaultValue: 'true',
+    },
+    { name: 'helperText', type: 'string', description: 'Helper text displayed below the select' },
+    { name: 'errorMessage', type: 'string', description: 'Error message to display' },
+    {
       name: 'options',
-      type: 'SelectOption[]',
+      type: 'MultiSelectOption[]',
       description: 'Array of selectable options',
       required: true,
     },
@@ -1462,6 +1532,34 @@ const CARD_METADATA: ComponentMetadata = {
       description: 'Visual style variant',
       defaultValue: "'elevated'",
     },
+    {
+      name: 'fullWidth',
+      type: 'boolean',
+      description: 'Whether the card expands to the full width of its container',
+      defaultValue: 'false',
+    },
+    {
+      name: 'interactive',
+      type: 'boolean',
+      description: 'Adds hover and focus effects for clickable card patterns',
+      defaultValue: 'false',
+    },
+    {
+      name: 'noPadding',
+      type: 'boolean',
+      description: 'Removes the default card padding (useful for full-bleed images or custom layouts)',
+      defaultValue: 'false',
+    },
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      description: 'ARIA label for the card region',
+    },
+    {
+      name: 'ariaLabelledBy',
+      type: 'string',
+      description: 'ID of an element that labels this card (for landmark regions)',
+    },
   ],
   outputs: [],
   examples: [
@@ -1531,16 +1629,38 @@ const MODAL_METADATA: ComponentMetadata = {
       defaultValue: "'md'",
     },
     {
-      name: 'closeOnBackdrop',
+      name: 'showClose',
+      type: 'boolean',
+      description: 'Whether to display the close button',
+      defaultValue: 'true',
+    },
+    {
+      name: 'closeOnBackdropClick',
       type: 'boolean',
       description: 'Close when clicking backdrop',
       defaultValue: 'true',
     },
     {
-      name: 'closeOnEsc',
+      name: 'closeOnEscape',
       type: 'boolean',
       description: 'Close on Escape key press',
       defaultValue: 'true',
+    },
+    {
+      name: 'preventBodyScroll',
+      type: 'boolean',
+      description: 'Prevent body scrolling while the modal is open',
+      defaultValue: 'true',
+    },
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      description: 'ARIA label for the dialog element',
+    },
+    {
+      name: 'ariaLabelledby',
+      type: 'string',
+      description: 'ID of the element that labels the dialog',
     },
   ],
   outputs: [{ name: 'closed', type: 'void', description: 'Emitted when modal is closed' }],
@@ -1803,10 +1923,21 @@ const DIVIDER_METADATA: ComponentMetadata = {
       defaultValue: "'horizontal'",
     },
     {
-      name: 'variant',
-      type: "'solid' | 'dashed' | 'dotted'",
-      description: 'Line style',
-      defaultValue: "'solid'",
+      name: 'label',
+      type: 'string',
+      description: 'Optional text label displayed in the center of the divider',
+    },
+    {
+      name: 'align',
+      type: "'left' | 'center' | 'right'",
+      description: 'Text alignment when a label is provided',
+      defaultValue: "'center'",
+    },
+    {
+      name: 'dashed',
+      type: 'boolean',
+      description: 'Render the divider as a dashed line',
+      defaultValue: 'false',
     },
   ],
   outputs: [],
@@ -2020,6 +2151,24 @@ const STACK_METADATA: ComponentMetadata = {
       description: 'Main-axis alignment',
       defaultValue: "'start'",
     },
+    {
+      name: 'wrap',
+      type: 'boolean',
+      description: 'Allow items to wrap onto multiple lines',
+      defaultValue: 'false',
+    },
+    {
+      name: 'divider',
+      type: 'boolean',
+      description: 'Add a visual divider between each item',
+      defaultValue: 'false',
+    },
+    {
+      name: 'fullSize',
+      type: 'boolean',
+      description: 'Expand stack to fill the full width and height of its container',
+      defaultValue: 'false',
+    },
   ],
   outputs: [],
   examples: [
@@ -2072,12 +2221,49 @@ const GRID_METADATA: ComponentMetadata = {
   description: 'A responsive grid layout component with customizable columns and gaps.',
   selector: 'ui-grid',
   inputs: [
-    { name: 'columns', type: 'number', description: 'Number of columns', defaultValue: '12' },
+    {
+      name: 'columns',
+      type: "1 | 2 | 3 | 4 | 6 | 12 | 'auto'",
+      description: "Number of columns or 'auto' for responsive auto-fit",
+      defaultValue: '12',
+    },
+    {
+      name: 'columnsMd',
+      type: '1 | 2 | 3 | 4 | 6 | 12',
+      description: 'Column count override for tablet breakpoints',
+    },
+    {
+      name: 'columnsLg',
+      type: '1 | 2 | 3 | 4 | 6 | 12',
+      description: 'Column count override for desktop breakpoints',
+    },
     {
       name: 'gap',
       type: 'number',
       description: 'Gap between items (in spacing units)',
       defaultValue: '4',
+    },
+    {
+      name: 'rowGap',
+      type: 'number',
+      description: 'Row gap override (defaults to gap if not specified)',
+    },
+    {
+      name: 'columnGap',
+      type: 'number',
+      description: 'Column gap override (defaults to gap if not specified)',
+    },
+    {
+      name: 'minColumnWidth',
+      type: 'number',
+      description: "Minimum column width in rem for 'auto' column mode",
+      defaultValue: '15',
+    },
+    {
+      name: 'fullWidth',
+      type: 'boolean',
+      description: 'Whether the grid expands to full container width',
+      defaultValue: 'true',
     },
   ],
   outputs: [],
@@ -2134,11 +2320,50 @@ const BADGE_METADATA: ComponentMetadata = {
   inputs: [
     {
       name: 'variant',
-      type: "'default' | 'primary' | 'success' | 'warning' | 'error'",
+      type: "'default' | 'primary' | 'success' | 'warning' | 'error' | 'info'",
       description: 'Visual variant',
       defaultValue: "'default'",
     },
     { name: 'size', type: "'sm' | 'md' | 'lg'", description: 'Badge size', defaultValue: "'md'" },
+    { name: 'label', type: 'string', description: 'Badge text content (alternative to content projection)' },
+    {
+      name: 'dot',
+      type: 'boolean',
+      description: 'Display as a dot indicator (no text)',
+      defaultValue: 'false',
+    },
+    {
+      name: 'pill',
+      type: 'boolean',
+      description: 'Pill-shaped badge with fully rounded corners',
+      defaultValue: 'false',
+    },
+    {
+      name: 'count',
+      type: 'number',
+      description: 'Numeric count value',
+    },
+    {
+      name: 'max',
+      type: 'number',
+      description: 'Maximum count to display; numbers above this show as "max+"',
+    },
+    {
+      name: 'dismissible',
+      type: 'boolean',
+      description: 'Whether the badge can be dismissed',
+      defaultValue: 'false',
+    },
+    {
+      name: 'icon',
+      type: 'string',
+      description: 'Icon name or character to display within the badge',
+    },
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      description: 'ARIA label for additional screen reader context',
+    },
   ],
   outputs: [],
   examples: [
@@ -2200,17 +2425,49 @@ const AVATAR_METADATA: ComponentMetadata = {
   selector: 'ui-avatar',
   inputs: [
     { name: 'src', type: 'string', description: 'Image URL' },
-    { name: 'alt', type: 'string', description: 'Alt text for image accessibility' },
+    { name: 'alt', type: 'string', description: 'Alt text for image accessibility', defaultValue: "'Avatar'" },
     {
-      name: 'text',
+      name: 'initials',
       type: 'string',
-      description: 'Text/initials to display when no image is provided',
+      description: 'Initials to display when no image is available',
+    },
+    {
+      name: 'icon',
+      type: 'string',
+      description: 'Icon or emoji to display (emoji or text character)',
     },
     {
       name: 'size',
-      type: "'sm' | 'md' | 'lg' | 'xl'",
+      type: "'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'",
       description: 'Avatar size',
       defaultValue: "'md'",
+    },
+    {
+      name: 'shape',
+      type: "'circle' | 'square'",
+      description: 'Avatar shape',
+      defaultValue: "'circle'",
+    },
+    {
+      name: 'status',
+      type: "'online' | 'offline' | 'away' | 'busy'",
+      description: 'Status indicator type',
+    },
+    {
+      name: 'showStatus',
+      type: 'boolean',
+      description: 'Whether to display the status indicator dot',
+      defaultValue: 'false',
+    },
+    {
+      name: 'backgroundColor',
+      type: 'string',
+      description: 'Custom background color for initials or icon display',
+    },
+    {
+      name: 'textColor',
+      type: 'string',
+      description: 'Custom text color for initials or icon display',
     },
   ],
   outputs: [],
@@ -2218,28 +2475,44 @@ const AVATAR_METADATA: ComponentMetadata = {
     {
       title: 'Avatar with Initials',
       description: 'Text-based avatar using user initials',
-      template: `<ui-avatar text="JD" alt="John Doe" />`,
+      template: `<ui-avatar initials="JD" alt="John Doe" />`,
     },
     {
       title: 'Avatar Sizes',
-      description: 'Four size options for different contexts',
-      template: `<ui-avatar text="SM" size="sm" />
-<ui-avatar text="MD" size="md" />
-<ui-avatar text="LG" size="lg" />
-<ui-avatar text="XL" size="xl" />`,
+      description: 'Six size options from extra-small to double-extra-large',
+      template: `<ui-avatar initials="XS" size="xs" />
+<ui-avatar initials="SM" size="sm" />
+<ui-avatar initials="MD" size="md" />
+<ui-avatar initials="LG" size="lg" />
+<ui-avatar initials="XL" size="xl" />
+<ui-avatar initials="2X" size="2xl" />`,
+    },
+    {
+      title: 'Avatar Shapes',
+      description: 'Circle and square shape variants',
+      template: `<ui-avatar initials="JD" shape="circle" />
+<ui-avatar initials="JD" shape="square" />`,
     },
     {
       title: 'Avatar with Image',
       description: 'Profile photo with fallback to initials',
-      template: `<ui-avatar src="/avatar.jpg" alt="John Doe" text="JD" />`,
+      template: `<ui-avatar src="/avatar.jpg" alt="John Doe" initials="JD" />`,
+    },
+    {
+      title: 'Avatar with Status',
+      description: 'Avatar displaying an online/offline status indicator',
+      template: `<ui-avatar initials="JD" status="online" [showStatus]="true" />
+<ui-avatar initials="AS" status="away" [showStatus]="true" />
+<ui-avatar initials="MK" status="busy" [showStatus]="true" />
+<ui-avatar initials="RS" status="offline" [showStatus]="true" />`,
     },
     {
       title: 'User Profile Group',
       description: 'Multiple avatars for team or group display',
-      template: `<ui-avatar text="JD" size="md" />
-<ui-avatar text="AS" size="md" />
-<ui-avatar text="MK" size="md" />
-<ui-avatar text="+3" size="md" />`,
+      template: `<ui-avatar initials="JD" size="md" />
+<ui-avatar initials="AS" size="md" />
+<ui-avatar initials="MK" size="md" />
+<ui-avatar initials="+3" size="md" />`,
     },
   ],
   accessibility: {
@@ -2255,7 +2528,7 @@ const AVATAR_METADATA: ComponentMetadata = {
   bestPractices: [
     'Always provide alt text or aria-label with the full name',
     'Use consistent size across similar UI contexts',
-    'Provide text fallback when image may fail to load',
+    'Provide initials fallback when image may fail to load',
     'Use 1-2 letters for initials (first and last name)',
     'Ensure sufficient color contrast for text avatars',
     'Use xl size for profile pages, md for lists, sm for inline mentions',
@@ -2275,6 +2548,30 @@ const TOOLTIP_METADATA: ComponentMetadata = {
       type: "'top' | 'bottom' | 'left' | 'right'",
       description: 'Tooltip position relative to target',
       defaultValue: "'top'",
+    },
+    {
+      name: 'size',
+      type: "'sm' | 'md' | 'lg'",
+      description: 'Tooltip size',
+      defaultValue: "'md'",
+    },
+    {
+      name: 'showDelay',
+      type: 'number',
+      description: 'Delay in milliseconds before the tooltip appears',
+      defaultValue: '200',
+    },
+    {
+      name: 'hideDelay',
+      type: 'number',
+      description: 'Delay in milliseconds before the tooltip hides',
+      defaultValue: '0',
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      description: 'Whether the tooltip is disabled',
+      defaultValue: 'false',
     },
   ],
   outputs: [],
@@ -2350,14 +2647,31 @@ const CHIP_METADATA: ComponentMetadata = {
       defaultValue: 'false',
     },
     {
+      name: 'clickable',
+      type: 'boolean',
+      description: 'Whether the chip is interactive/clickable',
+      defaultValue: 'false',
+    },
+    {
       name: 'disabled',
       type: 'boolean',
       description: 'Whether the chip is disabled',
       defaultValue: 'false',
     },
+    {
+      name: 'avatar',
+      type: 'string',
+      description: 'Avatar image URL or initials to display before the label',
+    },
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      description: 'ARIA label for accessibility',
+    },
   ],
   outputs: [
     { name: 'removed', type: 'void', description: 'Emitted when remove button is clicked' },
+    { name: 'clicked', type: 'void', description: 'Emitted when the chip is clicked (requires clickable)' },
   ],
   examples: [
     {
@@ -2436,10 +2750,9 @@ const POPOVER_METADATA: ComponentMetadata = {
   selector: 'ui-popover',
   inputs: [
     {
-      name: 'open',
-      type: 'boolean',
-      description: 'Whether popover is visible',
-      defaultValue: 'false',
+      name: 'title',
+      type: 'string',
+      description: 'Optional title displayed at the top of the popover',
     },
     {
       name: 'position',
@@ -2452,6 +2765,18 @@ const POPOVER_METADATA: ComponentMetadata = {
       type: "'click' | 'hover'",
       description: 'Interaction that opens popover',
       defaultValue: "'click'",
+    },
+    {
+      name: 'showArrow',
+      type: 'boolean',
+      description: 'Whether to display the directional arrow',
+      defaultValue: 'true',
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      description: 'Whether the popover is disabled',
+      defaultValue: 'false',
     },
   ],
   outputs: [
@@ -2537,12 +2862,53 @@ const PAGINATION_METADATA: ComponentMetadata = {
       description: 'Number of items per page',
       defaultValue: '10',
     },
+    {
+      name: 'maxPages',
+      type: 'number',
+      description: 'Maximum number of page buttons displayed before truncating with ellipsis',
+      defaultValue: '7',
+    },
+    {
+      name: 'size',
+      type: "'sm' | 'md' | 'lg'",
+      description: 'Pagination control size',
+      defaultValue: "'md'",
+    },
+    {
+      name: 'showFirstLast',
+      type: 'boolean',
+      description: 'Show first and last page jump buttons',
+      defaultValue: 'true',
+    },
+    {
+      name: 'showPageSize',
+      type: 'boolean',
+      description: 'Show a page size selector dropdown',
+      defaultValue: 'false',
+    },
+    {
+      name: 'pageSizeOptions',
+      type: 'number[]',
+      description: 'Available page size options for the selector',
+      defaultValue: '[10, 20, 50, 100]',
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      description: 'Whether pagination controls are disabled',
+      defaultValue: 'false',
+    },
   ],
   outputs: [
     {
       name: 'pageChange',
       type: 'number',
       description: 'Emitted when user navigates to a different page',
+    },
+    {
+      name: 'pageSizeChange',
+      type: 'number',
+      description: 'Emitted when the user changes the page size',
     },
   ],
   examples: [
@@ -2627,21 +2993,63 @@ const TABLE_METADATA: ComponentMetadata = {
       required: true,
     },
     {
-      name: 'sortable',
+      name: 'size',
+      type: "'sm' | 'md' | 'lg'",
+      description: 'Table cell padding size',
+      defaultValue: "'md'",
+    },
+    {
+      name: 'striped',
       type: 'boolean',
-      description: 'Enable column sorting',
+      description: 'Alternate row background colors',
       defaultValue: 'false',
+    },
+    {
+      name: 'hoverable',
+      type: 'boolean',
+      description: 'Highlight rows on hover',
+      defaultValue: 'true',
+    },
+    {
+      name: 'bordered',
+      type: 'boolean',
+      description: 'Add borders between cells',
+      defaultValue: 'false',
+    },
+    {
+      name: 'loading',
+      type: 'boolean',
+      description: 'Display a loading state over the table',
+      defaultValue: 'false',
+    },
+    {
+      name: 'emptyMessage',
+      type: 'string',
+      description: 'Message displayed when the data array is empty',
+      defaultValue: "'No data available'",
     },
     {
       name: 'selectable',
       type: 'boolean',
-      description: 'Enable row selection',
+      description: 'Enable row selection with checkboxes',
       defaultValue: 'false',
+    },
+    {
+      name: 'selectedRows',
+      type: 'number[]',
+      description: 'Array of selected row indices',
+      defaultValue: '[]',
+    },
+    {
+      name: 'caption',
+      type: 'string',
+      description: 'Accessible table caption text',
     },
   ],
   outputs: [
-    { name: 'rowClick', type: 'any', description: 'Emitted when a row is clicked' },
-    { name: 'selectionChange', type: 'any[]', description: 'Emitted when selection changes' },
+    { name: 'sortChange', type: 'SortState', description: 'Emitted when column sort changes' },
+    { name: 'rowClick', type: '{ row: any; index: number }', description: 'Emitted when a row is clicked' },
+    { name: 'selectionChange', type: 'number[]', description: 'Emitted when row selection changes' },
   ],
   examples: [
     {
@@ -2724,10 +3132,34 @@ const LIST_METADATA: ComponentMetadata = {
       defaultValue: "'default'",
     },
     {
+      name: 'size',
+      type: "'sm' | 'md' | 'lg'",
+      description: 'List item size',
+      defaultValue: "'md'",
+    },
+    {
+      name: 'ordered',
+      type: 'boolean',
+      description: 'Render as an ordered list (ol) instead of unordered (ul)',
+      defaultValue: 'false',
+    },
+    {
       name: 'interactive',
       type: 'boolean',
       description: 'Items are clickable/interactive',
       defaultValue: 'false',
+    },
+    {
+      name: 'showIcons',
+      type: 'boolean',
+      description: 'Whether to display item icons when provided',
+      defaultValue: 'true',
+    },
+    {
+      name: 'emptyMessage',
+      type: 'string',
+      description: 'Message displayed when the items array is empty',
+      defaultValue: "'No items'",
     },
   ],
   outputs: [
@@ -3115,6 +3547,25 @@ const ALERT_METADATA: ComponentMetadata = {
       defaultValue: 'false',
     },
     { name: 'size', type: "'sm' | 'md' | 'lg'", description: 'Alert size', defaultValue: "'md'" },
+    { name: 'title', type: 'string', description: 'Optional title displayed above the alert message' },
+    {
+      name: 'showIcon',
+      type: 'boolean',
+      description: 'Whether to display the variant icon',
+      defaultValue: 'true',
+    },
+    {
+      name: 'role',
+      type: "'alert' | 'status'",
+      description: 'ARIA role — use \'alert\' for critical messages, \'status\' for informational ones',
+      defaultValue: "'alert'",
+    },
+    {
+      name: 'ariaLive',
+      type: "'polite' | 'assertive'",
+      description: 'ARIA live region politeness setting',
+      defaultValue: "'polite'",
+    },
   ],
   outputs: [{ name: 'dismissed', type: 'void', description: 'Emitted when alert is dismissed' }],
   examples: [
@@ -3183,8 +3634,31 @@ const SPINNER_METADATA: ComponentMetadata = {
   description: 'A loading spinner component to indicate processing or loading states.',
   selector: 'ui-spinner',
   inputs: [
-    { name: 'size', type: "'sm' | 'md' | 'lg'", description: 'Spinner size', defaultValue: "'md'" },
-    { name: 'color', type: 'string', description: 'Custom spinner color (CSS color value)' },
+    { name: 'size', type: "'xs' | 'sm' | 'md' | 'lg' | 'xl'", description: 'Spinner size', defaultValue: "'md'" },
+    {
+      name: 'variant',
+      type: "'primary' | 'secondary' | 'inverse'",
+      description: 'Color variant for different surface contexts',
+      defaultValue: "'primary'",
+    },
+    {
+      name: 'label',
+      type: 'string',
+      description: 'Loading message for screen readers (and optionally visible)',
+      defaultValue: "'Loading...'",
+    },
+    {
+      name: 'showLabel',
+      type: 'boolean',
+      description: 'Render the label text visibly alongside the spinner',
+      defaultValue: 'false',
+    },
+    {
+      name: 'centered',
+      type: 'boolean',
+      description: 'Center the spinner within its container',
+      defaultValue: 'false',
+    },
   ],
   outputs: [],
   examples: [
@@ -3232,18 +3706,44 @@ const PROGRESS_METADATA: ComponentMetadata = {
   description: 'A progress bar component for showing task completion with visual feedback.',
   selector: 'ui-progress',
   inputs: [
-    { name: 'value', type: 'number', description: 'Progress value (0-100)', defaultValue: '0' },
+    { name: 'value', type: 'number', description: 'Progress value (0-max)', defaultValue: '0' },
+    { name: 'max', type: 'number', description: 'Maximum value for the progress bar', defaultValue: '100' },
     {
       name: 'variant',
-      type: "'default' | 'success' | 'warning' | 'error'",
+      type: "'default' | 'success' | 'warning' | 'error' | 'info'",
       description: 'Visual variant for semantic meaning',
       defaultValue: "'default'",
     },
+    { name: 'size', type: "'sm' | 'md' | 'lg'", description: 'Height of the progress bar', defaultValue: "'md'" },
+    { name: 'label', type: 'string', description: 'Label text displayed above or alongside the bar' },
     {
       name: 'showValue',
       type: 'boolean',
       description: 'Show percentage text',
       defaultValue: 'false',
+    },
+    {
+      name: 'indeterminate',
+      type: 'boolean',
+      description: 'Indeterminate mode — shows an animated bar when the total is unknown',
+      defaultValue: 'false',
+    },
+    {
+      name: 'striped',
+      type: 'boolean',
+      description: 'Apply a striped pattern to the progress fill',
+      defaultValue: 'false',
+    },
+    {
+      name: 'animated',
+      type: 'boolean',
+      description: 'Animate the stripes (requires striped to be true)',
+      defaultValue: 'false',
+    },
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      description: 'ARIA label describing the operation being tracked',
     },
   ],
   outputs: [],
@@ -3305,12 +3805,24 @@ const SKELETON_METADATA: ComponentMetadata = {
   inputs: [
     {
       name: 'variant',
-      type: "'text' | 'circular' | 'rectangular'",
+      type: "'text' | 'circular' | 'rectangular' | 'rounded'",
       description: 'Skeleton shape',
       defaultValue: "'text'",
     },
     { name: 'width', type: 'string', description: 'Skeleton width (CSS value)' },
     { name: 'height', type: 'string', description: 'Skeleton height (CSS value)' },
+    {
+      name: 'lines',
+      type: 'number',
+      description: 'Number of text lines to render (text variant only)',
+      defaultValue: '1',
+    },
+    {
+      name: 'noAnimation',
+      type: 'boolean',
+      description: 'Disable the shimmer animation',
+      defaultValue: 'false',
+    },
   ],
   outputs: [],
   examples: [
@@ -3385,13 +3897,19 @@ const TOAST_METADATA: ComponentMetadata = {
       defaultValue: "'info'",
     },
     {
-      name: 'duration',
-      type: 'number',
-      description: 'Auto-dismiss duration in milliseconds',
-      defaultValue: '3000',
+      name: 'dismissible',
+      type: 'boolean',
+      description: 'Whether the toast shows a dismiss button',
+      defaultValue: 'true',
+    },
+    {
+      name: 'dismissing',
+      type: 'boolean',
+      description: 'Whether the dismiss animation is playing (set by the toast service)',
+      defaultValue: 'false',
     },
   ],
-  outputs: [{ name: 'dismissed', type: 'void', description: 'Emitted when toast is dismissed' }],
+  outputs: [{ name: 'dismissRequested', type: 'void', description: 'Emitted when the user requests dismissal' }],
   examples: [
     {
       title: 'Toast Variants',
@@ -3470,8 +3988,26 @@ const BREADCRUMB_METADATA: ComponentMetadata = {
       description: 'Character or icon separating items',
       defaultValue: "'/'",
     },
+    {
+      name: 'size',
+      type: "'sm' | 'md' | 'lg'",
+      description: 'Breadcrumb text and icon size',
+      defaultValue: "'md'",
+    },
+    {
+      name: 'maxItems',
+      type: 'number',
+      description: 'Maximum number of items to display; excess items are collapsed into an ellipsis (0 = unlimited)',
+      defaultValue: '0',
+    },
   ],
-  outputs: [],
+  outputs: [
+    {
+      name: 'itemClicked',
+      type: '{ item: BreadcrumbItem; index: number }',
+      description: 'Emitted when a breadcrumb item is clicked',
+    },
+  ],
   examples: [
     {
       title: 'Basic Breadcrumb',
@@ -3537,9 +4073,22 @@ const MENU_METADATA: ComponentMetadata = {
       description: 'Whether menu is visible',
       defaultValue: 'false',
     },
+    {
+      name: 'position',
+      type: "'bottom-left' | 'bottom-right' | 'top-left' | 'top-right'",
+      description: 'Menu position relative to the trigger element',
+      defaultValue: "'bottom-left'",
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      description: 'Whether the menu trigger is disabled',
+      defaultValue: 'false',
+    },
   ],
   outputs: [
-    { name: 'itemSelected', type: 'string', description: 'Emitted when menu item is selected' },
+    { name: 'openChange', type: 'boolean', description: 'Emitted when the open state changes' },
+    { name: 'itemClick', type: 'MenuItem', description: 'Emitted when a menu item is selected' },
   ],
   examples: [
     {
@@ -3758,7 +4307,7 @@ const NAVBAR_METADATA: ComponentMetadata = {
   description: 'A navigation bar component for app-wide navigation with logo and links.',
   selector: 'ui-navbar',
   inputs: [
-    { name: 'logo', type: 'string', description: 'Logo text or image URL' },
+    { name: 'brandText', type: 'string', description: 'Brand or logo text displayed on the left' },
     {
       name: 'links',
       type: 'NavbarLink[]',
@@ -3767,12 +4316,20 @@ const NAVBAR_METADATA: ComponentMetadata = {
     },
     {
       name: 'variant',
-      type: "'default' | 'transparent' | 'sticky'",
-      description: 'Navbar style variant',
+      type: "'default' | 'sticky' | 'fixed'",
+      description: 'Navbar positioning variant',
       defaultValue: "'default'",
     },
+    {
+      name: 'showMobileToggle',
+      type: 'boolean',
+      description: 'Whether to display the hamburger toggle on mobile',
+      defaultValue: 'true',
+    },
   ],
-  outputs: [],
+  outputs: [
+    { name: 'linkClick', type: 'NavbarLink', description: 'Emitted when a navigation link is clicked' },
+  ],
   examples: [
     {
       title: 'Basic Navbar',

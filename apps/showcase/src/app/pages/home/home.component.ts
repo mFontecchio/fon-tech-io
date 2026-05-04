@@ -102,6 +102,7 @@ import { getAllComponentMetadata } from '../../data/component-metadata';
 
       .hero-title {
         font-size: clamp(2rem, 8vw + 1rem, 4.5rem);
+        transition: font-size 0.5s ease;
         line-height: 1.2;
         font-weight: var(--primitive-font-weight-bold);
         color: var(--semantic-text-primary);

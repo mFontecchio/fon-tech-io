@@ -40,7 +40,7 @@ import { SearchModalComponent } from '../shared/search-modal.component';
 
         <!-- Logo/Brand -->
         <a routerLink="/" class="app-header-brand">
-          <span class="brand-name">Fontex</span>
+          <span class="brand-name">Fon.tech.io</span>
         </a>
 
         <!-- Navigation -->
