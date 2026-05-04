@@ -10,9 +10,8 @@ import {
   Component,
   computed,
   input,
+  linkedSignal,
   output,
-  signal,
-  effect,
   ElementRef,
   inject,
 } from '@angular/core';
@@ -74,7 +73,7 @@ export class StepperComponent {
   /**
    * Internal active step
    */
-  protected readonly internalActiveStep = signal(0);
+  protected readonly internalActiveStep = linkedSignal(() => this.activeStep());
 
   /**
    * Computed CSS classes
@@ -95,13 +94,6 @@ export class StepperComponent {
   });
 
   private readonly elementRef = inject(ElementRef);
-
-  constructor() {
-    // Sync internal active step
-    effect(() => {
-      this.internalActiveStep.set(this.activeStep());
-    });
-  }
 
   /**
    * Arrow key navigation (WAI-ARIA step/tablist pattern)

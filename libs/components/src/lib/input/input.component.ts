@@ -11,6 +11,7 @@ import {
   computed,
   effect,
   input,
+  linkedSignal,
   output,
   signal,
   ElementRef,
@@ -168,7 +169,7 @@ export class InputComponent {
   /**
    * Internal value signal
    */
-  protected readonly internalValue = signal('');
+  protected readonly internalValue = linkedSignal(() => this.value());
 
   /**
    * Internal focus state
@@ -287,10 +288,9 @@ export class InputComponent {
   );
 
   constructor() {
-    // Sync internal value with input value
+    // Re-run validation when constraints or external value changes
     effect(() => {
-      this.internalValue.set(this.value());
-
+      this.internalValue();
       this.required();
       this.minLength();
       this.maxLength();

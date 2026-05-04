@@ -10,8 +10,8 @@ import {
   Component,
   computed,
   input,
+  linkedSignal,
   output,
-  signal,
   effect,
   ElementRef,
   viewChild,
@@ -101,7 +101,7 @@ export class CheckboxComponent {
   /**
    * Internal checked state
    */
-  protected readonly internalChecked = signal(false);
+  protected readonly internalChecked = linkedSignal(() => this.checked());
 
   /**
    * Reference to checkbox input element
@@ -161,11 +161,6 @@ export class CheckboxComponent {
   }));
 
   constructor() {
-    // Sync internal checked state
-    effect(() => {
-      this.internalChecked.set(this.checked());
-    });
-
     // Set indeterminate state on native element
     effect(() => {
       const checkbox = this.checkboxElement();

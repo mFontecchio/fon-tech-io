@@ -9,8 +9,8 @@ import {
   ElementRef,
   afterNextRender,
   computed,
-  effect,
   inject,
+  linkedSignal,
   signal,
   viewChild,
 } from '@angular/core';
@@ -462,7 +462,7 @@ export class SearchModalComponent {
   // State
   readonly isOpen = signal(false);
   readonly searchQuery = signal('');
-  readonly selectedIndex = signal(0);
+  readonly selectedIndex = linkedSignal(() => { this.searchQuery(); return 0; });
 
   // All components
   private readonly allComponents = getAllComponentMetadata();
@@ -523,14 +523,6 @@ export class SearchModalComponent {
       return this.popularComponents;
     }
   });
-
-  constructor() {
-    // Reset selected index when search query changes
-    effect(() => {
-      this.searchQuery();
-      this.selectedIndex.set(0);
-    });
-  }
 
   handleKeyDown(event: KeyboardEvent): void {
     // Cmd/Ctrl+K to open

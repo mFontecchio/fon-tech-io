@@ -10,9 +10,8 @@ import {
   Component,
   computed,
   input,
+  linkedSignal,
   output,
-  signal,
-  effect,
   ElementRef,
   viewChild,
 } from '@angular/core';
@@ -114,7 +113,7 @@ export class SelectComponent {
   /**
    * Internal value state
    */
-  protected readonly internalValue = signal<string | undefined>(undefined);
+  protected readonly internalValue = linkedSignal<string | undefined>(() => this.value());
 
   /**
    * Reference to select element
@@ -196,13 +195,6 @@ export class SelectComponent {
   protected readonly hasGroups = computed(() => {
     return this.options().some(opt => opt.group !== undefined);
   });
-
-  constructor() {
-    // Sync internal value
-    effect(() => {
-      this.internalValue.set(this.value());
-    });
-  }
 
   /**
    * Handle select change

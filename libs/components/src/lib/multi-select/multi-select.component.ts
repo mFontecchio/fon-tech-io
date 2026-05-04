@@ -10,9 +10,9 @@ import {
   Component,
   computed,
   input,
+  linkedSignal,
   output,
   signal,
-  effect,
   ElementRef,
   viewChild,
   inject,
@@ -137,7 +137,7 @@ export class MultiSelectComponent {
   /**
    * Internal selected values
    */
-  protected readonly internalValue = signal<string[]>([]);
+  protected readonly internalValue = linkedSignal<string[]>(() => this.value());
 
   /**
    * Dropdown open state
@@ -263,13 +263,6 @@ export class MultiSelectComponent {
    * Reference to host element
    */
   private elementRef = inject(ElementRef);
-
-  constructor() {
-    // Sync internal value
-    effect(() => {
-      this.internalValue.set(this.value());
-    });
-  }
 
   /**
    * Toggle dropdown

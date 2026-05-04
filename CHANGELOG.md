@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
+- **Strict CSP compliance for `CssGeneratorService`**: Replaced 100+ `element.style.setProperty()` CSSOM calls with a single `<style id="ui-suite-theme">` element injected into `document.head`. The element is reused on subsequent theme changes to avoid DOM churn. Supports Angular's `CSP_NONCE` token — when provided, the nonce is set on the style element so it passes a `style-src 'nonce-...'` policy. Uses `inject(DOCUMENT)` for SSR-compatible DOM access.
+- **Strict CSP compliance for `TypographyService`**: Replaced per-scale `root.style.setProperty()` CSSOM calls in `applyTypographyCss()` with a single `<style id="ui-suite-typography">` element. Delegates to the existing `generateCss()` helper and applies `CSP_NONCE` on creation. Uses `inject(DOCUMENT)` for SSR-compatible DOM access.
+- **Skeleton last-line width**: Removed the `[style.width]` template binding that set the final skeleton line to 80% width. The effect is now achieved with a pure CSS rule `.ui-skeleton-lines .ui-skeleton:last-child { width: 80%; }`, eliminating the only non-custom-property inline style in the component library.
 - **Showcase responsive navigation**: Moved mobile navigation state into the showcase shell, added an accessible header menu toggle, converted the sidebar into an animated off-canvas drawer for smaller screens, and preserved navigation actions with token-based motion and keyboard-dismiss behavior.
 - **Canonical token migration**: Migrated the showcase, component library, and theme builder off legacy theme variable names and back onto the rebuilt token model, then removed the temporary compatibility aliases from the theming generator.
 - **Showcase home hero title**: Replaced a removed primitive color token in the landing page gradient so the hero heading renders correctly in light and dark themes.

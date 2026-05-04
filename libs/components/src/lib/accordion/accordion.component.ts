@@ -10,8 +10,8 @@ import {
   Component,
   computed,
   input,
+  linkedSignal,
   output,
-  signal,
   contentChildren,
   effect,
 } from '@angular/core';
@@ -53,14 +53,9 @@ export class AccordionComponent {
   /**
    * Internal expanded indices
    */
-  protected readonly internalExpanded = signal<number[]>([]);
+  protected readonly internalExpanded = linkedSignal<number[]>(() => this.expanded());
 
   constructor() {
-    // Sync internal expanded state
-    effect(() => {
-      this.internalExpanded.set(this.expanded());
-    });
-
     // Update items expanded state
     effect(() => {
       const expandedIndices = this.internalExpanded();

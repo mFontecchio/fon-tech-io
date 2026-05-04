@@ -11,9 +11,8 @@ import {
   computed,
   ElementRef,
   input,
+  linkedSignal,
   output,
-  signal,
-  effect,
   viewChild,
 } from '@angular/core';
 import { NgClass } from '@angular/common';
@@ -112,7 +111,7 @@ export class DatePickerComponent {
   /**
    * Internal value
    */
-  protected readonly internalValue = signal<string | undefined>(undefined);
+  protected readonly internalValue = linkedSignal<string | undefined>(() => this.value());
 
   /**
    * Reference to native date input
@@ -168,13 +167,6 @@ export class DatePickerComponent {
     'ui-date-picker--error': this.hasError(),
     'ui-date-picker--disabled': this.disabled(),
   }));
-
-  constructor() {
-    // Sync internal value
-    effect(() => {
-      this.internalValue.set(this.value());
-    });
-  }
 
   /**
    * Handle value change

@@ -10,9 +10,8 @@ import {
   Component,
   computed,
   input,
+  linkedSignal,
   output,
-  signal,
-  effect,
 } from '@angular/core';
 import { NgClass } from '@angular/common';
 
@@ -87,12 +86,12 @@ export class PaginationComponent {
   /**
    * Internal current page
    */
-  protected readonly internalPage = signal(1);
+  protected readonly internalPage = linkedSignal(() => this.currentPage());
 
   /**
    * Internal page size
    */
-  protected readonly internalPageSize = signal(10);
+  protected readonly internalPageSize = linkedSignal(() => this.pageSize());
 
   /**
    * Total pages
@@ -167,17 +166,6 @@ export class PaginationComponent {
     [`ui-pagination--${this.size()}`]: true,
     'ui-pagination--disabled': this.disabled(),
   }));
-
-  constructor() {
-    // Sync internal values
-    effect(() => {
-      this.internalPage.set(this.currentPage());
-    });
-
-    effect(() => {
-      this.internalPageSize.set(this.pageSize());
-    });
-  }
 
   /**
    * Go to specific page

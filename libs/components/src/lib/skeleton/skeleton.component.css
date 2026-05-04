@@ -64,6 +64,10 @@
   gap: var(--primitive-spacing-2);
 }
 
+.ui-skeleton-lines .ui-skeleton:last-child {
+  width: 80%;
+}
+
 /* No animation */
 
 .ui-skeleton--no-animation::after {
