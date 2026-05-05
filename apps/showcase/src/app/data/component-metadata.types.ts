@@ -138,6 +138,38 @@ export interface SetupMetadata {
 }
 
 /**
+ * Angular forms integration guidance for consumers.
+ */
+export interface FormsMetadata {
+  /** Recommended binding style for Angular 20 applications using this component. */
+  recommendedBinding: string;
+  /** Public binding used to provide the current value or state. */
+  valueBinding?: string;
+  /** Public binding or event used to observe changes. */
+  changeBinding?: string;
+  /** Whether the component implements ControlValueAccessor. */
+  supportsControlValueAccessor: boolean;
+  /** Whether template-driven forms work without a custom adapter. */
+  supportsTemplateDrivenForms: boolean;
+  /** Whether reactive forms work without a custom adapter. */
+  supportsReactiveForms: boolean;
+  /** Short notes covering caveats, native form behavior, or adapter requirements. */
+  notes?: string[];
+}
+
+/**
+ * Runtime and rendering compatibility guidance for Angular apps.
+ */
+export interface RuntimeMetadata {
+  /** Whether the component is safe to render during SSR. */
+  supportsSSR: boolean;
+  /** Whether the component depends on browser-only APIs for key behavior. */
+  requiresBrowserAPIs: boolean;
+  /** Short notes about hydration, DOM APIs, or browser-only caveats. */
+  notes?: string[];
+}
+
+/**
  * Complete component metadata
  */
 export interface ComponentMetadata {
@@ -151,6 +183,10 @@ export interface ComponentMetadata {
   inputs: InputMetadata[];
   outputs: OutputMetadata[];
   methods?: MethodMetadata[];
+  /** Angular forms integration guidance for consumers. */
+  forms?: FormsMetadata;
+  /** Runtime and SSR compatibility guidance for consumers. */
+  runtime?: RuntimeMetadata;
   /**
    * Named projection slots and native attribute-forwarding surfaces.
    * Populate for any component that uses `<ng-content select="...">` or

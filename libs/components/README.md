@@ -88,9 +88,9 @@ import { ButtonComponent, RadioComponent } from '@ui-suite/components';
   selector: 'app-example',
   imports: [ButtonComponent, RadioComponent],
   template: `
-    <ui-button (clicked)="handleClick()">Click Me</ui-button>
+    <fui-button (clicked)="handleClick()">Click Me</fui-button>
     
-    <ui-radio 
+    <fui-radio 
       name="plan" 
       value="pro" 
       label="Pro Plan"
@@ -109,12 +109,24 @@ export class ExampleComponent {
 
 ### Setup Theming
 
-Import the theme CSS in your application:
+Components consume CSS custom properties from `@ui-suite/theming`. Use the showcase theming guide as the source of truth for applying a theme family and generated tokens in Angular applications.
 
-```typescript
-// main.ts or styles.css
-import '@ui-suite/theming/styles.css';
+```bash
+nx serve showcase
 ```
+
+Then open `/getting-started/theming` in the showcase for the supported Angular 20 setup path.
+
+## Angular Forms Integration
+
+Form-oriented components expose explicit Angular bindings such as `[value]` with `(valueChange)`, `[checked]` with `(checkedChange)`, or `[(modelValue)]` for radio groups.
+
+- `fui-input`, `fui-textarea`, `fui-select`, `fui-multi-select`, `fui-slider`, and `fui-date-picker` use explicit input/output bindings.
+- `fui-checkbox` and `fui-switch` use `[checked]` and `(checkedChange)`.
+- `fui-radio` uses `[(modelValue)]` across a group that shares the same `name`.
+- These components do not currently implement Angular `ControlValueAccessor` unless explicitly documented in the showcase.
+
+If your application relies on `formControlName` or `ngModel`, add a thin adapter directive or wrapper component that bridges your `FormControl` to the component's documented bindings.
 
 ## Keyboard Navigation
 
@@ -217,7 +229,7 @@ MIT License - see LICENSE file for details
 
 ## Support
 
-- **Documentation**: See `/documentation/components/` for detailed guides
+- **Documentation**: Run `nx serve showcase` and browse the component pages and getting-started guides
 - **Issues**: Report bugs and request features on GitHub
 - **Discussions**: Join the community discussions
 

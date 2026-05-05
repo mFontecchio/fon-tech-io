@@ -29,18 +29,18 @@ import { ContextMenuComponent, ContextMenuItem } from '@ui-suite/components';
   selector: 'app-example',
   imports: [ContextMenuComponent],
   template: `
-    <ui-context-menu [items]="menuItems()" (itemClick)="handleMenuClick($event)">
+    <fui-context-menu [items]="menuItems()" (itemClick)="handleMenuClick($event)">
       <div class="content">Right-click anywhere in this area to open the context menu</div>
-    </ui-context-menu>
+    </fui-context-menu>
   `,
 })
 export class ExampleComponent {
   readonly menuItems = signal<ContextMenuItem[]>([
-    { id: 'cut', label: 'Cut', icon: '✂️', shortcut: 'Ctrl+X' },
-    { id: 'copy', label: 'Copy', icon: '📋', shortcut: 'Ctrl+C' },
-    { id: 'paste', label: 'Paste', icon: '📄', shortcut: 'Ctrl+V' },
+    { id: 'cut', label: 'Cut', icon: 'cut', shortcut: 'Ctrl+X' },
+    { id: 'copy', label: 'Copy', icon: 'copy', shortcut: 'Ctrl+C' },
+    { id: 'paste', label: 'Paste', icon: 'paste', shortcut: 'Ctrl+V' },
     { id: 'divider-1', divider: true },
-    { id: 'delete', label: 'Delete', icon: '🗑️', shortcut: 'Del' },
+    { id: 'delete', label: 'Delete', icon: 'delete', shortcut: 'Del' },
   ]);
 
   handleMenuClick(item: ContextMenuItem): void {
@@ -89,14 +89,14 @@ readonly menuItems = signal<ContextMenuItem[]>([
 ### Event Handling
 
 ```typescript
-<ui-context-menu
+<fui-context-menu
   [items]="menuItems()"
   (itemClick)="handleItemClick($event)"
   (opened)="handleOpened($event)"
   (closed)="handleClosed()"
 >
   <div>Right-click me</div>
-</ui-context-menu>
+</fui-context-menu>
 ```
 
 ```typescript
@@ -199,18 +199,17 @@ The component uses design tokens for all styling:
 
 ### Custom Styling
 
-You can override styles using CSS:
+Prefer token overrides on a scoped parent container:
 
 ```css
-::ng-deep .ui-context-menu {
-  min-width: 15rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-}
-
-::ng-deep .ui-context-menu-item {
-  padding: 0.75rem 1rem;
+.file-explorer-surface {
+  --semantic-surface-card: #1f2937;
+  --semantic-text-primary: #f9fafb;
+  --semantic-border-default: #374151;
 }
 ```
+
+Avoid using `::ng-deep`; this component is designed to be themed through tokens.
 
 ## Best Practices
 
@@ -251,9 +250,9 @@ readonly fileMenuItems = signal<ContextMenuItem[]>([
 
 ```typescript
 readonly editorMenuItems = signal<ContextMenuItem[]>([
-  { id: 'cut', label: 'Cut', icon: '✂️', shortcut: 'Ctrl+X' },
-  { id: 'copy', label: 'Copy', icon: '📋', shortcut: 'Ctrl+C' },
-  { id: 'paste', label: 'Paste', icon: '📄', shortcut: 'Ctrl+V' },
+  { id: 'cut', label: 'Cut', icon: 'cut', shortcut: 'Ctrl+X' },
+  { id: 'copy', label: 'Copy', icon: 'copy', shortcut: 'Ctrl+C' },
+  { id: 'paste', label: 'Paste', icon: 'paste', shortcut: 'Ctrl+V' },
   { id: 'divider-1', divider: true },
   { id: 'select-all', label: 'Select All', shortcut: 'Ctrl+A' },
   { id: 'divider-2', divider: true },

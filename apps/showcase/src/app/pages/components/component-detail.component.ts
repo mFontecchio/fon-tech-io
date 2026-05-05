@@ -223,6 +223,85 @@ import { getComponentMetadata } from '../../data/component-metadata';
                 />
               }
 
+              @if (metadata()!.forms) {
+                <h2>Angular Forms</h2>
+                <div class="forms-grid">
+                  <div class="forms-card">
+                    <h3>Recommended Binding</h3>
+                    <p>{{ metadata()!.forms!.recommendedBinding }}</p>
+                    @if (metadata()!.forms!.valueBinding || metadata()!.forms!.changeBinding) {
+                      <dl class="forms-bindings">
+                        @if (metadata()!.forms!.valueBinding) {
+                          <div>
+                            <dt>Value</dt>
+                            <dd><code>{{ metadata()!.forms!.valueBinding }}</code></dd>
+                          </div>
+                        }
+                        @if (metadata()!.forms!.changeBinding) {
+                          <div>
+                            <dt>Change</dt>
+                            <dd><code>{{ metadata()!.forms!.changeBinding }}</code></dd>
+                          </div>
+                        }
+                      </dl>
+                    }
+                  </div>
+
+                  <div class="forms-card">
+                    <h3>Compatibility</h3>
+                    <ul class="forms-compatibility-list">
+                      <li>
+                        <span>ControlValueAccessor</span>
+                        <strong>{{ metadata()!.forms!.supportsControlValueAccessor ? 'Supported' : 'Not built in' }}</strong>
+                      </li>
+                      <li>
+                        <span>Template-driven forms</span>
+                        <strong>{{ metadata()!.forms!.supportsTemplateDrivenForms ? 'Supported' : 'Manual adapter required' }}</strong>
+                      </li>
+                      <li>
+                        <span>Reactive forms</span>
+                        <strong>{{ metadata()!.forms!.supportsReactiveForms ? 'Supported' : 'Manual adapter required' }}</strong>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                @if (metadata()!.forms!.notes && metadata()!.forms!.notes!.length > 0) {
+                  <ul class="forms-notes-list">
+                    @for (note of metadata()!.forms!.notes!; track note) {
+                      <li>{{ note }}</li>
+                    }
+                  </ul>
+                }
+              }
+
+              @if (metadata()!.runtime) {
+                <h2>Runtime &amp; SSR</h2>
+                <div class="forms-grid">
+                  <div class="forms-card">
+                    <h3>Compatibility</h3>
+                    <ul class="forms-compatibility-list">
+                      <li>
+                        <span>Server-side rendering</span>
+                        <strong>{{ metadata()!.runtime!.supportsSSR ? 'Supported' : 'Browser-only behavior' }}</strong>
+                      </li>
+                      <li>
+                        <span>Browser APIs required</span>
+                        <strong>{{ metadata()!.runtime!.requiresBrowserAPIs ? 'Yes' : 'No' }}</strong>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                @if (metadata()!.runtime!.notes && metadata()!.runtime!.notes!.length > 0) {
+                  <ul class="forms-notes-list">
+                    @for (note of metadata()!.runtime!.notes!; track note) {
+                      <li>{{ note }}</li>
+                    }
+                  </ul>
+                }
+              }
+
               @if (metadata()!.methods && metadata()!.methods!.length > 0) {
                 <h2>Methods</h2>
                 <div class="methods-list">
@@ -341,6 +420,75 @@ import { getComponentMetadata } from '../../data/component-metadata';
 
       .component-header {
         margin-bottom: var(--primitive-spacing-8);
+      }
+
+      .forms-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: var(--primitive-spacing-4);
+        margin-bottom: var(--primitive-spacing-4);
+      }
+
+      .forms-card {
+        padding: var(--primitive-spacing-4);
+        border: 1px solid var(--semantic-border-subtle);
+        border-radius: var(--primitive-border-radius-md);
+        background: var(--semantic-surface-card);
+      }
+
+      .forms-card h3 {
+        margin: 0 0 var(--primitive-spacing-3);
+      }
+
+      .forms-card p {
+        margin: 0;
+        color: var(--semantic-text-secondary);
+      }
+
+      .forms-bindings {
+        margin: var(--primitive-spacing-3) 0 0;
+        display: grid;
+        gap: var(--primitive-spacing-2);
+      }
+
+      .forms-bindings div {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--primitive-spacing-3);
+      }
+
+      .forms-bindings dt {
+        font-weight: var(--primitive-font-weight-semibold);
+        color: var(--semantic-text-primary);
+      }
+
+      .forms-bindings dd {
+        margin: 0;
+      }
+
+      .forms-compatibility-list,
+      .forms-notes-list {
+        margin: 0;
+        padding-left: var(--primitive-spacing-5);
+      }
+
+      .forms-compatibility-list li {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--primitive-spacing-3);
+        padding: var(--primitive-spacing-2) 0;
+        color: var(--semantic-text-secondary);
+      }
+
+      .forms-compatibility-list strong {
+        color: var(--semantic-text-primary);
+        white-space: nowrap;
+      }
+
+      .forms-notes-list {
+        color: var(--semantic-text-secondary);
       }
 
       h1 {

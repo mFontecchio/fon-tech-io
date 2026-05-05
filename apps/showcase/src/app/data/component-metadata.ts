@@ -21,6 +21,26 @@ const BUTTON_METADATA: ComponentMetadata = {
     usageSnippet: `<fui-button>Click Me</fui-button>`,
     setupNotes: 'No additional setup required. Add ButtonComponent to the imports array of your standalone component.',
   },
+  forms: {
+    recommendedBinding:
+      'Use native form semantics. Place the button inside a standard HTML form and set the type input to submit or reset when appropriate.',
+    changeBinding: '(clicked)',
+    supportsControlValueAccessor: false,
+    supportsTemplateDrivenForms: false,
+    supportsReactiveForms: false,
+    notes: [
+      'This component does not represent a form value; it participates in forms through native button submit and reset behavior.',
+      'Handle form submission on the parent form element or in the clicked output.',
+    ],
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Uses native button semantics and is safe for SSR output.',
+      'No browser-only APIs are required for core rendering behavior.',
+    ],
+  },
   inputs: [
     {
       name: 'variant',
@@ -191,6 +211,28 @@ const INPUT_METADATA: ComponentMetadata = {
     importStatement: "import { InputComponent } from '@ui-suite/components';",
     usageSnippet: `<fui-input label="Email" placeholder="Enter your email" />`,
     setupNotes: 'No additional setup required. Add InputComponent to the imports array of your standalone component.',
+  },
+  forms: {
+    recommendedBinding:
+      'Bind the current value with [value] and update application state from (valueChange). This matches the component\'s explicit Angular 20 input/output contract.',
+    valueBinding: '[value]',
+    changeBinding: '(valueChange)',
+    supportsControlValueAccessor: false,
+    supportsTemplateDrivenForms: false,
+    supportsReactiveForms: false,
+    notes: [
+      'Use signals or component state to hold the current value and write updates back through the valueChange output.',
+      'formControlName and ngModel are not built in because the component does not implement ControlValueAccessor.',
+      'Native validation attributes such as required, pattern, minlength, and maxlength still apply on the underlying input element.',
+    ],
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Core input rendering is SSR-friendly.',
+      'Auto-focus and programmatic focus behavior depend on browser DOM APIs after hydration.',
+    ],
   },
   inputs: [
     {
@@ -421,6 +463,28 @@ const TEXTAREA_METADATA: ComponentMetadata = {
     usageSnippet: `<fui-textarea label="Message" placeholder="Enter your message" />`,
     setupNotes: 'No additional setup required. Add TextareaComponent to the imports array of your standalone component.',
   },
+  forms: {
+    recommendedBinding:
+      'Bind textarea content with [value] and respond to (valueChange) to keep Angular state in sync.',
+    valueBinding: '[value]',
+    changeBinding: '(valueChange)',
+    supportsControlValueAccessor: false,
+    supportsTemplateDrivenForms: false,
+    supportsReactiveForms: false,
+    notes: [
+      'Use a signal or component field as the source of truth for the textarea value.',
+      'Reactive forms and ngModel require a wrapper because this component does not provide ControlValueAccessor.',
+      'Readonly, minlength, maxlength, and required are forwarded to the native textarea element.',
+    ],
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Core textarea rendering is SSR-friendly.',
+      'Auto-resize and programmatic focus behavior run against browser DOM APIs after hydration.',
+    ],
+  },
   inputs: [
     { name: 'label', type: 'string', description: 'Label text displayed above the textarea' },
     { name: 'placeholder', type: 'string', description: 'Placeholder text shown when empty' },
@@ -590,6 +654,28 @@ const CHECKBOX_METADATA: ComponentMetadata = {
     usageSnippet: `<fui-checkbox label="Accept terms and conditions" />`,
     setupNotes: 'No additional setup required. Add CheckboxComponent to the imports array of your standalone component.',
   },
+  forms: {
+    recommendedBinding:
+      'Bind checked state with [checked] and handle (checkedChange) for updates. This is the supported Angular contract for the component.',
+    valueBinding: '[checked]',
+    changeBinding: '(checkedChange)',
+    supportsControlValueAccessor: false,
+    supportsTemplateDrivenForms: false,
+    supportsReactiveForms: false,
+    notes: [
+      'Use checked for boolean state and value only when you need native form submission semantics.',
+      'The component forwards native checkbox attributes but does not integrate with formControlName or ngModel on its own.',
+      'Indeterminate state is managed separately through the indeterminate input.',
+    ],
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Markup and state are SSR-compatible.',
+      'Indeterminate state is applied to the native checkbox element in the browser runtime.',
+    ],
+  },
   inputs: [
     { name: 'checked', type: 'boolean', description: 'Whether checked', defaultValue: 'false' },
     { name: 'disabled', type: 'boolean', description: 'Whether disabled', defaultValue: 'false' },
@@ -695,6 +781,28 @@ const RADIO_METADATA: ComponentMetadata = {
     usageTypescript: `import { signal } from '@angular/core';\n\nexport class MyComponent {\n  protected readonly selectedPlan = signal<string>('free');\n}`,
     setupNotes: 'Import signal from @angular/core. Add RadioComponent to the imports array of your standalone component.',
   },
+  forms: {
+    recommendedBinding:
+      'Use Angular\'s model input syntax with [(modelValue)] across every radio in the same group and keep the native name input identical for mutual exclusion.',
+    valueBinding: '[(modelValue)]',
+    changeBinding: '(modelValueChange)',
+    supportsControlValueAccessor: false,
+    supportsTemplateDrivenForms: false,
+    supportsReactiveForms: false,
+    notes: [
+      'All radios in a group must share the same name input and the same modelValue signal or state field.',
+      'This component uses Angular model() for two-way binding but does not implement ControlValueAccessor for ngModel or formControlName.',
+      'Use the generated modelValueChange output if you need to listen without banana-in-a-box syntax.',
+    ],
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Group rendering and selection logic are SSR-compatible.',
+      'Programmatic focus and generated IDs rely on browser-side hydration for interactive behavior.',
+    ],
+  },
   inputs: [
     {
       name: 'modelValue',
@@ -759,7 +867,13 @@ const RADIO_METADATA: ComponentMetadata = {
       defaultValue: 'undefined',
     },
   ],
-  outputs: [],
+  outputs: [
+    {
+      name: 'modelValueChange',
+      type: 'string | undefined',
+      description: 'Emitted when this radio updates the shared modelValue binding',
+    },
+  ],
   methods: [
     {
       name: 'focus',
@@ -874,6 +988,27 @@ const SWITCH_METADATA: ComponentMetadata = {
     usageSnippet: `<fui-switch label="Enable notifications" />`,
     setupNotes: 'No additional setup required. Add SwitchComponent to the imports array of your standalone component.',
   },
+  forms: {
+    recommendedBinding:
+      'Bind the boolean state with [checked] and respond to (checkedChange) when the switch toggles.',
+    valueBinding: '[checked]',
+    changeBinding: '(checkedChange)',
+    supportsControlValueAccessor: false,
+    supportsTemplateDrivenForms: false,
+    supportsReactiveForms: false,
+    notes: [
+      'Treat the switch as a specialized checkbox with its own checked input and checkedChange output.',
+      'If you need ngModel or formControlName, add a small adapter directive or wrapper component.',
+    ],
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Switch markup and state are SSR-compatible.',
+      'Programmatic focus and generated IDs rely on browser-side hydration for full interactivity.',
+    ],
+  },
   inputs: [
     {
       name: 'checked',
@@ -981,6 +1116,27 @@ const SELECT_METADATA: ComponentMetadata = {
     usageSnippet: `<fui-select label="Country" [options]="countries" placeholder="Choose a country" />`,
     usageTypescript: `export class MyComponent {\n  protected readonly countries = [\n    { value: 'us', label: 'United States' },\n    { value: 'uk', label: 'United Kingdom' },\n    { value: 'ca', label: 'Canada' },\n  ];\n}`,
     setupNotes: 'No additional setup required. Add SelectComponent to the imports array of your standalone component.',
+  },
+  forms: {
+    recommendedBinding:
+      'Bind the selected option with [value] and update state from (valueChange).',
+    valueBinding: '[value]',
+    changeBinding: '(valueChange)',
+    supportsControlValueAccessor: false,
+    supportsTemplateDrivenForms: false,
+    supportsReactiveForms: false,
+    notes: [
+      'This component wraps a native select element but exposes an explicit input/output contract rather than ControlValueAccessor.',
+      'Use the name input only for native form submission or testing hooks; Angular Forms adapters are still manual.',
+    ],
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Native select rendering is SSR-compatible.',
+      'Programmatic focus and generated fallback IDs rely on browser APIs after hydration.',
+    ],
   },
   inputs: [
     { name: 'label', type: 'string', description: 'Label text displayed above select' },
@@ -1179,6 +1335,28 @@ const MULTI_SELECT_METADATA: ComponentMetadata = {
     usageTypescript: `export class MyComponent {\n  protected readonly skills = [\n    { value: 'ts', label: 'TypeScript' },\n    { value: 'angular', label: 'Angular' },\n    { value: 'rxjs', label: 'RxJS' },\n  ];\n}`,
     setupNotes: 'No additional setup required. Add MultiSelectComponent to the imports array of your standalone component.',
   },
+  forms: {
+    recommendedBinding:
+      'Treat the selected values array as explicit component state and sync it with [value] plus (valueChange).',
+    valueBinding: '[value]',
+    changeBinding: '(valueChange)',
+    supportsControlValueAccessor: false,
+    supportsTemplateDrivenForms: false,
+    supportsReactiveForms: false,
+    notes: [
+      'Use valueChange to patch a signal, store, or custom FormControl wrapper with the latest string array.',
+      'The hidden native input supports form submission semantics only; Angular Forms integration remains manual.',
+      'When allowCreate is enabled, also handle optionCreated to persist newly created options.',
+    ],
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Initial rendering is SSR-compatible.',
+      'Dropdown interaction uses document-level click handling and timed focus in the browser runtime.',
+    ],
+  },
   inputs: [
     { name: 'label', type: 'string', description: 'Label text displayed above select' },
     { name: 'placeholder', type: 'string', description: 'Placeholder text when no selection' },
@@ -1331,6 +1509,27 @@ const SLIDER_METADATA: ComponentMetadata = {
     usageSnippet: `<fui-slider label="Volume" [min]="0" [max]="100" [value]="50" />`,
     setupNotes: 'No additional setup required. Add SliderComponent to the imports array of your standalone component.',
   },
+  forms: {
+    recommendedBinding:
+      'For single-value sliders, bind [value] and listen to (valueChange). In range mode, wire both [valueEnd] and (valueEndChange) as well.',
+    valueBinding: '[value]',
+    changeBinding: '(valueChange)',
+    supportsControlValueAccessor: false,
+    supportsTemplateDrivenForms: false,
+    supportsReactiveForms: false,
+    notes: [
+      'Range sliders expose two value channels: value/valueChange for the start handle and valueEnd/valueEndChange for the end handle.',
+      'If you need to store the slider in a FormControl, bridge these outputs into your form model manually.',
+    ],
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Slider rendering is SSR-compatible.',
+      'Pointer and drag interactions attach document listeners in the browser runtime.',
+    ],
+  },
   inputs: [
     { name: 'value', type: 'number', description: 'Current slider value', defaultValue: '0' },
     { name: 'valueEnd', type: 'number', description: 'End value for range mode (dual handles)' },
@@ -1462,6 +1661,27 @@ const DATEPICKER_METADATA: ComponentMetadata = {
     importStatement: "import { DatePickerComponent } from '@ui-suite/components';",
     usageSnippet: `<fui-date-picker label="Start date" placeholder="Select a date" />`,
     setupNotes: 'No additional setup required. Add DatePickerComponent to the imports array of your standalone component.',
+  },
+  forms: {
+    recommendedBinding:
+      'Bind ISO date strings with [value] and respond to (valueChange) when the user types or picks a date.',
+    valueBinding: '[value]',
+    changeBinding: '(valueChange)',
+    supportsControlValueAccessor: false,
+    supportsTemplateDrivenForms: false,
+    supportsReactiveForms: false,
+    notes: [
+      'The component emits dates as YYYY-MM-DD strings. Keep that format in your Angular state for predictable comparisons and submission.',
+      'Min, max, and required are enforced through the native date input, but Angular Forms adapters are not built in.',
+    ],
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Native date input markup is SSR-compatible.',
+      'Triggering showPicker is browser-dependent and gracefully falls back to focus/click behavior.',
+    ],
   },
   inputs: [
     { name: 'label', type: 'string', description: 'Label text displayed above the date picker' },
@@ -1647,6 +1867,26 @@ const FILEUPLOAD_METADATA: ComponentMetadata = {
     importStatement: "import { FileUploadComponent } from '@ui-suite/components';",
     usageSnippet: `<fui-file-upload label="Upload documents" />`,
     setupNotes: 'No additional setup required. Add FileUploadComponent to the imports array of your standalone component.',
+  },
+  forms: {
+    recommendedBinding:
+      'Handle uploads as an event-driven interaction. Listen to (filesSelected) and patch application state or a form model manually.',
+    changeBinding: '(filesSelected)',
+    supportsControlValueAccessor: false,
+    supportsTemplateDrivenForms: false,
+    supportsReactiveForms: false,
+    notes: [
+      'The internal native file input is not exposed as a ControlValueAccessor because browsers restrict programmatic file value assignment.',
+      'Use filesSelected to update your own upload queue or FormData builder and fileRemoved to keep that state in sync.',
+    ],
+  },
+  runtime: {
+    supportsSSR: false,
+    requiresBrowserAPIs: true,
+    notes: [
+      'File objects, drag-and-drop, and FileReader previews are browser-only capabilities.',
+      'Render file upload components conditionally in SSR routes when file interaction is not required.',
+    ],
   },
   inputs: [
     { name: 'label', type: 'string', description: 'Label text displayed above the upload area' },
@@ -1854,6 +2094,13 @@ const CARD_METADATA: ComponentMetadata = {
     usageSnippet: `<fui-card>\n  <div header>Card Title</div>\n  <p>Card content goes here.</p>\n  <div footer>Footer actions</div>\n</fui-card>`,
     setupNotes: 'No additional setup required. Add CardComponent to the imports array of your standalone component. Use [header] and [footer] attributes to project content into the header and footer slots.',
   },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Card rendering is fully SSR-friendly with no browser-only dependencies for core behavior.',
+    ],
+  },
   inputs: [
     {
       name: 'variant',
@@ -1982,6 +2229,14 @@ const MODAL_METADATA: ComponentMetadata = {
     usageSnippet: `<button (click)="isOpen.set(true)">Open Modal</button>\n<fui-modal [open]="isOpen()" title="Hello" (closed)="isOpen.set(false)">\n  <p>Modal content goes here.</p>\n  <div slot="footer">\n    <fui-button (clicked)="isOpen.set(false)">Close</fui-button>\n  </div>\n</fui-modal>`,
     usageTypescript: `import { signal } from '@angular/core';\n\nexport class MyComponent {\n  protected readonly isOpen = signal(false);\n}`,
     setupNotes: 'Import signal from @angular/core. Add ModalComponent to the imports array of your standalone component.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Markup is SSR-compatible, while dialog open/close lifecycle runs in the browser after hydration.',
+      'Body scroll locking relies on browser document APIs.',
+    ],
   },
   inputs: [
     {
@@ -2132,6 +2387,14 @@ const TABS_METADATA: ComponentMetadata = {
     usageSnippet: `<fui-tabs>\n  <fui-tab label="First">First tab content</fui-tab>\n  <fui-tab label="Second">Second tab content</fui-tab>\n</fui-tabs>`,
     setupNotes: 'Import both TabsComponent and TabComponent. Both must be in the imports array of your standalone component.',
   },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Tabs render correctly during SSR.',
+      'Indicator positioning and interactive focus behavior rely on browser DOM measurements after hydration.',
+    ],
+  },
   inputs: [
     {
       name: 'activeIndex',
@@ -2268,6 +2531,13 @@ const ACCORDION_METADATA: ComponentMetadata = {
     usageTypescript: `export class MyComponent {\n  protected readonly items = [\n    { title: 'Section 1', content: 'Content for section 1' },\n    { title: 'Section 2', content: 'Content for section 2' },\n  ];\n}`,
     setupNotes: 'No additional setup required. Add AccordionComponent to the imports array of your standalone component.',
   },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Accordion content and expansion state are SSR-friendly.',
+    ],
+  },
   inputs: [
     {
       name: 'mode',
@@ -2382,6 +2652,13 @@ const DIVIDER_METADATA: ComponentMetadata = {
     usageSnippet: `<fui-divider />`,
     setupNotes: 'No additional setup required. Add DividerComponent to the imports array of your standalone component.',
   },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Divider is purely presentational and safe for SSR with no runtime browser dependency.',
+    ],
+  },
   inputs: [
     {
       name: 'orientation',
@@ -2477,6 +2754,14 @@ const DRAWER_METADATA: ComponentMetadata = {
     usageSnippet: `<button (click)="isOpen.set(true)">Open Drawer</button>\n<fui-drawer [open]="isOpen()" title="Settings" (closed)="isOpen.set(false)">\n  <p>Drawer content goes here.</p>\n  <div footer>\n    <fui-button (clicked)="isOpen.set(false)">Done</fui-button>\n  </div>\n</fui-drawer>`,
     usageTypescript: `import { signal } from '@angular/core';\n\nexport class MyComponent {\n  protected readonly isOpen = signal(false);\n}`,
     setupNotes: 'Import signal from @angular/core. Add DrawerComponent to the imports array of your standalone component.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Drawer markup is SSR-compatible.',
+      'Dialog state transitions and body scroll locking rely on browser document and window APIs.',
+    ],
   },
   inputs: [
     {
@@ -2647,6 +2932,13 @@ const STACK_METADATA: ComponentMetadata = {
     usageSnippet: `<fui-stack direction="vertical" [spacing]="4">\n  <div>Item 1</div>\n  <div>Item 2</div>\n  <div>Item 3</div>\n</fui-stack>`,
     setupNotes: 'No additional setup required. Add StackComponent to the imports array of your standalone component.',
   },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Stack layout is CSS-driven and SSR-friendly.',
+    ],
+  },
   inputs: [
     {
       name: 'direction',
@@ -2762,6 +3054,13 @@ const GRID_METADATA: ComponentMetadata = {
     usageSnippet: `<fui-grid [columns]="3" [gap]="4">\n  <div>Column 1</div>\n  <div>Column 2</div>\n  <div>Column 3</div>\n</fui-grid>`,
     setupNotes: 'No additional setup required. Add GridComponent to the imports array of your standalone component.',
   },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Grid layout is CSS-driven and renders predictably in SSR.',
+    ],
+  },
   inputs: [
     {
       name: 'columns',
@@ -2876,6 +3175,13 @@ const BADGE_METADATA: ComponentMetadata = {
     importStatement: "import { BadgeComponent } from '@ui-suite/components';",
     usageSnippet: `<fui-badge variant="primary">New</fui-badge>`,
     setupNotes: 'No additional setup required. Add BadgeComponent to the imports array of your standalone component.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Badge is presentation-focused and fully SSR-friendly.',
+    ],
   },
   inputs: [
     {
@@ -3010,6 +3316,13 @@ const AVATAR_METADATA: ComponentMetadata = {
     importStatement: "import { AvatarComponent } from '@ui-suite/components';",
     usageSnippet: `<fui-avatar initials="JD" alt="John Doe" size="md" />`,
     setupNotes: 'No additional setup required. Add AvatarComponent to the imports array of your standalone component.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Avatar rendering is SSR-compatible. Image loading and fallbacks are handled by native browser behavior after hydration.',
+    ],
   },
   inputs: [
     { name: 'src', type: 'string', description: 'Image URL' },
@@ -3148,6 +3461,14 @@ const TOOLTIP_METADATA: ComponentMetadata = {
     usageSnippet: `<button fui-tooltip text="Save your changes">Save</button>`,
     setupNotes: 'The tooltip is applied as an attribute directive on a host element. Add TooltipComponent to the imports array of your standalone component.',
   },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Tooltip host markup is SSR-compatible.',
+      'Show/hide timing and placement behavior rely on browser runtime APIs.',
+    ],
+  },
   inputs: [
     { name: 'text', type: 'string', description: 'Tooltip text content', required: true },
     {
@@ -3261,6 +3582,13 @@ const CHIP_METADATA: ComponentMetadata = {
     importStatement: "import { ChipComponent } from '@ui-suite/components';",
     usageSnippet: `<fui-chip label="Angular" variant="primary" />\n<fui-chip label="Removable" [removable]="true" (removed)="onRemove()" />`,
     setupNotes: 'No additional setup required. Add ChipComponent to the imports array of your standalone component.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Chip rendering and interaction bindings are SSR-compatible.',
+    ],
   },
   inputs: [
     { name: 'label', type: 'string', description: 'Chip label text', required: true },
@@ -3398,6 +3726,14 @@ const POPOVER_METADATA: ComponentMetadata = {
     usageSnippet: `<button [fui-popover]="myPopover" trigger="click">Open Popover</button>\n<ng-template #myPopover>\n  <p>Popover content here.</p>\n</ng-template>`,
     setupNotes: 'The popover is applied as an attribute directive binding a template reference. Add PopoverComponent to the imports array of your standalone component.',
   },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Popover content definition is SSR-compatible.',
+      'Overlay positioning, trigger handling, and dismissal depend on browser document and viewport APIs.',
+    ],
+  },
   inputs: [
     {
       name: 'title',
@@ -3524,6 +3860,13 @@ const PAGINATION_METADATA: ComponentMetadata = {
     usageSnippet: `<fui-pagination\n  [total]="100"\n  [pageSize]="10"\n  [page]="currentPage()"\n  (pageChange)="currentPage.set($event)"\n/>`,
     usageTypescript: `import { signal } from '@angular/core';\n\nexport class MyComponent {\n  protected readonly currentPage = signal(1);\n}`,
     setupNotes: 'Import signal from @angular/core. Add PaginationComponent to the imports array of your standalone component.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Pagination rendering and state transitions are SSR-compatible.',
+    ],
   },
   inputs: [
     {
@@ -3678,6 +4021,13 @@ const TABLE_METADATA: ComponentMetadata = {
     usageSnippet: `<fui-table [columns]="columns" [data]="rows" />`,
     usageTypescript: `export class MyComponent {\n  protected readonly columns = [\n    { key: 'name', label: 'Name' },\n    { key: 'email', label: 'Email' },\n  ];\n  protected readonly rows = [\n    { name: 'Alice', email: 'alice@example.com' },\n    { name: 'Bob', email: 'bob@example.com' },\n  ];\n}`,
     setupNotes: 'No additional setup required. Add TableComponent to the imports array of your standalone component.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Table markup and sorting state projection are SSR-compatible.',
+    ],
   },
   inputs: [
     {
@@ -3837,6 +4187,13 @@ const LIST_METADATA: ComponentMetadata = {
     usageTypescript: `import { signal } from '@angular/core';\n\nexport class MyComponent {\n  protected readonly items = signal([\n    { id: '1', primary: 'First item', secondary: 'Subtitle' },\n    { id: '2', primary: 'Second item', secondary: 'Subtitle' },\n  ]);\n}`,
     setupNotes: 'Import signal from @angular/core. Add ListComponent to the imports array of your standalone component.',
   },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'List rendering and item projections are SSR-compatible.',
+    ],
+  },
   inputs: [
     {
       name: 'items',
@@ -3969,6 +4326,14 @@ const CAROUSEL_METADATA: ComponentMetadata = {
     importStatement: "import { CarouselComponent, CarouselSlideComponent } from '@ui-suite/components';",
     usageSnippet: `<fui-carousel ariaLabel="Featured slides">\n  <fui-carousel-slide>\n    <div class="slide-content">Slide 1</div>\n  </fui-carousel-slide>\n  <fui-carousel-slide>\n    <div class="slide-content">Slide 2</div>\n  </fui-carousel-slide>\n</fui-carousel>`,
     setupNotes: 'Import both CarouselComponent and CarouselSlideComponent. Both must be in the imports array of your standalone component. Slides are projected as fui-carousel-slide children.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Carousel structure is SSR-compatible.',
+      'Autoplay timers, pointer gestures, and viewport-aware interactions rely on browser window/document APIs.',
+    ],
   },
   inputs: [
     {
@@ -4185,6 +4550,14 @@ const CODE_BLOCK_METADATA: ComponentMetadata = {
     usageTypescript: `export class MyComponent {\n  protected readonly snippet = \`const greeting = 'Hello, world!';\`;\n}`,
     setupNotes: 'No additional setup required. Add CodeBlockComponent to the imports array of your standalone component.',
   },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Code rendering and syntax highlighting are SSR-compatible.',
+      'Copy/download actions rely on browser clipboard and document APIs.',
+    ],
+  },
   inputs: [
     { name: 'code', type: 'string', description: 'The code content to display', required: true },
     {
@@ -4313,6 +4686,13 @@ const ALERT_METADATA: ComponentMetadata = {
     usageSnippet: `<fui-alert variant="info">Your changes have been saved.</fui-alert>`,
     setupNotes: 'No additional setup required. Add AlertComponent to the imports array of your standalone component. Content is projected directly inside the element.',
   },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Alert content and semantics are SSR-compatible.',
+    ],
+  },
   inputs: [
     {
       name: 'variant',
@@ -4418,6 +4798,13 @@ const SPINNER_METADATA: ComponentMetadata = {
     usageSnippet: `<fui-spinner />\n<fui-spinner size="lg" color="primary" />`,
     setupNotes: 'No additional setup required. Add SpinnerComponent to the imports array of your standalone component.',
   },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Spinner rendering is SSR-compatible. Animation is CSS-driven.',
+    ],
+  },
   inputs: [
     { name: 'size', type: "'xs' | 'sm' | 'md' | 'lg' | 'xl'", description: 'Spinner size', defaultValue: "'md'" },
     {
@@ -4494,6 +4881,13 @@ const PROGRESS_METADATA: ComponentMetadata = {
     importStatement: "import { ProgressComponent } from '@ui-suite/components';",
     usageSnippet: `<fui-progress [value]="75" [showValue]="true" />`,
     setupNotes: 'No additional setup required. Add ProgressComponent to the imports array of your standalone component.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Progress bar rendering and value projection are SSR-compatible.',
+    ],
   },
   inputs: [
     { name: 'value', type: 'number', description: 'Progress value (0-max)', defaultValue: '0' },
@@ -4596,6 +4990,13 @@ const SKELETON_METADATA: ComponentMetadata = {
     importStatement: "import { SkeletonComponent } from '@ui-suite/components';",
     usageSnippet: `<fui-skeleton variant="text" width="80%" />\n<fui-skeleton variant="circular" width="40px" height="40px" />\n<fui-skeleton variant="rectangular" width="100%" height="120px" />`,
     setupNotes: 'No additional setup required. Add SkeletonComponent to the imports array of your standalone component.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Skeleton placeholders are SSR-compatible. Motion is CSS-driven and respects reduced-motion preferences.',
+    ],
   },
   inputs: [
     {
@@ -4711,6 +5112,14 @@ export class MyComponent {
 }`,
     setupNotes: 'Place the fui-toast outlet once in your app root or layout. Inject ToastService into any component to trigger toasts programmatically. The service is provided at root level.',
   },
+  runtime: {
+    supportsSSR: false,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Toast timing and dismissal use window timers in the runtime service.',
+      'Render the toast outlet only in browser-capable layouts when strict SSR isolation is required.',
+    ],
+  },
   inputs: [
     { name: 'message', type: 'string', description: 'Notification message text', required: true },
     {
@@ -4759,8 +5168,10 @@ export class MyComponent {
     {
       title: 'Toast Variants',
       description: 'Different semantic toast types',
-      typescript: `// Inject toast service
-constructor(private toastService: ToastService) {}
+      typescript: `import { inject } from '@angular/core';
+import { ToastService } from '@ui-suite/components';
+
+private readonly toastService = inject(ToastService);
 
 showToasts() {
   this.toastService.show('Information message', 'info');
@@ -4831,6 +5242,13 @@ const BREADCRUMB_METADATA: ComponentMetadata = {
   ];
 }`,
     setupNotes: 'No additional setup required. Add BreadcrumbComponent to the imports array of your standalone component.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Breadcrumb navigation is SSR-friendly with no browser-only requirements for core rendering.',
+    ],
   },
   inputs: [
     {
@@ -4939,6 +5357,14 @@ const MENU_METADATA: ComponentMetadata = {
 }`,
     additionalImports: ['MenuItem'],
     setupNotes: 'No additional setup required. Add MenuComponent to the imports array of your standalone component.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Menu markup is SSR-compatible.',
+      'Overlay positioning and keyboard focus traversal rely on browser document and viewport APIs after hydration.',
+    ],
   },
   inputs: [
     {
@@ -5075,6 +5501,14 @@ export class MyComponent {
 }`,
     additionalImports: ['ContextMenuItem'],
     setupNotes: 'Import signal from @angular/core and ContextMenuItem from @ui-suite/components. Add ContextMenuComponent to the imports array of your standalone component.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Context menu structure is SSR-compatible.',
+      'Right-click interaction, viewport collision handling, and focus management require browser window/document APIs.',
+    ],
   },
   inputs: [
     {
@@ -5268,6 +5702,13 @@ const NAVBAR_METADATA: ComponentMetadata = {
 }`,
     setupNotes: 'No additional setup required. Add NavbarComponent to the imports array of your standalone component. Use [brand], [brand-logo], and [actions] slots to project custom content.',
   },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Navbar rendering is SSR-friendly for static and router-driven navigation links.',
+    ],
+  },
   inputs: [
     { name: 'brandText', type: 'string', description: 'Brand or logo text displayed on the left' },
     {
@@ -5398,6 +5839,13 @@ export class MyComponent {
   ];
 }`,
     setupNotes: 'Import signal from @angular/core. Add StepperComponent to the imports array of your standalone component.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Stepper rendering and state projection are SSR-compatible.',
+    ],
   },
   inputs: [
     {
