@@ -1,5 +1,7 @@
 # Context Menu Component
 
+> **Note:** The primary documentation for this component has moved to the [Showcase Application](../../../../../../apps/showcase). For the latest setup instructions, API reference, design tokens, and accessibility details, please visit `/components/navigation/context-menu` in the showcase or run `nx serve showcase`.
+
 A context menu component that appears on right-click (contextmenu event). Supports nested submenus, dividers, icons, keyboard shortcuts, and full keyboard navigation.
 
 ## Features

@@ -135,18 +135,39 @@ All interactive components support full keyboard navigation per WAI-ARIA pattern
 
 ## Component Documentation
 
-Each component has detailed documentation:
+Comprehensive documentation for all 38 components is available in the **Showcase Application** including:
 
-- **API Reference** - Complete input/output documentation
-- **Usage Examples** - Common use cases with code
-- **Accessibility** - ARIA, keyboard navigation, screen reader support
-- **Best Practices** - When and how to use each component
+- **Setup & Installation** - Import statements and minimal usage examples for each component
+- **API Reference** - Complete inputs, outputs, and method documentation
+- **Content Projection & Passthroughs** - Slot names and native attribute forwarding patterns
+- **Design Tokens & Theming** - Complete token reference with customization examples
+- **Accessibility** - ARIA attributes, keyboard navigation, screen reader support
+- **Best Practices** - When and how to use each component effectively
 
-View component documentation:
+### Three-Tier Design Token System
 
-- Online: [Component Documentation Site](https://your-docs-site.com)
-- Local: `/libs/components/src/lib/[component-name]/README.md`
-- Showcase: Run `nx serve showcase` to view live examples
+All components are styled exclusively through CSS custom properties organized in three tiers:
+
+1. **Primitive Tokens** (`--primitive-*`) - Raw values: colors, spacing, typography, shadows, animations
+2. **Semantic Tokens** (`--semantic-*`) - Purpose-driven: brand colors, surface backgrounds, text colors, states
+3. **Component Tokens** (`--component-*`) - Component-specific: padding, border-radius, shadows
+
+Override tokens at any ancestor scope to customize components without modifying source code.
+
+### View Documentation
+
+Run the showcase application to browse all component documentation with live examples:
+
+```bash
+nx serve showcase
+# Opens http://localhost:4200/components
+```
+
+Browse component pages to view:
+- Full API with inputs, outputs, and methods
+- Passthroughs for content projection
+- Design tokens and theming examples
+- Accessibility details and best practices
 
 ## Development
 

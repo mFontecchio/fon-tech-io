@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- **Expanded component documentation**: Enhanced all 38 components with comprehensive setup, passthrough, and theming metadata. Showcase now includes:
+  - Installation & Import sections with exact import statements and minimal usage examples for each component
+  - Passthroughs documentation listing named content projection slots and native attribute forwarding patterns
+  - Design Tokens sections showing all applicable CSS custom properties with descriptions and customization examples
+  - Complete three-tier token system reference (primitive, semantic, and component-specific tokens)
+
+---
+
 ## [1.0.1] - 2026-05-05
 
 ### Fixed
