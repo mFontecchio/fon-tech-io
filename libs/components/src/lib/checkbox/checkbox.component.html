@@ -1,7 +1,7 @@
-<div class="ui-checkbox-container">
+<div class="fui-checkbox-container">
   <label 
     [for]="checkboxId()" 
-    class="ui-checkbox-label"
+    class="fui-checkbox-label"
     (click)="handleLabelClick($event)"
   >
     <input
@@ -22,10 +22,10 @@
       (change)="handleChange($event)"
     />
     
-    <span class="ui-checkbox-box">
+    <span class="fui-checkbox-box">
       @if (internalChecked() && !indeterminate()) {
         <svg 
-          class="ui-checkbox-icon" 
+          class="fui-checkbox-icon" 
           width="16" 
           height="16" 
           viewBox="0 0 16 16" 
@@ -44,7 +44,7 @@
       
       @if (indeterminate()) {
         <svg 
-          class="ui-checkbox-icon" 
+          class="fui-checkbox-icon" 
           width="16" 
           height="16" 
           viewBox="0 0 16 16" 
@@ -62,10 +62,10 @@
     </span>
 
     @if (label()) {
-      <span class="ui-checkbox-label-text">
+      <span class="fui-checkbox-label-text">
         {{ label() }}
         @if (required()) {
-          <span class="ui-checkbox-required-indicator" aria-label="required">*</span>
+          <span class="fui-checkbox-required-indicator" aria-label="required">*</span>
         }
       </span>
     }
@@ -74,7 +74,7 @@
   @if (helperText() && !hasError()) {
     <div 
       [id]="helperTextId()" 
-      class="ui-checkbox-helper-text"
+      class="fui-checkbox-helper-text"
     >
       {{ helperText() }}
     </div>
@@ -83,7 +83,7 @@
   @if (hasError()) {
     <div 
       [id]="errorId()" 
-      class="ui-checkbox-error-message"
+      class="fui-checkbox-error-message"
       role="alert"
       aria-live="polite"
     >

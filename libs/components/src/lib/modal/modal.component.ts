@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Modal Component
  * 
  * A themable modal/dialog component with proper accessibility support.
@@ -24,13 +24,13 @@ import { isPlatformBrowser, NgClass } from '@angular/common';
 export type ModalSize = 'sm' | 'md' | 'lg' | 'xl' | 'full';
 
 @Component({
-  selector: 'ui-modal',
+  selector: 'fui-modal',
   imports: [NgClass],
   templateUrl: './modal.component.html',
   styleUrl: './modal.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.ui-modal-host]': 'true',
+    '[class.fui-modal-host]': 'true',
   },
 })
 export class ModalComponent implements OnDestroy {
@@ -99,15 +99,15 @@ export class ModalComponent implements OnDestroy {
    */
   protected readonly titleId = computed(() => {
     const ariaLabelledby = this.ariaLabelledby();
-    return ariaLabelledby || `ui-modal-title-${Math.random().toString(36).substr(2, 9)}`;
+    return ariaLabelledby || `fui-modal-title-${Math.random().toString(36).substr(2, 9)}`;
   });
 
   /**
    * Computed CSS classes
    */
   protected readonly modalClasses = computed(() => ({
-    'ui-modal': true,
-    [`ui-modal--${this.size()}`]: true,
+    'fui-modal': true,
+    [`fui-modal--${this.size()}`]: true,
   }));
 
   /**

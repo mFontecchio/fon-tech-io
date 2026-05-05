@@ -21,33 +21,33 @@ import { CardComponent } from '@ui-suite/components';
 
       <div class="guides-grid">
         <a routerLink="/getting-started/installation" class="guide-card">
-          <ui-card>
+          <fui-card>
             <h2>Installation</h2>
             <p>
               Set up the workspace locally or consume the published packages in another Angular
               application.
             </p>
-          </ui-card>
+          </fui-card>
         </a>
 
         <a routerLink="/getting-started/usage" class="guide-card">
-          <ui-card>
+          <fui-card>
             <h2>Usage</h2>
             <p>
               Import standalone components, wire signals to inputs and outputs, and compose views
               that match the shared libraries.
             </p>
-          </ui-card>
+          </fui-card>
         </a>
 
         <a routerLink="/getting-started/theming" class="guide-card">
-          <ui-card>
+          <fui-card>
             <h2>Theming</h2>
             <p>
               Use ThemeService to select theme families, toggle light and dark modes, and preserve
               user preference across reloads.
             </p>
-          </ui-card>
+          </fui-card>
         </a>
       </div>
     </div>

@@ -1,11 +1,11 @@
 <nav [ngClass]="navbarClasses()" [attr.aria-label]="'Main navigation'">
-  <div class="ui-navbar-container">
+  <div class="fui-navbar-container">
     <!-- Brand/Logo -->
-    <div class="ui-navbar-brand">
+    <div class="fui-navbar-brand">
       @if (brandText()) {
-        <a href="/" class="ui-navbar-brand-link">
+        <a href="/" class="fui-navbar-brand-link">
           <ng-content select="[brand-logo]"></ng-content>
-          <span class="ui-navbar-brand-text">{{ brandText() }}</span>
+          <span class="fui-navbar-brand-text">{{ brandText() }}</span>
         </a>
       } @else {
         <ng-content select="[brand]"></ng-content>
@@ -13,13 +13,13 @@
     </div>
 
     <!-- Desktop Navigation -->
-    <div class="ui-navbar-nav">
+    <div class="fui-navbar-nav">
       @for (link of links(); track link.id) {
         <a
           [href]="link.href || '#'"
-          class="ui-navbar-link"
-          [class.ui-navbar-link--active]="link.active"
-          [class.ui-navbar-link--disabled]="link.disabled"
+          class="fui-navbar-link"
+          [class.fui-navbar-link--active]="link.active"
+          [class.fui-navbar-link--disabled]="link.disabled"
           [attr.aria-current]="link.active ? 'page' : null"
           [attr.aria-disabled]="link.disabled"
           (click)="handleLinkClick(link, $event)"
@@ -30,14 +30,14 @@
     </div>
 
     <!-- Actions slot -->
-    <div class="ui-navbar-actions">
+    <div class="fui-navbar-actions">
       <ng-content select="[actions]"></ng-content>
 
       <!-- Mobile menu toggle -->
       @if (showMobileToggle()) {
         <button
           type="button"
-          class="ui-navbar-mobile-toggle"
+          class="fui-navbar-mobile-toggle"
           [attr.aria-label]="mobileMenuOpen() ? 'Close menu' : 'Open menu'"
           [attr.aria-expanded]="mobileMenuOpen()"
           (click)="toggleMobileMenu()"
@@ -58,13 +58,13 @@
 
   <!-- Mobile Menu -->
   @if (mobileMenuOpen()) {
-    <div class="ui-navbar-mobile-menu">
+    <div class="fui-navbar-mobile-menu">
       @for (link of links(); track link.id) {
         <a
           [href]="link.href || '#'"
-          class="ui-navbar-mobile-link"
-          [class.ui-navbar-mobile-link--active]="link.active"
-          [class.ui-navbar-mobile-link--disabled]="link.disabled"
+          class="fui-navbar-mobile-link"
+          [class.fui-navbar-mobile-link--active]="link.active"
+          [class.fui-navbar-mobile-link--disabled]="link.disabled"
           [attr.aria-current]="link.active ? 'page' : null"
           [attr.aria-disabled]="link.disabled"
           (click)="handleLinkClick(link, $event)"

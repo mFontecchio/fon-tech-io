@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Menu Component
  *
  * A versatile menu component for dropdowns and context menus.
@@ -30,13 +30,13 @@ export interface MenuItem {
 export type MenuPosition = 'bottom-left' | 'bottom-right' | 'top-left' | 'top-right';
 
 @Component({
-  selector: 'ui-menu',
+  selector: 'fui-menu',
   imports: [NgClass],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.ui-menu-wrapper]': 'true',
+    '[class.fui-menu-wrapper]': 'true',
     '(document:click)': 'handleClickOutside($event)',
     '(window:scroll)': 'handleScrollOrResize()',
     '(window:resize)': 'handleScrollOrResize()',
@@ -89,9 +89,9 @@ export class MenuComponent {
    * Computed CSS classes
    */
   protected readonly menuClasses = computed(() => ({
-    'ui-menu': true,
-    [`ui-menu--${this.position()}`]: true,
-    'ui-menu--open': this.isOpen(),
+    'fui-menu': true,
+    [`fui-menu--${this.position()}`]: true,
+    'fui-menu--open': this.isOpen(),
   }));
 
   private elementRef = inject(ElementRef);
@@ -196,13 +196,13 @@ export class MenuComponent {
       case 'ArrowUp': {
         const inSubmenu = !!this.activeSubmenu();
         const containerSel = inSubmenu
-          ? '.ui-menu-item--submenu-open > .ui-menu-submenu'
-          : '.ui-menu-list';
+          ? '.fui-menu-item--submenu-open > .fui-menu-submenu'
+          : '.fui-menu-list';
         const container = host.querySelector<HTMLElement>(containerSel);
         if (!container) break;
         const focusable = Array.from(
           container.querySelectorAll<HTMLElement>(
-            ':scope > .ui-menu-item:not(.ui-menu-item--disabled)'
+            ':scope > .fui-menu-item:not(.fui-menu-item--disabled)'
           )
         );
         if (!focusable.length) break;
@@ -216,14 +216,14 @@ export class MenuComponent {
       }
       case 'Home': {
         const items = host.querySelectorAll<HTMLElement>(
-          '.ui-menu-list > .ui-menu-item:not(.ui-menu-item--disabled)'
+          '.fui-menu-list > .fui-menu-item:not(.fui-menu-item--disabled)'
         );
         (items[0] as HTMLElement | undefined)?.focus();
         break;
       }
       case 'End': {
         const items = host.querySelectorAll<HTMLElement>(
-          '.ui-menu-list > .ui-menu-item:not(.ui-menu-item--disabled)'
+          '.fui-menu-list > .fui-menu-item:not(.fui-menu-item--disabled)'
         );
         (items[items.length - 1] as HTMLElement | undefined)?.focus();
         break;
@@ -237,7 +237,7 @@ export class MenuComponent {
           this.activeSubmenu.set(itemId);
           requestAnimationFrame(() => {
             const first = host.querySelector<HTMLElement>(
-              '.ui-menu-item--submenu-open > .ui-menu-submenu .ui-menu-item:not(.ui-menu-item--disabled)'
+              '.fui-menu-item--submenu-open > .fui-menu-submenu .fui-menu-item:not(.fui-menu-item--disabled)'
             );
             first?.focus();
           });
@@ -246,7 +246,7 @@ export class MenuComponent {
       }
       case 'ArrowLeft': {
         if (this.activeSubmenu()) {
-          const parentItem = host.querySelector<HTMLElement>('.ui-menu-item--submenu-open');
+          const parentItem = host.querySelector<HTMLElement>('.fui-menu-item--submenu-open');
           this.activeSubmenu.set(null);
           requestAnimationFrame(() => parentItem?.focus());
         }
@@ -262,40 +262,40 @@ export class MenuComponent {
     const hostElement = this.elementRef?.nativeElement;
     if (!hostElement) return;
 
-    const trigger = hostElement.querySelector('.ui-menu-trigger');
+    const trigger = hostElement.querySelector('.fui-menu-trigger');
     if (!trigger) return;
 
     const rect = trigger.getBoundingClientRect();
     const position = this.position();
     const gap = 4;
 
-    hostElement.style.setProperty('--ui-menu-top', 'auto');
-    hostElement.style.setProperty('--ui-menu-left', 'auto');
-    hostElement.style.setProperty('--ui-menu-right', 'auto');
-    hostElement.style.setProperty('--ui-menu-bottom', 'auto');
+    hostElement.style.setProperty('--fui-menu-top', 'auto');
+    hostElement.style.setProperty('--fui-menu-left', 'auto');
+    hostElement.style.setProperty('--fui-menu-right', 'auto');
+    hostElement.style.setProperty('--fui-menu-bottom', 'auto');
 
     switch (position) {
       case 'bottom-left':
-        hostElement.style.setProperty('--ui-menu-top', `${rect.bottom + gap}px`);
-        hostElement.style.setProperty('--ui-menu-left', `${rect.left}px`);
+        hostElement.style.setProperty('--fui-menu-top', `${rect.bottom + gap}px`);
+        hostElement.style.setProperty('--fui-menu-left', `${rect.left}px`);
         break;
       case 'bottom-right':
-        hostElement.style.setProperty('--ui-menu-top', `${rect.bottom + gap}px`);
-        hostElement.style.setProperty('--ui-menu-right', `${window.innerWidth - rect.right}px`);
+        hostElement.style.setProperty('--fui-menu-top', `${rect.bottom + gap}px`);
+        hostElement.style.setProperty('--fui-menu-right', `${window.innerWidth - rect.right}px`);
         break;
       case 'top-left':
         hostElement.style.setProperty(
-          '--ui-menu-bottom',
+          '--fui-menu-bottom',
           `${window.innerHeight - rect.top + gap}px`
         );
-        hostElement.style.setProperty('--ui-menu-left', `${rect.left}px`);
+        hostElement.style.setProperty('--fui-menu-left', `${rect.left}px`);
         break;
       case 'top-right':
         hostElement.style.setProperty(
-          '--ui-menu-bottom',
+          '--fui-menu-bottom',
           `${window.innerHeight - rect.top + gap}px`
         );
-        hostElement.style.setProperty('--ui-menu-right', `${window.innerWidth - rect.right}px`);
+        hostElement.style.setProperty('--fui-menu-right', `${window.innerWidth - rect.right}px`);
         break;
     }
   }

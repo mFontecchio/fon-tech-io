@@ -1,4 +1,4 @@
-.ui-tab-panel {
+.fui-tab-panel {
   animation: fadeIn var(--animation-duration-normal, 250ms)
     var(--animation-easing-default, ease-in-out);
 }

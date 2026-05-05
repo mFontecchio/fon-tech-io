@@ -25,14 +25,14 @@ import { CarouselSize, CarouselSlideChangedEvent, CarouselVariant } from './caro
 const SWIPE_THRESHOLD = 48;
 
 @Component({
-  selector: 'ui-carousel',
+  selector: 'fui-carousel',
   templateUrl: './carousel.component.html',
   styleUrl: './carousel.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class]': 'hostClasses()',
-    '[style.--ui-carousel-visible-slides]': 'effectiveVisibleSlides()',
-    '[style.--ui-carousel-track-translate]': 'trackTranslate()',
+    '[style.--fui-carousel-visible-slides]': 'effectiveVisibleSlides()',
+    '[style.--fui-carousel-track-translate]': 'trackTranslate()',
     '[attr.role]': '"region"',
     '[attr.aria-roledescription]': '"carousel"',
     '[attr.aria-label]': 'ariaLabel()',
@@ -185,11 +185,11 @@ export class CarouselComponent {
 
   protected readonly hostClasses = computed(() => {
     return [
-      'ui-carousel',
-      `ui-carousel--${this.variant()}`,
-      `ui-carousel--${this.size()}`,
-      this.showThumbnails() ? 'ui-carousel--with-thumbnails' : '',
-      this.isDragging() ? 'ui-carousel--dragging' : '',
+      'fui-carousel',
+      `fui-carousel--${this.variant()}`,
+      `fui-carousel--${this.size()}`,
+      this.showThumbnails() ? 'fui-carousel--with-thumbnails' : '',
+      this.isDragging() ? 'fui-carousel--dragging' : '',
     ]
       .filter(Boolean)
       .join(' ');

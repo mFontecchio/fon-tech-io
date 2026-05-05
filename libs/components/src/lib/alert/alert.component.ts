@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Alert Component
  * 
  * A themable alert/banner component for displaying important messages.
@@ -19,7 +19,7 @@ export type AlertVariant = 'info' | 'success' | 'warning' | 'error';
 export type AlertSize = 'sm' | 'md' | 'lg';
 
 @Component({
-  selector: 'ui-alert',
+  selector: 'fui-alert',
   imports: [NgClass],
   templateUrl: './alert.component.html',
   styleUrl: './alert.component.css',
@@ -96,11 +96,11 @@ export class AlertComponent {
    * Computed CSS classes
    */
   protected readonly alertClasses = computed(() => ({
-    'ui-alert': true,
-    [`ui-alert--${this.variant()}`]: true,
-    [`ui-alert--${this.size()}`]: true,
-    'ui-alert--with-title': !!this.title(),
-    'ui-alert--dismissible': this.dismissible(),
+    'fui-alert': true,
+    [`fui-alert--${this.variant()}`]: true,
+    [`fui-alert--${this.size()}`]: true,
+    'fui-alert--with-title': !!this.title(),
+    'fui-alert--dismissible': this.dismissible(),
   }));
 
   /**
@@ -108,7 +108,7 @@ export class AlertComponent {
    */
   protected readonly hostClasses = computed(() => {
     if (!this.isVisible()) {
-      return 'ui-alert-wrapper ui-alert-wrapper--hidden';
+      return 'fui-alert-wrapper fui-alert-wrapper--hidden';
     }
     
     return Object.entries(this.alertClasses())

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Radio Component
  *
  * A themable radio button component following PrimeNG's pattern.
@@ -20,14 +20,14 @@ import { NgClass } from '@angular/common';
 export type RadioSize = 'sm' | 'md' | 'lg';
 
 @Component({
-  selector: 'ui-radio',
+  selector: 'fui-radio',
   imports: [NgClass],
   templateUrl: './radio.component.html',
   styleUrl: './radio.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.ui-radio-wrapper]': 'true',
-    '[class.ui-radio-wrapper--disabled]': 'disabled()',
+    '[class.fui-radio-wrapper]': 'true',
+    '[class.fui-radio-wrapper--disabled]': 'disabled()',
   },
 })
 export class RadioComponent {
@@ -110,7 +110,7 @@ export class RadioComponent {
    */
   protected readonly radioId = computed(() => {
     const providedId = this.id();
-    return providedId || `ui-radio-${Math.random().toString(36).substr(2, 9)}`;
+    return providedId || `fui-radio-${Math.random().toString(36).substr(2, 9)}`;
   });
 
   /**
@@ -144,11 +144,11 @@ export class RadioComponent {
    * Computed CSS classes
    */
   protected readonly radioClasses = computed(() => ({
-    'ui-radio': true,
-    [`ui-radio--${this.size()}`]: true,
-    'ui-radio--checked': this.isChecked(),
-    'ui-radio--disabled': this.disabled(),
-    'ui-radio--error': this.hasError(),
+    'fui-radio': true,
+    [`fui-radio--${this.size()}`]: true,
+    'fui-radio--checked': this.isChecked(),
+    'fui-radio--disabled': this.disabled(),
+    'fui-radio--error': this.hasError(),
   }));
 
   /**

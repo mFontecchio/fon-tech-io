@@ -2,45 +2,45 @@
  * Stack Component Styles
  */
 
-.ui-stack {
+.fui-stack {
   display: flex;
-  gap: var(--ui-stack-gap, 0);
-  align-items: var(--ui-stack-align, stretch);
-  justify-content: var(--ui-stack-justify, flex-start);
+  gap: var(--fui-stack-gap, 0);
+  align-items: var(--fui-stack-align, stretch);
+  justify-content: var(--fui-stack-justify, flex-start);
 }
 
 /* Direction */
 
-.ui-stack--vertical {
+.fui-stack--vertical {
   flex-direction: column;
 }
 
-.ui-stack--horizontal {
+.fui-stack--horizontal {
   flex-direction: row;
 }
 
 /* Wrap */
 
-.ui-stack--wrap {
+.fui-stack--wrap {
   flex-wrap: wrap;
 }
 
 /* Full size */
 
-.ui-stack--full-size {
+.fui-stack--full-size {
   width: 100%;
   height: 100%;
 }
 
 /* Divider */
 
-.ui-stack--divider.ui-stack--vertical > :not(:last-child) {
+.fui-stack--divider.fui-stack--vertical > :not(:last-child) {
   border-bottom: 1px solid var(--semantic-border-subtle);
   padding-bottom: var(--primitive-spacing-4);
   margin-bottom: var(--primitive-spacing-4);
 }
 
-.ui-stack--divider.ui-stack--horizontal > :not(:last-child) {
+.fui-stack--divider.fui-stack--horizontal > :not(:last-child) {
   border-right: 1px solid var(--semantic-border-subtle);
   padding-right: var(--primitive-spacing-4);
   margin-right: var(--primitive-spacing-4);
@@ -49,8 +49,8 @@
 /* High contrast mode support */
 
 @media (prefers-contrast: more) {
-  .ui-stack--divider.ui-stack--vertical > :not(:last-child),
-  .ui-stack--divider.ui-stack--horizontal > :not(:last-child) {
+  .fui-stack--divider.fui-stack--vertical > :not(:last-child),
+  .fui-stack--divider.fui-stack--horizontal > :not(:last-child) {
     border-width: 2px;
   }
 }

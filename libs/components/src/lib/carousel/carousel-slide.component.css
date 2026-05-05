@@ -1,9 +1,9 @@
 :host {
   position: relative;
   display: block;
-  flex: 0 0 calc(100% / var(--ui-carousel-visible-slides, 1));
-  width: calc(100% / var(--ui-carousel-visible-slides, 1));
-  max-width: calc(100% / var(--ui-carousel-visible-slides, 1));
+  flex: 0 0 calc(100% / var(--fui-carousel-visible-slides, 1));
+  width: calc(100% / var(--fui-carousel-visible-slides, 1));
+  max-width: calc(100% / var(--fui-carousel-visible-slides, 1));
   min-width: 0;
   transition:
     opacity var(--semantic-animation-duration-component, 250ms)
@@ -12,11 +12,11 @@
       var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
-:host(.ui-carousel-slide--inactive) {
+:host(.fui-carousel-slide--inactive) {
   pointer-events: none;
 }
 
-:host(.ui-carousel-slide--fade) {
+:host(.fui-carousel-slide--fade) {
   position: absolute;
   inset: 0;
   flex-basis: 100%;
@@ -27,7 +27,7 @@
   visibility: hidden;
 }
 
-:host(.ui-carousel-slide--fade.ui-carousel-slide--active) {
+:host(.fui-carousel-slide--fade.fui-carousel-slide--active) {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;

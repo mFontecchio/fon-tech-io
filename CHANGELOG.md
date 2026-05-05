@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- **Component selector prefix renamed**: All 43 component selectors, CSS class names, internal CSS custom properties, and template usages have been renamed from the `ui-` prefix to `fui-`. For example, `<ui-button>` is now `<fui-button>`, `.ui-button` is now `.fui-button`, and `--ui-menu-top` is now `--fui-menu-top`. The design token prefix `--ui-suite` and package names `@ui-suite/*` are unchanged.
+
 ### Fixed
 - **Strict CSP compliance for `CssGeneratorService`**: Replaced 100+ `element.style.setProperty()` CSSOM calls with a single `<style id="ui-suite-theme">` element injected into `document.head`. The element is reused on subsequent theme changes to avoid DOM churn. Supports Angular's `CSP_NONCE` token — when provided, the nonce is set on the style element so it passes a `style-src 'nonce-...'` policy. Uses `inject(DOCUMENT)` for SSR-compatible DOM access.
 - **Strict CSP compliance for `TypographyService`**: Replaced per-scale `root.style.setProperty()` CSSOM calls in `applyTypographyCss()` with a single `<style id="ui-suite-typography">` element. Delegates to the existing `generateCss()` helper and applies `CSP_NONCE` on creation. Uses `inject(DOCUMENT)` for SSR-compatible DOM access.

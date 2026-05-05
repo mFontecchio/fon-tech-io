@@ -1,5 +1,5 @@
 @if (items().length === 0) {
-  <div class="ui-list-empty">
+  <div class="fui-list-empty">
     {{ emptyMessage() }}
   </div>
 } @else {
@@ -7,8 +7,8 @@
     <ol [ngClass]="listClasses()">
       @for (item of items(); track item.id) {
         <li
-          class="ui-list-item"
-          [class.ui-list-item--disabled]="item.disabled"
+          class="fui-list-item"
+          [class.fui-list-item--disabled]="item.disabled"
           [attr.aria-disabled]="item.disabled"
           (click)="handleItemClick(item)"
           (keydown.enter)="handleItemClick(item)"
@@ -16,14 +16,14 @@
           [attr.tabindex]="interactive() && !item.disabled ? 0 : undefined"
         >
           @if (showIcons() && item.icon) {
-            <span class="ui-list-item-icon" [attr.aria-hidden]="true">
+            <span class="fui-list-item-icon" [attr.aria-hidden]="true">
               {{ item.icon }}
             </span>
           }
-          <div class="ui-list-item-content">
-            <span class="ui-list-item-label">{{ item.label }}</span>
+          <div class="fui-list-item-content">
+            <span class="fui-list-item-label">{{ item.label }}</span>
             @if (item.description) {
-              <span class="ui-list-item-description">{{ item.description }}</span>
+              <span class="fui-list-item-description">{{ item.description }}</span>
             }
           </div>
         </li>
@@ -33,8 +33,8 @@
     <ul [ngClass]="listClasses()">
       @for (item of items(); track item.id) {
         <li
-          class="ui-list-item"
-          [class.ui-list-item--disabled]="item.disabled"
+          class="fui-list-item"
+          [class.fui-list-item--disabled]="item.disabled"
           [attr.aria-disabled]="item.disabled"
           (click)="handleItemClick(item)"
           (keydown.enter)="handleItemClick(item)"
@@ -42,14 +42,14 @@
           [attr.tabindex]="interactive() && !item.disabled ? 0 : undefined"
         >
           @if (showIcons() && item.icon) {
-            <span class="ui-list-item-icon" [attr.aria-hidden]="true">
+            <span class="fui-list-item-icon" [attr.aria-hidden]="true">
               {{ item.icon }}
             </span>
           }
-          <div class="ui-list-item-content">
-            <span class="ui-list-item-label">{{ item.label }}</span>
+          <div class="fui-list-item-content">
+            <span class="fui-list-item-label">{{ item.label }}</span>
             @if (item.description) {
-              <span class="ui-list-item-description">{{ item.description }}</span>
+              <span class="fui-list-item-description">{{ item.description }}</span>
             }
           </div>
         </li>

@@ -2,33 +2,33 @@
  * Tabs Component Styles
  */
 
-.ui-tabs {
+.fui-tabs {
   display: flex;
   width: 100%;
 }
 
-.ui-tabs--horizontal {
+.fui-tabs--horizontal {
   flex-direction: column;
 }
 
-.ui-tabs--vertical {
+.fui-tabs--vertical {
   flex-direction: row;
 }
 
 /* Tabs list */
 
-.ui-tabs-list {
+.fui-tabs-list {
   position: relative;
   display: flex;
   background-color: var(--semantic-surface-card);
   border-bottom: 1px solid var(--semantic-border-subtle);
 }
 
-.ui-tabs--horizontal .ui-tabs-list {
+.fui-tabs--horizontal .fui-tabs-list {
   flex-direction: row;
 }
 
-.ui-tabs--vertical .ui-tabs-list {
+.fui-tabs--vertical .fui-tabs-list {
   flex-direction: column;
   border-bottom: none;
   border-right: 1px solid var(--semantic-border-subtle);
@@ -37,17 +37,17 @@
   align-items: stretch;
 }
 
-.ui-tabs--full-width .ui-tabs-list {
+.fui-tabs--full-width .fui-tabs-list {
   width: 100%;
 }
 
-.ui-tabs--full-width .ui-tab-button {
+.fui-tabs--full-width .fui-tab-button {
   flex: 1;
 }
 
 /* Tab button */
 
-.ui-tab-button {
+.fui-tab-button {
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -67,13 +67,13 @@
   z-index: 1; /* Ensure text is above indicator */
 }
 
-.ui-tabs--sm .ui-tab-button {
+.fui-tabs--sm .fui-tab-button {
   padding: var(--primitive-spacing-2) var(--primitive-spacing-3);
   font-size: var(--primitive-font-size-sm);
   gap: var(--primitive-spacing-1);
 }
 
-.ui-tabs--lg .ui-tab-button {
+.fui-tabs--lg .fui-tab-button {
   padding: var(--primitive-spacing-4) var(--primitive-spacing-5);
   font-size: var(--primitive-font-size-lg);
   gap: var(--primitive-spacing-3);
@@ -81,22 +81,22 @@
 
 /* Tab button states */
 
-.ui-tab-button:hover:not(:disabled) {
+.fui-tab-button:hover:not(:disabled) {
   color: var(--semantic-text-primary);
   background-color: var(--semantic-surface-background-secondary);
 }
 
-.ui-tab-button:focus-visible {
+.fui-tab-button:focus-visible {
   outline: 2px solid var(--semantic-state-focus-ring);
   outline-offset: -2px;
   z-index: 1;
 }
 
-.ui-tab-button--active {
+.fui-tab-button--active {
   color: var(--semantic-brand-primary);
 }
 
-.ui-tab-button--disabled {
+.fui-tab-button--disabled {
   color: var(--semantic-text-disabled);
   cursor: not-allowed;
   opacity: 0.6;
@@ -104,20 +104,20 @@
 
 /* Tab icon */
 
-.ui-tab-icon {
+.fui-tab-icon {
   display: inline-flex;
   font-size: 1.25em;
 }
 
 /* Tab label */
 
-.ui-tab-label {
+.fui-tab-label {
   display: inline-block;
 }
 
 /* Tab badge */
 
-.ui-tab-badge {
+.fui-tab-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -131,14 +131,14 @@
   border-radius: var(--primitive-border-radius-full);
 }
 
-.ui-tabs--sm .ui-tab-badge {
+.fui-tabs--sm .fui-tab-badge {
   min-width: 1rem;
   height: 1rem;
   padding: 0 0.25rem;
   font-size: 0.625rem;
 }
 
-.ui-tabs--lg .ui-tab-badge {
+.fui-tabs--lg .fui-tab-badge {
   min-width: 1.5rem;
   height: 1.5rem;
   padding: 0 0.5rem;
@@ -146,7 +146,7 @@
 
 /* Active indicator */
 
-.ui-tabs-indicator {
+.fui-tabs-indicator {
   position: absolute;
   background-color: var(--semantic-brand-primary);
   transition:
@@ -163,60 +163,60 @@
   will-change: left, top, width, height;
 }
 
-.ui-tabs--horizontal .ui-tabs-indicator {
+.fui-tabs--horizontal .fui-tabs-indicator {
   bottom: 0;
   right: auto;
   height: 2px;
-  left: var(--ui-tabs-indicator-pos, 0px);
-  width: var(--ui-tabs-indicator-size, 0px);
+  left: var(--fui-tabs-indicator-pos, 0px);
+  width: var(--fui-tabs-indicator-size, 0px);
 }
 
-.ui-tabs--vertical .ui-tabs-indicator {
+.fui-tabs--vertical .fui-tabs-indicator {
   right: 0;
   left: auto;
   bottom: auto;
   width: 2px;
-  top: var(--ui-tabs-indicator-pos, 0px);
-  height: var(--ui-tabs-indicator-size, 0px);
+  top: var(--fui-tabs-indicator-pos, 0px);
+  height: var(--fui-tabs-indicator-size, 0px);
 }
 
 /* Tab panels */
 
-.ui-tabs-panels {
+.fui-tabs-panels {
   flex: 1;
   min-width: 0;
   overflow: hidden;
 }
 
-.ui-tabs--vertical .ui-tabs-panels {
+.fui-tabs--vertical .fui-tabs-panels {
   width: 100%;
   max-width: 100%;
 }
 
-.ui-tab-panel {
+.fui-tab-panel {
   display: none;
   padding: var(--primitive-spacing-4);
-  animation: ui-tab-fade-in var(--semantic-animation-duration-interactive, 150ms)
+  animation: fui-tab-fade-in var(--semantic-animation-duration-interactive, 150ms)
     var(--semantic-animation-easing-decelerate, cubic-bezier(0, 0, 0.2, 1));
   width: 100%;
   box-sizing: border-box;
 }
 
-.ui-tab-panel--active {
+.fui-tab-panel--active {
   display: block;
 }
 
-.ui-tabs--sm .ui-tab-panel {
+.fui-tabs--sm .fui-tab-panel {
   padding: var(--primitive-spacing-3);
 }
 
-.ui-tabs--lg .ui-tab-panel {
+.fui-tabs--lg .fui-tab-panel {
   padding: var(--primitive-spacing-6);
 }
 
 /* Animation */
 
-@keyframes ui-tab-fade-in {
+@keyframes fui-tab-fade-in {
   from {
     opacity: 0;
   }
@@ -228,15 +228,15 @@
 /* Reduced motion support */
 
 @media (prefers-reduced-motion: reduce) {
-  .ui-tab-button {
+  .fui-tab-button {
     transition: none;
   }
 
-  .ui-tabs-indicator {
+  .fui-tabs-indicator {
     transition: none;
   }
 
-  .ui-tab-panel {
+  .fui-tab-panel {
     animation: none;
   }
 }
@@ -244,19 +244,19 @@
 /* High contrast mode support */
 
 @media (prefers-contrast: more) {
-  .ui-tabs-list {
+  .fui-tabs-list {
     border-width: 2px;
   }
 
-  .ui-tabs-indicator {
+  .fui-tabs-indicator {
     height: 3px;
   }
 
-  .ui-tabs--vertical .ui-tabs-indicator {
+  .fui-tabs--vertical .fui-tabs-indicator {
     width: 3px;
   }
 
-  .ui-tab-button:focus-visible {
+  .fui-tab-button:focus-visible {
     outline-width: 3px;
   }
 }

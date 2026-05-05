@@ -1,8 +1,8 @@
-<div class="ui-menu-container">
+<div class="fui-menu-container">
   <!-- Trigger -->
   <button
     type="button"
-    class="ui-menu-trigger"
+    class="fui-menu-trigger"
     [attr.aria-haspopup]="true"
     [attr.aria-expanded]="isOpen()"
     [disabled]="disabled()"
@@ -14,16 +14,16 @@
   <!-- Menu dropdown -->
   @if (isOpen()) {
     <div [ngClass]="menuClasses()" [attr.role]="'menu'" [attr.aria-orientation]="'vertical'">
-      <ul class="ui-menu-list">
+      <ul class="fui-menu-list">
         @for (item of items(); track item.id) {
           @if (item.divider) {
-            <li class="ui-menu-divider" role="separator"></li>
+            <li class="fui-menu-divider" role="separator"></li>
           } @else {
             <li
-              class="ui-menu-item"
-              [class.ui-menu-item--disabled]="item.disabled"
-              [class.ui-menu-item--has-submenu]="item.submenu && item.submenu.length > 0"
-              [class.ui-menu-item--submenu-open]="isSubmenuActive(item.id)"
+              class="fui-menu-item"
+              [class.fui-menu-item--disabled]="item.disabled"
+              [class.fui-menu-item--has-submenu]="item.submenu && item.submenu.length > 0"
+              [class.fui-menu-item--submenu-open]="isSubmenuActive(item.id)"
               [attr.role]="'menuitem'"
               [attr.aria-disabled]="item.disabled"
               [attr.aria-haspopup]="item.submenu && item.submenu.length > 0"
@@ -35,14 +35,14 @@
               (keydown.space)="$event.preventDefault(); handleItemClick(item, $event)"
             >
               @if (item.icon) {
-                <span class="ui-menu-item-icon" [attr.aria-hidden]="true">
+                <span class="fui-menu-item-icon" [attr.aria-hidden]="true">
                   {{ item.icon }}
                 </span>
               }
-              <span class="ui-menu-item-label">{{ item.label }}</span>
+              <span class="fui-menu-item-label">{{ item.label }}</span>
               @if (item.submenu && item.submenu.length > 0) {
                 <svg
-                  class="ui-menu-item-arrow"
+                  class="fui-menu-item-arrow"
                   width="16"
                   height="16"
                   viewBox="0 0 16 16"
@@ -61,14 +61,14 @@
 
               <!-- Submenu -->
               @if (item.submenu && item.submenu.length > 0 && isSubmenuActive(item.id)) {
-                <ul class="ui-menu-submenu" role="menu">
+                <ul class="fui-menu-submenu" role="menu">
                   @for (subitem of item.submenu; track subitem.id) {
                     @if (subitem.divider) {
-                      <li class="ui-menu-divider" role="separator"></li>
+                      <li class="fui-menu-divider" role="separator"></li>
                     } @else {
                       <li
-                        class="ui-menu-item"
-                        [class.ui-menu-item--disabled]="subitem.disabled"
+                        class="fui-menu-item"
+                        [class.fui-menu-item--disabled]="subitem.disabled"
                         [attr.role]="'menuitem'"
                         [attr.aria-disabled]="subitem.disabled"
                         [attr.tabindex]="subitem.disabled ? -1 : 0"
@@ -77,11 +77,11 @@
                         (keydown.space)="$event.preventDefault(); handleItemClick(subitem, $event)"
                       >
                         @if (subitem.icon) {
-                          <span class="ui-menu-item-icon" [attr.aria-hidden]="true">
+                          <span class="fui-menu-item-icon" [attr.aria-hidden]="true">
                             {{ subitem.icon }}
                           </span>
                         }
-                        <span class="ui-menu-item-label">{{ subitem.label }}</span>
+                        <span class="fui-menu-item-label">{{ subitem.label }}</span>
                       </li>
                     }
                   }

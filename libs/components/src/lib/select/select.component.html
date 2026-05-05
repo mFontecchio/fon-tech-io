@@ -1,14 +1,14 @@
-<div class="ui-select-container">
+<div class="fui-select-container">
   @if (label()) {
-    <label [for]="selectId()" class="ui-select-label">
+    <label [for]="selectId()" class="fui-select-label">
       {{ label() }}
       @if (required()) {
-        <span class="ui-select-required-indicator" aria-label="required">*</span>
+        <span class="fui-select-required-indicator" aria-label="required">*</span>
       }
     </label>
   }
 
-  <div class="ui-select-input-wrapper">
+  <div class="fui-select-input-wrapper">
     <select
       #select
       [id]="selectId()"
@@ -67,7 +67,7 @@
     </select>
 
     <svg 
-      class="ui-select-icon" 
+      class="fui-select-icon" 
       width="20" 
       height="20" 
       viewBox="0 0 20 20" 
@@ -87,7 +87,7 @@
   @if (helperText() && !hasError()) {
     <div 
       [id]="helperTextId()" 
-      class="ui-select-helper-text"
+      class="fui-select-helper-text"
     >
       {{ helperText() }}
     </div>
@@ -96,7 +96,7 @@
   @if (hasError()) {
     <div 
       [id]="errorId()" 
-      class="ui-select-error-message"
+      class="fui-select-error-message"
       role="alert"
       aria-live="polite"
     >

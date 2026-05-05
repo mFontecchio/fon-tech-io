@@ -16,10 +16,10 @@ import {
 } from '../themes/default-themes';
 import { CssGeneratorService } from './css-generator.service';
 
-const THEME_STORAGE_KEY = 'ui-suite-theme';
-const THEME_FAMILY_STORAGE_KEY = 'ui-suite-theme-family';
-const THEME_MODE_STORAGE_KEY = 'ui-suite-theme-mode';
-const CUSTOM_FAMILIES_STORAGE_KEY = 'ui-suite-custom-families';
+const THEME_STORAGE_KEY = 'fui-suite-theme';
+const THEME_FAMILY_STORAGE_KEY = 'fui-suite-theme-family';
+const THEME_MODE_STORAGE_KEY = 'fui-suite-theme-mode';
+const CUSTOM_FAMILIES_STORAGE_KEY = 'fui-suite-custom-families';
 const DEFAULT_THEME_FAMILY_ID = 'default';
 const HIGH_CONTRAST_THEME_ID = 'high-contrast';
 

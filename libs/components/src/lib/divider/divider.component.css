@@ -11,14 +11,14 @@
 
 /* Horizontal */
 
-:host.ui-divider--horizontal {
+:host.fui-divider--horizontal {
   width: 100%;
   height: 1px;
   background-color: var(--semantic-border-subtle);
   margin: var(--primitive-spacing-4) 0;
 }
 
-:host.ui-divider--horizontal.ui-divider--with-label {
+:host.fui-divider--horizontal.fui-divider--with-label {
   height: auto;
   background-color: transparent;
   gap: var(--primitive-spacing-3);
@@ -26,7 +26,7 @@
 
 /* Vertical */
 
-:host.ui-divider--vertical {
+:host.fui-divider--vertical {
   width: 1px;
   height: 100%;
   min-height: 1rem;
@@ -37,7 +37,7 @@
 
 /* Dashed style */
 
-:host.ui-divider--dashed {
+:host.fui-divider--dashed {
   background-image: linear-gradient(
     to right,
     var(--semantic-border-subtle) 50%,
@@ -48,7 +48,7 @@
   background-color: transparent;
 }
 
-:host.ui-divider--vertical.ui-divider--dashed {
+:host.fui-divider--vertical.fui-divider--dashed {
   background-image: linear-gradient(
     to bottom,
     var(--semantic-border-subtle) 50%,
@@ -60,7 +60,7 @@
 
 /* Label */
 
-.ui-divider-label {
+.fui-divider-label {
   flex-shrink: 0;
   font-size: var(--primitive-font-size-sm);
   color: var(--semantic-text-secondary);
@@ -70,13 +70,13 @@
 
 /* Lines (when label present) */
 
-.ui-divider-line {
+.fui-divider-line {
   flex: 1;
   height: 1px;
   background-color: var(--semantic-border-subtle);
 }
 
-:host.ui-divider--dashed .ui-divider-line {
+:host.fui-divider--dashed .fui-divider-line {
   background-image: linear-gradient(
     to right,
     var(--semantic-border-subtle) 50%,
@@ -89,45 +89,45 @@
 
 /* Alignment */
 
-:host.ui-divider--left .ui-divider-line:first-child {
+:host.fui-divider--left .fui-divider-line:first-child {
   flex: 0 0 5%;
 }
 
-:host.ui-divider--left .ui-divider-line:last-child {
+:host.fui-divider--left .fui-divider-line:last-child {
   flex: 1;
 }
 
-:host.ui-divider--right .ui-divider-line:first-child {
+:host.fui-divider--right .fui-divider-line:first-child {
   flex: 1;
 }
 
-:host.ui-divider--right .ui-divider-line:last-child {
+:host.fui-divider--right .fui-divider-line:last-child {
   flex: 0 0 5%;
 }
 
-:host.ui-divider--center .ui-divider-line:first-child,
-:host.ui-divider--center .ui-divider-line:last-child {
+:host.fui-divider--center .fui-divider-line:first-child,
+:host.fui-divider--center .fui-divider-line:last-child {
   flex: 1;
 }
 
 /* High contrast mode support */
 
 @media (prefers-contrast: more) {
-  :host.ui-divider--horizontal,
-  :host.ui-divider--vertical,
-  .ui-divider-line {
+  :host.fui-divider--horizontal,
+  :host.fui-divider--vertical,
+  .fui-divider-line {
     background-color: var(--semantic-border-default);
   }
 
-  :host.ui-divider--horizontal {
+  :host.fui-divider--horizontal {
     height: 2px;
   }
 
-  :host.ui-divider--vertical {
+  :host.fui-divider--vertical {
     width: 2px;
   }
 
-  .ui-divider-line {
+  .fui-divider-line {
     height: 2px;
   }
 }

@@ -20,30 +20,30 @@ import { CardComponent, CodeBlockComponent } from '@ui-suite/components';
       </p>
 
       <div class="content-grid">
-        <ui-card>
+        <fui-card>
           <h2>ThemeService Basics</h2>
           <p>Select a family first, then switch between light, dark, and high-contrast modes.</p>
-          <ui-code-block [code]="serviceExample" language="typescript" [title]="'ThemeService Example'" />
-        </ui-card>
+          <fui-code-block [code]="serviceExample" language="typescript" [title]="'ThemeService Example'" />
+        </fui-card>
 
-        <ui-card>
+        <fui-card>
           <h2>What Persists</h2>
           <ul>
             <li>The selected theme family.</li>
             <li>The selected mode: light, dark, or high contrast.</li>
             <li>Any custom theme families registered in the browser persistence layer.</li>
           </ul>
-        </ui-card>
+        </fui-card>
       </div>
 
-      <ui-card>
+      <fui-card>
         <h2>Authoring Guidance</h2>
         <ul>
           <li>Prefer component and semantic tokens over hard-coded values in component CSS.</li>
           <li>Use the Theme Builder to preview family variants before exporting custom themes.</li>
           <li>Verify light, dark, and high-contrast behavior in the showcase after changing theme data.</li>
         </ul>
-      </ui-card>
+      </fui-card>
     </div>
   `,
   styles: [

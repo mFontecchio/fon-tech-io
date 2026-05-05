@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Navbar Component
  * 
  * A responsive navigation bar with mobile menu support.
@@ -26,7 +26,7 @@ export interface NavbarLink {
 export type NavbarVariant = 'default' | 'sticky' | 'fixed';
 
 @Component({
-  selector: 'ui-navbar',
+  selector: 'fui-navbar',
   imports: [NgClass],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
@@ -70,9 +70,9 @@ export class NavbarComponent {
    * Computed CSS classes
    */
   protected readonly navbarClasses = computed(() => ({
-    'ui-navbar': true,
-    [`ui-navbar--${this.variant()}`]: true,
-    'ui-navbar--mobile-open': this.mobileMenuOpen(),
+    'fui-navbar': true,
+    [`fui-navbar--${this.variant()}`]: true,
+    'fui-navbar--mobile-open': this.mobileMenuOpen(),
   }));
 
   /**

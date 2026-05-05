@@ -103,26 +103,26 @@ interface EditableThemeFamilyMetadata {
       </div>
 
       <!-- Dual Theme Info -->
-      <ui-alert variant="info" class="dual-theme-alert">
+      <fui-alert variant="info" class="dual-theme-alert">
         <strong>Dual Theme System:</strong> Edit both Light and Dark color modes simultaneously!
         Each color token has two inputs side-by-side - Light (left) and Dark (right). Typography and
         spacing tokens are shared between both themes. Use the Light/Dark toggle buttons in the Live
         Preview section to see your theme in both modes. When you export, both light and dark color
         tokens will be included for a complete theme solution.
-      </ui-alert>
+      </fui-alert>
 
       <!-- Sticky Action Toolbar -->
       <!-- Action Toolbar with Skeleton Loader -->
       @if (isInitializing()) {
         <div class="action-toolbar">
-          <ui-skeleton variant="rectangular" height="2.5rem" width="100%" />
+          <fui-skeleton variant="rectangular" height="2.5rem" width="100%" />
         </div>
       } @else {
         <div class="action-toolbar">
           <div class="toolbar-section">
             <span class="toolbar-label">History</span>
             <div class="toolbar-buttons">
-              <ui-button
+              <fui-button
                 variant="outlined"
                 size="sm"
                 (clicked)="undo()"
@@ -143,8 +143,8 @@ interface EditableThemeFamilyMetadata {
                   <path d="M21 17a9 9 0 00-9-9 9 9 0 00-6 2.3L3 13" />
                 </svg>
                 Undo
-              </ui-button>
-              <ui-button
+              </fui-button>
+              <fui-button
                 variant="outlined"
                 size="sm"
                 (clicked)="redo()"
@@ -165,7 +165,7 @@ interface EditableThemeFamilyMetadata {
                   <path d="M3 17a9 9 0 019-9 9 9 0 016 2.3l3 2.7" />
                 </svg>
                 Redo
-              </ui-button>
+              </fui-button>
             </div>
           </div>
 
@@ -174,7 +174,7 @@ interface EditableThemeFamilyMetadata {
           <div class="toolbar-section">
             <span class="toolbar-label">Tools</span>
             <div class="toolbar-buttons">
-              <ui-button variant="outlined" size="sm" (clicked)="toggleAccessibilityChecker()">
+              <fui-button variant="outlined" size="sm" (clicked)="toggleAccessibilityChecker()">
                 <svg
                   width="16"
                   height="16"
@@ -190,8 +190,8 @@ interface EditableThemeFamilyMetadata {
                   <path d="M12 8h.01" />
                 </svg>
                 A11y Check
-              </ui-button>
-              <ui-button variant="outlined" size="sm" (clicked)="toggleColorGenerator()">
+              </fui-button>
+              <fui-button variant="outlined" size="sm" (clicked)="toggleColorGenerator()">
                 <svg
                   width="16"
                   height="16"
@@ -211,7 +211,7 @@ interface EditableThemeFamilyMetadata {
                   />
                 </svg>
                 Colors
-              </ui-button>
+              </fui-button>
             </div>
           </div>
 
@@ -220,7 +220,7 @@ interface EditableThemeFamilyMetadata {
           <div class="toolbar-section">
             <span class="toolbar-label">Actions</span>
             <div class="toolbar-buttons">
-              <ui-button variant="outlined" size="sm" (clicked)="resetTheme()">
+              <fui-button variant="outlined" size="sm" (clicked)="resetTheme()">
                 <svg
                   width="16"
                   height="16"
@@ -237,8 +237,8 @@ interface EditableThemeFamilyMetadata {
                   <path d="M3 21v-5h5" />
                 </svg>
                 Reset
-              </ui-button>
-              <ui-button variant="filled" size="sm" (clicked)="exportTheme()">
+              </fui-button>
+              <fui-button variant="filled" size="sm" (clicked)="exportTheme()">
                 <svg
                   width="16"
                   height="16"
@@ -254,7 +254,7 @@ interface EditableThemeFamilyMetadata {
                   <line x1="12" y1="15" x2="12" y2="3" />
                 </svg>
                 Export
-              </ui-button>
+              </fui-button>
             </div>
           </div>
         </div>
@@ -262,7 +262,7 @@ interface EditableThemeFamilyMetadata {
 
       <!-- Theme Presets & Quick Actions -->
       <div class="presets-section">
-        <ui-card>
+        <fui-card>
           <div class="presets-header">
             <div>
               <h2>Theme Presets</h2>
@@ -270,10 +270,10 @@ interface EditableThemeFamilyMetadata {
             </div>
             <div class="presets-actions">
               @if (isInitializing()) {
-                <ui-skeleton variant="rounded" height="2rem" width="5rem" />
-                <ui-skeleton variant="rounded" height="2rem" width="5rem" />
+                <fui-skeleton variant="rounded" height="2rem" width="5rem" />
+                <fui-skeleton variant="rounded" height="2rem" width="5rem" />
               } @else {
-                <ui-button variant="outlined" size="sm" (clicked)="importTheme()">
+                <fui-button variant="outlined" size="sm" (clicked)="importTheme()">
                   <svg
                     width="16"
                     height="16"
@@ -287,8 +287,8 @@ interface EditableThemeFamilyMetadata {
                     <line x1="12" y1="3" x2="12" y2="15" />
                   </svg>
                   Import
-                </ui-button>
-                <ui-button variant="outlined" size="sm" (clicked)="showSaveThemeModal()">
+                </fui-button>
+                <fui-button variant="outlined" size="sm" (clicked)="showSaveThemeModal()">
                   <svg
                     width="16"
                     height="16"
@@ -302,7 +302,7 @@ interface EditableThemeFamilyMetadata {
                     <polyline points="7 3 7 8 15 8" />
                   </svg>
                   Save
-                </ui-button>
+                </fui-button>
               }
             </div>
           </div>
@@ -370,7 +370,7 @@ interface EditableThemeFamilyMetadata {
                       <h4>{{ theme.name }}</h4>
                       <span class="saved-theme-date">{{ formatDate(theme.createdAt) }}</span>
                     </div>
-                    <ui-button
+                    <fui-button
                       variant="text"
                       size="sm"
                       (clicked)="deleteSavedTheme(theme.name)"
@@ -389,23 +389,23 @@ interface EditableThemeFamilyMetadata {
                           d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
                         />
                       </svg>
-                    </ui-button>
+                    </fui-button>
                   </div>
                 }
               </div>
             </div>
           }
-        </ui-card>
+        </fui-card>
       </div>
 
       <div class="theme-builder-layout">
         <!-- Token Editor -->
         <div class="token-editor">
-          <ui-card>
+          <fui-card>
             <h2>Design Tokens</h2>
 
-            <ui-tabs>
-              <ui-tab label="Colors">
+            <fui-tabs>
+              <fui-tab label="Colors">
                 <div class="token-section">
                   @for (category of colorCategories(); track category.id) {
                     <div class="token-category">
@@ -471,9 +471,9 @@ interface EditableThemeFamilyMetadata {
                     </div>
                   }
                 </div>
-              </ui-tab>
+              </fui-tab>
 
-              <ui-tab label="Typography">
+              <fui-tab label="Typography">
                 <div class="token-section">
                   @for (category of typographyCategories(); track category.id) {
                     <div class="token-category">
@@ -499,9 +499,9 @@ interface EditableThemeFamilyMetadata {
                     </div>
                   }
                 </div>
-              </ui-tab>
+              </fui-tab>
 
-              <ui-tab label="Spacing">
+              <fui-tab label="Spacing">
                 <div class="token-section">
                   @for (category of spacingCategories(); track category.id) {
                     <div class="token-category">
@@ -527,21 +527,21 @@ interface EditableThemeFamilyMetadata {
                     </div>
                   }
                 </div>
-              </ui-tab>
-            </ui-tabs>
-          </ui-card>
+              </fui-tab>
+            </fui-tabs>
+          </fui-card>
         </div>
 
         <!-- Live Preview -->
         <div class="live-preview">
-          <ui-card>
+          <fui-card>
             <div class="preview-header">
               <div>
                 <h2>Live Preview</h2>
                 <p class="preview-description">See your theme changes in real-time</p>
               </div>
               <div class="preview-mode-toggle">
-                <ui-button
+                <fui-button
                   [variant]="!isPreviewingDark() ? 'filled' : 'outlined'"
                   size="sm"
                   (clicked)="setPreviewMode('light')"
@@ -568,8 +568,8 @@ interface EditableThemeFamilyMetadata {
                     <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
                   </svg>
                   Light
-                </ui-button>
-                <ui-button
+                </fui-button>
+                <fui-button
                   [variant]="isPreviewingDark() ? 'filled' : 'outlined'"
                   size="sm"
                   (clicked)="setPreviewMode('dark')"
@@ -588,7 +588,7 @@ interface EditableThemeFamilyMetadata {
                     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
                   </svg>
                   Dark
-                </ui-button>
+                </fui-button>
               </div>
             </div>
 
@@ -600,35 +600,35 @@ interface EditableThemeFamilyMetadata {
               <div class="preview-section">
                 <h4>Buttons</h4>
                 <div class="preview-row">
-                  <ui-button variant="filled" size="sm">Small</ui-button>
-                  <ui-button variant="filled" size="md">Medium</ui-button>
-                  <ui-button variant="filled" size="lg">Large</ui-button>
+                  <fui-button variant="filled" size="sm">Small</fui-button>
+                  <fui-button variant="filled" size="md">Medium</fui-button>
+                  <fui-button variant="filled" size="lg">Large</fui-button>
                 </div>
                 <div class="preview-row">
-                  <ui-button variant="outlined">Outlined</ui-button>
-                  <ui-button variant="text">Text</ui-button>
+                  <fui-button variant="outlined">Outlined</fui-button>
+                  <fui-button variant="text">Text</fui-button>
                 </div>
               </div>
 
               <!-- Inputs -->
               <div class="preview-section">
                 <h4>Form Controls</h4>
-                <ui-input placeholder="Enter text..." label="Text Input" />
+                <fui-input placeholder="Enter text..." label="Text Input" />
               </div>
 
               <!-- Alert -->
               <div class="preview-section">
                 <h4>Feedback</h4>
-                <ui-alert variant="info">This is an informational message</ui-alert>
+                <fui-alert variant="info">This is an informational message</fui-alert>
               </div>
 
               <!-- Card -->
               <div class="preview-section">
                 <h4>Card</h4>
-                <ui-card>
+                <fui-card>
                   <h3>Card Title</h3>
                   <p>This is a sample card with your custom theme applied.</p>
-                </ui-card>
+                </fui-card>
               </div>
 
               <!-- Typography -->
@@ -659,12 +659,12 @@ interface EditableThemeFamilyMetadata {
                 </div>
               </div>
             </div>
-          </ui-card>
+          </fui-card>
         </div>
       </div>
 
       <!-- Export Modal (shown when exporting) -->
-      <ui-modal
+      <fui-modal
         [open]="showExportModal()"
         [title]="'Export Theme'"
         [size]="'md'"
@@ -673,24 +673,24 @@ interface EditableThemeFamilyMetadata {
         <p>Choose your export format:</p>
 
         <div class="export-options">
-          <ui-button variant="outlined" [fullWidth]="true" (clicked)="exportAsCSS()">
+          <fui-button variant="outlined" [fullWidth]="true" (clicked)="exportAsCSS()">
             Export as CSS Variables
-          </ui-button>
-          <ui-button variant="outlined" [fullWidth]="true" (clicked)="exportAsJSON()">
+          </fui-button>
+          <fui-button variant="outlined" [fullWidth]="true" (clicked)="exportAsJSON()">
             Export as JSON
-          </ui-button>
-          <ui-button variant="outlined" [fullWidth]="true" (clicked)="exportAsTypeScript()">
+          </fui-button>
+          <fui-button variant="outlined" [fullWidth]="true" (clicked)="exportAsTypeScript()">
             Export as TypeScript
-          </ui-button>
+          </fui-button>
         </div>
 
         <div slot="footer">
-          <ui-button variant="text" (clicked)="closeExportModal()">Cancel</ui-button>
+          <fui-button variant="text" (clicked)="closeExportModal()">Cancel</fui-button>
         </div>
-      </ui-modal>
+      </fui-modal>
 
       <!-- Save Theme Modal -->
-      <ui-modal
+      <fui-modal
         [open]="showSaveModal()"
         [title]="'Save Theme'"
         [size]="'md'"
@@ -698,7 +698,7 @@ interface EditableThemeFamilyMetadata {
       >
         <p>Give your custom theme a name:</p>
 
-        <ui-input
+        <fui-input
           [value]="saveThemeName()"
           (valueChange)="saveThemeName.set($event)"
           placeholder="My Custom Theme"
@@ -706,18 +706,18 @@ interface EditableThemeFamilyMetadata {
         />
 
         <div slot="footer">
-          <ui-button variant="text" (clicked)="closeSaveModal()">Cancel</ui-button>
-          <ui-button variant="filled" (clicked)="saveCurrentTheme()">Save</ui-button>
+          <fui-button variant="text" (clicked)="closeSaveModal()">Cancel</fui-button>
+          <fui-button variant="filled" (clicked)="saveCurrentTheme()">Save</fui-button>
         </div>
-      </ui-modal>
+      </fui-modal>
 
       <!-- Accessibility Checker Panel -->
       @if (showAccessibilityChecker()) {
         <div class="utility-panel">
-          <ui-card>
+          <fui-card>
             <div class="panel-header">
               <h2>Accessibility Checker</h2>
-              <ui-button
+              <fui-button
                 variant="text"
                 size="sm"
                 (clicked)="toggleAccessibilityChecker()"
@@ -734,7 +734,7 @@ interface EditableThemeFamilyMetadata {
                   <line x1="18" y1="6" x2="6" y2="18" />
                   <line x1="6" y1="6" x2="18" y2="18" />
                 </svg>
-              </ui-button>
+              </fui-button>
             </div>
             <p class="panel-description">Check contrast ratios for WCAG compliance</p>
 
@@ -754,7 +754,7 @@ interface EditableThemeFamilyMetadata {
                   </div>
                   <div class="contrast-result">
                     <span class="contrast-ratio">{{ check.ratio.toFixed(2) }}:1</span>
-                    <ui-badge
+                    <fui-badge
                       [variant]="
                         check.level === 'AAA'
                           ? 'success'
@@ -764,7 +764,7 @@ interface EditableThemeFamilyMetadata {
                       "
                     >
                       {{ check.level }}
-                    </ui-badge>
+                    </fui-badge>
                   </div>
                 </div>
               }
@@ -778,17 +778,17 @@ interface EditableThemeFamilyMetadata {
                 <li><strong>Fail:</strong> Does not meet minimum standards</li>
               </ul>
             </div>
-          </ui-card>
+          </fui-card>
         </div>
       }
 
       <!-- Color Generator Panel -->
       @if (showColorGenerator()) {
         <div class="utility-panel">
-          <ui-card>
+          <fui-card>
             <div class="panel-header">
               <h2>Color Palette Generator</h2>
-              <ui-button
+              <fui-button
                 variant="text"
                 size="sm"
                 (clicked)="toggleColorGenerator()"
@@ -805,13 +805,13 @@ interface EditableThemeFamilyMetadata {
                   <line x1="18" y1="6" x2="6" y2="18" />
                   <line x1="6" y1="6" x2="18" y2="18" />
                 </svg>
-              </ui-button>
+              </fui-button>
             </div>
             <p class="panel-description">Generate harmonious color schemes</p>
 
             <div class="color-generator-controls">
               <div class="color-input-group">
-                <ui-input
+                <fui-input
                   [value]="baseColorForGeneration"
                   (valueChange)="baseColorForGeneration = $event"
                   label="Base Color"
@@ -828,15 +828,15 @@ interface EditableThemeFamilyMetadata {
                 </div>
               </div>
               <div class="generator-buttons">
-                <ui-button variant="outlined" size="sm" (clicked)="generateComplementary()">
+                <fui-button variant="outlined" size="sm" (clicked)="generateComplementary()">
                   Complementary
-                </ui-button>
-                <ui-button variant="outlined" size="sm" (clicked)="generateAnalogous()">
+                </fui-button>
+                <fui-button variant="outlined" size="sm" (clicked)="generateAnalogous()">
                   Analogous
-                </ui-button>
-                <ui-button variant="outlined" size="sm" (clicked)="generateShades()">
+                </fui-button>
+                <fui-button variant="outlined" size="sm" (clicked)="generateShades()">
                   Shades
-                </ui-button>
+                </fui-button>
               </div>
             </div>
 
@@ -854,7 +854,7 @@ interface EditableThemeFamilyMetadata {
                 <p class="hint">Click any color to copy to clipboard</p>
               </div>
             }
-          </ui-card>
+          </fui-card>
         </div>
       }
 
@@ -875,7 +875,7 @@ interface EditableThemeFamilyMetadata {
       }
 
       /* Skeleton loader styles */
-      .presets-actions ui-skeleton {
+      .presets-actions fui-skeleton {
         display: inline-block;
       }
 
@@ -997,11 +997,11 @@ interface EditableThemeFamilyMetadata {
         align-items: center;
       }
 
-      .toolbar-buttons ui-button {
+      .toolbar-buttons fui-button {
         white-space: nowrap;
       }
 
-      .toolbar-buttons ui-button svg {
+      .toolbar-buttons fui-button svg {
         vertical-align: middle;
         margin-right: 4px;
       }
@@ -1029,24 +1029,24 @@ interface EditableThemeFamilyMetadata {
         animation: slideInRight 0.3s ease-out;
       }
 
-      .utility-panel ::ng-deep ui-card {
+      .utility-panel ::ng-deep fui-card {
         background: transparent;
         border: none;
         box-shadow: none;
       }
 
-      .utility-panel ::ng-deep ui-input,
-      .utility-panel ::ng-deep ui-button {
+      .utility-panel ::ng-deep fui-input,
+      .utility-panel ::ng-deep fui-button {
         display: block !important;
         opacity: 1 !important;
         visibility: visible !important;
       }
 
-      .utility-panel ::ng-deep ui-input input {
+      .utility-panel ::ng-deep fui-input input {
         display: block !important;
       }
 
-      .utility-panel .generator-buttons ::ng-deep ui-button {
+      .utility-panel .generator-buttons ::ng-deep fui-button {
         flex: 1 1 auto;
         min-width: 100px;
       }
@@ -1074,7 +1074,7 @@ interface EditableThemeFamilyMetadata {
         margin: 0;
       }
 
-      .panel-header ui-button {
+      .panel-header fui-button {
         flex-shrink: 0;
       }
 
@@ -1162,7 +1162,7 @@ interface EditableThemeFamilyMetadata {
         gap: var(--primitive-spacing-3);
         align-items: flex-end;
       }
-      .color-generator-controls ui-input {
+      .color-generator-controls fui-input {
         flex: 1;
       }
       .color-picker-wrapper {
@@ -1401,11 +1401,11 @@ interface EditableThemeFamilyMetadata {
       }
 
       /* Delete button in saved themes - custom color override */
-      .saved-theme-card ui-button svg {
+      .saved-theme-card fui-button svg {
         color: var(--semantic-feedback-error);
       }
 
-      .saved-theme-card ui-button:hover svg {
+      .saved-theme-card fui-button:hover svg {
         color: var(--semantic-feedback-error);
       }
 
@@ -1688,24 +1688,24 @@ interface EditableThemeFamilyMetadata {
       }
 
       /* Modal content styles */
-      ::ng-deep ui-modal p {
+      ::ng-deep fui-modal p {
         margin-bottom: var(--primitive-spacing-4);
         color: var(--semantic-text-secondary);
       }
 
-      ::ng-deep ui-modal .export-options {
+      ::ng-deep fui-modal .export-options {
         display: flex;
         flex-direction: column;
         gap: var(--primitive-spacing-3);
         margin-top: var(--primitive-spacing-4);
       }
 
-      ::ng-deep ui-modal ui-input {
+      ::ng-deep fui-modal fui-input {
         display: block;
         margin-top: var(--primitive-spacing-2);
       }
 
-      ::ng-deep ui-modal [slot='footer'] {
+      ::ng-deep fui-modal [slot='footer'] {
         display: flex;
         gap: var(--primitive-spacing-2);
         justify-content: flex-end;
@@ -1775,7 +1775,7 @@ interface EditableThemeFamilyMetadata {
           width: 100%;
         }
 
-        .toolbar-buttons ui-button {
+        .toolbar-buttons fui-button {
           width: 100%;
           justify-content: flex-start;
         }
@@ -1789,7 +1789,7 @@ interface EditableThemeFamilyMetadata {
           width: 100%;
         }
 
-        .preview-mode-toggle ui-button {
+        .preview-mode-toggle fui-button {
           flex: 1;
         }
 

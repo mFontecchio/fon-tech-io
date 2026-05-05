@@ -1,7 +1,7 @@
-<div class="ui-radio-container">
+<div class="fui-radio-container">
   <label 
     [for]="radioId()" 
-    class="ui-radio-label"
+    class="fui-radio-label"
     (click)="handleLabelClick($event)"
   >
     <input
@@ -20,17 +20,17 @@
       (change)="handleChange($event)"
     />
     
-    <span class="ui-radio-box">
+    <span class="fui-radio-box">
       @if (isChecked()) {
-        <span class="ui-radio-dot"></span>
+        <span class="fui-radio-dot"></span>
       }
     </span>
 
     @if (label()) {
-      <span class="ui-radio-label-text">
+      <span class="fui-radio-label-text">
         {{ label() }}
         @if (required()) {
-          <span class="ui-radio-required-indicator" aria-label="required">*</span>
+          <span class="fui-radio-required-indicator" aria-label="required">*</span>
         }
       </span>
     }
@@ -39,7 +39,7 @@
   @if (helperText() && !hasError()) {
     <div 
       [id]="helperTextId()" 
-      class="ui-radio-helper-text"
+      class="fui-radio-helper-text"
     >
       {{ helperText() }}
     </div>
@@ -48,7 +48,7 @@
   @if (hasError()) {
     <div 
       [id]="errorId()" 
-      class="ui-radio-error-message"
+      class="fui-radio-error-message"
       role="alert"
       aria-live="polite"
     >

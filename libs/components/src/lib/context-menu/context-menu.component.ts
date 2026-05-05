@@ -32,13 +32,13 @@ export interface ContextMenuItem {
 }
 
 @Component({
-  selector: 'ui-context-menu',
+  selector: 'fui-context-menu',
   imports: [NgClass],
   templateUrl: './context-menu.component.html',
   styleUrl: './context-menu.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.ui-context-menu-wrapper]': 'true',
+    '[class.fui-context-menu-wrapper]': 'true',
     '(document:click)': 'handleClickOutside($event)',
     '(keydown.escape)': 'handleEscape()',
     '(keydown)': 'handleKeyDown($event)',
@@ -91,8 +91,8 @@ export class ContextMenuComponent implements OnDestroy {
    * Computed CSS classes
    */
   protected readonly menuClasses = computed(() => ({
-    'ui-context-menu': true,
-    'ui-context-menu--open': this.isOpen(),
+    'fui-context-menu': true,
+    'fui-context-menu--open': this.isOpen(),
   }));
 
   private elementRef = inject(ElementRef);
@@ -107,7 +107,7 @@ export class ContextMenuComponent implements OnDestroy {
   constructor() {
     afterNextRender(() => {
       const contentElement = this.elementRef.nativeElement.querySelector(
-        '.ui-context-menu-content'
+        '.fui-context-menu-content'
       );
       if (contentElement) {
         this.unlistenContextMenu = this.renderer.listen(
@@ -181,7 +181,7 @@ export class ContextMenuComponent implements OnDestroy {
   protected handleClickOutside(event: Event): void {
     const target = event.target as HTMLElement;
     const hostElement = this.elementRef.nativeElement;
-    const menuElement = hostElement.querySelector('.ui-context-menu');
+    const menuElement = hostElement.querySelector('.fui-context-menu');
 
     if (menuElement && !menuElement.contains(target) && this.isOpen()) {
       this.close();
@@ -215,13 +215,13 @@ export class ContextMenuComponent implements OnDestroy {
       case 'ArrowUp': {
         const inSubmenu = !!this.activeSubmenu();
         const containerSel = inSubmenu
-          ? '.ui-context-menu-item--submenu-open > .ui-context-menu-submenu'
-          : '.ui-context-menu-list';
+          ? '.fui-context-menu-item--submenu-open > .fui-context-menu-submenu'
+          : '.fui-context-menu-list';
         const container = host.querySelector<HTMLElement>(containerSel);
         if (!container) break;
         const focusable = Array.from(
           container.querySelectorAll<HTMLElement>(
-            ':scope > .ui-context-menu-item:not(.ui-context-menu-item--disabled)'
+            ':scope > .fui-context-menu-item:not(.fui-context-menu-item--disabled)'
           )
         );
         if (!focusable.length) break;
@@ -242,7 +242,7 @@ export class ContextMenuComponent implements OnDestroy {
           this.activeSubmenu.set(itemId);
           requestAnimationFrame(() => {
             const first = host.querySelector<HTMLElement>(
-              '.ui-context-menu-item--submenu-open > .ui-context-menu-submenu .ui-context-menu-item:not(.ui-context-menu-item--disabled)'
+              '.fui-context-menu-item--submenu-open > .fui-context-menu-submenu .fui-context-menu-item:not(.fui-context-menu-item--disabled)'
             );
             first?.focus();
           });
@@ -251,7 +251,7 @@ export class ContextMenuComponent implements OnDestroy {
       }
       case 'ArrowLeft': {
         if (this.activeSubmenu()) {
-          const parentItem = host.querySelector<HTMLElement>('.ui-context-menu-item--submenu-open');
+          const parentItem = host.querySelector<HTMLElement>('.fui-context-menu-item--submenu-open');
           this.activeSubmenu.set(null);
           requestAnimationFrame(() => parentItem?.focus());
         }
@@ -274,7 +274,7 @@ export class ContextMenuComponent implements OnDestroy {
    */
   private adjustMenuPosition(): void {
     const hostElement = this.elementRef.nativeElement;
-    const menuElement = hostElement.querySelector('.ui-context-menu') as HTMLElement;
+    const menuElement = hostElement.querySelector('.fui-context-menu') as HTMLElement;
     if (!menuElement) return;
 
     const menuRect = menuElement.getBoundingClientRect();

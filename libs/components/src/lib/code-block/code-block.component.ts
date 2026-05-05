@@ -24,17 +24,17 @@ import 'prismjs/components/prism-scss';
 import 'prismjs/components/prism-json';
 
 @Component({
-  selector: 'ui-code-block',
+  selector: 'fui-code-block',
   standalone: true,
   imports: [],
   template: `
-    <div class="ui-code-block">
+    <div class="fui-code-block">
       @if (title()) {
-        <div class="ui-code-block-header">
-          <span class="ui-code-block-title">{{ title() }}</span>
-          <div class="ui-code-block-actions">
+        <div class="fui-code-block-header">
+          <span class="fui-code-block-title">{{ title() }}</span>
+          <div class="fui-code-block-actions">
             <button
-              class="ui-code-block-copy"
+              class="fui-code-block-copy"
               (click)="copyCode()"
               [attr.aria-label]="copied() ? 'Copied!' : 'Copy code'"
             >
@@ -53,7 +53,7 @@ import 'prismjs/components/prism-json';
             </button>
             @if (showDownload()) {
               <button
-                class="ui-code-block-download"
+                class="fui-code-block-download"
                 (click)="downloadCode()"
                 [attr.aria-label]="'Download ' + filename()"
                 title="Download file"
@@ -70,13 +70,13 @@ import 'prismjs/components/prism-json';
         </div>
       }
       <pre
-        class="ui-code-block-content"
+        class="fui-code-block-content"
       ><code #codeElement [class]="'language-' + language()"></code></pre>
     </div>
   `,
   styles: [
     `
-      .ui-code-block {
+      .fui-code-block {
         margin: var(--primitive-spacing-4) 0;
         border: 1px solid var(--semantic-border-default);
         border-radius: var(--primitive-border-radius-md);
@@ -84,7 +84,7 @@ import 'prismjs/components/prism-json';
         background-color: var(--semantic-surface-card);
       }
 
-      .ui-code-block-header {
+      .fui-code-block-header {
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -93,20 +93,20 @@ import 'prismjs/components/prism-json';
         border-bottom: 1px solid var(--semantic-border-default);
       }
 
-      .ui-code-block-title {
+      .fui-code-block-title {
         font-size: var(--primitive-font-size-sm);
         font-weight: var(--primitive-font-weight-semibold);
         color: var(--semantic-text-primary);
       }
 
-      .ui-code-block-actions {
+      .fui-code-block-actions {
         display: flex;
         align-items: center;
         gap: var(--primitive-spacing-2);
       }
 
-      .ui-code-block-copy,
-      .ui-code-block-download {
+      .fui-code-block-copy,
+      .fui-code-block-download {
         display: flex;
         align-items: center;
         gap: var(--primitive-spacing-2);
@@ -122,26 +122,26 @@ import 'prismjs/components/prism-json';
           var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
       }
 
-      .ui-code-block-copy:hover,
-      .ui-code-block-download:hover {
+      .fui-code-block-copy:hover,
+      .fui-code-block-download:hover {
         background-color: var(--semantic-surface-card);
         color: var(--semantic-text-primary);
         border-color: var(--semantic-border-strong);
       }
 
-      .ui-code-block-copy:active,
-      .ui-code-block-download:active {
+      .fui-code-block-copy:active,
+      .fui-code-block-download:active {
         transform: scale(0.95);
       }
 
-      .ui-code-block-copy svg,
-      .ui-code-block-download svg {
+      .fui-code-block-copy svg,
+      .fui-code-block-download svg {
         width: 14px;
         height: 14px;
         stroke-width: 2;
       }
 
-      .ui-code-block-content {
+      .fui-code-block-content {
         margin: 0;
         padding: var(--primitive-spacing-4);
         overflow-x: auto;
@@ -150,7 +150,7 @@ import 'prismjs/components/prism-json';
         background-color: var(--semantic-surface-card);
       }
 
-      .ui-code-block-content code {
+      .fui-code-block-content code {
         font-family: var(--primitive-font-family-mono);
         color: var(--semantic-text-primary);
       }
@@ -297,20 +297,20 @@ import 'prismjs/components/prism-json';
       }
 
       /* Scrollbar Styling */
-      .ui-code-block-content::-webkit-scrollbar {
+      .fui-code-block-content::-webkit-scrollbar {
         height: 8px;
       }
 
-      .ui-code-block-content::-webkit-scrollbar-track {
+      .fui-code-block-content::-webkit-scrollbar-track {
         background: transparent;
       }
 
-      .ui-code-block-content::-webkit-scrollbar-thumb {
+      .fui-code-block-content::-webkit-scrollbar-thumb {
         background: var(--semantic-border-default);
         border-radius: var(--primitive-border-radius-full);
       }
 
-      .ui-code-block-content::-webkit-scrollbar-thumb:hover {
+      .fui-code-block-content::-webkit-scrollbar-thumb:hover {
         background: var(--semantic-border-strong);
       }
     `,

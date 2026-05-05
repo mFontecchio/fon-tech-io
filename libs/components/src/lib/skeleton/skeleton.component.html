@@ -1,19 +1,19 @@
 @if (variant() === 'text' && lines() > 1) {
-  <div class="ui-skeleton-lines" role="status" aria-label="Loading...">
+  <div class="fui-skeleton-lines" role="status" aria-label="Loading...">
     @for (line of lineArray(); track line) {
       <div
         [ngClass]="skeletonClasses()"
-        [style.--ui-skeleton-height]="height() || null"
+        [style.--fui-skeleton-height]="height() || null"
         aria-hidden="true"
       ></div>
     }
   </div>
 } @else {
-  <div class="ui-skeleton-sr-wrapper" role="status" aria-label="Loading...">
+  <div class="fui-skeleton-sr-wrapper" role="status" aria-label="Loading...">
     <div
       [ngClass]="skeletonClasses()"
-      [style.--ui-skeleton-width]="width() || null"
-      [style.--ui-skeleton-height]="height() || null"
+      [style.--fui-skeleton-width]="width() || null"
+      [style.--fui-skeleton-height]="height() || null"
       aria-hidden="true"
     ></div>
   </div>

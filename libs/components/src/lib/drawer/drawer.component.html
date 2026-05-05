@@ -1,8 +1,8 @@
 <dialog
   #dialog
-  class="ui-drawer-dialog"
-  [class.ui-drawer-dialog--no-backdrop]="!showBackdrop()"
-  [attr.aria-labelledby]="title() ? 'ui-drawer-title' : null"
+  class="fui-drawer-dialog"
+  [class.fui-drawer-dialog--no-backdrop]="!showBackdrop()"
+  [attr.aria-labelledby]="title() ? 'fui-drawer-title' : null"
   [attr.aria-label]="!title() ? 'Drawer' : null"
   (click)="handleBackdropClick($event)"
   (cancel)="handleCancel($event)"
@@ -11,9 +11,9 @@
   <div [ngClass]="drawerClasses()">
     <!-- Header -->
     @if (title()) {
-      <div class="ui-drawer-header">
-        <h2 class="ui-drawer-title" id="ui-drawer-title">{{ title() }}</h2>
-        <button type="button" class="ui-drawer-close" aria-label="Close drawer" (click)="close()">
+      <div class="fui-drawer-header">
+        <h2 class="fui-drawer-title" id="fui-drawer-title">{{ title() }}</h2>
+        <button type="button" class="fui-drawer-close" aria-label="Close drawer" (click)="close()">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path
               d="M18 6L6 18M6 6L18 18"
@@ -27,7 +27,7 @@
     } @else {
       <button
         type="button"
-        class="ui-drawer-close ui-drawer-close--absolute"
+        class="fui-drawer-close fui-drawer-close--absolute"
         aria-label="Close drawer"
         (click)="close()"
       >
@@ -43,12 +43,12 @@
     }
 
     <!-- Content -->
-    <div class="ui-drawer-content">
+    <div class="fui-drawer-content">
       <ng-content></ng-content>
     </div>
 
     <!-- Footer (optional slot) -->
-    <div class="ui-drawer-footer">
+    <div class="fui-drawer-footer">
       <ng-content select="[footer]"></ng-content>
     </div>
   </div>

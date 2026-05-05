@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Select Component
  * 
  * A themable select/dropdown component built on native HTML select.
@@ -28,15 +28,15 @@ export interface SelectOption {
 }
 
 @Component({
-  selector: 'ui-select',
+  selector: 'fui-select',
   imports: [NgClass, FormsModule, KeyValuePipe],
   templateUrl: './select.component.html',
   styleUrl: './select.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.ui-select-wrapper]': 'true',
-    '[class.ui-select-wrapper--disabled]': 'disabled()',
-    '[class.ui-select-wrapper--full-width]': 'fullWidth()',
+    '[class.fui-select-wrapper]': 'true',
+    '[class.fui-select-wrapper--disabled]': 'disabled()',
+    '[class.fui-select-wrapper--full-width]': 'fullWidth()',
   },
 })
 export class SelectComponent {
@@ -130,7 +130,7 @@ export class SelectComponent {
    */
   protected readonly selectId = computed(() => {
     const providedId = this.id();
-    return providedId || `ui-select-${Math.random().toString(36).substr(2, 9)}`;
+    return providedId || `fui-select-${Math.random().toString(36).substr(2, 9)}`;
   });
 
   /**
@@ -164,11 +164,11 @@ export class SelectComponent {
    * Computed CSS classes
    */
   protected readonly selectClasses = computed(() => ({
-    'ui-select': true,
-    [`ui-select--${this.size()}`]: true,
-    'ui-select--error': this.hasError(),
-    'ui-select--disabled': this.disabled(),
-    'ui-select--has-value': !!this.internalValue(),
+    'fui-select': true,
+    [`fui-select--${this.size()}`]: true,
+    'fui-select--error': this.hasError(),
+    'fui-select--disabled': this.disabled(),
+    'fui-select--has-value': !!this.internalValue(),
   }));
 
   /**

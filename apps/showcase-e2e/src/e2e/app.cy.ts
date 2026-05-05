@@ -34,8 +34,8 @@ describe('showcase-e2e', () => {
       .and('have.attr', 'data-theme', 'high-contrast');
 
     cy.window().then((win) => {
-      expect(win.localStorage.getItem('ui-suite-theme-family')).to.equal('default');
-      expect(win.localStorage.getItem('ui-suite-theme-mode')).to.equal('high-contrast');
+      expect(win.localStorage.getItem('fui-suite-theme-family')).to.equal('default');
+      expect(win.localStorage.getItem('fui-suite-theme-mode')).to.equal('high-contrast');
     });
 
     cy.reload();
@@ -55,9 +55,9 @@ describe('showcase-e2e', () => {
       .should('have.attr', 'aria-label', 'Current theme: Default Light');
 
     cy.window().then((win) => {
-      expect(win.localStorage.getItem('ui-suite-theme-family')).to.equal('default');
-      expect(win.localStorage.getItem('ui-suite-theme-mode')).to.equal('light');
-      expect(win.localStorage.getItem('ui-suite-theme')).to.include('light');
+      expect(win.localStorage.getItem('fui-suite-theme-family')).to.equal('default');
+      expect(win.localStorage.getItem('fui-suite-theme-mode')).to.equal('light');
+      expect(win.localStorage.getItem('fui-suite-theme')).to.include('light');
     });
   });
 

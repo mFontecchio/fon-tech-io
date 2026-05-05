@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Tabs Component
  *
  * A themable tabs component with keyboard navigation and ARIA support.
@@ -25,7 +25,7 @@ export type TabsOrientation = 'horizontal' | 'vertical';
 export type TabsSize = 'sm' | 'md' | 'lg';
 
 @Component({
-  selector: 'ui-tabs',
+  selector: 'fui-tabs',
   imports: [NgClass],
   templateUrl: './tabs.component.html',
   styleUrl: './tabs.component.css',
@@ -89,10 +89,10 @@ export class TabsComponent {
    * Computed CSS classes
    */
   protected readonly tabsClasses = computed(() => ({
-    'ui-tabs': true,
-    [`ui-tabs--${this.orientation()}`]: true,
-    [`ui-tabs--${this.size()}`]: true,
-    'ui-tabs--full-width': this.fullWidth(),
+    'fui-tabs': true,
+    [`fui-tabs--${this.orientation()}`]: true,
+    [`fui-tabs--${this.size()}`]: true,
+    'fui-tabs--full-width': this.fullWidth(),
   }));
 
   /**
@@ -239,7 +239,7 @@ export class TabsComponent {
       this.selectTab(newIndex);
       // Focus the new tab
       requestAnimationFrame(() => {
-        const buttons = document.querySelectorAll('.ui-tab-button');
+        const buttons = document.querySelectorAll('.fui-tab-button');
         if (buttons[newIndex]) {
           (buttons[newIndex] as HTMLElement).focus();
         }

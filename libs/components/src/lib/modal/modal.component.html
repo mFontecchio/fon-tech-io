@@ -6,11 +6,11 @@
   (click)="handleBackdropClick($event)"
   (cancel)="handleCancel($event)"
 >
-  <div class="ui-modal-content">
+  <div class="fui-modal-content">
     @if (title() || showClose()) {
-      <div class="ui-modal-header">
+      <div class="fui-modal-header">
         @if (title()) {
-          <h2 [id]="titleId()" class="ui-modal-title">
+          <h2 [id]="titleId()" class="fui-modal-title">
             {{ title() }}
           </h2>
         }
@@ -18,7 +18,7 @@
         @if (showClose()) {
           <button
             type="button"
-            class="ui-modal-close"
+            class="fui-modal-close"
             aria-label="Close modal"
             (click)="handleClose()"
           >
@@ -41,11 +41,11 @@
       </div>
     }
 
-    <div class="ui-modal-body">
+    <div class="fui-modal-body">
       <ng-content></ng-content>
     </div>
 
-    <div class="ui-modal-footer">
+    <div class="fui-modal-footer">
       <ng-content select="[slot='footer']"></ng-content>
     </div>
   </div>

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File Upload Component
  *
  * A file upload component with drag-drop support, preview, and progress tracking.
@@ -16,13 +16,13 @@ export interface UploadedFile {
 }
 
 @Component({
-  selector: 'ui-file-upload',
+  selector: 'fui-file-upload',
   imports: [NgClass],
   templateUrl: './file-upload.component.html',
   styleUrl: './file-upload.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.ui-file-upload-wrapper]': 'true',
+    '[class.fui-file-upload-wrapper]': 'true',
     '(dragover)': 'handleDragOver($event)',
     '(dragleave)': 'handleDragLeave($event)',
     '(drop)': 'handleDrop($event)',
@@ -103,10 +103,10 @@ export class FileUploadComponent {
    * Computed CSS classes
    */
   protected readonly dropzoneClasses = computed(() => ({
-    'ui-file-upload-dropzone': true,
-    'ui-file-upload-dropzone--drag-over': this.isDragOver(),
-    'ui-file-upload-dropzone--disabled': this.disabled(),
-    'ui-file-upload-dropzone--error': this.hasError(),
+    'fui-file-upload-dropzone': true,
+    'fui-file-upload-dropzone--drag-over': this.isDragOver(),
+    'fui-file-upload-dropzone--disabled': this.disabled(),
+    'fui-file-upload-dropzone--error': this.hasError(),
   }));
 
   /**

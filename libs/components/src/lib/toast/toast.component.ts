@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Toast Component
  * 
  * Individual toast notification component.
@@ -16,7 +16,7 @@ import { NgClass } from '@angular/common';
 export type ToastVariant = 'info' | 'success' | 'warning' | 'error';
 
 @Component({
-  selector: 'ui-toast',
+  selector: 'fui-toast',
   imports: [NgClass],
   templateUrl: './toast.component.html',
   styleUrl: './toast.component.css',
@@ -55,9 +55,9 @@ export class ToastComponent {
    * Computed CSS classes
    */
   protected readonly toastClasses = computed(() => ({
-    'ui-toast': true,
-    'ui-toast--dismissing': this.dismissing(),
-    [`ui-toast--${this.variant()}`]: true,
+    'fui-toast': true,
+    'fui-toast--dismissing': this.dismissing(),
+    [`fui-toast--${this.variant()}`]: true,
   }));
 
   /**

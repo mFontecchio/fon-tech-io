@@ -1,22 +1,22 @@
-<div class="ui-accordion-container">
+<div class="fui-accordion-container">
   @for (item of items(); track $index) {
     <div
-      class="ui-accordion-item"
-      [class.ui-accordion-item--expanded]="isExpanded($index)"
-      [class.ui-accordion-item--disabled]="item.disabled()"
+      class="fui-accordion-item"
+      [class.fui-accordion-item--expanded]="isExpanded($index)"
+      [class.fui-accordion-item--disabled]="item.disabled()"
     >
       <button
         type="button"
-        class="ui-accordion-header"
+        class="fui-accordion-header"
         [attr.aria-expanded]="isExpanded($index)"
-        [attr.aria-controls]="'ui-accordion-panel-' + $index"
-        [attr.id]="'ui-accordion-header-' + $index"
+        [attr.aria-controls]="'fui-accordion-panel-' + $index"
+        [attr.id]="'fui-accordion-header-' + $index"
         [disabled]="item.disabled()"
         (click)="toggleItem($index)"
       >
-        <span class="ui-accordion-title">{{ item.title() }}</span>
+        <span class="fui-accordion-title">{{ item.title() }}</span>
         <svg
-          class="ui-accordion-icon"
+          class="fui-accordion-icon"
           width="20"
           height="20"
           viewBox="0 0 20 20"
@@ -34,14 +34,14 @@
       </button>
 
       <div
-        class="ui-accordion-panel"
-        [attr.id]="'ui-accordion-panel-' + $index"
-        [attr.aria-labelledby]="'ui-accordion-header-' + $index"
+        class="fui-accordion-panel"
+        [attr.id]="'fui-accordion-panel-' + $index"
+        [attr.aria-labelledby]="'fui-accordion-header-' + $index"
         [attr.role]="'region'"
         [hidden]="!isExpanded($index)"
       >
-        <div class="ui-accordion-content">
-          <div class="ui-accordion-content-body">
+        <div class="fui-accordion-content">
+          <div class="fui-accordion-content-body">
             <ng-content></ng-content>
           </div>
         </div>

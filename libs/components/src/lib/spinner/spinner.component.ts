@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Spinner Component
  * 
  * A themable loading spinner component with multiple sizes and variants.
@@ -17,7 +17,7 @@ export type SpinnerSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 export type SpinnerVariant = 'primary' | 'secondary' | 'inverse';
 
 @Component({
-  selector: 'ui-spinner',
+  selector: 'fui-spinner',
   imports: [NgClass],
   templateUrl: './spinner.component.html',
   styleUrl: './spinner.component.css',
@@ -58,19 +58,19 @@ export class SpinnerComponent {
    * Computed CSS classes
    */
   protected readonly spinnerClasses = computed(() => ({
-    'ui-spinner': true,
-    [`ui-spinner--${this.size()}`]: true,
-    [`ui-spinner--${this.variant()}`]: true,
+    'fui-spinner': true,
+    [`fui-spinner--${this.size()}`]: true,
+    [`fui-spinner--${this.variant()}`]: true,
   }));
 
   /**
    * Computed host classes
    */
   protected readonly hostClasses = computed(() => {
-    const classes = ['ui-spinner-wrapper'];
+    const classes = ['fui-spinner-wrapper'];
     
     if (this.centered()) {
-      classes.push('ui-spinner-wrapper--centered');
+      classes.push('fui-spinner-wrapper--centered');
     }
     
     return classes.join(' ');
@@ -83,7 +83,7 @@ export class SpinnerComponent {
     const classes: string[] = [];
     
     if (this.showLabel()) {
-      classes.push('ui-spinner-container--with-label');
+      classes.push('fui-spinner-container--with-label');
     }
     
     return classes.join(' ');

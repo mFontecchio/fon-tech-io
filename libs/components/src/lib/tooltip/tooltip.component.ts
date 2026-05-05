@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Tooltip Component
  *
  * A themable tooltip component with positioning support.
@@ -20,13 +20,13 @@ export type TooltipPosition = 'top' | 'right' | 'bottom' | 'left';
 export type TooltipSize = 'sm' | 'md' | 'lg';
 
 @Component({
-  selector: 'ui-tooltip',
+  selector: 'fui-tooltip',
   imports: [NgClass],
   templateUrl: './tooltip.component.html',
   styleUrl: './tooltip.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.ui-tooltip-wrapper]': 'true',
+    '[class.fui-tooltip-wrapper]': 'true',
     '(mouseenter)': 'handleMouseEnter()',
     '(mouseleave)': 'handleMouseLeave()',
     '(focusin)': 'handleFocusIn()',
@@ -83,10 +83,10 @@ export class TooltipComponent {
    * Computed CSS classes
    */
   protected readonly tooltipClasses = computed(() => ({
-    'ui-tooltip': true,
-    [`ui-tooltip--${this.position()}`]: true,
-    [`ui-tooltip--${this.size()}`]: true,
-    'ui-tooltip--visible': this.isVisible(),
+    'fui-tooltip': true,
+    [`fui-tooltip--${this.position()}`]: true,
+    [`fui-tooltip--${this.size()}`]: true,
+    'fui-tooltip--visible': this.isVisible(),
   }));
 
   /**
@@ -195,9 +195,9 @@ export class TooltipComponent {
         break;
     }
 
-    hostElement.style.setProperty('--ui-tooltip-left', `${left}px`);
-    hostElement.style.setProperty('--ui-tooltip-top', `${top}px`);
-    hostElement.style.setProperty('--ui-tooltip-transform', transform);
+    hostElement.style.setProperty('--fui-tooltip-left', `${left}px`);
+    hostElement.style.setProperty('--fui-tooltip-top', `${top}px`);
+    hostElement.style.setProperty('--fui-tooltip-transform', transform);
   }
 
   /**

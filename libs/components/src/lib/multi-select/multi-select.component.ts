@@ -1,4 +1,4 @@
-﻿/**
+/**
  * MultiSelect Component
  *
  * An advanced select component with multi-selection, search/filtering, and tag creation.
@@ -30,15 +30,15 @@ export interface MultiSelectOption {
 export type MultiSelectSize = 'sm' | 'md' | 'lg';
 
 @Component({
-  selector: 'ui-multi-select',
+  selector: 'fui-multi-select',
   imports: [NgClass, FormsModule],
   templateUrl: './multi-select.component.html',
   styleUrl: './multi-select.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.ui-multi-select-wrapper]': 'true',
-    '[class.ui-multi-select-wrapper--disabled]': 'disabled()',
-    '[class.ui-multi-select-wrapper--full-width]': 'fullWidth()',
+    '[class.fui-multi-select-wrapper]': 'true',
+    '[class.fui-multi-select-wrapper--disabled]': 'disabled()',
+    '[class.fui-multi-select-wrapper--full-width]': 'fullWidth()',
     '(document:click)': 'handleClickOutside($event)',
     '(keydown.escape)': 'handleEscape()',
   },
@@ -164,7 +164,7 @@ export class MultiSelectComponent {
    */
   protected readonly selectId = computed(() => {
     const providedId = this.id();
-    return providedId || `ui-multi-select-${Math.random().toString(36).substr(2, 9)}`;
+    return providedId || `fui-multi-select-${Math.random().toString(36).substr(2, 9)}`;
   });
 
   /**
@@ -198,11 +198,11 @@ export class MultiSelectComponent {
    * Computed CSS classes
    */
   protected readonly selectClasses = computed(() => ({
-    'ui-multi-select': true,
-    [`ui-multi-select--${this.size()}`]: true,
-    'ui-multi-select--error': this.hasError(),
-    'ui-multi-select--disabled': this.disabled(),
-    'ui-multi-select--open': this.isOpen(),
+    'fui-multi-select': true,
+    [`fui-multi-select--${this.size()}`]: true,
+    'fui-multi-select--error': this.hasError(),
+    'fui-multi-select--disabled': this.disabled(),
+    'fui-multi-select--open': this.isOpen(),
   }));
 
   /**

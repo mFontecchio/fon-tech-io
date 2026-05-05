@@ -2,52 +2,52 @@
  * Avatar Component Styles
  */
 
-.ui-avatar {
+.fui-avatar {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   overflow: hidden;
-  background-color: var(--ui-avatar-bg, var(--semantic-surface-background-secondary));
-  color: var(--ui-avatar-color, var(--semantic-text-primary));
+  background-color: var(--fui-avatar-bg, var(--semantic-surface-background-secondary));
+  color: var(--fui-avatar-color, var(--semantic-text-primary));
   font-weight: var(--primitive-font-weight-medium);
   user-select: none;
 }
 
 /* Sizes */
 
-.ui-avatar--xs {
+.fui-avatar--xs {
   width: 1.5rem;
   height: 1.5rem;
   font-size: var(--primitive-font-size-xs);
 }
 
-.ui-avatar--sm {
+.fui-avatar--sm {
   width: 2rem;
   height: 2rem;
   font-size: var(--primitive-font-size-sm);
 }
 
-.ui-avatar--md {
+.fui-avatar--md {
   width: 2.5rem;
   height: 2.5rem;
   font-size: var(--primitive-font-size-base);
 }
 
-.ui-avatar--lg {
+.fui-avatar--lg {
   width: 3rem;
   height: 3rem;
   font-size: var(--primitive-font-size-lg);
 }
 
-.ui-avatar--xl {
+.fui-avatar--xl {
   width: 4rem;
   height: 4rem;
   font-size: var(--primitive-font-size-xl);
 }
 
-.ui-avatar--2xl {
+.fui-avatar--2xl {
   width: 5rem;
   height: 5rem;
   font-size: var(--primitive-font-size-2xl);
@@ -55,17 +55,17 @@
 
 /* Shapes */
 
-.ui-avatar--circle {
+.fui-avatar--circle {
   border-radius: var(--primitive-border-radius-full);
 }
 
-.ui-avatar--square {
+.fui-avatar--square {
   border-radius: var(--primitive-border-radius-md);
 }
 
 /* Image */
 
-.ui-avatar-image {
+.fui-avatar-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -74,21 +74,21 @@
 
 /* Initials */
 
-.ui-avatar-initials {
+.fui-avatar-initials {
   display: inline-block;
   line-height: 1;
 }
 
 /* Icon */
 
-.ui-avatar-icon {
+.fui-avatar-icon {
   display: inline-flex;
   font-size: 1.5em;
 }
 
 /* Fallback icon */
 
-.ui-avatar-fallback-icon {
+.fui-avatar-fallback-icon {
   width: 60%;
   height: 60%;
   color: var(--semantic-text-secondary);
@@ -96,30 +96,30 @@
 
 /* Status indicator */
 
-.ui-avatar-status {
+.fui-avatar-status {
   position: absolute;
   border: 2px solid var(--semantic-surface-card);
   border-radius: var(--primitive-border-radius-full);
 }
 
-.ui-avatar--xs .ui-avatar-status,
-.ui-avatar--sm .ui-avatar-status {
+.fui-avatar--xs .fui-avatar-status,
+.fui-avatar--sm .fui-avatar-status {
   width: 0.5rem;
   height: 0.5rem;
   bottom: 0;
   right: 0;
 }
 
-.ui-avatar--md .ui-avatar-status {
+.fui-avatar--md .fui-avatar-status {
   width: 0.625rem;
   height: 0.625rem;
   bottom: 0;
   right: 0;
 }
 
-.ui-avatar--lg .ui-avatar-status,
-.ui-avatar--xl .ui-avatar-status,
-.ui-avatar--2xl .ui-avatar-status {
+.fui-avatar--lg .fui-avatar-status,
+.fui-avatar--xl .fui-avatar-status,
+.fui-avatar--2xl .fui-avatar-status {
   width: 0.75rem;
   height: 0.75rem;
   bottom: 0.125rem;
@@ -128,30 +128,30 @@
 
 /* Status colors */
 
-.ui-avatar-status--online {
+.fui-avatar-status--online {
   background-color: var(--semantic-feedback-success);
 }
 
-.ui-avatar-status--offline {
+.fui-avatar-status--offline {
   background-color: var(--semantic-text-disabled);
 }
 
-.ui-avatar-status--away {
+.fui-avatar-status--away {
   background-color: var(--semantic-feedback-warning);
 }
 
-.ui-avatar-status--busy {
+.fui-avatar-status--busy {
   background-color: var(--semantic-feedback-error);
 }
 
 /* High contrast mode support */
 
 @media (prefers-contrast: more) {
-  .ui-avatar {
+  .fui-avatar {
     border: 2px solid var(--semantic-border-strong);
   }
 
-  .ui-avatar-status {
+  .fui-avatar-status {
     border-width: 3px;
   }
 }

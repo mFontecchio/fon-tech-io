@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Avatar Component
  *
  * A themable avatar component supporting images, initials, and icons.
@@ -13,15 +13,15 @@ export type AvatarShape = 'circle' | 'square';
 export type AvatarStatus = 'online' | 'offline' | 'away' | 'busy';
 
 @Component({
-  selector: 'ui-avatar',
+  selector: 'fui-avatar',
   imports: [NgClass],
   templateUrl: './avatar.component.html',
   styleUrl: './avatar.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class]': 'hostClasses()',
-    '[style.--ui-avatar-bg]': 'backgroundColor() || null',
-    '[style.--ui-avatar-color]': 'textColor() || null',
+    '[style.--fui-avatar-bg]': 'backgroundColor() || null',
+    '[style.--fui-avatar-color]': 'textColor() || null',
   },
 })
 export class AvatarComponent {
@@ -100,11 +100,11 @@ export class AvatarComponent {
    * Computed CSS classes
    */
   protected readonly avatarClasses = computed(() => ({
-    'ui-avatar': true,
-    [`ui-avatar--${this.size()}`]: true,
-    [`ui-avatar--${this.shape()}`]: true,
-    [`ui-avatar--${this.displayMode()}`]: true,
-    'ui-avatar--with-status': this.showStatus() && !!this.status(),
+    'fui-avatar': true,
+    [`fui-avatar--${this.size()}`]: true,
+    [`fui-avatar--${this.shape()}`]: true,
+    [`fui-avatar--${this.displayMode()}`]: true,
+    'fui-avatar--with-status': this.showStatus() && !!this.status(),
   }));
 
   /**
@@ -121,8 +121,8 @@ export class AvatarComponent {
    * Computed status classes
    */
   protected readonly statusClasses = computed(() => ({
-    'ui-avatar-status': true,
-    [`ui-avatar-status--${this.status()}`]: !!this.status(),
+    'fui-avatar-status': true,
+    [`fui-avatar-status--${this.status()}`]: !!this.status(),
   }));
 
   /**

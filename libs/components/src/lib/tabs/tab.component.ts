@@ -8,7 +8,7 @@
 import { ChangeDetectionStrategy, Component, input, signal } from '@angular/core';
 
 @Component({
-  selector: 'ui-tab',
+  selector: 'fui-tab',
   templateUrl: './tab.component.html',
   styleUrl: './tab.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

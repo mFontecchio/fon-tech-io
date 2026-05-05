@@ -1,10 +1,10 @@
 <nav [ngClass]="breadcrumbClasses()">
-  <ol class="ui-breadcrumb-list">
+  <ol class="fui-breadcrumb-list">
     @for (item of displayedItems(); track $index) {
-      <li class="ui-breadcrumb-item">
+      <li class="fui-breadcrumb-item">
         @if (isLastItem($index)) {
           <span 
-            class="ui-breadcrumb-link ui-breadcrumb-link--current"
+            class="fui-breadcrumb-link fui-breadcrumb-link--current"
             [attr.aria-current]="'page'"
           >
             {{ item.label }}
@@ -12,8 +12,8 @@
         } @else if (item.href) {
           <a
             [href]="item.href"
-            class="ui-breadcrumb-link"
-            [class.ui-breadcrumb-link--disabled]="item.disabled"
+            class="fui-breadcrumb-link"
+            [class.fui-breadcrumb-link--disabled]="item.disabled"
             [attr.aria-disabled]="item.disabled"
             (click)="handleItemClick(item, $index, $event)"
           >
@@ -22,8 +22,8 @@
         } @else {
           <button
             type="button"
-            class="ui-breadcrumb-link ui-breadcrumb-link--button"
-            [class.ui-breadcrumb-link--disabled]="item.disabled"
+            class="fui-breadcrumb-link fui-breadcrumb-link--button"
+            [class.fui-breadcrumb-link--disabled]="item.disabled"
             [disabled]="item.disabled"
             (click)="handleItemClick(item, $index, $event)"
           >
@@ -32,7 +32,7 @@
         }
 
         @if (!isLastItem($index)) {
-          <span class="ui-breadcrumb-separator" aria-hidden="true">
+          <span class="fui-breadcrumb-separator" aria-hidden="true">
             {{ separator() }}
           </span>
         }

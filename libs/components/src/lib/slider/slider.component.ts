@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Slider Component
  *
  * A range input component for selecting numeric values.
@@ -20,14 +20,14 @@ import { FormsModule } from '@angular/forms';
 export type SliderSize = 'sm' | 'md' | 'lg';
 
 @Component({
-  selector: 'ui-slider',
+  selector: 'fui-slider',
   imports: [NgClass, FormsModule],
   templateUrl: './slider.component.html',
   styleUrl: './slider.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.ui-slider-wrapper]': 'true',
-    '[class.ui-slider-wrapper--disabled]': 'disabled()',
+    '[class.fui-slider-wrapper]': 'true',
+    '[class.fui-slider-wrapper--disabled]': 'disabled()',
   },
 })
 export class SliderComponent {
@@ -131,17 +131,17 @@ export class SliderComponent {
    */
   protected readonly sliderId = computed(() => {
     const providedId = this.id();
-    return providedId || `ui-slider-${Math.random().toString(36).substr(2, 9)}`;
+    return providedId || `fui-slider-${Math.random().toString(36).substr(2, 9)}`;
   });
 
   /**
    * Computed CSS classes
    */
   protected readonly sliderClasses = computed(() => ({
-    'ui-slider': true,
-    [`ui-slider--${this.size()}`]: true,
-    'ui-slider--disabled': this.disabled(),
-    'ui-slider--range': this.isRange(),
+    'fui-slider': true,
+    [`fui-slider--${this.size()}`]: true,
+    'fui-slider--disabled': this.disabled(),
+    'fui-slider--range': this.isRange(),
   }));
 
   /**

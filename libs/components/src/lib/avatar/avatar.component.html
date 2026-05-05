@@ -1,17 +1,17 @@
 <div [ngClass]="avatarClasses()" [attr.role]="'img'" [attr.aria-label]="alt()">
   @switch (displayMode()) {
     @case ('image') {
-      <img [src]="src()" [alt]="alt()" class="ui-avatar-image" (error)="handleImageError()" />
+      <img [src]="src()" [alt]="alt()" class="fui-avatar-image" (error)="handleImageError()" />
     }
     @case ('initials') {
-      <span class="ui-avatar-initials">{{ computedInitials() }}</span>
+      <span class="fui-avatar-initials">{{ computedInitials() }}</span>
     }
     @case ('icon') {
-      <span class="ui-avatar-icon">{{ icon() }}</span>
+      <span class="fui-avatar-icon">{{ icon() }}</span>
     }
     @case ('fallback') {
       <svg
-        class="ui-avatar-fallback-icon"
+        class="fui-avatar-fallback-icon"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"

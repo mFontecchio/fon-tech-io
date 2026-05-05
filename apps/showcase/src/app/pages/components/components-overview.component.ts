@@ -27,11 +27,11 @@ interface ComponentCategory {
       <div class="categories-grid">
         @for (category of categories; track category.name) {
           <a [routerLink]="category.link" class="category-card">
-            <ui-card>
+            <fui-card>
               <h2>{{ category.name }}</h2>
               <p>{{ category.description }}</p>
               <span class="component-count">{{ category.count }} components</span>
-            </ui-card>
+            </fui-card>
           </a>
         }
       </div>

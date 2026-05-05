@@ -20,27 +20,27 @@ import { CardComponent, CodeBlockComponent } from '@ui-suite/components';
       </p>
 
       <div class="content-grid">
-        <ui-card>
+        <fui-card>
           <h2>Standalone Component Imports</h2>
           <p>Import the library components in the feature component that renders them.</p>
-          <ui-code-block [code]="standaloneExample" language="typescript" [title]="'Standalone Example'" />
-        </ui-card>
+          <fui-code-block [code]="standaloneExample" language="typescript" [title]="'Standalone Example'" />
+        </fui-card>
 
-        <ui-card>
+        <fui-card>
           <h2>Template Usage</h2>
           <p>Inputs are regular Angular bindings and outputs emit typed events.</p>
-          <ui-code-block [code]="templateExample" language="html" [title]="'Template Example'" />
-        </ui-card>
+          <fui-code-block [code]="templateExample" language="html" [title]="'Template Example'" />
+        </fui-card>
       </div>
 
-      <ui-card>
+      <fui-card>
         <h2>Patterns To Follow</h2>
         <ul>
           <li>Prefer signals for local view state and pass their values into component inputs.</li>
           <li>Use projected prefix and suffix content where components support richer content than plain strings.</li>
           <li>Keep examples aligned with the actual public APIs documented in the showcase API tab.</li>
         </ul>
-      </ui-card>
+      </fui-card>
     </div>
   `,
   styles: [
@@ -114,7 +114,7 @@ export class AccountFormComponent {
   }
 }`;
 
-  protected readonly templateExample = `<ui-input
+  protected readonly templateExample = `<fui-input
   label="Email"
   type="email"
   [value]="email()"
@@ -122,5 +122,5 @@ export class AccountFormComponent {
   (valueChange)="updateEmail($event)"
 />
 
-<ui-button variant="filled">Save changes</ui-button>`;
+<fui-button variant="filled">Save changes</fui-button>`;
 }

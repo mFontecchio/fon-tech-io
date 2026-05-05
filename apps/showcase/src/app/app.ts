@@ -38,7 +38,7 @@ import { ThemeService } from '@ui-suite/theming';
           <router-outlet />
         </main>
       </div>
-      <ui-toast-container />
+      <fui-toast-container />
     </div>
   `,
   styles: [

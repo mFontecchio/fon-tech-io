@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Input Component
  * 
  * A themable input component with validation states and full accessibility support.
@@ -23,16 +23,16 @@ import { FormsModule } from '@angular/forms';
 export type InputType = 'text' | 'email' | 'tel' | 'url' | 'number' | 'password' | 'search';
 
 @Component({
-  selector: 'ui-input',
+  selector: 'fui-input',
   imports: [NgClass, FormsModule],
   templateUrl: './input.component.html',
   styleUrl: './input.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.ui-input-wrapper]': 'true',
-    '[class.ui-input-wrapper--disabled]': 'disabled()',
-    '[class.ui-input-wrapper--error]': 'hasError()',
-    '[class.ui-input-wrapper--full-width]': 'fullWidth()',
+    '[class.fui-input-wrapper]': 'true',
+    '[class.fui-input-wrapper--disabled]': 'disabled()',
+    '[class.fui-input-wrapper--error]': 'hasError()',
+    '[class.fui-input-wrapper--full-width]': 'fullWidth()',
   },
 })
 export class InputComponent {
@@ -213,7 +213,7 @@ export class InputComponent {
    */
   protected readonly inputId = computed(() => {
     const providedId = this.id();
-    return providedId || `ui-input-${Math.random().toString(36).substr(2, 9)}`;
+    return providedId || `fui-input-${Math.random().toString(36).substr(2, 9)}`;
   });
 
   /**
@@ -251,10 +251,10 @@ export class InputComponent {
    * Computed CSS classes for input
    */
   protected readonly inputClasses = computed(() => ({
-    'ui-input': true,
-    'ui-input--error': this.hasError(),
-    'ui-input--disabled': this.disabled(),
-    'ui-input--focused': this.isFocused(),
+    'fui-input': true,
+    'fui-input--error': this.hasError(),
+    'fui-input--disabled': this.disabled(),
+    'fui-input--focused': this.isFocused(),
   }));
 
   /**

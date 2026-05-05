@@ -1,9 +1,9 @@
 <div
-  class="ui-tab-panel"
-  [class.ui-tab-panel--active]="isActive()"
+  class="fui-tab-panel"
+  [class.fui-tab-panel--active]="isActive()"
   [attr.role]="'tabpanel'"
-  [attr.aria-labelledby]="'ui-tab-' + index()"
-  [attr.id]="'ui-tab-panel-' + index()"
+  [attr.aria-labelledby]="'fui-tab-' + index()"
+  [attr.id]="'fui-tab-panel-' + index()"
   [attr.hidden]="!isActive() ? true : null"
 >
   <ng-content />

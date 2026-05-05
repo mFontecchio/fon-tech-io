@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Switch Component
  * 
  * A themable toggle switch component for boolean settings.
@@ -22,14 +22,14 @@ import { FormsModule } from '@angular/forms';
 export type SwitchSize = 'sm' | 'md' | 'lg';
 
 @Component({
-  selector: 'ui-switch',
+  selector: 'fui-switch',
   imports: [NgClass, FormsModule],
   templateUrl: './switch.component.html',
   styleUrl: './switch.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.ui-switch-wrapper]': 'true',
-    '[class.ui-switch-wrapper--disabled]': 'disabled()',
+    '[class.fui-switch-wrapper]': 'true',
+    '[class.fui-switch-wrapper--disabled]': 'disabled()',
   },
 })
 export class SwitchComponent {
@@ -123,7 +123,7 @@ export class SwitchComponent {
    */
   protected readonly switchId = computed(() => {
     const providedId = this.id();
-    return providedId || `ui-switch-${Math.random().toString(36).substr(2, 9)}`;
+    return providedId || `fui-switch-${Math.random().toString(36).substr(2, 9)}`;
   });
 
   /**
@@ -157,12 +157,12 @@ export class SwitchComponent {
    * Computed CSS classes
    */
   protected readonly switchClasses = computed(() => ({
-    'ui-switch': true,
-    [`ui-switch--${this.size()}`]: true,
-    'ui-switch--checked': this.internalChecked(),
-    'ui-switch--disabled': this.disabled(),
-    'ui-switch--error': this.hasError(),
-    'ui-switch--with-labels': this.showLabels(),
+    'fui-switch': true,
+    [`fui-switch--${this.size()}`]: true,
+    'fui-switch--checked': this.internalChecked(),
+    'fui-switch--disabled': this.disabled(),
+    'fui-switch--error': this.hasError(),
+    'fui-switch--with-labels': this.showLabels(),
   }));
 
   constructor() {

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Popover Component
  *
  * A floating container that displays rich content when triggered.
@@ -21,13 +21,13 @@ export type PopoverPosition = 'top' | 'right' | 'bottom' | 'left';
 export type PopoverTrigger = 'click' | 'hover';
 
 @Component({
-  selector: 'ui-popover',
+  selector: 'fui-popover',
   imports: [NgClass],
   templateUrl: './popover.component.html',
   styleUrl: './popover.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.ui-popover-wrapper]': 'true',
+    '[class.fui-popover-wrapper]': 'true',
     '(document:click)': 'handleClickOutside($event)',
     '(keydown.escape)': 'handleEscape()',
   },
@@ -72,10 +72,10 @@ export class PopoverComponent {
    * Computed CSS classes
    */
   protected readonly popoverClasses = computed(() => ({
-    'ui-popover': true,
-    [`ui-popover--${this.position()}`]: true,
-    'ui-popover--visible': this.isOpen(),
-    'ui-popover--with-arrow': this.showArrow(),
+    'fui-popover': true,
+    [`fui-popover--${this.position()}`]: true,
+    'fui-popover--visible': this.isOpen(),
+    'fui-popover--with-arrow': this.showArrow(),
   }));
 
   private elementRef = inject(ElementRef);
@@ -174,7 +174,7 @@ export class PopoverComponent {
     const hostElement = this.elementRef?.nativeElement;
     if (!hostElement) return;
 
-    const trigger = hostElement.querySelector('.ui-popover-trigger');
+    const trigger = hostElement.querySelector('.fui-popover-trigger');
     if (!trigger) return;
 
     const rect = trigger.getBoundingClientRect();
@@ -208,8 +208,8 @@ export class PopoverComponent {
         break;
     }
 
-    hostElement.style.setProperty('--ui-popover-left', `${left}px`);
-    hostElement.style.setProperty('--ui-popover-top', `${top}px`);
-    hostElement.style.setProperty('--ui-popover-transform', transform);
+    hostElement.style.setProperty('--fui-popover-left', `${left}px`);
+    hostElement.style.setProperty('--fui-popover-top', `${top}px`);
+    hostElement.style.setProperty('--fui-popover-transform', transform);
   }
 }

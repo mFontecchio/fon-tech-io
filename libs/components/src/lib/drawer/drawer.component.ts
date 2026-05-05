@@ -26,13 +26,13 @@ export type DrawerPosition = 'left' | 'right' | 'top' | 'bottom';
 export type DrawerSize = 'sm' | 'md' | 'lg' | 'xl' | 'full';
 
 @Component({
-  selector: 'ui-drawer',
+  selector: 'fui-drawer',
   imports: [NgClass],
   templateUrl: './drawer.component.html',
   styleUrl: './drawer.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.ui-drawer-host]': 'true',
+    '[class.fui-drawer-host]': 'true',
   },
 })
 export class DrawerComponent implements OnDestroy {
@@ -107,10 +107,10 @@ export class DrawerComponent implements OnDestroy {
    * Computed CSS classes for the drawer panel
    */
   protected readonly drawerClasses = computed(() => ({
-    'ui-drawer': true,
-    [`ui-drawer--${this.position()}`]: true,
-    [`ui-drawer--${this.size()}`]: true,
-    'ui-drawer--open': this.isOpen(),
+    'fui-drawer': true,
+    [`fui-drawer--${this.position()}`]: true,
+    [`fui-drawer--${this.size()}`]: true,
+    'fui-drawer--open': this.isOpen(),
   }));
 
   constructor() {

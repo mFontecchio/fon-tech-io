@@ -103,7 +103,7 @@ export class TypographyService {
    * Reuses the existing element on subsequent calls to avoid DOM churn.
    */
   applyTypographyCss(): void {
-    const styleId = 'ui-suite-typography';
+    const styleId = 'fui-suite-typography';
     let styleEl = this.document.getElementById(styleId) as HTMLStyleElement | null;
 
     if (!styleEl) {

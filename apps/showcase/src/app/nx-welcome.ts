@@ -442,7 +442,7 @@ nx g &#64;nx/angular:component ui/src/lib/button</pre>
       html {
         -webkit-text-size-adjust: 100%;
         font-family:
-          ui-sans-serif,
+          fui-sans-serif,
           system-ui,
           -apple-system,
           BlinkMacSystemFont,
@@ -490,7 +490,7 @@ nx g &#64;nx/angular:component ui/src/lib/button</pre>
       }
       pre {
         font-family:
-          ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+          fui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
           monospace;
       }
       svg {

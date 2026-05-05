@@ -2,7 +2,7 @@
  * Progress Component Styles
  */
 
-.ui-progress-container {
+.fui-progress-container {
   display: flex;
   flex-direction: column;
   gap: var(--primitive-spacing-2);
@@ -11,7 +11,7 @@
 
 /* Label */
 
-.ui-progress-label {
+.fui-progress-label {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -21,14 +21,14 @@
   line-height: var(--primitive-line-height-normal);
 }
 
-.ui-progress-value {
+.fui-progress-value {
   color: var(--semantic-text-secondary);
   font-variant-numeric: tabular-nums;
 }
 
 /* Progress track */
 
-.ui-progress {
+.fui-progress {
   position: relative;
   width: 100%;
   background-color: var(--semantic-surface-background-secondary);
@@ -38,23 +38,23 @@
 
 /* Sizes */
 
-.ui-progress--sm {
+.fui-progress--sm {
   height: 0.375rem;
 }
 
-.ui-progress--md {
+.fui-progress--md {
   height: 0.5rem;
 }
 
-.ui-progress--lg {
+.fui-progress--lg {
   height: 0.75rem;
 }
 
 /* Progress bar */
 
-.ui-progress-bar {
+.fui-progress-bar {
   height: 100%;
-  width: var(--ui-progress-width, 0%);
+  width: var(--fui-progress-width, 0%);
   background-color: var(--semantic-brand-primary);
   border-radius: var(--primitive-border-radius-full);
   transition: width var(--semantic-animation-duration-component, 250ms)
@@ -66,25 +66,25 @@
 
 /* Variants */
 
-.ui-progress-bar--success {
+.fui-progress-bar--success {
   background-color: var(--semantic-feedback-success);
 }
 
-.ui-progress-bar--warning {
+.fui-progress-bar--warning {
   background-color: var(--semantic-feedback-warning);
 }
 
-.ui-progress-bar--error {
+.fui-progress-bar--error {
   background-color: var(--semantic-feedback-error);
 }
 
-.ui-progress-bar--info {
+.fui-progress-bar--info {
   background-color: var(--semantic-feedback-info);
 }
 
 /* Inline value (inside bar) */
 
-.ui-progress-value-inline {
+.fui-progress-value-inline {
   font-size: var(--primitive-font-size-xs);
   font-weight: var(--primitive-font-weight-semibold);
   color: var(--semantic-text-inverse);
@@ -92,13 +92,13 @@
   font-variant-numeric: tabular-nums;
 }
 
-.ui-progress--sm .ui-progress-value-inline {
+.fui-progress--sm .fui-progress-value-inline {
   display: none;
 }
 
 /* Indeterminate mode */
 
-.ui-progress-bar--indeterminate {
+.fui-progress-bar--indeterminate {
   width: 100% !important;
   background-image: linear-gradient(
     90deg,
@@ -109,11 +109,11 @@
     transparent 100%
   );
   background-size: 200% 100%;
-  animation: ui-progress-indeterminate var(--semantic-animation-duration-shimmer, 1.5s)
+  animation: fui-progress-indeterminate var(--semantic-animation-duration-shimmer, 1.5s)
     var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)) infinite;
 }
 
-.ui-progress-bar--indeterminate.ui-progress-bar--success {
+.fui-progress-bar--indeterminate.fui-progress-bar--success {
   background-image: linear-gradient(
     90deg,
     transparent 0%,
@@ -124,7 +124,7 @@
   );
 }
 
-.ui-progress-bar--indeterminate.ui-progress-bar--warning {
+.fui-progress-bar--indeterminate.fui-progress-bar--warning {
   background-image: linear-gradient(
     90deg,
     transparent 0%,
@@ -135,7 +135,7 @@
   );
 }
 
-.ui-progress-bar--indeterminate.ui-progress-bar--error {
+.fui-progress-bar--indeterminate.fui-progress-bar--error {
   background-image: linear-gradient(
     90deg,
     transparent 0%,
@@ -146,7 +146,7 @@
   );
 }
 
-.ui-progress-bar--indeterminate.ui-progress-bar--info {
+.fui-progress-bar--indeterminate.fui-progress-bar--info {
   background-image: linear-gradient(
     90deg,
     transparent 0%,
@@ -159,7 +159,7 @@
 
 /* Striped pattern */
 
-.ui-progress-bar--striped {
+.fui-progress-bar--striped {
   background-image: linear-gradient(
     45deg,
     rgba(255, 255, 255, 0.15) 25%,
@@ -175,14 +175,14 @@
 
 /* Animated stripes */
 
-.ui-progress-bar--animated {
-  animation: ui-progress-stripes var(--semantic-animation-duration-spin, 1s)
+.fui-progress-bar--animated {
+  animation: fui-progress-stripes var(--semantic-animation-duration-spin, 1s)
     var(--semantic-animation-easing-linear, linear) infinite;
 }
 
 /* Animations */
 
-@keyframes ui-progress-indeterminate {
+@keyframes fui-progress-indeterminate {
   0% {
     background-position: 200% 0;
   }
@@ -191,7 +191,7 @@
   }
 }
 
-@keyframes ui-progress-stripes {
+@keyframes fui-progress-stripes {
   0% {
     background-position: 0 0;
   }
@@ -203,12 +203,12 @@
 /* Reduced motion support */
 
 @media (prefers-reduced-motion: reduce) {
-  .ui-progress-bar {
+  .fui-progress-bar {
     transition: none;
   }
 
-  .ui-progress-bar--indeterminate,
-  .ui-progress-bar--animated {
+  .fui-progress-bar--indeterminate,
+  .fui-progress-bar--animated {
     animation: none;
   }
 }
@@ -216,11 +216,11 @@
 /* High contrast mode support */
 
 @media (prefers-contrast: more) {
-  .ui-progress {
+  .fui-progress {
     border: 1px solid var(--semantic-border-default);
   }
 
-  .ui-progress-bar {
+  .fui-progress-bar {
     border-right: 2px solid var(--semantic-text-primary);
   }
 }

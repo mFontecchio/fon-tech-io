@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Badge Component
  * 
  * A themable badge/label component for displaying status, counts, or categories.
@@ -17,7 +17,7 @@ export type BadgeVariant = 'default' | 'primary' | 'success' | 'warning' | 'erro
 export type BadgeSize = 'sm' | 'md' | 'lg';
 
 @Component({
-  selector: 'ui-badge',
+  selector: 'fui-badge',
   imports: [NgClass],
   templateUrl: './badge.component.html',
   styleUrl: './badge.component.css',
@@ -101,13 +101,13 @@ export class BadgeComponent {
    * Computed CSS classes
    */
   protected readonly badgeClasses = computed(() => ({
-    'ui-badge': true,
-    [`ui-badge--${this.variant()}`]: true,
-    [`ui-badge--${this.size()}`]: true,
-    'ui-badge--pill': this.pill(),
-    'ui-badge--with-dot': this.dot(),
-    'ui-badge--dismissible': this.dismissible(),
-    'ui-badge--with-icon': !!this.icon(),
+    'fui-badge': true,
+    [`fui-badge--${this.variant()}`]: true,
+    [`fui-badge--${this.size()}`]: true,
+    'fui-badge--pill': this.pill(),
+    'fui-badge--with-dot': this.dot(),
+    'fui-badge--dismissible': this.dismissible(),
+    'fui-badge--with-icon': !!this.icon(),
   }));
 
   /**

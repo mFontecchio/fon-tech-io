@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Pagination Component
  * 
  * A navigation component for paging through data.
@@ -18,13 +18,13 @@ import { NgClass } from '@angular/common';
 export type PaginationSize = 'sm' | 'md' | 'lg';
 
 @Component({
-  selector: 'ui-pagination',
+  selector: 'fui-pagination',
   imports: [NgClass],
   templateUrl: './pagination.component.html',
   styleUrl: './pagination.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.ui-pagination-wrapper]': 'true',
+    '[class.fui-pagination-wrapper]': 'true',
   },
 })
 export class PaginationComponent {
@@ -162,9 +162,9 @@ export class PaginationComponent {
    * Computed CSS classes
    */
   protected readonly paginationClasses = computed(() => ({
-    'ui-pagination': true,
-    [`ui-pagination--${this.size()}`]: true,
-    'ui-pagination--disabled': this.disabled(),
+    'fui-pagination': true,
+    [`fui-pagination--${this.size()}`]: true,
+    'fui-pagination--disabled': this.disabled(),
   }));
 
   /**

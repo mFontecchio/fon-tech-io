@@ -74,7 +74,7 @@ import { SearchModalComponent } from '../shared/search-modal.component';
 
           <!-- GitHub Link -->
           <a
-            href="https://github.com/mFontecchio/ui-component-suite"
+            href="https://github.com/mFontecchio/fon-tech-io-priv"
             target="_blank"
             rel="noreferrer"
             class="github-link"

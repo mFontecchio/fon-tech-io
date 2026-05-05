@@ -51,9 +51,9 @@ import { getComponentMetadata } from '../../data/component-metadata';
 
       <!-- Documentation Tabs -->
       @if (metadata()) {
-        <ui-tabs>
+        <fui-tabs>
           <!-- Overview Tab -->
-          <ui-tab label="Overview">
+          <fui-tab label="Overview">
             <div class="tab-content">
               <h2>About</h2>
               <p>{{ metadata()!.description }}</p>
@@ -67,7 +67,7 @@ import { getComponentMetadata } from '../../data/component-metadata';
                     [exampleTitle]="metadata()!.examples[0].title"
                   />
                 </div>
-                <ui-code-block
+                <fui-code-block
                   [code]="metadata()!.examples[0].template ?? ''"
                   [title]="'HTML'"
                   language="html"
@@ -75,7 +75,7 @@ import { getComponentMetadata } from '../../data/component-metadata';
               }
 
               <h3>Selector</h3>
-              <ui-code-block
+              <fui-code-block
                 [code]="'<' + metadata()!.selector + '></' + metadata()!.selector + '>'"
                 [title]="'Usage'"
                 language="html"
@@ -104,10 +104,10 @@ import { getComponentMetadata } from '../../data/component-metadata';
                 </div>
               }
             </div>
-          </ui-tab>
+          </fui-tab>
 
           <!-- API Tab -->
-          <ui-tab label="API">
+          <fui-tab label="API">
             <div class="tab-content">
               @if (metadata()!.inputs && metadata()!.inputs.length > 0) {
                 <h2>Inputs</h2>
@@ -138,10 +138,10 @@ import { getComponentMetadata } from '../../data/component-metadata';
                 </div>
               }
             </div>
-          </ui-tab>
+          </fui-tab>
 
           <!-- Examples Tab -->
-          <ui-tab label="Examples">
+          <fui-tab label="Examples">
             <div class="tab-content">
               <!-- Responsive Preview Toggle -->
               <div class="examples-toolbar">
@@ -186,7 +186,7 @@ import { getComponentMetadata } from '../../data/component-metadata';
                           />
                         </div>
                       }
-                      <ui-code-block
+                      <fui-code-block
                         [code]="example.template"
                         [title]="'HTML'"
                         [filename]="generateFilename(example.title, 'html')"
@@ -195,7 +195,7 @@ import { getComponentMetadata } from '../../data/component-metadata';
                     }
 
                     @if (example.typescript) {
-                      <ui-code-block
+                      <fui-code-block
                         [code]="example.typescript"
                         [title]="'TypeScript'"
                         [filename]="generateFilename(example.title, 'ts')"
@@ -205,13 +205,13 @@ import { getComponentMetadata } from '../../data/component-metadata';
                   </div>
                 }
               } @else {
-                <ui-alert variant="info">No examples available for this component yet.</ui-alert>
+                <fui-alert variant="info">No examples available for this component yet.</fui-alert>
               }
             </div>
-          </ui-tab>
+          </fui-tab>
 
           <!-- Accessibility Tab -->
-          <ui-tab label="Accessibility">
+          <fui-tab label="Accessibility">
             <div class="tab-content">
               @if (metadata()!.accessibility) {
                 <h3>ARIA Support</h3>
@@ -234,15 +234,15 @@ import { getComponentMetadata } from '../../data/component-metadata';
                 <h3>Screen Reader Notes</h3>
                 <p>{{ metadata()!.accessibility!.screenReaderNotes }}</p>
               } @else {
-                <ui-alert variant="info">Accessibility documentation coming soon.</ui-alert>
+                <fui-alert variant="info">Accessibility documentation coming soon.</fui-alert>
               }
             </div>
-          </ui-tab>
-        </ui-tabs>
+          </fui-tab>
+        </fui-tabs>
       } @else {
-        <ui-alert variant="warning">
+        <fui-alert variant="warning">
           Documentation for <strong>{{ componentName() }}</strong> is in progress or not found.
-        </ui-alert>
+        </fui-alert>
       }
     </article>
   `,

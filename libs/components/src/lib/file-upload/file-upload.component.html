@@ -1,6 +1,6 @@
-<div class="ui-file-upload-container">
+<div class="fui-file-upload-container">
   @if (label()) {
-    <label class="ui-file-upload-label">
+    <label class="fui-file-upload-label">
       {{ label() }}
     </label>
   }
@@ -9,7 +9,7 @@
     <input
       #fileInput
       type="file"
-      class="ui-file-upload-input"
+      class="fui-file-upload-input"
       [accept]="accept()"
       [multiple]="multiple()"
       [disabled]="disabled()"
@@ -17,15 +17,15 @@
       (change)="handleFileSelect($event)"
     />
 
-    <div class="ui-file-upload-content">
-      <svg class="ui-file-upload-icon" width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+    <div class="fui-file-upload-content">
+      <svg class="fui-file-upload-icon" width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
         <path d="M24 16V32M16 24H32M42 24C42 33.9411 33.9411 42 24 42C14.0589 42 6 33.9411 6 24C6 14.0589 14.0589 6 24 6C33.9411 6 42 14.0589 42 24Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
       </svg>
       
-      <p class="ui-file-upload-text">
+      <p class="fui-file-upload-text">
         <button 
           type="button" 
-          class="ui-file-upload-browse-link"
+          class="fui-file-upload-browse-link"
           [disabled]="disabled()"
           (click)="fileInput.click()"
         >
@@ -35,12 +35,12 @@
       </p>
 
       @if (accept()) {
-        <p class="ui-file-upload-hint">
+        <p class="fui-file-upload-hint">
           Accepted: {{ accept() }}
         </p>
       }
       
-      <p class="ui-file-upload-hint">
+      <p class="fui-file-upload-hint">
         Max size: {{ formatFileSize(maxSize()) }}
         @if (multiple()) {
           · Max files: {{ maxFiles() }}
@@ -50,39 +50,39 @@
   </div>
 
   @if (uploadedFiles().length > 0) {
-    <ul class="ui-file-upload-list">
+    <ul class="fui-file-upload-list">
       @for (uploadedFile of uploadedFiles(); track $index) {
         <li 
-          class="ui-file-upload-item"
-          [class.ui-file-upload-item--error]="uploadedFile.error"
+          class="fui-file-upload-item"
+          [class.fui-file-upload-item--error]="uploadedFile.error"
         >
           @if (uploadedFile.preview) {
             <img 
               [src]="uploadedFile.preview" 
               [alt]="uploadedFile.file.name"
-              class="ui-file-upload-preview"
+              class="fui-file-upload-preview"
             />
           } @else {
-            <div class="ui-file-upload-file-icon">
+            <div class="fui-file-upload-file-icon">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path d="M9 12H15M9 16H15M17 21H7C5.89543 21 5 20.1046 5 19V5C5 3.89543 5.89543 3 7 3H12.5858C12.851 3 13.1054 3.10536 13.2929 3.29289L18.7071 8.70711C18.8946 8.89464 19 9.149 19 9.41421V19C19 20.1046 18.1046 21 17 21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
               </svg>
             </div>
           }
 
-          <div class="ui-file-upload-item-info">
-            <p class="ui-file-upload-item-name">{{ uploadedFile.file.name }}</p>
-            <p class="ui-file-upload-item-size">
+          <div class="fui-file-upload-item-info">
+            <p class="fui-file-upload-item-name">{{ uploadedFile.file.name }}</p>
+            <p class="fui-file-upload-item-size">
               {{ formatFileSize(uploadedFile.file.size) }}
             </p>
             @if (uploadedFile.error) {
-              <p class="ui-file-upload-item-error">{{ uploadedFile.error }}</p>
+              <p class="fui-file-upload-item-error">{{ uploadedFile.error }}</p>
             }
           </div>
 
           <button
             type="button"
-            class="ui-file-upload-remove"
+            class="fui-file-upload-remove"
             [attr.aria-label]="'Remove ' + uploadedFile.file.name"
             (click)="removeFile($index)"
           >
@@ -96,14 +96,14 @@
   }
 
   @if (helperText() && !hasError()) {
-    <div class="ui-file-upload-helper-text">
+    <div class="fui-file-upload-helper-text">
       {{ helperText() }}
     </div>
   }
 
   @if (hasError()) {
     <div 
-      class="ui-file-upload-error-message"
+      class="fui-file-upload-error-message"
       role="alert"
       aria-live="polite"
     >

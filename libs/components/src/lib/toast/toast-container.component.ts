@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Toast Container Component
  * 
  * Container component that displays all active toasts.
@@ -25,7 +25,7 @@ export type ToastPosition =
   | 'bottom-right';
 
 @Component({
-  selector: 'ui-toast-container',
+  selector: 'fui-toast-container',
   imports: [NgClass, ToastComponent],
   templateUrl: './toast-container.component.html',
   styleUrl: './toast-container.component.css',
@@ -54,8 +54,8 @@ export class ToastContainerComponent {
    * Computed CSS classes
    */
   protected readonly containerClasses = computed(() => ({
-    'ui-toast-container': true,
-    [`ui-toast-container--${this.position()}`]: true,
+    'fui-toast-container': true,
+    [`fui-toast-container--${this.position()}`]: true,
   }));
 
   /**

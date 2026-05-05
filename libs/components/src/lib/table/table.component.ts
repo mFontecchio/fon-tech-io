@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Table Component
  * 
  * A data table component with sorting, filtering, and pagination support.
@@ -33,13 +33,13 @@ export interface SortState {
 export type TableSize = 'sm' | 'md' | 'lg';
 
 @Component({
-  selector: 'ui-table',
+  selector: 'fui-table',
   imports: [NgClass],
   templateUrl: './table.component.html',
   styleUrl: './table.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.ui-table-wrapper]': 'true',
+    '[class.fui-table-wrapper]': 'true',
   },
 })
 export class TableComponent {
@@ -166,12 +166,12 @@ export class TableComponent {
    * Computed CSS classes
    */
   protected readonly tableClasses = computed(() => ({
-    'ui-table': true,
-    [`ui-table--${this.size()}`]: true,
-    'ui-table--striped': this.striped(),
-    'ui-table--hoverable': this.hoverable(),
-    'ui-table--bordered': this.bordered(),
-    'ui-table--selectable': this.selectable(),
+    'fui-table': true,
+    [`fui-table--${this.size()}`]: true,
+    'fui-table--striped': this.striped(),
+    'fui-table--hoverable': this.hoverable(),
+    'fui-table--bordered': this.bordered(),
+    'fui-table--selectable': this.selectable(),
   }));
 
   constructor() {

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Stepper Component
  *
  * A step-by-step progress indicator component.
@@ -29,7 +29,7 @@ export interface Step {
 export type StepperOrientation = 'horizontal' | 'vertical';
 
 @Component({
-  selector: 'ui-stepper',
+  selector: 'fui-stepper',
   imports: [NgClass],
   templateUrl: './stepper.component.html',
   styleUrl: './stepper.component.css',
@@ -79,8 +79,8 @@ export class StepperComponent {
    * Computed CSS classes
    */
   protected readonly stepperClasses = computed(() => ({
-    'ui-stepper': true,
-    [`ui-stepper--${this.orientation()}`]: true,
+    'fui-stepper': true,
+    [`fui-stepper--${this.orientation()}`]: true,
   }));
 
   /**
@@ -153,7 +153,7 @@ export class StepperComponent {
    */
   private focusStep(index: number): void {
     const buttons = Array.from(
-      this.elementRef.nativeElement.querySelectorAll('.ui-stepper-step-button')
+      this.elementRef.nativeElement.querySelectorAll('.fui-stepper-step-button')
     ) as HTMLElement[];
     buttons[index]?.focus();
   }

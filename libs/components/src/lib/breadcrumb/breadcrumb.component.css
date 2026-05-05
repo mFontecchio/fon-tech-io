@@ -2,11 +2,11 @@
  * Breadcrumb Component Styles
  */
 
-.ui-breadcrumb {
+.fui-breadcrumb {
   display: block;
 }
 
-.ui-breadcrumb-list {
+.fui-breadcrumb-list {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -18,7 +18,7 @@
 
 /* Item */
 
-.ui-breadcrumb-item {
+.fui-breadcrumb-item {
   display: flex;
   align-items: center;
   gap: var(--primitive-spacing-2);
@@ -26,7 +26,7 @@
 
 /* Link/Button */
 
-.ui-breadcrumb-link {
+.fui-breadcrumb-link {
   display: inline-flex;
   align-items: center;
   font-size: var(--primitive-font-size-sm);
@@ -38,30 +38,30 @@
   margin: -0.125rem -0.25rem;
 }
 
-.ui-breadcrumb-link--button {
+.fui-breadcrumb-link--button {
   background: none;
   border: none;
   cursor: pointer;
   font-family: inherit;
 }
 
-.ui-breadcrumb-link:hover:not(.ui-breadcrumb-link--current):not(.ui-breadcrumb-link--disabled) {
+.fui-breadcrumb-link:hover:not(.fui-breadcrumb-link--current):not(.fui-breadcrumb-link--disabled) {
   color: var(--semantic-text-primary);
   background-color: var(--semantic-surface-background-secondary);
 }
 
-.ui-breadcrumb-link:focus-visible {
+.fui-breadcrumb-link:focus-visible {
   outline: 2px solid var(--semantic-state-focus-ring);
   outline-offset: 2px;
 }
 
-.ui-breadcrumb-link--current {
+.fui-breadcrumb-link--current {
   color: var(--semantic-text-primary);
   font-weight: var(--primitive-font-weight-medium);
   cursor: default;
 }
 
-.ui-breadcrumb-link--disabled {
+.fui-breadcrumb-link--disabled {
   opacity: 0.5;
   cursor: not-allowed;
   pointer-events: none;
@@ -69,7 +69,7 @@
 
 /* Separator */
 
-.ui-breadcrumb-separator {
+.fui-breadcrumb-separator {
   display: inline-flex;
   color: var(--semantic-text-disabled);
   font-size: var(--primitive-font-size-sm);
@@ -78,26 +78,26 @@
 
 /* Sizes */
 
-.ui-breadcrumb--sm .ui-breadcrumb-link {
+.fui-breadcrumb--sm .fui-breadcrumb-link {
   font-size: var(--primitive-font-size-xs);
 }
 
-.ui-breadcrumb--sm .ui-breadcrumb-separator {
+.fui-breadcrumb--sm .fui-breadcrumb-separator {
   font-size: var(--primitive-font-size-xs);
 }
 
-.ui-breadcrumb--lg .ui-breadcrumb-link {
+.fui-breadcrumb--lg .fui-breadcrumb-link {
   font-size: var(--primitive-font-size-base);
 }
 
-.ui-breadcrumb--lg .ui-breadcrumb-separator {
+.fui-breadcrumb--lg .fui-breadcrumb-separator {
   font-size: var(--primitive-font-size-base);
 }
 
 /* Reduced motion support */
 
 @media (prefers-reduced-motion: reduce) {
-  .ui-breadcrumb-link {
+  .fui-breadcrumb-link {
     transition: none;
   }
 }
@@ -105,11 +105,11 @@
 /* High contrast mode support */
 
 @media (prefers-contrast: more) {
-  .ui-breadcrumb-link--current {
+  .fui-breadcrumb-link--current {
     text-decoration: underline;
   }
 
-  .ui-breadcrumb-link:focus-visible {
+  .fui-breadcrumb-link:focus-visible {
     outline-width: 3px;
   }
 }

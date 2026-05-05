@@ -1,14 +1,14 @@
-<div class="ui-date-picker-container">
+<div class="fui-date-picker-container">
   @if (label()) {
-    <label [for]="datePickerId()" class="ui-date-picker-label">
+    <label [for]="datePickerId()" class="fui-date-picker-label">
       {{ label() }}
       @if (required()) {
-        <span class="ui-date-picker-required-indicator" aria-label="required">*</span>
+        <span class="fui-date-picker-required-indicator" aria-label="required">*</span>
       }
     </label>
   }
 
-  <div class="ui-date-picker-control">
+  <div class="fui-date-picker-control">
     <input
       #input
       type="date"
@@ -29,7 +29,7 @@
 
     <button
       type="button"
-      class="ui-date-picker-calendar"
+      class="fui-date-picker-calendar"
       [disabled]="disabled()"
       aria-label="Open date picker"
       (click)="openPicker()"
@@ -42,7 +42,7 @@
     @if (internalValue() && !disabled()) {
       <button
         type="button"
-        class="ui-date-picker-clear"
+        class="fui-date-picker-clear"
         aria-label="Clear date"
         (click)="clear()"
       >
@@ -56,7 +56,7 @@
   @if (helperText() && !hasError()) {
     <div 
       [id]="helperTextId()" 
-      class="ui-date-picker-helper-text"
+      class="fui-date-picker-helper-text"
     >
       {{ helperText() }}
     </div>
@@ -65,7 +65,7 @@
   @if (hasError()) {
     <div 
       [id]="errorId()" 
-      class="ui-date-picker-error-message"
+      class="fui-date-picker-error-message"
       role="alert"
       aria-live="polite"
     >

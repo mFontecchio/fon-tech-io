@@ -1,18 +1,18 @@
-﻿/**
+/**
  * Textarea Component Styles
  */
 
-.ui-textarea-wrapper {
+.fui-textarea-wrapper {
   display: inline-block;
   width: auto;
 }
 
-.ui-textarea-wrapper--full-width {
+.fui-textarea-wrapper--full-width {
   display: block;
   width: 100%;
 }
 
-.ui-textarea-container {
+.fui-textarea-container {
   display: flex;
   flex-direction: column;
   gap: var(--primitive-spacing-2);
@@ -20,7 +20,7 @@
 
 /* Label */
 
-.ui-textarea-label {
+.fui-textarea-label {
   display: block;
   font-size: var(--primitive-font-size-sm);
   font-weight: var(--primitive-font-weight-medium);
@@ -28,18 +28,18 @@
   line-height: var(--primitive-line-height-tight);
 }
 
-.ui-textarea-label--disabled {
+.fui-textarea-label--disabled {
   color: var(--semantic-text-disabled);
 }
 
-.ui-textarea-required-indicator {
+.fui-textarea-required-indicator {
   color: var(--semantic-feedback-error);
   margin-left: var(--primitive-spacing-1);
 }
 
 /* Textarea element */
 
-.ui-textarea {
+.fui-textarea {
   width: 100%;
   padding: var(--component-input-padding-y) var(--component-input-padding-x);
   font-size: var(--component-input-font-size);
@@ -54,46 +54,46 @@
   transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
-.ui-textarea--auto-resize {
+.fui-textarea--auto-resize {
   resize: none;
   overflow: hidden;
 }
 
-.ui-textarea::placeholder {
+.fui-textarea::placeholder {
   color: var(--component-input-default-placeholder);
   opacity: 1;
 }
 
 /* Hover state */
 
-.ui-textarea:hover:not(:disabled):not(:focus) {
+.fui-textarea:hover:not(:disabled):not(:focus) {
   border-color: var(--component-input-hover-border);
 }
 
 /* Focus state */
 
-.ui-textarea:focus,
-.ui-textarea--focused {
+.fui-textarea:focus,
+.fui-textarea--focused {
   border-color: var(--component-input-focus-border);
   box-shadow: 0 0 0 var(--component-input-focus-ring-width) var(--component-input-focus-ring);
 }
 
 /* Error state */
 
-.ui-textarea--error,
-.ui-textarea--error:hover,
-.ui-textarea--error:focus {
+.fui-textarea--error,
+.fui-textarea--error:hover,
+.fui-textarea--error:focus {
   border-color: var(--component-input-error-border);
 }
 
-.ui-textarea--error:focus {
+.fui-textarea--error:focus {
   box-shadow: 0 0 0 var(--component-input-focus-ring-width) var(--semantic-border-error);
 }
 
 /* Disabled state */
 
-.ui-textarea:disabled,
-.ui-textarea--disabled {
+.fui-textarea:disabled,
+.fui-textarea--disabled {
   background-color: var(--component-input-disabled-background);
   color: var(--component-input-disabled-text);
   border-color: var(--component-input-disabled-border);
@@ -104,7 +104,7 @@
 
 /* Readonly state */
 
-.ui-textarea:read-only {
+.fui-textarea:read-only {
   background-color: var(--semantic-surface-background-secondary);
   cursor: default;
   resize: none;
@@ -112,21 +112,21 @@
 
 /* Footer */
 
-.ui-textarea-footer {
+.fui-textarea-footer {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: var(--primitive-spacing-4);
 }
 
-.ui-textarea-messages {
+.fui-textarea-messages {
   flex: 1;
   min-width: 0;
 }
 
 /* Helper text */
 
-.ui-textarea-helper-text {
+.fui-textarea-helper-text {
   font-size: var(--primitive-font-size-sm);
   color: var(--semantic-text-secondary);
   line-height: var(--primitive-line-height-normal);
@@ -134,7 +134,7 @@
 
 /* Error message */
 
-.ui-textarea-error-message {
+.fui-textarea-error-message {
   font-size: var(--primitive-font-size-sm);
   color: var(--component-input-error-text);
   line-height: var(--primitive-line-height-normal);
@@ -142,7 +142,7 @@
 
 /* Character count */
 
-.ui-textarea-character-count {
+.fui-textarea-character-count {
   flex-shrink: 0;
   font-size: var(--primitive-font-size-sm);
   color: var(--semantic-text-tertiary);
@@ -152,14 +152,14 @@
 
 /* Full width */
 
-.ui-textarea-wrapper--full-width .ui-textarea {
+.fui-textarea-wrapper--full-width .fui-textarea {
   width: 100%;
 }
 
 /* Reduced motion support */
 
 @media (prefers-reduced-motion: reduce) {
-  .ui-textarea {
+  .fui-textarea {
     transition: none;
   }
 }
@@ -167,11 +167,11 @@
 /* High contrast mode support */
 
 @media (prefers-contrast: more) {
-  .ui-textarea {
+  .fui-textarea {
     border-width: 2px;
   }
 
-  .ui-textarea:focus {
+  .fui-textarea:focus {
     outline: 2px solid var(--component-input-focus-border);
     outline-offset: 2px;
   }

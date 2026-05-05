@@ -8,7 +8,7 @@ import { ChangeDetectionStrategy, Component, computed, input, signal } from '@an
 import { CarouselVariant } from './carousel.types';
 
 @Component({
-  selector: 'ui-carousel-slide',
+  selector: 'fui-carousel-slide',
   templateUrl: './carousel-slide.component.html',
   styleUrl: './carousel-slide.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -51,9 +51,9 @@ export class CarouselSlideComponent {
 
   protected readonly hostClasses = computed(() => {
     return [
-      'ui-carousel-slide',
-      `ui-carousel-slide--${this.variantState()}`,
-      this.isActive() ? 'ui-carousel-slide--active' : 'ui-carousel-slide--inactive',
+      'fui-carousel-slide',
+      `fui-carousel-slide--${this.variantState()}`,
+      this.isActive() ? 'fui-carousel-slide--active' : 'fui-carousel-slide--inactive',
     ].join(' ');
   });
 

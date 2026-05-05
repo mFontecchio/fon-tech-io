@@ -1,16 +1,16 @@
-﻿/**
+/**
  * Card Component Styles
  */
 
-.ui-card-host {
+.fui-card-host {
   display: block;
 }
 
-.ui-card-host--full-width {
+.fui-card-host--full-width {
   width: 100%;
 }
 
-.ui-card {
+.fui-card {
   display: flex;
   flex-direction: column;
   background-color: var(--component-card-background);
@@ -20,17 +20,17 @@
 
 /* Variants */
 
-.ui-card--elevated {
+.fui-card--elevated {
   box-shadow: var(--component-card-shadow);
   border: 1px solid transparent;
 }
 
-.ui-card--outlined {
+.fui-card--outlined {
   border: 1px solid var(--component-card-border);
   box-shadow: none;
 }
 
-.ui-card--filled {
+.fui-card--filled {
   background-color: var(--semantic-surface-background-secondary);
   border: 1px solid transparent;
   box-shadow: none;
@@ -38,61 +38,61 @@
 
 /* Interactive state */
 
-.ui-card--interactive {
+.fui-card--interactive {
   cursor: pointer;
   transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
-.ui-card--interactive.ui-card--elevated:hover {
+.fui-card--interactive.fui-card--elevated:hover {
   box-shadow: var(--component-card-shadow-hover);
   transform: translateY(-2px);
 }
 
-.ui-card--interactive.ui-card--outlined:hover {
+.fui-card--interactive.fui-card--outlined:hover {
   border-color: var(--semantic-border-strong);
 }
 
-.ui-card--interactive.ui-card--filled:hover {
+.fui-card--interactive.fui-card--filled:hover {
   background-color: var(--semantic-state-hover);
 }
 
 /* Card sections */
 
-.ui-card__header {
+.fui-card__header {
   padding: var(--component-card-padding);
   border-bottom: 1px solid var(--semantic-border-subtle);
 }
 
-.ui-card__header:empty {
+.fui-card__header:empty {
   display: none;
 }
 
-.ui-card__body {
+.fui-card__body {
   flex: 1;
   padding: var(--component-card-padding);
 }
 
-.ui-card--no-padding .ui-card__body {
+.fui-card--no-padding .fui-card__body {
   padding: 0;
 }
 
-.ui-card__footer {
+.fui-card__footer {
   padding: var(--component-card-padding);
   border-top: 1px solid var(--semantic-border-subtle);
 }
 
-.ui-card__footer:empty {
+.fui-card__footer:empty {
   display: none;
 }
 
 /* Reduced motion support */
 
 @media (prefers-reduced-motion: reduce) {
-  .ui-card--interactive {
+  .fui-card--interactive {
     transition: none;
   }
 
-  .ui-card--interactive:hover {
+  .fui-card--interactive:hover {
     transform: none;
   }
 }

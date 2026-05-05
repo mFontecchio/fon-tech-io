@@ -2,13 +2,13 @@
  * Drawer Component Styles
  */
 
-.ui-drawer-host {
+.fui-drawer-host {
   display: contents;
 }
 
 /* Native dialog as full-screen overlay container */
 
-dialog.ui-drawer-dialog {
+dialog.fui-drawer-dialog {
   position: fixed;
   inset: 0;
   width: 100%;
@@ -22,17 +22,17 @@ dialog.ui-drawer-dialog {
   overflow: hidden;
 }
 
-dialog.ui-drawer-dialog::backdrop {
+dialog.fui-drawer-dialog::backdrop {
   background-color: var(--semantic-surface-overlay);
   transition: opacity var(--semantic-animation-duration-component, 250ms)
     var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
-dialog.ui-drawer-dialog--no-backdrop::backdrop {
+dialog.fui-drawer-dialog--no-backdrop::backdrop {
   background-color: transparent;
 }
 
-.ui-drawer {
+.fui-drawer {
   position: fixed;
   background-color: var(--semantic-surface-card);
   box-shadow: var(--primitive-shadow-xl);
@@ -45,103 +45,103 @@ dialog.ui-drawer-dialog--no-backdrop::backdrop {
 
 /* Positions */
 
-.ui-drawer--left,
-.ui-drawer--right {
+.fui-drawer--left,
+.fui-drawer--right {
   top: 0;
   bottom: 0;
   height: 100%;
 }
 
-.ui-drawer--left {
+.fui-drawer--left {
   left: 0;
   transform: translateX(-100%);
 }
 
-.ui-drawer--right {
+.fui-drawer--right {
   right: 0;
   transform: translateX(100%);
 }
 
-.ui-drawer--top,
-.ui-drawer--bottom {
+.fui-drawer--top,
+.fui-drawer--bottom {
   left: 0;
   right: 0;
   width: 100%;
 }
 
-.ui-drawer--top {
+.fui-drawer--top {
   top: 0;
   transform: translateY(-100%);
 }
 
-.ui-drawer--bottom {
+.fui-drawer--bottom {
   bottom: 0;
   transform: translateY(100%);
 }
 
 /* Open state */
 
-.ui-drawer--open {
+.fui-drawer--open {
   transform: translate(0, 0);
 }
 
 /* Sizes for horizontal drawers */
 
-.ui-drawer--left.ui-drawer--sm,
-.ui-drawer--right.ui-drawer--sm {
+.fui-drawer--left.fui-drawer--sm,
+.fui-drawer--right.fui-drawer--sm {
   width: 20rem;
 }
 
-.ui-drawer--left.ui-drawer--md,
-.ui-drawer--right.ui-drawer--md {
+.fui-drawer--left.fui-drawer--md,
+.fui-drawer--right.fui-drawer--md {
   width: 28rem;
 }
 
-.ui-drawer--left.ui-drawer--lg,
-.ui-drawer--right.ui-drawer--lg {
+.fui-drawer--left.fui-drawer--lg,
+.fui-drawer--right.fui-drawer--lg {
   width: 36rem;
 }
 
-.ui-drawer--left.ui-drawer--xl,
-.ui-drawer--right.ui-drawer--xl {
+.fui-drawer--left.fui-drawer--xl,
+.fui-drawer--right.fui-drawer--xl {
   width: 48rem;
 }
 
-.ui-drawer--left.ui-drawer--full,
-.ui-drawer--right.ui-drawer--full {
+.fui-drawer--left.fui-drawer--full,
+.fui-drawer--right.fui-drawer--full {
   width: 100%;
 }
 
 /* Sizes for vertical drawers */
 
-.ui-drawer--top.ui-drawer--sm,
-.ui-drawer--bottom.ui-drawer--sm {
+.fui-drawer--top.fui-drawer--sm,
+.fui-drawer--bottom.fui-drawer--sm {
   height: 20rem;
 }
 
-.ui-drawer--top.ui-drawer--md,
-.ui-drawer--bottom.ui-drawer--md {
+.fui-drawer--top.fui-drawer--md,
+.fui-drawer--bottom.fui-drawer--md {
   height: 28rem;
 }
 
-.ui-drawer--top.ui-drawer--lg,
-.ui-drawer--bottom.ui-drawer--lg {
+.fui-drawer--top.fui-drawer--lg,
+.fui-drawer--bottom.fui-drawer--lg {
   height: 36rem;
 }
 
-.ui-drawer--top.ui-drawer--xl,
-.ui-drawer--bottom.ui-drawer--xl {
+.fui-drawer--top.fui-drawer--xl,
+.fui-drawer--bottom.fui-drawer--xl {
   height: 48rem;
 }
 
-.ui-drawer--top.ui-drawer--full,
-.ui-drawer--bottom.ui-drawer--full {
+.fui-drawer--top.fui-drawer--full,
+.fui-drawer--bottom.fui-drawer--full {
   height: 100%;
 }
 
 /* Header */
 
-.ui-drawer-header {
+.fui-drawer-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -150,7 +150,7 @@ dialog.ui-drawer-dialog--no-backdrop::backdrop {
   flex-shrink: 0;
 }
 
-.ui-drawer-title {
+.fui-drawer-title {
   font-size: var(--primitive-font-size-lg);
   font-weight: var(--primitive-font-weight-semibold);
   color: var(--semantic-text-primary);
@@ -159,7 +159,7 @@ dialog.ui-drawer-dialog--no-backdrop::backdrop {
 
 /* Close button */
 
-.ui-drawer-close {
+.fui-drawer-close {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -172,17 +172,17 @@ dialog.ui-drawer-dialog--no-backdrop::backdrop {
   transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
-.ui-drawer-close:hover {
+.fui-drawer-close:hover {
   background-color: var(--semantic-surface-background-secondary);
   color: var(--semantic-text-primary);
 }
 
-.ui-drawer-close:focus-visible {
+.fui-drawer-close:focus-visible {
   outline: 2px solid var(--semantic-state-focus-ring);
   outline-offset: 2px;
 }
 
-.ui-drawer-close--absolute {
+.fui-drawer-close--absolute {
   position: absolute;
   top: var(--primitive-spacing-4);
   right: var(--primitive-spacing-4);
@@ -191,59 +191,59 @@ dialog.ui-drawer-dialog--no-backdrop::backdrop {
 
 /* Content */
 
-.ui-drawer-content {
+.fui-drawer-content {
   flex: 1;
   overflow-y: auto;
   padding: var(--primitive-spacing-6);
 }
 
-.ui-drawer-content::-webkit-scrollbar {
+.fui-drawer-content::-webkit-scrollbar {
   width: 0.5rem;
 }
 
-.ui-drawer-content::-webkit-scrollbar-track {
+.fui-drawer-content::-webkit-scrollbar-track {
   background: var(--semantic-surface-background-secondary);
 }
 
-.ui-drawer-content::-webkit-scrollbar-thumb {
+.fui-drawer-content::-webkit-scrollbar-thumb {
   background: var(--semantic-border-default);
   border-radius: var(--primitive-border-radius-full);
 }
 
-.ui-drawer-content::-webkit-scrollbar-thumb:hover {
+.fui-drawer-content::-webkit-scrollbar-thumb:hover {
   background: var(--semantic-border-strong);
 }
 
 /* Footer */
 
-.ui-drawer-footer {
+.fui-drawer-footer {
   flex-shrink: 0;
   padding: var(--primitive-spacing-5) var(--primitive-spacing-6);
   border-top: 1px solid var(--semantic-border-subtle);
 }
 
-.ui-drawer-footer:empty {
+.fui-drawer-footer:empty {
   display: none;
 }
 
 /* Responsive */
 
 @media (max-width: 768px) {
-  .ui-drawer--left.ui-drawer--md,
-  .ui-drawer--right.ui-drawer--md,
-  .ui-drawer--left.ui-drawer--lg,
-  .ui-drawer--right.ui-drawer--lg,
-  .ui-drawer--left.ui-drawer--xl,
-  .ui-drawer--right.ui-drawer--xl {
+  .fui-drawer--left.fui-drawer--md,
+  .fui-drawer--right.fui-drawer--md,
+  .fui-drawer--left.fui-drawer--lg,
+  .fui-drawer--right.fui-drawer--lg,
+  .fui-drawer--left.fui-drawer--xl,
+  .fui-drawer--right.fui-drawer--xl {
     width: 100%;
   }
 
-  .ui-drawer--top.ui-drawer--md,
-  .ui-drawer--bottom.ui-drawer--md,
-  .ui-drawer--top.ui-drawer--lg,
-  .ui-drawer--bottom.ui-drawer--lg,
-  .ui-drawer--top.ui-drawer--xl,
-  .ui-drawer--bottom.ui-drawer--xl {
+  .fui-drawer--top.fui-drawer--md,
+  .fui-drawer--bottom.fui-drawer--md,
+  .fui-drawer--top.fui-drawer--lg,
+  .fui-drawer--bottom.fui-drawer--lg,
+  .fui-drawer--top.fui-drawer--xl,
+  .fui-drawer--bottom.fui-drawer--xl {
     height: 90%;
   }
 }
@@ -251,11 +251,11 @@ dialog.ui-drawer-dialog--no-backdrop::backdrop {
 /* Reduced motion support */
 
 @media (prefers-reduced-motion: reduce) {
-  .ui-drawer {
+  .fui-drawer {
     transition: none;
   }
 
-  dialog.ui-drawer-dialog::backdrop {
+  dialog.fui-drawer-dialog::backdrop {
     transition: none;
   }
 }
@@ -263,12 +263,12 @@ dialog.ui-drawer-dialog--no-backdrop::backdrop {
 /* High contrast mode support */
 
 @media (prefers-contrast: more) {
-  .ui-drawer {
+  .fui-drawer {
     border: 2px solid var(--semantic-border-default);
   }
 
-  .ui-drawer-header,
-  .ui-drawer-footer {
+  .fui-drawer-header,
+  .fui-drawer-footer {
     border-width: 2px;
   }
 }

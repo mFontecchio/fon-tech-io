@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Chip Component
  * 
  * A compact element representing input, attribute, or action.
@@ -18,7 +18,7 @@ export type ChipVariant = 'default' | 'primary' | 'success' | 'warning' | 'error
 export type ChipSize = 'sm' | 'md' | 'lg';
 
 @Component({
-  selector: 'ui-chip',
+  selector: 'fui-chip',
   imports: [NgClass],
   templateUrl: './chip.component.html',
   styleUrl: './chip.component.css',
@@ -82,12 +82,12 @@ export class ChipComponent {
    * Computed CSS classes
    */
   protected readonly chipClasses = computed(() => ({
-    'ui-chip': true,
-    [`ui-chip--${this.variant()}`]: true,
-    [`ui-chip--${this.size()}`]: true,
-    'ui-chip--clickable': this.clickable() && !this.disabled(),
-    'ui-chip--disabled': this.disabled(),
-    'ui-chip--with-avatar': !!this.avatar(),
+    'fui-chip': true,
+    [`fui-chip--${this.variant()}`]: true,
+    [`fui-chip--${this.size()}`]: true,
+    'fui-chip--clickable': this.clickable() && !this.disabled(),
+    'fui-chip--disabled': this.disabled(),
+    'fui-chip--with-avatar': !!this.avatar(),
   }));
 
   /**

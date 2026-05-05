@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Date Picker Component
  * 
  * A date picker component with native HTML5 input fallback.
@@ -21,15 +21,15 @@ import { FormsModule } from '@angular/forms';
 export type DatePickerSize = 'sm' | 'md' | 'lg';
 
 @Component({
-  selector: 'ui-date-picker',
+  selector: 'fui-date-picker',
   imports: [NgClass, FormsModule],
   templateUrl: './date-picker.component.html',
   styleUrl: './date-picker.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.ui-date-picker-wrapper]': 'true',
-    '[class.ui-date-picker-wrapper--disabled]': 'disabled()',
-    '[class.ui-date-picker-wrapper--full-width]': 'fullWidth()',
+    '[class.fui-date-picker-wrapper]': 'true',
+    '[class.fui-date-picker-wrapper--disabled]': 'disabled()',
+    '[class.fui-date-picker-wrapper--full-width]': 'fullWidth()',
   },
 })
 export class DatePickerComponent {
@@ -128,7 +128,7 @@ export class DatePickerComponent {
    */
   protected readonly datePickerId = computed(() => {
     const providedId = this.id();
-    return providedId || `ui-date-picker-${Math.random().toString(36).substr(2, 9)}`;
+    return providedId || `fui-date-picker-${Math.random().toString(36).substr(2, 9)}`;
   });
 
   /**
@@ -162,10 +162,10 @@ export class DatePickerComponent {
    * Computed CSS classes
    */
   protected readonly datePickerClasses = computed(() => ({
-    'ui-date-picker': true,
-    [`ui-date-picker--${this.size()}`]: true,
-    'ui-date-picker--error': this.hasError(),
-    'ui-date-picker--disabled': this.disabled(),
+    'fui-date-picker': true,
+    [`fui-date-picker--${this.size()}`]: true,
+    'fui-date-picker--error': this.hasError(),
+    'fui-date-picker--disabled': this.disabled(),
   }));
 
   /**

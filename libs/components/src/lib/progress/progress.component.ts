@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Progress Component
  * 
  * A themable progress bar component with determinate and indeterminate modes.
@@ -17,7 +17,7 @@ export type ProgressVariant = 'default' | 'success' | 'warning' | 'error' | 'inf
 export type ProgressSize = 'sm' | 'md' | 'lg';
 
 @Component({
-  selector: 'ui-progress',
+  selector: 'fui-progress',
   imports: [NgClass],
   templateUrl: './progress.component.html',
   styleUrl: './progress.component.css',
@@ -102,19 +102,19 @@ export class ProgressComponent {
    * Computed CSS classes for container
    */
   protected readonly progressClasses = computed(() => ({
-    'ui-progress': true,
-    [`ui-progress--${this.size()}`]: true,
+    'fui-progress': true,
+    [`fui-progress--${this.size()}`]: true,
   }));
 
   /**
    * Computed CSS classes for bar
    */
   protected readonly barClasses = computed(() => ({
-    'ui-progress-bar': true,
-    [`ui-progress-bar--${this.variant()}`]: true,
-    'ui-progress-bar--indeterminate': this.indeterminate(),
-    'ui-progress-bar--striped': this.striped() || this.animated(),
-    'ui-progress-bar--animated': this.animated(),
+    'fui-progress-bar': true,
+    [`fui-progress-bar--${this.variant()}`]: true,
+    'fui-progress-bar--indeterminate': this.indeterminate(),
+    'fui-progress-bar--striped': this.striped() || this.animated(),
+    'fui-progress-bar--animated': this.animated(),
   }));
 
   /**

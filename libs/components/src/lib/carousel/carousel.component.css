@@ -5,7 +5,7 @@
   color: var(--semantic-text-primary);
 }
 
-.ui-carousel__viewport {
+.fui-carousel__viewport {
   position: relative;
   width: 100%;
   overflow: hidden;
@@ -15,36 +15,36 @@
   min-height: 16rem;
 }
 
-.ui-carousel__track {
+.fui-carousel__track {
   position: relative;
   display: flex;
   width: 100%;
   min-height: 16rem;
-  transform: translateX(var(--ui-carousel-track-translate, 0%));
+  transform: translateX(var(--fui-carousel-track-translate, 0%));
   transition: transform var(--semantic-animation-duration-component, 250ms)
     var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
   touch-action: pan-y;
 }
 
-:host(.ui-carousel--dragging) .ui-carousel__track {
+:host(.fui-carousel--dragging) .fui-carousel__track {
   transition: none;
   cursor: grabbing;
 }
 
-:host(.ui-carousel--fade) .ui-carousel__track {
+:host(.fui-carousel--fade) .fui-carousel__track {
   display: block;
   transform: none;
 }
 
-.ui-carousel__control,
-.ui-carousel__autoplay-toggle,
-.ui-carousel__indicator,
-.ui-carousel__thumbnail {
+.fui-carousel__control,
+.fui-carousel__autoplay-toggle,
+.fui-carousel__indicator,
+.fui-carousel__thumbnail {
   font: inherit;
 }
 
-.ui-carousel__control,
-.ui-carousel__autoplay-toggle {
+.fui-carousel__control,
+.fui-carousel__autoplay-toggle {
   position: absolute;
   z-index: 2;
   display: inline-flex;
@@ -67,36 +67,36 @@
       var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
-.ui-carousel__control:hover,
-.ui-carousel__autoplay-toggle:hover {
+.fui-carousel__control:hover,
+.fui-carousel__autoplay-toggle:hover {
   background: var(--semantic-surface-overlay);
   border-color: var(--semantic-border-strong);
 }
 
-.ui-carousel__control:disabled {
+.fui-carousel__control:disabled {
   cursor: not-allowed;
   opacity: 0.55;
 }
 
-.ui-carousel__control--previous {
+.fui-carousel__control--previous {
   top: 50%;
   left: var(--primitive-spacing-3);
   transform: translateY(-50%);
 }
 
-.ui-carousel__control--next {
+.fui-carousel__control--next {
   top: 50%;
   right: var(--primitive-spacing-3);
   transform: translateY(-50%);
 }
 
-.ui-carousel__autoplay-toggle {
+.fui-carousel__autoplay-toggle {
   right: var(--primitive-spacing-3);
   bottom: var(--primitive-spacing-3);
   padding: 0 var(--primitive-spacing-3);
 }
 
-.ui-carousel__status {
+.fui-carousel__status {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -107,19 +107,19 @@
   border: 0;
 }
 
-.ui-carousel__indicators,
-.ui-carousel__thumbnails {
+.fui-carousel__indicators,
+.fui-carousel__thumbnails {
   display: flex;
   flex-wrap: wrap;
   gap: var(--primitive-spacing-2);
   align-items: center;
 }
 
-.ui-carousel__indicators {
+.fui-carousel__indicators {
   justify-content: center;
 }
 
-.ui-carousel__indicator {
+.fui-carousel__indicator {
   width: 0.875rem;
   height: 0.875rem;
   padding: 0;
@@ -136,12 +136,12 @@
       var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
-.ui-carousel__indicator--active {
+.fui-carousel__indicator--active {
   background: var(--semantic-brand-primary);
   border-color: var(--semantic-brand-primary);
 }
 
-.ui-carousel__thumbnail {
+.fui-carousel__thumbnail {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -163,34 +163,34 @@
       var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
-.ui-carousel__thumbnail--active {
+.fui-carousel__thumbnail--active {
   border-color: var(--semantic-brand-primary);
   color: var(--semantic-text-primary);
 }
 
-.ui-carousel__thumbnail img {
+.fui-carousel__thumbnail img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 
-.ui-carousel__control:focus-visible,
-.ui-carousel__autoplay-toggle:focus-visible,
-.ui-carousel__indicator:focus-visible,
-.ui-carousel__thumbnail:focus-visible {
+.fui-carousel__control:focus-visible,
+.fui-carousel__autoplay-toggle:focus-visible,
+.fui-carousel__indicator:focus-visible,
+.fui-carousel__thumbnail:focus-visible {
   outline: 2px solid var(--semantic-border-focus);
   outline-offset: 2px;
 }
 
-:host(.ui-carousel--sm) .ui-carousel__control,
-:host(.ui-carousel--sm) .ui-carousel__autoplay-toggle {
+:host(.fui-carousel--sm) .fui-carousel__control,
+:host(.fui-carousel--sm) .fui-carousel__autoplay-toggle {
   min-width: 2.5rem;
   min-height: 2.5rem;
 }
 
-:host(.ui-carousel--lg) .ui-carousel__control,
-:host(.ui-carousel--lg) .ui-carousel__autoplay-toggle {
+:host(.fui-carousel--lg) .fui-carousel__control,
+:host(.fui-carousel--lg) .fui-carousel__autoplay-toggle {
   min-width: 3rem;
   min-height: 3rem;
 }
@@ -200,15 +200,15 @@
     gap: var(--primitive-spacing-3);
   }
 
-  .ui-carousel__viewport {
+  .fui-carousel__viewport {
     min-height: 13rem;
   }
 
-  .ui-carousel__track {
+  .fui-carousel__track {
     min-height: 13rem;
   }
 
-  .ui-carousel__thumbnails {
+  .fui-carousel__thumbnails {
     overflow-x: auto;
     flex-wrap: nowrap;
     padding-bottom: var(--primitive-spacing-1);
@@ -216,11 +216,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ui-carousel__track,
-  .ui-carousel__control,
-  .ui-carousel__autoplay-toggle,
-  .ui-carousel__indicator,
-  .ui-carousel__thumbnail {
+  .fui-carousel__track,
+  .fui-carousel__control,
+  .fui-carousel__autoplay-toggle,
+  .fui-carousel__indicator,
+  .fui-carousel__thumbnail {
     transition: none;
   }
 }

@@ -1,11 +1,11 @@
 <nav [ngClass]="paginationClasses()" aria-label="Pagination">
-  <ul class="ui-pagination-list">
+  <ul class="fui-pagination-list">
     <!-- First button -->
     @if (showFirstLast()) {
       <li>
         <button
           type="button"
-          class="ui-pagination-button ui-pagination-button--nav"
+          class="fui-pagination-button fui-pagination-button--nav"
           [disabled]="disabled() || !hasPrevious()"
           [attr.aria-label]="'Go to first page'"
           (click)="goToFirst()"
@@ -21,7 +21,7 @@
     <li>
       <button
         type="button"
-        class="ui-pagination-button ui-pagination-button--nav"
+        class="fui-pagination-button fui-pagination-button--nav"
         [disabled]="disabled() || !hasPrevious()"
         [attr.aria-label]="'Go to previous page'"
         (click)="goToPrevious()"
@@ -36,12 +36,12 @@
     @for (page of displayedPages(); track page) {
       <li>
         @if (isEllipsis(page)) {
-          <span class="ui-pagination-ellipsis" aria-hidden="true">...</span>
+          <span class="fui-pagination-ellipsis" aria-hidden="true">...</span>
         } @else {
           <button
             type="button"
-            class="ui-pagination-button ui-pagination-button--page"
-            [class.ui-pagination-button--active]="isCurrentPage(page)"
+            class="fui-pagination-button fui-pagination-button--page"
+            [class.fui-pagination-button--active]="isCurrentPage(page)"
             [disabled]="disabled()"
             [attr.aria-label]="'Go to page ' + page"
             [attr.aria-current]="isCurrentPage(page) ? 'page' : null"
@@ -57,7 +57,7 @@
     <li>
       <button
         type="button"
-        class="ui-pagination-button ui-pagination-button--nav"
+        class="fui-pagination-button fui-pagination-button--nav"
         [disabled]="disabled() || !hasNext()"
         [attr.aria-label]="'Go to next page'"
         (click)="goToNext()"
@@ -73,7 +73,7 @@
       <li>
         <button
           type="button"
-          class="ui-pagination-button ui-pagination-button--nav"
+          class="fui-pagination-button fui-pagination-button--nav"
           [disabled]="disabled() || !hasNext()"
           [attr.aria-label]="'Go to last page'"
           (click)="goToLast()"
@@ -88,13 +88,13 @@
 
   <!-- Page size selector -->
   @if (showPageSize()) {
-    <div class="ui-pagination-page-size">
-      <label for="pagination-page-size" class="ui-pagination-page-size-label">
+    <div class="fui-pagination-page-size">
+      <label for="pagination-page-size" class="fui-pagination-page-size-label">
         Items per page:
       </label>
       <select
         id="pagination-page-size"
-        class="ui-pagination-page-size-select"
+        class="fui-pagination-page-size-select"
         [value]="internalPageSize()"
         [disabled]="disabled()"
         (change)="handlePageSizeChange(+$any($event.target).value)"

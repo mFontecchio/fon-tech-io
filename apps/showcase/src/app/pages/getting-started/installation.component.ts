@@ -21,32 +21,32 @@ import { CardComponent, CodeBlockComponent } from '@ui-suite/components';
       </p>
 
       <div class="content-grid">
-        <ui-card>
+        <fui-card>
           <h2>Develop In This Workspace</h2>
           <p>Install dependencies once, then run the showcase and theme builder apps locally.</p>
-          <ui-code-block [code]="workspaceCommands" language="bash" [title]="'Workspace Commands'" />
-        </ui-card>
+          <fui-code-block [code]="workspaceCommands" language="bash" [title]="'Workspace Commands'" />
+        </fui-card>
 
-        <ui-card>
+        <fui-card>
           <h2>Consume In Another Angular App</h2>
           <p>Install the component, theming, and shared packages together so tokens and utilities stay aligned.</p>
-          <ui-code-block [code]="consumerInstall" language="bash" [title]="'Package Installation'" />
-        </ui-card>
+          <fui-code-block [code]="consumerInstall" language="bash" [title]="'Package Installation'" />
+        </fui-card>
       </div>
 
-      <ui-card>
+      <fui-card>
         <h2>Recommended Project Setup</h2>
         <ul>
           <li>Use Angular 20 standalone components and import UI Suite components directly where they are used.</li>
           <li>Keep theming enabled at the application shell so family and mode changes apply consistently.</li>
           <li>Use pnpm in this repository to match the lockfile and Nx workspace tooling.</li>
         </ul>
-      </ui-card>
+      </fui-card>
 
-      <ui-card>
+      <fui-card>
         <h2>What To Run Next</h2>
-        <ui-code-block [code]="nextSteps" language="typescript" [title]="'Next Steps'" />
-      </ui-card>
+        <fui-code-block [code]="nextSteps" language="typescript" [title]="'Next Steps'" />
+      </fui-card>
     </div>
   `,
   styles: [

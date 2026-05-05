@@ -25,44 +25,44 @@ import { getAllComponentMetadata } from '../../data/component-metadata';
         </p>
         <div class="hero-actions">
           <a routerLink="/getting-started/installation">
-            <ui-button variant="filled" size="lg"> Get Started </ui-button>
+            <fui-button variant="filled" size="lg"> Get Started </fui-button>
           </a>
           <a routerLink="/components/form/button">
-            <ui-button variant="outlined" size="lg"> Browse Components </ui-button>
+            <fui-button variant="outlined" size="lg"> Browse Components </fui-button>
           </a>
         </div>
       </section>
 
       <section class="features" aria-label="Features">
-        <ui-card class="feature-card">
+        <fui-card class="feature-card">
           <h3>Fully Themable</h3>
           <p>Customize every aspect with our 3-tier design token system</p>
-        </ui-card>
+        </fui-card>
 
-        <ui-card class="feature-card">
+        <fui-card class="feature-card">
           <h3>Accessible</h3>
           <p>WCAG 2.1 AA compliant with full keyboard navigation</p>
-        </ui-card>
+        </fui-card>
 
-        <ui-card class="feature-card">
+        <fui-card class="feature-card">
           <h3>Modern Stack</h3>
           <p>Built with Angular 20+, signals, and standalone components</p>
-        </ui-card>
+        </fui-card>
 
-        <ui-card class="feature-card">
+        <fui-card class="feature-card">
           <h3>{{ componentCount }} Components</h3>
           <p>Forms, layouts, data display, feedback, and navigation</p>
-        </ui-card>
+        </fui-card>
 
-        <ui-card class="feature-card">
+        <fui-card class="feature-card">
           <h3>Developer Friendly</h3>
           <p>Comprehensive API docs and interactive examples</p>
-        </ui-card>
+        </fui-card>
 
-        <ui-card class="feature-card">
+        <fui-card class="feature-card">
           <h3>Dark Mode</h3>
           <p>Built-in dark mode with smooth transitions</p>
-        </ui-card>
+        </fui-card>
       </section>
 
       <section class="quick-links" aria-label="Quick links">

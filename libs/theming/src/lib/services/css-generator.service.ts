@@ -41,7 +41,7 @@ export class CssGeneratorService {
    */
   applyTheme(theme: Theme): void {
     const cssText = this.generateCssVariables(theme);
-    const styleId = 'ui-suite-theme';
+    const styleId = 'fui-suite-theme';
     let styleEl = this.document.getElementById(styleId) as HTMLStyleElement | null;
 
     if (!styleEl) {

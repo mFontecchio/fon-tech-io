@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Grid Component
  *
  * A responsive grid layout component with customizable columns and gaps.
@@ -11,15 +11,15 @@ export type GridColumns = 1 | 2 | 3 | 4 | 6 | 12 | 'auto';
 export type GridGap = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12;
 
 @Component({
-  selector: 'ui-grid',
+  selector: 'fui-grid',
   imports: [],
   templateUrl: './grid.component.html',
   styleUrl: './grid.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class]': 'hostClasses()',
-    '[style.--ui-grid-columns]': 'columnsValue()',
-    '[style.--ui-grid-gap]': 'gapValue()',
+    '[style.--fui-grid-columns]': 'columnsValue()',
+    '[style.--fui-grid-gap]': 'gapValue()',
   },
 })
 export class GridComponent {
@@ -67,10 +67,10 @@ export class GridComponent {
    * Computed CSS classes
    */
   protected readonly gridClasses = computed(() => ({
-    'ui-grid': true,
-    'ui-grid--full-width': this.fullWidth(),
-    [`ui-grid--cols-md-${this.columnsMd()}`]: !!this.columnsMd(),
-    [`ui-grid--cols-lg-${this.columnsLg()}`]: !!this.columnsLg(),
+    'fui-grid': true,
+    'fui-grid--full-width': this.fullWidth(),
+    [`fui-grid--cols-md-${this.columnsMd()}`]: !!this.columnsMd(),
+    [`fui-grid--cols-lg-${this.columnsLg()}`]: !!this.columnsLg(),
   }));
 
   /**

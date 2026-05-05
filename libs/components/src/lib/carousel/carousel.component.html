@@ -1,20 +1,20 @@
-<div class="ui-carousel__viewport">
+<div class="fui-carousel__viewport">
   <div
     #carouselTrack
-    class="ui-carousel__track"
+    class="fui-carousel__track"
     (pointerdown)="handlePointerDown($event)"
   >
     <ng-content />
   </div>
 
-  <div class="ui-carousel__status" [attr.aria-live]="liveRegionMode()" aria-atomic="true">
+  <div class="fui-carousel__status" [attr.aria-live]="liveRegionMode()" aria-atomic="true">
     {{ statusMessage() }}
   </div>
 
   @if (showControls() && slideCount() > 1) {
     <button
       type="button"
-      class="ui-carousel__control ui-carousel__control--previous"
+      class="fui-carousel__control fui-carousel__control--previous"
       [disabled]="!canGoPrevious()"
       [attr.aria-label]="'Previous slide'"
       (click)="goToPrevious()"
@@ -24,7 +24,7 @@
 
     <button
       type="button"
-      class="ui-carousel__control ui-carousel__control--next"
+      class="fui-carousel__control fui-carousel__control--next"
       [disabled]="!canGoNext()"
       [attr.aria-label]="'Next slide'"
       (click)="goToNext()"
@@ -36,7 +36,7 @@
   @if (autoplay() && slideCount() > 1) {
     <button
       type="button"
-      class="ui-carousel__autoplay-toggle"
+      class="fui-carousel__autoplay-toggle"
       [attr.aria-label]="isPlaying() ? 'Pause automatic slide rotation' : 'Resume automatic slide rotation'"
       [attr.aria-pressed]="!isPlaying()"
       (click)="toggleAutoplay()"
@@ -47,12 +47,12 @@
 </div>
 
 @if (showIndicators() && slideCount() > 1) {
-  <div class="ui-carousel__indicators" role="group" aria-label="Choose a slide">
+  <div class="fui-carousel__indicators" role="group" aria-label="Choose a slide">
     @for (slide of slides(); track $index) {
       <button
         type="button"
-        class="ui-carousel__indicator"
-        [class.ui-carousel__indicator--active]="$index === currentIndex()"
+        class="fui-carousel__indicator"
+        [class.fui-carousel__indicator--active]="$index === currentIndex()"
         [attr.aria-label]="'Go to slide ' + ($index + 1)"
         [attr.aria-current]="$index === currentIndex() ? 'true' : null"
         (click)="goTo($index)"
@@ -62,12 +62,12 @@
 }
 
 @if (showThumbnails() && slideCount() > 1) {
-  <div class="ui-carousel__thumbnails" role="group" aria-label="Slide thumbnails">
+  <div class="fui-carousel__thumbnails" role="group" aria-label="Slide thumbnails">
     @for (slide of slides(); track $index) {
       <button
         type="button"
-        class="ui-carousel__thumbnail"
-        [class.ui-carousel__thumbnail--active]="$index === currentIndex()"
+        class="fui-carousel__thumbnail"
+        [class.fui-carousel__thumbnail--active]="$index === currentIndex()"
         [attr.aria-label]="slide.label() ? 'Go to ' + slide.label() : 'Go to slide ' + ($index + 1)"
         [attr.aria-current]="$index === currentIndex() ? 'true' : null"
         (click)="goTo($index)"

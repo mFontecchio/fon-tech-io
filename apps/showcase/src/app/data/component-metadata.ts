@@ -15,7 +15,7 @@ const BUTTON_METADATA: ComponentMetadata = {
   category: 'form',
   description:
     'A themable button component with multiple variants, sizes, and states. Supports loading states and full accessibility.',
-  selector: 'ui-button',
+  selector: 'fui-button',
   inputs: [
     {
       name: 'variant',
@@ -76,36 +76,36 @@ const BUTTON_METADATA: ComponentMetadata = {
     {
       title: 'Basic Usage',
       description: 'Simple button with default filled variant',
-      template: `<ui-button>Click Me</ui-button>`,
+      template: `<fui-button>Click Me</fui-button>`,
     },
     {
       title: 'Button Variants',
       description: 'Three visual styles: filled (solid), outlined (border), and text (minimal)',
-      template: `<ui-button variant="filled">Filled</ui-button>
-<ui-button variant="outlined">Outlined</ui-button>
-<ui-button variant="text">Text</ui-button>`,
+      template: `<fui-button variant="filled">Filled</fui-button>
+<fui-button variant="outlined">Outlined</fui-button>
+<fui-button variant="text">Text</fui-button>`,
     },
     {
       title: 'Button Sizes',
       description: 'Three size options to fit different layouts',
-      template: `<ui-button size="sm">Small</ui-button>
-<ui-button size="md">Medium</ui-button>
-<ui-button size="lg">Large</ui-button>`,
+      template: `<fui-button size="sm">Small</fui-button>
+<fui-button size="md">Medium</fui-button>
+<fui-button size="lg">Large</fui-button>`,
     },
     {
       title: 'Disabled State',
       description: 'Disabled buttons prevent interaction',
-      template: `<ui-button [disabled]="true">Disabled Button</ui-button>`,
+      template: `<fui-button [disabled]="true">Disabled Button</fui-button>`,
     },
     {
       title: 'Loading State',
       description: 'Display loading spinner with disabled interaction',
-      template: `<ui-button [loading]="true">Loading...</ui-button>`,
+      template: `<fui-button [loading]="true">Loading...</fui-button>`,
     },
     {
       title: 'Full Width',
       description: 'Button that spans the full width of its container',
-      template: `<ui-button [fullWidth]="true">Full Width Button</ui-button>`,
+      template: `<fui-button [fullWidth]="true">Full Width Button</fui-button>`,
     },
   ],
   accessibility: {
@@ -139,7 +139,7 @@ const INPUT_METADATA: ComponentMetadata = {
   category: 'form',
   description:
     'A themable text input component with validation states, projected affixes, native validity feedback, and optional password reveal support.',
-  selector: 'ui-input',
+  selector: 'fui-input',
   inputs: [
     {
       name: 'type',
@@ -215,20 +215,20 @@ const INPUT_METADATA: ComponentMetadata = {
     {
       title: 'Basic Input',
       description: 'Simple text input with label',
-      template: `<ui-input label="Email" placeholder="Enter your email" />`,
+      template: `<fui-input label="Email" placeholder="Enter your email" />`,
     },
     {
       title: 'Input Types',
       description: 'Different input types for various data',
-      template: `<ui-input type="email" label="Email" placeholder="email@example.com" />
-<ui-input type="password" label="Password" placeholder="Enter password" />
-<ui-input type="number" label="Age" placeholder="Enter age" />
-<ui-input type="tel" label="Phone" placeholder="(123) 456-7890" />`,
+      template: `<fui-input type="email" label="Email" placeholder="email@example.com" />
+<fui-input type="password" label="Password" placeholder="Enter password" />
+<fui-input type="number" label="Age" placeholder="Enter age" />
+<fui-input type="tel" label="Phone" placeholder="(123) 456-7890" />`,
     },
     {
       title: 'Input with Prefix Icon',
       description: 'Add visual context with a prefix icon',
-      template: `<ui-input 
+      template: `<fui-input 
   label="Search" 
   placeholder="Search..." 
   prefixIcon="🔍" 
@@ -237,7 +237,7 @@ const INPUT_METADATA: ComponentMetadata = {
     {
       title: 'Input with Suffix Icon',
       description: 'Add actions or indicators with a suffix icon',
-      template: `<ui-input 
+      template: `<fui-input 
   label="Password" 
   type="password"
   placeholder="Enter password" 
@@ -247,15 +247,15 @@ const INPUT_METADATA: ComponentMetadata = {
     {
       title: 'Input with Custom Affixes',
       description: 'Project custom text, icons, or other content into the prefix and suffix areas',
-      template: `<ui-input label="Website" placeholder="your-site">
+      template: `<fui-input label="Website" placeholder="your-site">
   <span prefix>https://</span>
   <span suffix>.com</span>
-</ui-input>`,
+</fui-input>`,
     },
     {
       title: 'Password Reveal Toggle',
       description: 'Opt into a built-in password visibility toggle',
-      template: `<ui-input 
+      template: `<fui-input 
   label="Password" 
   type="password"
   placeholder="Enter password"
@@ -265,7 +265,7 @@ const INPUT_METADATA: ComponentMetadata = {
     {
       title: 'Input with Error',
       description: 'Display validation errors',
-      template: `<ui-input 
+      template: `<fui-input 
   label="Email" 
   value="invalid-email"
   errorMessage="Please enter a valid email address"
@@ -274,7 +274,7 @@ const INPUT_METADATA: ComponentMetadata = {
     {
       title: 'Input with Helper Text',
       description: 'Provide additional guidance',
-      template: `<ui-input 
+      template: `<fui-input 
   label="Username" 
   placeholder="Enter username"
   helperText="Must be 3-20 characters, letters and numbers only"
@@ -283,7 +283,7 @@ const INPUT_METADATA: ComponentMetadata = {
     {
       title: 'Disabled Input',
       description: 'Non-editable input field',
-      template: `<ui-input 
+      template: `<fui-input 
   label="Email" 
   value="user@example.com"
   [disabled]="true"
@@ -292,7 +292,7 @@ const INPUT_METADATA: ComponentMetadata = {
     {
       title: 'Required Input',
       description: 'Mark input as required',
-      template: `<ui-input 
+      template: `<fui-input 
   label="Email" 
   placeholder="Enter your email"
   [required]="true"
@@ -322,7 +322,7 @@ const TEXTAREA_METADATA: ComponentMetadata = {
   name: 'Textarea',
   category: 'form',
   description: 'A multi-line text input component with auto-resize and character counter support.',
-  selector: 'ui-textarea',
+  selector: 'fui-textarea',
   inputs: [
     { name: 'label', type: 'string', description: 'Label text displayed above the textarea' },
     { name: 'placeholder', type: 'string', description: 'Placeholder text shown when empty' },
@@ -372,7 +372,7 @@ const TEXTAREA_METADATA: ComponentMetadata = {
     {
       title: 'Basic Textarea',
       description: 'Simple multi-line text input',
-      template: `<ui-textarea 
+      template: `<fui-textarea 
   label="Description" 
   placeholder="Enter description..." 
 />`,
@@ -380,7 +380,7 @@ const TEXTAREA_METADATA: ComponentMetadata = {
     {
       title: 'Textarea with Rows',
       description: 'Control visible height with row count',
-      template: `<ui-textarea 
+      template: `<fui-textarea 
   label="Comments" 
   placeholder="Enter your comments..." 
   [rows]="5" 
@@ -389,7 +389,7 @@ const TEXTAREA_METADATA: ComponentMetadata = {
     {
       title: 'Textarea with Character Limit',
       description: 'Maximum length with character counter',
-      template: `<ui-textarea 
+      template: `<fui-textarea 
   label="Bio" 
   placeholder="Tell us about yourself..." 
   [maxLength]="200"
@@ -399,7 +399,7 @@ const TEXTAREA_METADATA: ComponentMetadata = {
     {
       title: 'Textarea with Helper Text',
       description: 'Guidance text below the input',
-      template: `<ui-textarea 
+      template: `<fui-textarea 
   label="Feedback" 
   placeholder="Share your thoughts..." 
   helperText="Your feedback helps us improve." 
@@ -408,7 +408,7 @@ const TEXTAREA_METADATA: ComponentMetadata = {
     {
       title: 'Textarea with Error',
       description: 'Error state with validation message',
-      template: `<ui-textarea 
+      template: `<fui-textarea 
   label="Message" 
   placeholder="Enter message..." 
   errorMessage="Message is required" 
@@ -417,7 +417,7 @@ const TEXTAREA_METADATA: ComponentMetadata = {
     {
       title: 'Required Textarea',
       description: 'Required field indicator',
-      template: `<ui-textarea 
+      template: `<fui-textarea 
   label="Required Field" 
   placeholder="This field is required..." 
   [required]="true" 
@@ -426,7 +426,7 @@ const TEXTAREA_METADATA: ComponentMetadata = {
     {
       title: 'Disabled Textarea',
       description: 'Non-editable state',
-      template: `<ui-textarea 
+      template: `<fui-textarea 
   label="Readonly Content" 
   value="This content cannot be edited." 
   [disabled]="true" 
@@ -463,7 +463,7 @@ const CHECKBOX_METADATA: ComponentMetadata = {
   name: 'Checkbox',
   category: 'form',
   description: 'A themable checkbox component with label support and indeterminate state.',
-  selector: 'ui-checkbox',
+  selector: 'fui-checkbox',
   inputs: [
     { name: 'checked', type: 'boolean', description: 'Whether checked', defaultValue: 'false' },
     { name: 'disabled', type: 'boolean', description: 'Whether disabled', defaultValue: 'false' },
@@ -490,27 +490,27 @@ const CHECKBOX_METADATA: ComponentMetadata = {
     {
       title: 'Basic Checkbox',
       description: 'Simple checkbox with label text',
-      template: `<ui-checkbox label="Accept terms and conditions" />`,
+      template: `<fui-checkbox label="Accept terms and conditions" />`,
     },
     {
       title: 'Checkbox States',
       description: 'Checked, unchecked, and indeterminate states',
-      template: `<ui-checkbox label="Unchecked" [checked]="false" />
-<ui-checkbox label="Checked" [checked]="true" />
-<ui-checkbox label="Indeterminate" [indeterminate]="true" />`,
+      template: `<fui-checkbox label="Unchecked" [checked]="false" />
+<fui-checkbox label="Checked" [checked]="true" />
+<fui-checkbox label="Indeterminate" [indeterminate]="true" />`,
     },
     {
       title: 'Disabled Checkbox',
       description: 'Checkbox in disabled state',
-      template: `<ui-checkbox label="Disabled unchecked" [disabled]="true" />
-<ui-checkbox label="Disabled checked" [checked]="true" [disabled]="true" />`,
+      template: `<fui-checkbox label="Disabled unchecked" [disabled]="true" />
+<fui-checkbox label="Disabled checked" [checked]="true" [disabled]="true" />`,
     },
     {
       title: 'Checkbox Group',
       description: 'Multiple checkboxes for multi-selection',
-      template: `<ui-checkbox label="JavaScript" />
-<ui-checkbox label="TypeScript" />
-<ui-checkbox label="Angular" />`,
+      template: `<fui-checkbox label="JavaScript" />
+<fui-checkbox label="TypeScript" />
+<fui-checkbox label="Angular" />`,
     },
   ],
   accessibility: {
@@ -542,7 +542,7 @@ const RADIO_METADATA: ComponentMetadata = {
   category: 'form',
   description:
     'A themable radio button component for mutually exclusive selections using Angular model binding for group state.',
-  selector: 'ui-radio',
+  selector: 'fui-radio',
   inputs: [
     {
       name: 'modelValue',
@@ -620,9 +620,9 @@ const RADIO_METADATA: ComponentMetadata = {
     {
       title: 'Basic Radio Group',
       description: 'Simple radio group for single selection using model binding',
-      template: `<ui-radio name="plan" value="free" label="Free Plan" [(modelValue)]="selectedPlan" />
-<ui-radio name="plan" value="pro" label="Pro Plan" [(modelValue)]="selectedPlan" />
-<ui-radio name="plan" value="enterprise" label="Enterprise Plan" [(modelValue)]="selectedPlan" />`,
+      template: `<fui-radio name="plan" value="free" label="Free Plan" [(modelValue)]="selectedPlan" />
+<fui-radio name="plan" value="pro" label="Pro Plan" [(modelValue)]="selectedPlan" />
+<fui-radio name="plan" value="enterprise" label="Enterprise Plan" [(modelValue)]="selectedPlan" />`,
       typescript: `export class MyComponent {
   selectedPlan = signal<string | undefined>(undefined);
 }`,
@@ -630,9 +630,9 @@ const RADIO_METADATA: ComponentMetadata = {
     {
       title: 'Radio with Pre-selection',
       description: 'Radio group with default selection',
-      template: `<ui-radio name="size" value="sm" label="Small" [(modelValue)]="selectedSize" />
-<ui-radio name="size" value="md" label="Medium" [(modelValue)]="selectedSize" />
-<ui-radio name="size" value="lg" label="Large" [(modelValue)]="selectedSize" />`,
+      template: `<fui-radio name="size" value="sm" label="Small" [(modelValue)]="selectedSize" />
+<fui-radio name="size" value="md" label="Medium" [(modelValue)]="selectedSize" />
+<fui-radio name="size" value="lg" label="Large" [(modelValue)]="selectedSize" />`,
       typescript: `export class MyComponent {
   selectedSize = signal<string>('md'); // Pre-selected
 }`,
@@ -640,9 +640,9 @@ const RADIO_METADATA: ComponentMetadata = {
     {
       title: 'Disabled Radio Options',
       description: 'Radio group with disabled options',
-      template: `<ui-radio name="shipping" value="standard" label="Standard (5-7 days)" [(modelValue)]="selectedShipping" />
-<ui-radio name="shipping" value="express" label="Express (2-3 days)" [(modelValue)]="selectedShipping" />
-<ui-radio name="shipping" value="overnight" label="Overnight" [disabled]="true" [(modelValue)]="selectedShipping" />`,
+      template: `<fui-radio name="shipping" value="standard" label="Standard (5-7 days)" [(modelValue)]="selectedShipping" />
+<fui-radio name="shipping" value="express" label="Express (2-3 days)" [(modelValue)]="selectedShipping" />
+<fui-radio name="shipping" value="overnight" label="Overnight" [disabled]="true" [(modelValue)]="selectedShipping" />`,
       typescript: `export class MyComponent {
   selectedShipping = signal<string | undefined>(undefined);
 }`,
@@ -650,16 +650,16 @@ const RADIO_METADATA: ComponentMetadata = {
     {
       title: 'Radio States',
       description: 'Different radio button states',
-      template: `<ui-radio name="state1" value="unchecked" label="Unchecked" />
-<ui-radio name="state2" value="disabled-unchecked" label="Disabled Unchecked" [disabled]="true" />
-<ui-radio name="state3" value="disabled-checked" label="Disabled" [disabled]="true" />`,
+      template: `<fui-radio name="state1" value="unchecked" label="Unchecked" />
+<fui-radio name="state2" value="disabled-unchecked" label="Disabled Unchecked" [disabled]="true" />
+<fui-radio name="state3" value="disabled-checked" label="Disabled" [disabled]="true" />`,
     },
     {
       title: 'Payment Method Selection',
       description: 'Practical radio group example with pre-selection',
-      template: `<ui-radio name="payment" value="card" label="Credit/Debit Card" [(modelValue)]="selectedPayment" />
-<ui-radio name="payment" value="paypal" label="PayPal" [(modelValue)]="selectedPayment" />
-<ui-radio name="payment" value="bank" label="Bank Transfer" [(modelValue)]="selectedPayment" />`,
+      template: `<fui-radio name="payment" value="card" label="Credit/Debit Card" [(modelValue)]="selectedPayment" />
+<fui-radio name="payment" value="paypal" label="PayPal" [(modelValue)]="selectedPayment" />
+<fui-radio name="payment" value="bank" label="Bank Transfer" [(modelValue)]="selectedPayment" />`,
       typescript: `export class MyComponent {
   selectedPayment = signal<string>('card'); // Pre-selected card
 }`,
@@ -696,7 +696,7 @@ const SWITCH_METADATA: ComponentMetadata = {
   name: 'Switch',
   category: 'form',
   description: 'A toggle switch component for binary on/off states.',
-  selector: 'ui-switch',
+  selector: 'fui-switch',
   inputs: [
     {
       name: 'checked',
@@ -729,26 +729,26 @@ const SWITCH_METADATA: ComponentMetadata = {
     {
       title: 'Basic Switch',
       description: 'Toggle switch for binary on/off settings',
-      template: `<ui-switch label="Enable notifications" />`,
+      template: `<fui-switch label="Enable notifications" />`,
     },
     {
       title: 'Switch States',
       description: 'On and off states',
-      template: `<ui-switch label="Off" [checked]="false" />
-<ui-switch label="On" [checked]="true" />`,
+      template: `<fui-switch label="Off" [checked]="false" />
+<fui-switch label="On" [checked]="true" />`,
     },
     {
       title: 'Switch Sizes',
       description: 'Three size options',
-      template: `<ui-switch label="Small" size="sm" />
-<ui-switch label="Medium" size="md" />
-<ui-switch label="Large" size="lg" />`,
+      template: `<fui-switch label="Small" size="sm" />
+<fui-switch label="Medium" size="md" />
+<fui-switch label="Large" size="lg" />`,
     },
     {
       title: 'Disabled Switch',
       description: 'Switch in disabled state',
-      template: `<ui-switch label="Disabled off" [disabled]="true" />
-<ui-switch label="Disabled on" [checked]="true" [disabled]="true" />`,
+      template: `<fui-switch label="Disabled off" [disabled]="true" />
+<fui-switch label="Disabled on" [checked]="true" [disabled]="true" />`,
     },
   ],
   accessibility: {
@@ -779,7 +779,7 @@ const SELECT_METADATA: ComponentMetadata = {
   name: 'Select',
   category: 'form',
   description: 'A native HTML select component with enhanced styling, grouped options, helper text, and validation messaging.',
-  selector: 'ui-select',
+  selector: 'fui-select',
   inputs: [
     { name: 'label', type: 'string', description: 'Label text displayed above select' },
     { name: 'placeholder', type: 'string', description: 'Placeholder text when no selection' },
@@ -850,7 +850,7 @@ const SELECT_METADATA: ComponentMetadata = {
   { value: 'uk', label: 'United Kingdom' },
   { value: 'ca', label: 'Canada' }
 ];`,
-      template: `<ui-select 
+      template: `<fui-select 
   label="Country" 
   [options]="countries" 
   placeholder="Select country" 
@@ -864,7 +864,7 @@ const SELECT_METADATA: ComponentMetadata = {
   { value: 'uk', label: 'United Kingdom' },
   { value: 'ca', label: 'Canada' }
 ];`,
-      template: `<ui-select 
+      template: `<fui-select 
   label="Country" 
   [options]="countries" 
   value="us" 
@@ -878,7 +878,7 @@ const SELECT_METADATA: ComponentMetadata = {
   { value: 'medium', label: 'Medium' },
   { value: 'high', label: 'High' }
 ];`,
-      template: `<ui-select 
+      template: `<fui-select 
   label="Priority" 
   [options]="priorities" 
   [required]="true" 
@@ -893,7 +893,7 @@ const SELECT_METADATA: ComponentMetadata = {
   { value: 'uk', label: 'United Kingdom' },
   { value: 'ca', label: 'Canada' }
 ];`,
-      template: `<ui-select 
+      template: `<fui-select 
   label="Country" 
   [options]="countries" 
   placeholder="Select country" 
@@ -907,7 +907,7 @@ const SELECT_METADATA: ComponentMetadata = {
   { value: 'us', label: 'United States' },
   { value: 'uk', label: 'United Kingdom' }
 ];`,
-      template: `<ui-select 
+      template: `<fui-select 
   label="Country" 
   [options]="countries" 
   value="us" 
@@ -949,7 +949,7 @@ const MULTI_SELECT_METADATA: ComponentMetadata = {
   name: 'Multi-Select',
   category: 'form',
   description: 'A multi-selection dropdown with chips for selected values.',
-  selector: 'ui-multi-select',
+  selector: 'fui-multi-select',
   inputs: [
     { name: 'label', type: 'string', description: 'Label text displayed above select' },
     { name: 'placeholder', type: 'string', description: 'Placeholder text when no selection' },
@@ -1011,7 +1011,7 @@ const MULTI_SELECT_METADATA: ComponentMetadata = {
   { value: 'angular', label: 'Angular' },
   { value: 'react', label: 'React' }
 ];`,
-      template: `<ui-multi-select 
+      template: `<fui-multi-select 
   label="Skills" 
   [options]="skills" 
   placeholder="Select your skills" 
@@ -1025,7 +1025,7 @@ const MULTI_SELECT_METADATA: ComponentMetadata = {
   { value: 'ts', label: 'TypeScript' },
   { value: 'angular', label: 'Angular' }
 ];`,
-      template: `<ui-multi-select 
+      template: `<fui-multi-select 
   label="Skills" 
   [options]="skills" 
   [value]="['js', 'ts']" 
@@ -1038,7 +1038,7 @@ const MULTI_SELECT_METADATA: ComponentMetadata = {
   { value: 'js', label: 'JavaScript' },
   { value: 'ts', label: 'TypeScript' }
 ];`,
-      template: `<ui-multi-select 
+      template: `<fui-multi-select 
   label="Skills" 
   [options]="skills" 
   [value]="['js']" 
@@ -1075,7 +1075,7 @@ const SLIDER_METADATA: ComponentMetadata = {
   name: 'Slider',
   category: 'form',
   description: 'A range slider component with single or dual handles for numeric value selection.',
-  selector: 'ui-slider',
+  selector: 'fui-slider',
   inputs: [
     { name: 'value', type: 'number', description: 'Current slider value', defaultValue: '0' },
     { name: 'valueEnd', type: 'number', description: 'End value for range mode (dual handles)' },
@@ -1107,7 +1107,7 @@ const SLIDER_METADATA: ComponentMetadata = {
     {
       title: 'Basic Slider',
       description: 'Simple single-handle slider',
-      template: `<ui-slider 
+      template: `<fui-slider 
   label="Volume" 
   [min]="0" 
   [max]="100" 
@@ -1117,7 +1117,7 @@ const SLIDER_METADATA: ComponentMetadata = {
     {
       title: 'Slider with Steps',
       description: 'Slider with defined step increments',
-      template: `<ui-slider 
+      template: `<fui-slider 
   label="Rating" 
   [min]="0" 
   [max]="10" 
@@ -1128,7 +1128,7 @@ const SLIDER_METADATA: ComponentMetadata = {
     {
       title: 'Range Slider',
       description: 'Dual-handle slider for range selection',
-      template: `<ui-slider 
+      template: `<fui-slider 
   label="Price Range" 
   [min]="0" 
   [max]="1000" 
@@ -1139,7 +1139,7 @@ const SLIDER_METADATA: ComponentMetadata = {
     {
       title: 'Disabled Slider',
       description: 'Non-interactive slider state',
-      template: `<ui-slider 
+      template: `<fui-slider 
   label="Volume" 
   [min]="0" 
   [max]="100" 
@@ -1183,7 +1183,7 @@ const DATEPICKER_METADATA: ComponentMetadata = {
   category: 'form',
   description:
     'A native HTML date input with a themed trigger button, helper text, and support for min/max validation in ISO date format.',
-  selector: 'ui-date-picker',
+  selector: 'fui-date-picker',
   inputs: [
     { name: 'label', type: 'string', description: 'Label text displayed above the date picker' },
     {
@@ -1235,7 +1235,7 @@ const DATEPICKER_METADATA: ComponentMetadata = {
     {
       title: 'Basic Date Picker',
       description: 'Simple date picker with label and placeholder',
-      template: `<ui-date-picker 
+      template: `<fui-date-picker 
   label="Birth Date" 
   placeholder="Select your birth date" 
 />`,
@@ -1243,7 +1243,7 @@ const DATEPICKER_METADATA: ComponentMetadata = {
     {
       title: 'Date Picker with Pre-selected Date',
       description: 'Date picker with a default selected date',
-      template: `<ui-date-picker 
+      template: `<fui-date-picker 
   label="Appointment Date" 
   placeholder="Select date" 
   value="2024-12-15"
@@ -1252,7 +1252,7 @@ const DATEPICKER_METADATA: ComponentMetadata = {
     {
       title: 'Date Picker with Date Range',
       description: 'Restrict selectable dates using min and max',
-      template: `<ui-date-picker 
+      template: `<fui-date-picker 
   label="Start Date" 
   placeholder="Select start date"
   min="2024-01-01"
@@ -1263,7 +1263,7 @@ const DATEPICKER_METADATA: ComponentMetadata = {
     {
       title: 'Required Date Picker',
       description: 'Date picker with required validation',
-      template: `<ui-date-picker 
+      template: `<fui-date-picker 
   label="Event Date" 
   placeholder="Select date"
   [required]="true"
@@ -1273,7 +1273,7 @@ const DATEPICKER_METADATA: ComponentMetadata = {
     {
       title: 'Date Picker with Error',
       description: 'Date picker displaying an error message',
-      template: `<ui-date-picker 
+      template: `<fui-date-picker 
   label="Expiry Date" 
   placeholder="Select expiry date"
   errorMessage="Please select a valid expiry date"
@@ -1282,7 +1282,7 @@ const DATEPICKER_METADATA: ComponentMetadata = {
     {
       title: 'Disabled Date Picker',
       description: 'Date picker in a disabled state',
-      template: `<ui-date-picker 
+      template: `<fui-date-picker 
   label="Locked Date" 
   placeholder="Not available"
   value="2024-01-15"
@@ -1293,13 +1293,13 @@ const DATEPICKER_METADATA: ComponentMetadata = {
       title: 'Booking Form',
       description: 'Real-world example of a booking form with check-in and check-out dates',
       template: `<div style="display: flex; flex-direction: column; gap: 16px;">
-  <ui-date-picker 
+  <fui-date-picker 
     label="Check-in Date" 
     placeholder="Select check-in date"
     [required]="true"
     helperText="Select your arrival date"
   />
-  <ui-date-picker 
+  <fui-date-picker 
     label="Check-out Date" 
     placeholder="Select check-out date"
     [required]="true"
@@ -1343,7 +1343,7 @@ const FILEUPLOAD_METADATA: ComponentMetadata = {
   category: 'form',
   description:
     'A comprehensive file upload component with drag-and-drop support, file type validation, size restrictions, and file preview. Supports both single and multiple file uploads with progress indication.',
-  selector: 'ui-file-upload',
+  selector: 'fui-file-upload',
   inputs: [
     { name: 'label', type: 'string', description: 'Label text displayed above the upload area' },
     {
@@ -1400,7 +1400,7 @@ const FILEUPLOAD_METADATA: ComponentMetadata = {
     {
       title: 'Basic File Upload',
       description: 'Simple single file upload',
-      template: `<ui-file-upload 
+      template: `<fui-file-upload 
   label="Upload File" 
   helperText="Choose a file to upload"
 />`,
@@ -1408,7 +1408,7 @@ const FILEUPLOAD_METADATA: ComponentMetadata = {
     {
       title: 'Multiple File Upload',
       description: 'Upload multiple files at once',
-      template: `<ui-file-upload 
+      template: `<fui-file-upload 
   label="Upload Documents" 
   [multiple]="true"
   helperText="You can select multiple files"
@@ -1417,7 +1417,7 @@ const FILEUPLOAD_METADATA: ComponentMetadata = {
     {
       title: 'File Type Restrictions',
       description: 'Restrict upload to specific file types',
-      template: `<ui-file-upload 
+      template: `<fui-file-upload 
   label="Upload PDF Documents" 
   accept=".pdf"
   helperText="Only PDF files are accepted"
@@ -1426,7 +1426,7 @@ const FILEUPLOAD_METADATA: ComponentMetadata = {
     {
       title: 'Image Upload',
       description: 'Upload images with preview',
-      template: `<ui-file-upload 
+      template: `<fui-file-upload 
   label="Upload Images" 
   accept="image/*"
   [multiple]="true"
@@ -1436,7 +1436,7 @@ const FILEUPLOAD_METADATA: ComponentMetadata = {
     {
       title: 'File Size Limit',
       description: 'Restrict maximum file size',
-      template: `<ui-file-upload 
+      template: `<fui-file-upload 
   label="Upload Profile Picture" 
   accept="image/*"
   [maxSize]="2097152"
@@ -1446,7 +1446,7 @@ const FILEUPLOAD_METADATA: ComponentMetadata = {
     {
       title: 'File Upload with Error',
       description: 'File upload displaying an error message',
-      template: `<ui-file-upload 
+      template: `<fui-file-upload 
   label="Upload Resume" 
   accept=".pdf,.doc,.docx"
   errorMessage="File size exceeds the maximum limit of 10MB"
@@ -1456,7 +1456,7 @@ const FILEUPLOAD_METADATA: ComponentMetadata = {
     {
       title: 'Disabled Upload',
       description: 'File upload in a disabled state',
-      template: `<ui-file-upload 
+      template: `<fui-file-upload 
   label="Upload Disabled" 
   [disabled]="true"
   helperText="File upload is currently disabled"
@@ -1466,13 +1466,13 @@ const FILEUPLOAD_METADATA: ComponentMetadata = {
       title: 'Document Upload Form',
       description: 'Real-world example of a document submission form',
       template: `<div style="display: flex; flex-direction: column; gap: 16px;">
-  <ui-file-upload 
+  <fui-file-upload 
     label="Upload Identity Document" 
     accept=".pdf,.jpg,.png"
     helperText="Upload a PDF or image of your ID (max 5MB)"
     [maxSize]="5242880"
   />
-  <ui-file-upload 
+  <fui-file-upload 
     label="Upload Supporting Documents" 
     accept=".pdf,.doc,.docx"
     [multiple]="true"
@@ -1524,7 +1524,7 @@ const CARD_METADATA: ComponentMetadata = {
   category: 'layout',
   description:
     'A versatile container component for grouping related content with optional header and footer.',
-  selector: 'ui-card',
+  selector: 'fui-card',
   inputs: [
     {
       name: 'variant',
@@ -1566,28 +1566,28 @@ const CARD_METADATA: ComponentMetadata = {
     {
       title: 'Basic Card',
       description: 'Container for grouping related content',
-      template: `<ui-card>
+      template: `<fui-card>
   <h3>Card Title</h3>
   <p>Card content goes here...</p>
-</ui-card>`,
+</fui-card>`,
     },
     {
       title: 'Card Variants',
       description: 'Three visual styles: elevated (shadow), outlined (border), filled (background)',
-      template: `<ui-card variant="elevated">
+      template: `<fui-card variant="elevated">
   <h3>Elevated Card</h3>
   <p>Card with shadow elevation</p>
-</ui-card>
+</fui-card>
 
-<ui-card variant="outlined">
+<fui-card variant="outlined">
   <h3>Outlined Card</h3>
   <p>Card with border only</p>
-</ui-card>
+</fui-card>
 
-<ui-card variant="filled">
+<fui-card variant="filled">
   <h3>Filled Card</h3>
   <p>Card with background fill</p>
-</ui-card>`,
+</fui-card>`,
     },
   ],
   accessibility: {
@@ -1613,7 +1613,7 @@ const MODAL_METADATA: ComponentMetadata = {
   category: 'layout',
   description:
     'A dialog overlay component for focused user interactions with backdrop and animations.',
-  selector: 'ui-modal',
+  selector: 'fui-modal',
   inputs: [
     {
       name: 'open',
@@ -1670,25 +1670,25 @@ const MODAL_METADATA: ComponentMetadata = {
       description: 'Simple dialog with title',
       typescript: `protected isOpen = signal(false);`,
       template: `<button (click)="isOpen.set(true)">Open Modal</button>
-<ui-modal [open]="isOpen()" title="Confirm Action" (closed)="isOpen.set(false)">
+<fui-modal [open]="isOpen()" title="Confirm Action" (closed)="isOpen.set(false)">
   <p>Are you sure you want to proceed?</p>
-</ui-modal>`,
+</fui-modal>`,
     },
     {
       title: 'Modal Sizes',
       description: 'Different modal widths',
       typescript: `protected showSmall = signal(false);`,
-      template: `<ui-modal [open]="showSmall()" title="Small Modal" size="sm">
+      template: `<fui-modal [open]="showSmall()" title="Small Modal" size="sm">
   <p>Small modal content</p>
-</ui-modal>`,
+</fui-modal>`,
     },
     {
       title: 'Modal without Backdrop Close',
       description: 'Prevent closing by clicking outside',
       typescript: `protected isOpen = signal(false);`,
-      template: `<ui-modal [open]="isOpen()" title="Important" [closeOnBackdrop]="false">
+      template: `<fui-modal [open]="isOpen()" title="Important" [closeOnBackdrop]="false">
   <p>You must use the close button.</p>
-</ui-modal>`,
+</fui-modal>`,
     },
   ],
   accessibility: {
@@ -1723,7 +1723,7 @@ const TABS_METADATA: ComponentMetadata = {
   name: 'Tabs',
   category: 'layout',
   description: 'A tabbed interface component for organizing content into separate panels.',
-  selector: 'ui-tabs',
+  selector: 'fui-tabs',
   inputs: [
     {
       name: 'activeIndex',
@@ -1757,37 +1757,37 @@ const TABS_METADATA: ComponentMetadata = {
     {
       title: 'Basic Tabs',
       description: 'Simple tabbed interface',
-      template: `<ui-tabs>
-  <ui-tab label="Profile">
+      template: `<fui-tabs>
+  <fui-tab label="Profile">
     <h3>Profile Information</h3>
     <p>User profile content goes here.</p>
-  </ui-tab>
-  <ui-tab label="Settings">
+  </fui-tab>
+  <fui-tab label="Settings">
     <h3>Settings</h3>
     <p>User settings content goes here.</p>
-  </ui-tab>
-  <ui-tab label="Notifications">
+  </fui-tab>
+  <fui-tab label="Notifications">
     <h3>Notifications</h3>
     <p>Notification preferences go here.</p>
-  </ui-tab>
-</ui-tabs>`,
+  </fui-tab>
+</fui-tabs>`,
     },
     {
       title: 'Vertical Tabs',
       description: 'Side-by-side tab layout',
-      template: `<ui-tabs orientation="vertical">
-  <ui-tab label="General">General settings</ui-tab>
-  <ui-tab label="Security">Security settings</ui-tab>
-  <ui-tab label="Privacy">Privacy settings</ui-tab>
-</ui-tabs>`,
+      template: `<fui-tabs orientation="vertical">
+  <fui-tab label="General">General settings</fui-tab>
+  <fui-tab label="Security">Security settings</fui-tab>
+  <fui-tab label="Privacy">Privacy settings</fui-tab>
+</fui-tabs>`,
     },
     {
       title: 'Tab Sizes',
       description: 'Three size options',
-      template: `<ui-tabs size="sm">
-  <ui-tab label="Small">Small tab content</ui-tab>
-  <ui-tab label="Tab 2">Content 2</ui-tab>
-</ui-tabs>`,
+      template: `<fui-tabs size="sm">
+  <fui-tab label="Small">Small tab content</fui-tab>
+  <fui-tab label="Tab 2">Content 2</fui-tab>
+</fui-tabs>`,
     },
   ],
   accessibility: {
@@ -1825,7 +1825,7 @@ const ACCORDION_METADATA: ComponentMetadata = {
   name: 'Accordion',
   category: 'layout',
   description: 'A vertically stacked set of collapsible content panels for organizing information.',
-  selector: 'ui-accordion',
+  selector: 'fui-accordion',
   inputs: [
     {
       name: 'mode',
@@ -1851,34 +1851,34 @@ const ACCORDION_METADATA: ComponentMetadata = {
     {
       title: 'Single Mode Accordion',
       description: 'Only one panel open at a time',
-      template: `<ui-accordion mode="single">
-  <ui-accordion-item title="Personal Information">
+      template: `<fui-accordion mode="single">
+  <fui-accordion-item title="Personal Information">
     <p>Name, email, and contact details.</p>
-  </ui-accordion-item>
-  <ui-accordion-item title="Security Settings">
+  </fui-accordion-item>
+  <fui-accordion-item title="Security Settings">
     <p>Password and authentication options.</p>
-  </ui-accordion-item>
-  <ui-accordion-item title="Notifications">
+  </fui-accordion-item>
+  <fui-accordion-item title="Notifications">
     <p>Email and push notification preferences.</p>
-  </ui-accordion-item>
-</ui-accordion>`,
+  </fui-accordion-item>
+</fui-accordion>`,
     },
     {
       title: 'Multiple Mode Accordion',
       description: 'Multiple panels can be open simultaneously',
-      template: `<ui-accordion mode="multiple">
-  <ui-accordion-item title="FAQ 1">Answer to question 1</ui-accordion-item>
-  <ui-accordion-item title="FAQ 2">Answer to question 2</ui-accordion-item>
-  <ui-accordion-item title="FAQ 3">Answer to question 3</ui-accordion-item>
-</ui-accordion>`,
+      template: `<fui-accordion mode="multiple">
+  <fui-accordion-item title="FAQ 1">Answer to question 1</fui-accordion-item>
+  <fui-accordion-item title="FAQ 2">Answer to question 2</fui-accordion-item>
+  <fui-accordion-item title="FAQ 3">Answer to question 3</fui-accordion-item>
+</fui-accordion>`,
     },
     {
       title: 'Pre-expanded Accordion',
       description: 'Accordion with default expanded items',
-      template: `<ui-accordion [expanded]="[0]">
-  <ui-accordion-item title="Getting Started">Welcome guide content</ui-accordion-item>
-  <ui-accordion-item title="Advanced Features">Advanced topics</ui-accordion-item>
-</ui-accordion>`,
+      template: `<fui-accordion [expanded]="[0]">
+  <fui-accordion-item title="Getting Started">Welcome guide content</fui-accordion-item>
+  <fui-accordion-item title="Advanced Features">Advanced topics</fui-accordion-item>
+</fui-accordion>`,
     },
   ],
   accessibility: {
@@ -1914,7 +1914,7 @@ const DIVIDER_METADATA: ComponentMetadata = {
   name: 'Divider',
   category: 'layout',
   description: 'A visual separator for content sections with customizable styles.',
-  selector: 'ui-divider',
+  selector: 'fui-divider',
   inputs: [
     {
       name: 'orientation',
@@ -1946,24 +1946,24 @@ const DIVIDER_METADATA: ComponentMetadata = {
       title: 'Horizontal Divider',
       description: 'Default separator between sections',
       template: `<div>Section 1</div>
-<ui-divider />
+<fui-divider />
 <div>Section 2</div>`,
     },
     {
       title: 'Divider Variants',
       description: 'Different line styles',
-      template: `<ui-divider variant="solid" />
-<ui-divider variant="dashed" />
-<ui-divider variant="dotted" />`,
+      template: `<fui-divider variant="solid" />
+<fui-divider variant="dashed" />
+<fui-divider variant="dotted" />`,
     },
     {
       title: 'Vertical Divider',
       description: 'Separator for inline elements',
       template: `<div style="display: flex; align-items: center; gap: 16px;">
   <span>Item 1</span>
-  <ui-divider orientation="vertical" style="height: 24px;" />
+  <fui-divider orientation="vertical" style="height: 24px;" />
   <span>Item 2</span>
-  <ui-divider orientation="vertical" style="height: 24px;" />
+  <fui-divider orientation="vertical" style="height: 24px;" />
   <span>Item 3</span>
 </div>`,
     },
@@ -1994,7 +1994,7 @@ const DRAWER_METADATA: ComponentMetadata = {
   category: 'layout',
   description:
     'A slide-in panel component that appears from the edge of the screen for navigation or content.',
-  selector: 'ui-drawer',
+  selector: 'fui-drawer',
   inputs: [
     {
       name: 'open',
@@ -2032,48 +2032,48 @@ const DRAWER_METADATA: ComponentMetadata = {
       description: 'Navigation drawer sliding from left',
       typescript: `protected isOpen = signal(false);`,
       template: `<button (click)="isOpen.set(true)">Open Navigation</button>
-<ui-drawer [open]="isOpen()" title="Navigation" position="left" (openChange)="isOpen.set($event)">
+<fui-drawer [open]="isOpen()" title="Navigation" position="left" (openChange)="isOpen.set($event)">
   <nav>
     <a href="/dashboard">Dashboard</a>
     <a href="/settings">Settings</a>
     <a href="/profile">Profile</a>
   </nav>
-</ui-drawer>`,
+</fui-drawer>`,
     },
     {
       title: 'Right Drawer',
       description: 'Settings or filters drawer from right',
       typescript: `protected showSettings = signal(false);`,
       template: `<button (click)="showSettings.set(true)">Open Settings</button>
-<ui-drawer [open]="showSettings()" title="Settings" position="right" (openChange)="showSettings.set($event)">
+<fui-drawer [open]="showSettings()" title="Settings" position="right" (openChange)="showSettings.set($event)">
   <div>Settings content...</div>
-</ui-drawer>`,
+</fui-drawer>`,
     },
     {
       title: 'Top Drawer',
       description: 'Notification panel from top',
       typescript: `protected showNotifications = signal(false);`,
       template: `<button (click)="showNotifications.set(true)">Show Notifications</button>
-<ui-drawer [open]="showNotifications()" title="Notifications" position="top" (openChange)="showNotifications.set($event)">
+<fui-drawer [open]="showNotifications()" title="Notifications" position="top" (openChange)="showNotifications.set($event)">
   <p>You have 3 new notifications</p>
-</ui-drawer>`,
+</fui-drawer>`,
     },
     {
       title: 'Bottom Drawer',
       description: 'Action sheet from bottom',
       typescript: `protected showActions = signal(false);`,
       template: `<button (click)="showActions.set(true)">Show Actions</button>
-<ui-drawer [open]="showActions()" title="Actions" position="bottom" (openChange)="showActions.set($event)">
+<fui-drawer [open]="showActions()" title="Actions" position="bottom" (openChange)="showActions.set($event)">
   <button>Edit</button>
   <button>Delete</button>
-</ui-drawer>`,
+</fui-drawer>`,
     },
     {
       title: 'Drawer with Footer',
       description: 'Enhanced drawer with action buttons in footer',
       typescript: `protected showForm = signal(false);`,
       template: `<button (click)="showForm.set(true)">Edit Profile</button>
-<ui-drawer [open]="showForm()" title="Edit Profile" (openChange)="showForm.set($event)">
+<fui-drawer [open]="showForm()" title="Edit Profile" (openChange)="showForm.set($event)">
   <form>
     <input type="text" placeholder="Name" />
     <input type="email" placeholder="Email" />
@@ -2082,16 +2082,16 @@ const DRAWER_METADATA: ComponentMetadata = {
     <button (click)="showForm.set(false)">Cancel</button>
     <button>Save Changes</button>
   </div>
-</ui-drawer>`,
+</fui-drawer>`,
     },
     {
       title: 'Drawer Sizes',
       description: 'Different drawer sizes (sm, md, lg, xl)',
       typescript: `protected isOpen = signal(false);`,
       template: `<button (click)="isOpen.set(true)">Small Drawer</button>
-<ui-drawer [open]="isOpen()" title="Small Drawer" size="sm" (openChange)="isOpen.set($event)">
+<fui-drawer [open]="isOpen()" title="Small Drawer" size="sm" (openChange)="isOpen.set($event)">
   <p>Compact drawer for simple content.</p>
-</ui-drawer>`,
+</fui-drawer>`,
     },
   ],
   accessibility: {
@@ -2125,7 +2125,7 @@ const STACK_METADATA: ComponentMetadata = {
   category: 'layout',
   description:
     'A layout component for arranging children in a vertical or horizontal stack with consistent spacing.',
-  selector: 'ui-stack',
+  selector: 'fui-stack',
   inputs: [
     {
       name: 'direction',
@@ -2175,28 +2175,28 @@ const STACK_METADATA: ComponentMetadata = {
     {
       title: 'Vertical Stack',
       description: 'Items stacked vertically',
-      template: `<ui-stack direction="vertical" [spacing]="4">
-  <ui-button>Button 1</ui-button>
-  <ui-button>Button 2</ui-button>
-  <ui-button>Button 3</ui-button>
-</ui-stack>`,
+      template: `<fui-stack direction="vertical" [spacing]="4">
+  <fui-button>Button 1</fui-button>
+  <fui-button>Button 2</fui-button>
+  <fui-button>Button 3</fui-button>
+</fui-stack>`,
     },
     {
       title: 'Horizontal Stack',
       description: 'Items arranged horizontally',
-      template: `<ui-stack direction="horizontal" [spacing]="4">
-  <ui-button>Cancel</ui-button>
-  <ui-button variant="filled">Save</ui-button>
-</ui-stack>`,
+      template: `<fui-stack direction="horizontal" [spacing]="4">
+  <fui-button>Cancel</fui-button>
+  <fui-button variant="filled">Save</fui-button>
+</fui-stack>`,
     },
     {
       title: 'Stack with Alignment',
       description: 'Center-aligned stack',
-      template: `<ui-stack direction="vertical" [spacing]="4" align="center">
-  <ui-avatar text="JD" />
+      template: `<fui-stack direction="vertical" [spacing]="4" align="center">
+  <fui-avatar text="JD" />
   <h3>John Doe</h3>
   <p>Software Engineer</p>
-</ui-stack>`,
+</fui-stack>`,
     },
   ],
   accessibility: {
@@ -2219,7 +2219,7 @@ const GRID_METADATA: ComponentMetadata = {
   name: 'Grid',
   category: 'layout',
   description: 'A responsive grid layout component with customizable columns and gaps.',
-  selector: 'ui-grid',
+  selector: 'fui-grid',
   inputs: [
     {
       name: 'columns',
@@ -2271,24 +2271,24 @@ const GRID_METADATA: ComponentMetadata = {
     {
       title: '3-Column Grid',
       description: 'Three equal-width columns',
-      template: `<ui-grid [columns]="3" [gap]="4">
-  <ui-card><h4>Card 1</h4></ui-card>
-  <ui-card><h4>Card 2</h4></ui-card>
-  <ui-card><h4>Card 3</h4></ui-card>
-  <ui-card><h4>Card 4</h4></ui-card>
-  <ui-card><h4>Card 5</h4></ui-card>
-  <ui-card><h4>Card 6</h4></ui-card>
-</ui-grid>`,
+      template: `<fui-grid [columns]="3" [gap]="4">
+  <fui-card><h4>Card 1</h4></fui-card>
+  <fui-card><h4>Card 2</h4></fui-card>
+  <fui-card><h4>Card 3</h4></fui-card>
+  <fui-card><h4>Card 4</h4></fui-card>
+  <fui-card><h4>Card 5</h4></fui-card>
+  <fui-card><h4>Card 6</h4></fui-card>
+</fui-grid>`,
     },
     {
       title: '4-Column Grid',
       description: 'Four columns with smaller gap',
-      template: `<ui-grid [columns]="4" [gap]="2">
+      template: `<fui-grid [columns]="4" [gap]="2">
   <div>Item 1</div>
   <div>Item 2</div>
   <div>Item 3</div>
   <div>Item 4</div>
-</ui-grid>`,
+</fui-grid>`,
     },
   ],
   accessibility: {
@@ -2316,7 +2316,7 @@ const BADGE_METADATA: ComponentMetadata = {
   name: 'Badge',
   category: 'data-display',
   description: 'A small label for displaying status, count, or category.',
-  selector: 'ui-badge',
+  selector: 'fui-badge',
   inputs: [
     {
       name: 'variant',
@@ -2370,31 +2370,31 @@ const BADGE_METADATA: ComponentMetadata = {
     {
       title: 'Badge Variants',
       description: 'Five semantic color variants for different use cases',
-      template: `<ui-badge variant="default">Default</ui-badge>
-<ui-badge variant="primary">Primary</ui-badge>
-<ui-badge variant="success">Success</ui-badge>
-<ui-badge variant="warning">Warning</ui-badge>
-<ui-badge variant="error">Error</ui-badge>`,
+      template: `<fui-badge variant="default">Default</fui-badge>
+<fui-badge variant="primary">Primary</fui-badge>
+<fui-badge variant="success">Success</fui-badge>
+<fui-badge variant="warning">Warning</fui-badge>
+<fui-badge variant="error">Error</fui-badge>`,
     },
     {
       title: 'Badge Sizes',
       description: 'Three size options for different contexts',
-      template: `<ui-badge size="sm">Small</ui-badge>
-<ui-badge size="md">Medium</ui-badge>
-<ui-badge size="lg">Large</ui-badge>`,
+      template: `<fui-badge size="sm">Small</fui-badge>
+<fui-badge size="md">Medium</fui-badge>
+<fui-badge size="lg">Large</fui-badge>`,
     },
     {
       title: 'Status Indicators',
       description: 'Common usage for status display',
-      template: `<ui-badge variant="success">Active</ui-badge>
-<ui-badge variant="warning">Pending</ui-badge>
-<ui-badge variant="error">Inactive</ui-badge>`,
+      template: `<fui-badge variant="success">Active</fui-badge>
+<fui-badge variant="warning">Pending</fui-badge>
+<fui-badge variant="error">Inactive</fui-badge>`,
     },
     {
       title: 'Count Badges',
       description: 'Display numerical counts',
-      template: `<ui-badge variant="primary">5</ui-badge>
-<ui-badge variant="error">99+</ui-badge>`,
+      template: `<fui-badge variant="primary">5</fui-badge>
+<fui-badge variant="error">99+</fui-badge>`,
     },
   ],
   accessibility: {
@@ -2422,7 +2422,7 @@ const AVATAR_METADATA: ComponentMetadata = {
   category: 'data-display',
   description:
     'A component for displaying user profile images or initials in a circular container.',
-  selector: 'ui-avatar',
+  selector: 'fui-avatar',
   inputs: [
     { name: 'src', type: 'string', description: 'Image URL' },
     { name: 'alt', type: 'string', description: 'Alt text for image accessibility', defaultValue: "'Avatar'" },
@@ -2475,44 +2475,44 @@ const AVATAR_METADATA: ComponentMetadata = {
     {
       title: 'Avatar with Initials',
       description: 'Text-based avatar using user initials',
-      template: `<ui-avatar initials="JD" alt="John Doe" />`,
+      template: `<fui-avatar initials="JD" alt="John Doe" />`,
     },
     {
       title: 'Avatar Sizes',
       description: 'Six size options from extra-small to double-extra-large',
-      template: `<ui-avatar initials="XS" size="xs" />
-<ui-avatar initials="SM" size="sm" />
-<ui-avatar initials="MD" size="md" />
-<ui-avatar initials="LG" size="lg" />
-<ui-avatar initials="XL" size="xl" />
-<ui-avatar initials="2X" size="2xl" />`,
+      template: `<fui-avatar initials="XS" size="xs" />
+<fui-avatar initials="SM" size="sm" />
+<fui-avatar initials="MD" size="md" />
+<fui-avatar initials="LG" size="lg" />
+<fui-avatar initials="XL" size="xl" />
+<fui-avatar initials="2X" size="2xl" />`,
     },
     {
       title: 'Avatar Shapes',
       description: 'Circle and square shape variants',
-      template: `<ui-avatar initials="JD" shape="circle" />
-<ui-avatar initials="JD" shape="square" />`,
+      template: `<fui-avatar initials="JD" shape="circle" />
+<fui-avatar initials="JD" shape="square" />`,
     },
     {
       title: 'Avatar with Image',
       description: 'Profile photo with fallback to initials',
-      template: `<ui-avatar src="/avatar.jpg" alt="John Doe" initials="JD" />`,
+      template: `<fui-avatar src="/avatar.jpg" alt="John Doe" initials="JD" />`,
     },
     {
       title: 'Avatar with Status',
       description: 'Avatar displaying an online/offline status indicator',
-      template: `<ui-avatar initials="JD" status="online" [showStatus]="true" />
-<ui-avatar initials="AS" status="away" [showStatus]="true" />
-<ui-avatar initials="MK" status="busy" [showStatus]="true" />
-<ui-avatar initials="RS" status="offline" [showStatus]="true" />`,
+      template: `<fui-avatar initials="JD" status="online" [showStatus]="true" />
+<fui-avatar initials="AS" status="away" [showStatus]="true" />
+<fui-avatar initials="MK" status="busy" [showStatus]="true" />
+<fui-avatar initials="RS" status="offline" [showStatus]="true" />`,
     },
     {
       title: 'User Profile Group',
       description: 'Multiple avatars for team or group display',
-      template: `<ui-avatar initials="JD" size="md" />
-<ui-avatar initials="AS" size="md" />
-<ui-avatar initials="MK" size="md" />
-<ui-avatar initials="+3" size="md" />`,
+      template: `<fui-avatar initials="JD" size="md" />
+<fui-avatar initials="AS" size="md" />
+<fui-avatar initials="MK" size="md" />
+<fui-avatar initials="+3" size="md" />`,
     },
   ],
   accessibility: {
@@ -2540,7 +2540,7 @@ const TOOLTIP_METADATA: ComponentMetadata = {
   name: 'Tooltip',
   category: 'data-display',
   description: 'A popup that displays contextual information when hovering or focusing an element.',
-  selector: 'ui-tooltip',
+  selector: 'fui-tooltip',
   inputs: [
     { name: 'text', type: 'string', description: 'Tooltip text content', required: true },
     {
@@ -2579,25 +2579,25 @@ const TOOLTIP_METADATA: ComponentMetadata = {
     {
       title: 'Basic Tooltip',
       description: 'Simple hover/focus tooltip',
-      template: `<button ui-tooltip text="Click to save">Save</button>`,
+      template: `<button fui-tooltip text="Click to save">Save</button>`,
     },
     {
       title: 'Tooltip Positions',
       description: 'Four position options',
-      template: `<button ui-tooltip text="Top tooltip" position="top">Top</button>
-<button ui-tooltip text="Bottom tooltip" position="bottom">Bottom</button>
-<button ui-tooltip text="Left tooltip" position="left">Left</button>
-<button ui-tooltip text="Right tooltip" position="right">Right</button>`,
+      template: `<button fui-tooltip text="Top tooltip" position="top">Top</button>
+<button fui-tooltip text="Bottom tooltip" position="bottom">Bottom</button>
+<button fui-tooltip text="Left tooltip" position="left">Left</button>
+<button fui-tooltip text="Right tooltip" position="right">Right</button>`,
     },
     {
       title: 'Icon with Tooltip',
       description: 'Tooltip on icon button',
-      template: `<button ui-tooltip text="More information">ℹ️</button>`,
+      template: `<button fui-tooltip text="More information">ℹ️</button>`,
     },
     {
       title: 'Link with Tooltip',
       description: 'Tooltip on interactive element',
-      template: `<a href="#" ui-tooltip text="Opens in new tab">Documentation</a>`,
+      template: `<a href="#" fui-tooltip text="Opens in new tab">Documentation</a>`,
     },
   ],
   accessibility: {
@@ -2630,7 +2630,7 @@ const CHIP_METADATA: ComponentMetadata = {
   name: 'Chip',
   category: 'data-display',
   description: 'A compact element for tags, filters, or selections with optional remove action.',
-  selector: 'ui-chip',
+  selector: 'fui-chip',
   inputs: [
     { name: 'label', type: 'string', description: 'Chip label text', required: true },
     {
@@ -2677,44 +2677,44 @@ const CHIP_METADATA: ComponentMetadata = {
     {
       title: 'Basic Chip',
       description: 'Simple chip for tags or labels',
-      template: `<ui-chip label="JavaScript" />`,
+      template: `<fui-chip label="JavaScript" />`,
     },
     {
       title: 'Chip Variants',
       description: 'Semantic colors for different meanings',
-      template: `<ui-chip label="Default" variant="default" />
-<ui-chip label="Primary" variant="primary" />
-<ui-chip label="Success" variant="success" />
-<ui-chip label="Warning" variant="warning" />
-<ui-chip label="Error" variant="error" />`,
+      template: `<fui-chip label="Default" variant="default" />
+<fui-chip label="Primary" variant="primary" />
+<fui-chip label="Success" variant="success" />
+<fui-chip label="Warning" variant="warning" />
+<fui-chip label="Error" variant="error" />`,
     },
     {
       title: 'Chip Sizes',
       description: 'Three size options',
-      template: `<ui-chip label="Small" size="sm" />
-<ui-chip label="Medium" size="md" />
-<ui-chip label="Large" size="lg" />`,
+      template: `<fui-chip label="Small" size="sm" />
+<fui-chip label="Medium" size="md" />
+<fui-chip label="Large" size="lg" />`,
     },
     {
       title: 'Removable Chips',
       description: 'Chips with remove action for filters or tags',
-      template: `<ui-chip label="JavaScript" [removable]="true" />
-<ui-chip label="TypeScript" [removable]="true" />
-<ui-chip label="Angular" [removable]="true" />`,
+      template: `<fui-chip label="JavaScript" [removable]="true" />
+<fui-chip label="TypeScript" [removable]="true" />
+<fui-chip label="Angular" [removable]="true" />`,
     },
     {
       title: 'Disabled Chips',
       description: 'Non-interactive chip states',
-      template: `<ui-chip label="Disabled" [disabled]="true" />
-<ui-chip label="Disabled Removable" [removable]="true" [disabled]="true" />`,
+      template: `<fui-chip label="Disabled" [disabled]="true" />
+<fui-chip label="Disabled Removable" [removable]="true" [disabled]="true" />`,
     },
     {
       title: 'Chip Collection',
       description: 'Multiple chips for tags or filters',
-      template: `<ui-chip label="React" variant="primary" [removable]="true" />
-<ui-chip label="Vue" variant="primary" [removable]="true" />
-<ui-chip label="Angular" variant="primary" [removable]="true" />
-<ui-chip label="Svelte" variant="primary" [removable]="true" />`,
+      template: `<fui-chip label="React" variant="primary" [removable]="true" />
+<fui-chip label="Vue" variant="primary" [removable]="true" />
+<fui-chip label="Angular" variant="primary" [removable]="true" />
+<fui-chip label="Svelte" variant="primary" [removable]="true" />`,
     },
   ],
   accessibility: {
@@ -2747,7 +2747,7 @@ const POPOVER_METADATA: ComponentMetadata = {
   category: 'data-display',
   description:
     'A floating panel that displays rich content relative to a trigger element, similar to tooltip but interactive.',
-  selector: 'ui-popover',
+  selector: 'fui-popover',
   inputs: [
     {
       name: 'title',
@@ -2786,7 +2786,7 @@ const POPOVER_METADATA: ComponentMetadata = {
     {
       title: 'Click Popover',
       description: 'Popover triggered by click',
-      template: `<button [ui-popover]="content" trigger="click">User Info</button>
+      template: `<button [fui-popover]="content" trigger="click">User Info</button>
 <ng-template #content>
   <div>
     <h4>John Doe</h4>
@@ -2797,7 +2797,7 @@ const POPOVER_METADATA: ComponentMetadata = {
     {
       title: 'Hover Popover',
       description: 'Popover triggered by hover',
-      template: `<button [ui-popover]="content" trigger="hover">Hover Me</button>
+      template: `<button [fui-popover]="content" trigger="hover">Hover Me</button>
 <ng-template #content>
   <div>Additional information appears on hover</div>
 </ng-template>`,
@@ -2805,10 +2805,10 @@ const POPOVER_METADATA: ComponentMetadata = {
     {
       title: 'Popover Positions',
       description: 'Different positioning options',
-      template: `<button [ui-popover]="content" position="top">Top</button>
-<button [ui-popover]="content" position="bottom">Bottom</button>
-<button [ui-popover]="content" position="left">Left</button>
-<button [ui-popover]="content" position="right">Right</button>`,
+      template: `<button [fui-popover]="content" position="top">Top</button>
+<button [fui-popover]="content" position="bottom">Bottom</button>
+<button [fui-popover]="content" position="left">Left</button>
+<button [fui-popover]="content" position="right">Right</button>`,
     },
   ],
   accessibility: {
@@ -2842,7 +2842,7 @@ const PAGINATION_METADATA: ComponentMetadata = {
   name: 'Pagination',
   category: 'data-display',
   description: 'A component for navigating through paginated data with page numbers and controls.',
-  selector: 'ui-pagination',
+  selector: 'fui-pagination',
   inputs: [
     {
       name: 'currentPage',
@@ -2916,7 +2916,7 @@ const PAGINATION_METADATA: ComponentMetadata = {
       title: 'Basic Pagination',
       description: 'Simple page navigation',
       typescript: `protected currentPage = signal(1);`,
-      template: `<ui-pagination 
+      template: `<fui-pagination 
   [currentPage]="currentPage()" 
   [totalItems]="100" 
   [pageSize]="10" 
@@ -2927,7 +2927,7 @@ const PAGINATION_METADATA: ComponentMetadata = {
       title: 'Large Dataset Pagination',
       description: 'Pagination for many pages',
       typescript: `protected currentPage = signal(1);`,
-      template: `<ui-pagination 
+      template: `<fui-pagination 
   [currentPage]="currentPage()" 
   [totalItems]="1000" 
   [pageSize]="20" 
@@ -2938,7 +2938,7 @@ const PAGINATION_METADATA: ComponentMetadata = {
       title: 'Small Page Size',
       description: 'More pages with fewer items per page',
       typescript: `protected currentPage = signal(1);`,
-      template: `<ui-pagination 
+      template: `<fui-pagination 
   [currentPage]="currentPage()" 
   [totalItems]="50" 
   [pageSize]="5" 
@@ -2978,7 +2978,7 @@ const TABLE_METADATA: ComponentMetadata = {
   category: 'data-display',
   description:
     'A data table component with sorting, selection, and customizable columns for displaying structured data.',
-  selector: 'ui-table',
+  selector: 'fui-table',
   inputs: [
     {
       name: 'columns',
@@ -3065,7 +3065,7 @@ protected users = [
   { name: 'John Doe', email: 'john@example.com', role: 'Admin' },
   { name: 'Jane Smith', email: 'jane@example.com', role: 'User' }
 ];`,
-      template: `<ui-table [columns]="columns" [data]="users" />`,
+      template: `<fui-table [columns]="columns" [data]="users" />`,
     },
     {
       title: 'Sortable Table',
@@ -3075,7 +3075,7 @@ protected users = [
   { key: 'email', header: 'Email', sortable: true },
   { key: 'status', header: 'Status', sortable: true }
 ];`,
-      template: `<ui-table [columns]="columns" [data]="users" [sortable]="true" />`,
+      template: `<fui-table [columns]="columns" [data]="users" [sortable]="true" />`,
     },
     {
       title: 'Selectable Table',
@@ -3083,7 +3083,7 @@ protected users = [
       typescript: `handleSelection(selected: any[]) {
   console.log('Selected rows:', selected);
 }`,
-      template: `<ui-table [columns]="columns" [data]="users" [selectable]="true" (selectionChange)="handleSelection($event)" />`,
+      template: `<fui-table [columns]="columns" [data]="users" [selectable]="true" (selectionChange)="handleSelection($event)" />`,
     },
   ],
   accessibility: {
@@ -3117,7 +3117,7 @@ const LIST_METADATA: ComponentMetadata = {
   name: 'List',
   category: 'data-display',
   description: 'A component for displaying lists of items with optional interactivity and styling.',
-  selector: 'ui-list',
+  selector: 'fui-list',
   inputs: [
     {
       name: 'items',
@@ -3174,7 +3174,7 @@ const LIST_METADATA: ComponentMetadata = {
   { id: 2, label: 'Item 2' },
   { id: 3, label: 'Item 3' }
 ]);`,
-      template: `<ui-list [items]="items()" />`,
+      template: `<fui-list [items]="items()" />`,
     },
     {
       title: 'Divided List',
@@ -3184,7 +3184,7 @@ const LIST_METADATA: ComponentMetadata = {
   { id: 2, label: 'Security' },
   { id: 3, label: 'Notifications' }
 ]);`,
-      template: `<ui-list [items]="items()" variant="divided" />`,
+      template: `<fui-list [items]="items()" variant="divided" />`,
     },
     {
       title: 'Interactive List',
@@ -3198,7 +3198,7 @@ const LIST_METADATA: ComponentMetadata = {
 handleClick(item: ListItem) {
   console.log('Clicked:', item);
 }`,
-      template: `<ui-list [items]="items()" [interactive]="true" (itemClick)="handleClick($event)" />`,
+      template: `<fui-list [items]="items()" [interactive]="true" (itemClick)="handleClick($event)" />`,
     },
   ],
   accessibility: {
@@ -3232,7 +3232,7 @@ const CAROUSEL_METADATA: ComponentMetadata = {
   category: 'data-display',
   description:
     'A composition-based carousel component for rotating projected content with keyboard navigation, autoplay controls, indicators, thumbnails, and reduced-motion support.',
-  selector: 'ui-carousel',
+  selector: 'fui-carousel',
   inputs: [
     {
       name: 'variant',
@@ -3317,72 +3317,72 @@ const CAROUSEL_METADATA: ComponentMetadata = {
     {
       title: 'Basic Carousel',
       description: 'Default slide transition with controls and indicators.',
-      template: `<ui-carousel ariaLabel="Featured highlights">
-  <ui-carousel-slide label="Built for keyboard-first navigation">
+      template: `<fui-carousel ariaLabel="Featured highlights">
+  <fui-carousel-slide label="Built for keyboard-first navigation">
     <article>
       <h3>Built for keyboard-first navigation</h3>
       <p>Arrow keys, Home, End, focus visibility, autoplay pause, and reduced-motion support are built in.</p>
     </article>
-  </ui-carousel-slide>
-  <ui-carousel-slide label="Project any semantic slide content">
+  </fui-carousel-slide>
+  <fui-carousel-slide label="Project any semantic slide content">
     <article>
       <h3>Project any semantic slide content</h3>
       <p>Slides accept media, cards, marketing content, or custom layouts without a rigid data schema.</p>
     </article>
-  </ui-carousel-slide>
-  <ui-carousel-slide label="Tokens drive every visual state">
+  </fui-carousel-slide>
+  <fui-carousel-slide label="Tokens drive every visual state">
     <article>
       <h3>Tokens drive every visual state</h3>
       <p>Controls, indicators, thumbnails, and surfaces inherit the active theme.</p>
     </article>
-  </ui-carousel-slide>
-</ui-carousel>`,
+  </fui-carousel-slide>
+</fui-carousel>`,
     },
     {
       title: 'Fade Transition',
       description: 'Cross-fades between slides instead of translating the track.',
-      template: `<ui-carousel variant="fade" ariaLabel="Fade transition example">
-  <ui-carousel-slide label="Slide one">...</ui-carousel-slide>
-  <ui-carousel-slide label="Slide two">...</ui-carousel-slide>
-  <ui-carousel-slide label="Slide three">...</ui-carousel-slide>
-</ui-carousel>`,
+      template: `<fui-carousel variant="fade" ariaLabel="Fade transition example">
+  <fui-carousel-slide label="Slide one">...</fui-carousel-slide>
+  <fui-carousel-slide label="Slide two">...</fui-carousel-slide>
+  <fui-carousel-slide label="Slide three">...</fui-carousel-slide>
+</fui-carousel>`,
     },
     {
       title: 'Autoplay with Pause Control',
       description: 'Automatically rotates while exposing an explicit pause/resume button.',
-      template: `<ui-carousel [autoplay]="true" [autoplayDelay]="3500" ariaLabel="Autoplaying customer stories">
-  <ui-carousel-slide label="Customer story one">...</ui-carousel-slide>
-  <ui-carousel-slide label="Customer story two">...</ui-carousel-slide>
-  <ui-carousel-slide label="Customer story three">...</ui-carousel-slide>
-</ui-carousel>`,
+      template: `<fui-carousel [autoplay]="true" [autoplayDelay]="3500" ariaLabel="Autoplaying customer stories">
+  <fui-carousel-slide label="Customer story one">...</fui-carousel-slide>
+  <fui-carousel-slide label="Customer story two">...</fui-carousel-slide>
+  <fui-carousel-slide label="Customer story three">...</fui-carousel-slide>
+</fui-carousel>`,
     },
     {
       title: 'Multiple Visible Slides',
       description: 'Shows adjacent cards at the same time in slide mode.',
-      template: `<ui-carousel [visibleSlides]="2" ariaLabel="Product cards">
-  <ui-carousel-slide label="Card one">...</ui-carousel-slide>
-  <ui-carousel-slide label="Card two">...</ui-carousel-slide>
-  <ui-carousel-slide label="Card three">...</ui-carousel-slide>
-  <ui-carousel-slide label="Card four">...</ui-carousel-slide>
-</ui-carousel>`,
+      template: `<fui-carousel [visibleSlides]="2" ariaLabel="Product cards">
+  <fui-carousel-slide label="Card one">...</fui-carousel-slide>
+  <fui-carousel-slide label="Card two">...</fui-carousel-slide>
+  <fui-carousel-slide label="Card three">...</fui-carousel-slide>
+  <fui-carousel-slide label="Card four">...</fui-carousel-slide>
+</fui-carousel>`,
     },
     {
       title: 'Thumbnail Navigation',
       description: 'Uses the slide thumbnail inputs to render a secondary navigation strip.',
-      template: `<ui-carousel [showThumbnails]="true" ariaLabel="Release highlights">
-  <ui-carousel-slide label="Accessibility" thumbnail="A11y" thumbnailAlt="Accessibility highlight">...</ui-carousel-slide>
-  <ui-carousel-slide label="Composition" thumbnail="API" thumbnailAlt="Composition highlight">...</ui-carousel-slide>
-  <ui-carousel-slide label="Theming" thumbnail="Theme" thumbnailAlt="Theming highlight">...</ui-carousel-slide>
-</ui-carousel>`,
+      template: `<fui-carousel [showThumbnails]="true" ariaLabel="Release highlights">
+  <fui-carousel-slide label="Accessibility" thumbnail="A11y" thumbnailAlt="Accessibility highlight">...</fui-carousel-slide>
+  <fui-carousel-slide label="Composition" thumbnail="API" thumbnailAlt="Composition highlight">...</fui-carousel-slide>
+  <fui-carousel-slide label="Theming" thumbnail="Theme" thumbnailAlt="Theming highlight">...</fui-carousel-slide>
+</fui-carousel>`,
     },
     {
       title: 'No Loop',
       description: 'Disables wrap-around so the first and last slides behave like hard stops.',
-      template: `<ui-carousel [loop]="false" ariaLabel="Non-looping updates">
-  <ui-carousel-slide label="Update one">...</ui-carousel-slide>
-  <ui-carousel-slide label="Update two">...</ui-carousel-slide>
-  <ui-carousel-slide label="Update three">...</ui-carousel-slide>
-</ui-carousel>`,
+      template: `<fui-carousel [loop]="false" ariaLabel="Non-looping updates">
+  <fui-carousel-slide label="Update one">...</fui-carousel-slide>
+  <fui-carousel-slide label="Update two">...</fui-carousel-slide>
+  <fui-carousel-slide label="Update three">...</fui-carousel-slide>
+</fui-carousel>`,
     },
   ],
   accessibility: {
@@ -3421,7 +3421,7 @@ const CODE_BLOCK_METADATA: ComponentMetadata = {
   category: 'data-display',
   description:
     'A component for displaying formatted code with syntax highlighting, copy-to-clipboard, and download functionality. Supports multiple languages and themes.',
-  selector: 'ui-code-block',
+  selector: 'fui-code-block',
   inputs: [
     { name: 'code', type: 'string', description: 'The code content to display', required: true },
     {
@@ -3457,15 +3457,15 @@ const CODE_BLOCK_METADATA: ComponentMetadata = {
       typescript: `protected code = signal(\`function greet(name: string): string {
   return \\\`Hello, \\\${name}!\\\`;
 }\`);`,
-      template: `<ui-code-block [code]="code()" language="typescript" title="TypeScript" />`,
+      template: `<fui-code-block [code]="code()" language="typescript" title="TypeScript" />`,
     },
     {
       title: 'HTML Code',
       description: 'Displaying HTML markup with proper formatting',
-      typescript: `protected htmlCode = signal(\`<ui-button variant="filled" size="md">
+      typescript: `protected htmlCode = signal(\`<fui-button variant="filled" size="md">
   Click Me
-</ui-button>\`);`,
-      template: `<ui-code-block [code]="htmlCode()" language="html" title="HTML" />`,
+</fui-button>\`);`,
+      template: `<fui-code-block [code]="htmlCode()" language="html" title="HTML" />`,
     },
     {
       title: 'CSS Code',
@@ -3476,7 +3476,7 @@ const CODE_BLOCK_METADATA: ComponentMetadata = {
   background-color: #007bff;
   color: white;
 }\`);`,
-      template: `<ui-code-block [code]="cssCode()" language="css" title="CSS" />`,
+      template: `<fui-code-block [code]="cssCode()" language="css" title="CSS" />`,
     },
     {
       title: 'JSON Data',
@@ -3486,7 +3486,7 @@ const CODE_BLOCK_METADATA: ComponentMetadata = {
   "version": "1.0.0",
   "author": "Your Team"
 }\`);`,
-      template: `<ui-code-block [code]="jsonCode()" language="json" title="Configuration" />`,
+      template: `<fui-code-block [code]="jsonCode()" language="json" title="Configuration" />`,
     },
     {
       title: 'Custom Filename',
@@ -3496,7 +3496,7 @@ const CODE_BLOCK_METADATA: ComponentMetadata = {
   template: '<div>Example</div>'
 })
 export class ExampleComponent {}\`);`,
-      template: `<ui-code-block [code]="componentCode()" language="typescript" title="Component" filename="example.component.ts" />`,
+      template: `<fui-code-block [code]="componentCode()" language="typescript" title="Component" filename="example.component.ts" />`,
     },
   ],
   accessibility: {
@@ -3532,7 +3532,7 @@ const ALERT_METADATA: ComponentMetadata = {
   name: 'Alert',
   category: 'feedback',
   description: 'A component for displaying important messages with different severity levels.',
-  selector: 'ui-alert',
+  selector: 'fui-alert',
   inputs: [
     {
       name: 'variant',
@@ -3572,35 +3572,35 @@ const ALERT_METADATA: ComponentMetadata = {
     {
       title: 'Alert Variants',
       description: 'Four severity levels: info, success, warning, and error',
-      template: `<ui-alert variant="info">
+      template: `<fui-alert variant="info">
   This is an informational message.
-</ui-alert>
+</fui-alert>
 
-<ui-alert variant="success">
+<fui-alert variant="success">
   Operation completed successfully!
-</ui-alert>
+</fui-alert>
 
-<ui-alert variant="warning">
+<fui-alert variant="warning">
   Please review your input carefully.
-</ui-alert>
+</fui-alert>
 
-<ui-alert variant="error">
+<fui-alert variant="error">
   An error occurred. Please try again.
-</ui-alert>`,
+</fui-alert>`,
     },
     {
       title: 'Dismissible Alert',
       description: 'Alert with close button',
-      template: `<ui-alert variant="info" [dismissible]="true">
+      template: `<fui-alert variant="info" [dismissible]="true">
   You can close this alert by clicking the X button.
-</ui-alert>`,
+</fui-alert>`,
     },
     {
       title: 'Alert Sizes',
       description: 'Three size options for different contexts',
-      template: `<ui-alert variant="info" size="sm">Small alert message</ui-alert>
-<ui-alert variant="info" size="md">Medium alert message</ui-alert>
-<ui-alert variant="info" size="lg">Large alert message</ui-alert>`,
+      template: `<fui-alert variant="info" size="sm">Small alert message</fui-alert>
+<fui-alert variant="info" size="md">Medium alert message</fui-alert>
+<fui-alert variant="info" size="lg">Large alert message</fui-alert>`,
     },
   ],
   accessibility: {
@@ -3632,7 +3632,7 @@ const SPINNER_METADATA: ComponentMetadata = {
   name: 'Spinner',
   category: 'feedback',
   description: 'A loading spinner component to indicate processing or loading states.',
-  selector: 'ui-spinner',
+  selector: 'fui-spinner',
   inputs: [
     { name: 'size', type: "'xs' | 'sm' | 'md' | 'lg' | 'xl'", description: 'Spinner size', defaultValue: "'md'" },
     {
@@ -3665,19 +3665,19 @@ const SPINNER_METADATA: ComponentMetadata = {
     {
       title: 'Basic Spinner',
       description: 'Default medium-sized loading spinner',
-      template: `<ui-spinner />`,
+      template: `<fui-spinner />`,
     },
     {
       title: 'Spinner Sizes',
       description: 'Three size options for different contexts',
-      template: `<ui-spinner size="sm" />
-<ui-spinner size="md" />
-<ui-spinner size="lg" />`,
+      template: `<fui-spinner size="sm" />
+<fui-spinner size="md" />
+<fui-spinner size="lg" />`,
     },
     {
       title: 'Inline Loading',
       description: 'Small spinner for inline loading states',
-      template: `<p>Loading data <ui-spinner size="sm" /></p>`,
+      template: `<p>Loading data <fui-spinner size="sm" /></p>`,
     },
   ],
   accessibility: {
@@ -3704,7 +3704,7 @@ const PROGRESS_METADATA: ComponentMetadata = {
   name: 'Progress',
   category: 'feedback',
   description: 'A progress bar component for showing task completion with visual feedback.',
-  selector: 'ui-progress',
+  selector: 'fui-progress',
   inputs: [
     { name: 'value', type: 'number', description: 'Progress value (0-max)', defaultValue: '0' },
     { name: 'max', type: 'number', description: 'Maximum value for the progress bar', defaultValue: '100' },
@@ -3751,29 +3751,29 @@ const PROGRESS_METADATA: ComponentMetadata = {
     {
       title: 'Basic Progress',
       description: 'Simple progress bar showing completion',
-      template: `<ui-progress [value]="60" />`,
+      template: `<fui-progress [value]="60" />`,
     },
     {
       title: 'Progress with Value',
       description: 'Display percentage text alongside bar',
-      template: `<ui-progress [value]="75" [showValue]="true" />`,
+      template: `<fui-progress [value]="75" [showValue]="true" />`,
     },
     {
       title: 'Progress Variants',
       description: 'Semantic colors for different states',
-      template: `<ui-progress [value]="30" variant="default" />
-<ui-progress [value]="100" variant="success" />
-<ui-progress [value]="70" variant="warning" />
-<ui-progress [value]="50" variant="error" />`,
+      template: `<fui-progress [value]="30" variant="default" />
+<fui-progress [value]="100" variant="success" />
+<fui-progress [value]="70" variant="warning" />
+<fui-progress [value]="50" variant="error" />`,
     },
     {
       title: 'Progress Stages',
       description: 'Different completion levels',
-      template: `<ui-progress [value]="0" [showValue]="true" />
-<ui-progress [value]="25" [showValue]="true" />
-<ui-progress [value]="50" [showValue]="true" />
-<ui-progress [value]="75" [showValue]="true" />
-<ui-progress [value]="100" [showValue]="true" />`,
+      template: `<fui-progress [value]="0" [showValue]="true" />
+<fui-progress [value]="25" [showValue]="true" />
+<fui-progress [value]="50" [showValue]="true" />
+<fui-progress [value]="75" [showValue]="true" />
+<fui-progress [value]="100" [showValue]="true" />`,
     },
   ],
   accessibility: {
@@ -3801,7 +3801,7 @@ const SKELETON_METADATA: ComponentMetadata = {
   name: 'Skeleton',
   category: 'feedback',
   description: 'A placeholder component for loading content with animated shimmer effect.',
-  selector: 'ui-skeleton',
+  selector: 'fui-skeleton',
   inputs: [
     {
       name: 'variant',
@@ -3829,35 +3829,35 @@ const SKELETON_METADATA: ComponentMetadata = {
     {
       title: 'Text Skeleton',
       description: 'Placeholder for loading text lines',
-      template: `<ui-skeleton variant="text" width="100%" />
-<ui-skeleton variant="text" width="80%" />
-<ui-skeleton variant="text" width="90%" />`,
+      template: `<fui-skeleton variant="text" width="100%" />
+<fui-skeleton variant="text" width="80%" />
+<fui-skeleton variant="text" width="90%" />`,
     },
     {
       title: 'Circular Skeleton',
       description: 'Placeholder for avatar or profile image',
-      template: `<ui-skeleton variant="circular" width="40px" height="40px" />`,
+      template: `<fui-skeleton variant="circular" width="40px" height="40px" />`,
     },
     {
       title: 'Rectangular Skeleton',
       description: 'Placeholder for images or cards',
-      template: `<ui-skeleton variant="rectangular" width="300px" height="200px" />`,
+      template: `<fui-skeleton variant="rectangular" width="300px" height="200px" />`,
     },
     {
       title: 'Skeleton Variants',
       description: 'All available skeleton shapes',
-      template: `<ui-skeleton variant="text" width="200px" />
-<ui-skeleton variant="circular" width="50px" height="50px" />
-<ui-skeleton variant="rectangular" width="200px" height="100px" />`,
+      template: `<fui-skeleton variant="text" width="200px" />
+<fui-skeleton variant="circular" width="50px" height="50px" />
+<fui-skeleton variant="rectangular" width="200px" height="100px" />`,
     },
     {
       title: 'Card Loading Pattern',
       description: 'Complete card skeleton with avatar, title, and content',
-      template: `<ui-skeleton variant="circular" width="40px" height="40px" />
-<ui-skeleton variant="text" width="150px" />
-<ui-skeleton variant="rectangular" width="100%" height="150px" />
-<ui-skeleton variant="text" width="100%" />
-<ui-skeleton variant="text" width="80%" />`,
+      template: `<fui-skeleton variant="circular" width="40px" height="40px" />
+<fui-skeleton variant="text" width="150px" />
+<fui-skeleton variant="rectangular" width="100%" height="150px" />
+<fui-skeleton variant="text" width="100%" />
+<fui-skeleton variant="text" width="80%" />`,
     },
   ],
   accessibility: {
@@ -3887,7 +3887,7 @@ const TOAST_METADATA: ComponentMetadata = {
   category: 'feedback',
   description:
     'A temporary notification component that appears at screen edges for non-intrusive feedback.',
-  selector: 'ui-toast',
+  selector: 'fui-toast',
   inputs: [
     { name: 'message', type: 'string', description: 'Notification message text', required: true },
     {
@@ -3974,7 +3974,7 @@ const BREADCRUMB_METADATA: ComponentMetadata = {
   category: 'navigation',
   description:
     'A navigation component showing the current page location within the site hierarchy.',
-  selector: 'ui-breadcrumb',
+  selector: 'fui-breadcrumb',
   inputs: [
     {
       name: 'items',
@@ -4018,7 +4018,7 @@ const BREADCRUMB_METADATA: ComponentMetadata = {
   { label: 'Electronics', link: '/products/electronics' },
   { label: 'Laptops' }
 ];`,
-      template: `<ui-breadcrumb [items]="breadcrumbs" />`,
+      template: `<fui-breadcrumb [items]="breadcrumbs" />`,
     },
     {
       title: 'Custom Separator',
@@ -4028,7 +4028,7 @@ const BREADCRUMB_METADATA: ComponentMetadata = {
   { label: 'Settings', link: '/settings' },
   { label: 'Profile' }
 ];`,
-      template: `<ui-breadcrumb [items]="breadcrumbs" separator="›" />`,
+      template: `<fui-breadcrumb [items]="breadcrumbs" separator="›" />`,
     },
   ],
   accessibility: {
@@ -4059,7 +4059,7 @@ const MENU_METADATA: ComponentMetadata = {
   name: 'Menu',
   category: 'navigation',
   description: 'A dropdown menu component with nested submenu support for contextual actions.',
-  selector: 'ui-menu',
+  selector: 'fui-menu',
   inputs: [
     {
       name: 'items',
@@ -4099,7 +4099,7 @@ const MENU_METADATA: ComponentMetadata = {
   { label: 'Duplicate', action: 'duplicate' },
   { label: 'Delete', action: 'delete' }
 ];`,
-      template: `<button [ui-menu]="menuItems">Actions</button>`,
+      template: `<button [fui-menu]="menuItems">Actions</button>`,
     },
     {
       title: 'Nested Menu',
@@ -4116,7 +4116,7 @@ const MENU_METADATA: ComponentMetadata = {
     { label: 'Paste', action: 'paste' }
   ]}
 ];`,
-      template: `<ui-menu [items]="menuItems" />`,
+      template: `<fui-menu [items]="menuItems" />`,
     },
   ],
   accessibility: {
@@ -4152,7 +4152,7 @@ const CONTEXT_MENU_METADATA: ComponentMetadata = {
   category: 'navigation',
   description:
     'A right-click context menu component with nested submenu support, icons, and keyboard shortcuts.',
-  selector: 'ui-context-menu',
+  selector: 'fui-context-menu',
   inputs: [
     {
       name: 'items',
@@ -4191,14 +4191,14 @@ const CONTEXT_MENU_METADATA: ComponentMetadata = {
 handleMenuClick(item: ContextMenuItem): void {
   console.log('Selected:', item.id);
 }`,
-      template: `<ui-context-menu
+      template: `<fui-context-menu
   [items]="contextMenuItems()"
   (itemClick)="handleMenuClick($event)"
 >
   <div class="content-area">
     Right-click anywhere in this area
   </div>
-</ui-context-menu>`,
+</fui-context-menu>`,
     },
     {
       title: 'File Explorer Context Menu',
@@ -4224,14 +4224,14 @@ handleMenuClick(item: ContextMenuItem): void {
   { id: 'divider-3', divider: true },
   { id: 'properties', label: 'Properties', shortcut: 'Alt+Enter' },
 ]);`,
-      template: `<ui-context-menu
+      template: `<fui-context-menu
   [items]="fileMenuItems()"
   (itemClick)="handleFileAction($event)"
 >
   <div class="file-item">
     📄 document.pdf
   </div>
-</ui-context-menu>`,
+</fui-context-menu>`,
     },
     {
       title: 'Text Editor Context Menu',
@@ -4253,14 +4253,14 @@ handleMenuClick(item: ContextMenuItem): void {
     ]
   },
 ]);`,
-      template: `<ui-context-menu
+      template: `<fui-context-menu
   [items]="editorMenuItems()"
   (itemClick)="handleTextFormat($event)"
 >
   <textarea class="editor">
     Right-click to format text
   </textarea>
-</ui-context-menu>`,
+</fui-context-menu>`,
     },
   ],
   accessibility: {
@@ -4305,7 +4305,7 @@ const NAVBAR_METADATA: ComponentMetadata = {
   name: 'Navbar',
   category: 'navigation',
   description: 'A navigation bar component for app-wide navigation with logo and links.',
-  selector: 'ui-navbar',
+  selector: 'fui-navbar',
   inputs: [
     { name: 'brandText', type: 'string', description: 'Brand or logo text displayed on the left' },
     {
@@ -4340,7 +4340,7 @@ const NAVBAR_METADATA: ComponentMetadata = {
   { label: 'About', path: '/about' },
   { label: 'Contact', path: '/contact' }
 ];`,
-      template: `<ui-navbar logo="MyApp" [links]="navLinks" />`,
+      template: `<fui-navbar logo="MyApp" [links]="navLinks" />`,
     },
     {
       title: 'Sticky Navbar',
@@ -4350,7 +4350,7 @@ const NAVBAR_METADATA: ComponentMetadata = {
   { label: 'Reports', path: '/reports' },
   { label: 'Settings', path: '/settings' }
 ];`,
-      template: `<ui-navbar logo="MyApp" [links]="navLinks" variant="sticky" />`,
+      template: `<fui-navbar logo="MyApp" [links]="navLinks" variant="sticky" />`,
     },
   ],
   accessibility: {
@@ -4382,7 +4382,7 @@ const STEPPER_METADATA: ComponentMetadata = {
   name: 'Stepper',
   category: 'navigation',
   description: 'A component for multi-step processes with progress indication and step navigation.',
-  selector: 'ui-stepper',
+  selector: 'fui-stepper',
   inputs: [
     {
       name: 'steps',
@@ -4421,7 +4421,7 @@ const STEPPER_METADATA: ComponentMetadata = {
   { label: 'Confirm', description: 'Review order' }
 ];
 protected currentStep = signal(0);`,
-      template: `<ui-stepper [steps]="steps" [activeStep]="currentStep()" (activeStepChange)="currentStep.set($event)" />`,
+      template: `<fui-stepper [steps]="steps" [activeStep]="currentStep()" (activeStepChange)="currentStep.set($event)" />`,
     },
     {
       title: 'Vertical Stepper',
@@ -4431,7 +4431,7 @@ protected currentStep = signal(0);`,
   { label: 'Account Details' },
   { label: 'Preferences' }
 ];`,
-      template: `<ui-stepper [steps]="steps" [activeStep]="0" orientation="vertical" />`,
+      template: `<fui-stepper [steps]="steps" [activeStep]="0" orientation="vertical" />`,
     },
     {
       title: 'Form Wizard',
@@ -4441,7 +4441,7 @@ protected currentStep = signal(0);`,
   { label: 'Company', description: 'Company details' },
   { label: 'Review', description: 'Confirm submission' }
 ];`,
-      template: `<ui-stepper [steps]="steps" [activeStep]="currentStep()" />`,
+      template: `<fui-stepper [steps]="steps" [activeStep]="currentStep()" />`,
     },
   ],
   accessibility: {

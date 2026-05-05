@@ -322,9 +322,9 @@ export const defaultPrimitiveTokens: PrimitiveTokens = {
   },
   typography: {
     fontFamily: {
-      sans: 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-      serif: 'ui-serif, Georgia, Cambria, "Times New Roman", Times, serif',
-      mono: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+      sans: 'fui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+      serif: 'fui-serif, Georgia, Cambria, "Times New Roman", Times, serif',
+      mono: 'fui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
     },
     fontSize: {
       xs: '0.75rem', // 12px

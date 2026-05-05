@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Breadcrumb Component
  * 
  * A navigation component showing the user's location in a hierarchy.
@@ -24,7 +24,7 @@ export interface BreadcrumbItem {
 export type BreadcrumbSize = 'sm' | 'md' | 'lg';
 
 @Component({
-  selector: 'ui-breadcrumb',
+  selector: 'fui-breadcrumb',
   imports: [NgClass],
   templateUrl: './breadcrumb.component.html',
   styleUrl: './breadcrumb.component.css',
@@ -80,8 +80,8 @@ export class BreadcrumbComponent {
    * Computed CSS classes
    */
   protected readonly breadcrumbClasses = computed(() => ({
-    'ui-breadcrumb': true,
-    [`ui-breadcrumb--${this.size()}`]: true,
+    'fui-breadcrumb': true,
+    [`fui-breadcrumb--${this.size()}`]: true,
   }));
 
   /**

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Skeleton Component
  *
  * A loading placeholder component that displays a shimmer effect
@@ -11,7 +11,7 @@ import { NgClass } from '@angular/common';
 export type SkeletonVariant = 'text' | 'circular' | 'rectangular' | 'rounded';
 
 @Component({
-  selector: 'ui-skeleton',
+  selector: 'fui-skeleton',
   imports: [NgClass],
   templateUrl: './skeleton.component.html',
   styleUrl: './skeleton.component.css',
@@ -47,9 +47,9 @@ export class SkeletonComponent {
    * Computed CSS classes
    */
   protected readonly skeletonClasses = computed(() => ({
-    'ui-skeleton': true,
-    [`ui-skeleton--${this.variant()}`]: true,
-    'ui-skeleton--no-animation': this.noAnimation(),
+    'fui-skeleton': true,
+    [`fui-skeleton--${this.variant()}`]: true,
+    'fui-skeleton--no-animation': this.noAnimation(),
   }));
 
   /**

@@ -1,10 +1,10 @@
-<div class="ui-tooltip-trigger">
+<div class="fui-tooltip-trigger">
   <ng-content></ng-content>
 
   <div [ngClass]="tooltipClasses()" role="tooltip" [attr.aria-hidden]="!isVisible()">
-    <div class="ui-tooltip-content">
+    <div class="fui-tooltip-content">
       {{ text() }}
     </div>
-    <div class="ui-tooltip-arrow"></div>
+    <div class="fui-tooltip-arrow"></div>
   </div>
 </div>
