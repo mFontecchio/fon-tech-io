@@ -1,9 +1,6 @@
 <div class="fui-switch-container">
-  <label 
-    [for]="switchId()" 
-    class="fui-switch-label"
-    (click)="handleLabelClick($event)"
-  >
+  <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
+  <label [for]="switchId()" class="fui-switch-label" (click)="handleLabelClick($event)">
     <input
       #switch
       type="checkbox"
@@ -21,7 +18,7 @@
       [ngClass]="switchClasses()"
       (change)="handleChange($event)"
     />
-    
+
     <span class="fui-switch-track">
       <span class="fui-switch-thumb">
         @if (showLabels()) {
@@ -43,23 +40,14 @@
   </label>
 
   @if (helperText() && !hasError()) {
-    <div 
-      [id]="helperTextId()" 
-      class="fui-switch-helper-text"
-    >
+    <div [id]="helperTextId()" class="fui-switch-helper-text">
       {{ helperText() }}
     </div>
   }
 
   @if (hasError()) {
-    <div 
-      [id]="errorId()" 
-      class="fui-switch-error-message"
-      role="alert"
-      aria-live="polite"
-    >
+    <div [id]="errorId()" class="fui-switch-error-message" role="alert" aria-live="polite">
       {{ errorMessage() }}
     </div>
   }
 </div>
-

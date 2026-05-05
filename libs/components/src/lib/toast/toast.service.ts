@@ -49,8 +49,8 @@ export class ToastService {
   public show(
     message: string,
     variant: Toast['variant'] = 'info',
-    duration: number = 5000,
-    dismissible: boolean = true
+    duration = 5000,
+    dismissible = true
   ): string {
     const id = this.generateId();
     const toast: Toast = {

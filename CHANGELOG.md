@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.0] - 2026-05-04
 
 ### Changed
 - **Component selector prefix renamed**: All 43 component selectors, CSS class names, internal CSS custom properties, and template usages have been renamed from the `ui-` prefix to `fui-`. For example, `<ui-button>` is now `<fui-button>`, `.ui-button` is now `.fui-button`, and `--ui-menu-top` is now `--fui-menu-top`. The design token prefix `--ui-suite` and package names `@ui-suite/*` are unchanged.

@@ -201,7 +201,7 @@ export function createThemeFamilyTokenBundle(
  */
 export function normalizeImportedThemeData(
   input: unknown,
-  fallbackName: string = 'Imported Theme'
+  fallbackName = 'Imported Theme'
 ): ThemeFamilyTokenBundle {
   if (!isRecord(input)) {
     throw new Error('Invalid theme data');
@@ -312,7 +312,7 @@ export function isValidHexColor(hex: string): boolean {
 /**
  * Generate shades of a color (lighter to darker)
  */
-export function generateShades(hex: string, count: number = 5): string[] {
+export function generateShades(hex: string, count = 5): string[] {
   const shades: string[] = [];
   const step = 100 / (count + 1);
 

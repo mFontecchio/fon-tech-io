@@ -37,7 +37,12 @@
                 [disabled]="disabled()"
               >
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                  <path d="M10.5 3.5L3.5 10.5M3.5 3.5L10.5 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <path
+                    d="M10.5 3.5L3.5 10.5M3.5 3.5L10.5 10.5"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                  />
                 </svg>
               </button>
             </span>
@@ -56,23 +61,28 @@
             (click)="clearAll(); $event.stopPropagation()"
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <path d="M12 4L4 12M4 4L12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path
+                d="M12 4L4 12M4 4L12 12"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
             </svg>
           </button>
         }
-        <svg 
-          class="fui-multi-select-arrow" 
-          width="20" 
-          height="20" 
-          viewBox="0 0 20 20" 
+        <svg
+          class="fui-multi-select-arrow"
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
           fill="none"
           aria-hidden="true"
         >
-          <path 
-            d="M6 8L10 12L14 8" 
-            stroke="currentColor" 
-            stroke-width="2" 
-            stroke-linecap="round" 
+          <path
+            d="M6 8L10 12L14 8"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
             stroke-linejoin="round"
           />
         </svg>
@@ -98,6 +108,7 @@
         <div class="fui-multi-select-options">
           @if (filteredOptions().length > 0) {
             @for (option of filteredOptions(); track option.value) {
+              <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
               <div
                 class="fui-multi-select-option"
                 [class.fui-multi-select-option--selected]="isSelected(option)"
@@ -110,7 +121,13 @@
                 <div class="fui-multi-select-checkbox">
                   @if (isSelected(option)) {
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                      <path d="M11.667 3.5L5.25 9.917L2.333 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path
+                        d="M11.667 3.5L5.25 9.917L2.333 7"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
                     </svg>
                   }
                 </div>
@@ -118,6 +135,7 @@
               </div>
             }
           } @else if (canCreateOption()) {
+            <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
             <div
               class="fui-multi-select-option fui-multi-select-option--create"
               (click)="createOption()"
@@ -127,39 +145,26 @@
               </span>
             </div>
           } @else {
-            <div class="fui-multi-select-empty">
-              No options found
-            </div>
+            <div class="fui-multi-select-empty">No options found</div>
           }
         </div>
 
         @if (hasReachedMax()) {
-          <div class="fui-multi-select-limit">
-            Maximum {{ maxSelections() }} selections reached
-          </div>
+          <div class="fui-multi-select-limit">Maximum {{ maxSelections() }} selections reached</div>
         }
       </div>
     }
   </div>
 
   @if (helperText() && !hasError()) {
-    <div 
-      [id]="helperTextId()" 
-      class="fui-multi-select-helper-text"
-    >
+    <div [id]="helperTextId()" class="fui-multi-select-helper-text">
       {{ helperText() }}
     </div>
   }
 
   @if (hasError()) {
-    <div 
-      [id]="errorId()" 
-      class="fui-multi-select-error-message"
-      role="alert"
-      aria-live="polite"
-    >
+    <div [id]="errorId()" class="fui-multi-select-error-message" role="alert" aria-live="polite">
       {{ errorMessage() }}
     </div>
   }
 </div>
-

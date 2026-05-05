@@ -31,7 +31,7 @@ module.exports = [
         'error',
         {
           type: 'attribute',
-          prefix: 'lib',
+          prefix: 'app',
           style: 'camelCase',
         },
       ],
@@ -39,7 +39,7 @@ module.exports = [
         'error',
         {
           type: 'element',
-          prefix: 'lib',
+          prefix: 'app',
           style: 'kebab-case',
         },
       ],

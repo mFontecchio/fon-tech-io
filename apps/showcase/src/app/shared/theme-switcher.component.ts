@@ -75,6 +75,7 @@ interface ThemeFamilyOption {
         <div
           class="theme-dropdown"
           role="menu"
+          tabindex="-1"
           aria-label="Theme options"
           (click)="$event.stopPropagation()"
           (keydown)="handleDropdownKeyDown($event)"

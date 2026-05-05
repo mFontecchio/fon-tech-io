@@ -45,15 +45,17 @@ describe('theme-builder-app-e2e', () => {
       .first()
       .as('brandPrimaryInput');
 
-    cy.get('@brandPrimaryInput')
-      .invoke('val', '#123456')
-      .trigger('input')
-      .trigger('change')
-      .should('have.value', '#123456');
+    cy.get('@brandPrimaryInput').invoke('val', '#123456');
+    cy.get('@brandPrimaryInput').trigger('input');
+    cy.get('@brandPrimaryInput').trigger('change');
+    cy.get('@brandPrimaryInput').should('have.value', '#123456');
 
     cy.window().then((win) => {
       expect(
-        win.getComputedStyle(win.document.documentElement).getPropertyValue('--semantic-brand-primary').trim()
+        win
+          .getComputedStyle(win.document.documentElement)
+          .getPropertyValue('--semantic-brand-primary')
+          .trim()
       ).to.equal('#123456');
     });
 
@@ -62,7 +64,10 @@ describe('theme-builder-app-e2e', () => {
     cy.get('@originalBrandPrimary').then((originalBrandPrimary) => {
       cy.window().then((win) => {
         expect(
-          win.getComputedStyle(win.document.documentElement).getPropertyValue('--semantic-brand-primary').trim()
+          win
+            .getComputedStyle(win.document.documentElement)
+            .getPropertyValue('--semantic-brand-primary')
+            .trim()
         ).to.equal(originalBrandPrimary);
       });
 
@@ -96,7 +101,10 @@ describe('theme-builder-app-e2e', () => {
 
     cy.window().then((win) => {
       expect(
-        win.getComputedStyle(win.document.documentElement).getPropertyValue('--semantic-brand-primary').trim()
+        win
+          .getComputedStyle(win.document.documentElement)
+          .getPropertyValue('--semantic-brand-primary')
+          .trim()
       ).to.equal('#1976d2');
     });
   });

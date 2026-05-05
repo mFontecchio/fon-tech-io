@@ -366,6 +366,7 @@ interface EditableThemeFamilyMetadata {
               <div class="saved-themes-grid">
                 @for (theme of savedThemes(); track theme.name) {
                   <div class="saved-theme-card">
+                    <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
                     <div class="saved-theme-info" (click)="loadSavedTheme(theme.name)">
                       <h4>{{ theme.name }}</h4>
                       <span class="saved-theme-date">{{ formatDate(theme.createdAt) }}</span>
@@ -415,6 +416,7 @@ interface EditableThemeFamilyMetadata {
                       <div class="token-grid">
                         @for (token of category.tokens; track token.name) {
                           <div class="token-item">
+                            <!-- eslint-disable-next-line @angular-eslint/template/label-has-associated-control -->
                             <label>
                               <span class="token-label">{{ formatTokenName(token.name) }}</span>
                               @if (token.description) {
@@ -483,7 +485,7 @@ interface EditableThemeFamilyMetadata {
                       <div class="token-grid">
                         @for (token of category.tokens; track token.name) {
                           <div class="token-item">
-                            <label>
+                            <label [for]="token.name">
                               <span class="token-label">{{ formatTokenName(token.name) }}</span>
                             </label>
                             <input
@@ -511,7 +513,7 @@ interface EditableThemeFamilyMetadata {
                       <div class="token-grid">
                         @for (token of category.tokens; track token.name) {
                           <div class="token-item">
-                            <label>
+                            <label [for]="token.name">
                               <span class="token-label">{{ formatTokenName(token.name) }}</span>
                             </label>
                             <input
@@ -818,9 +820,10 @@ interface EditableThemeFamilyMetadata {
                   placeholder="#3b82f6"
                 />
                 <div class="color-picker-wrapper">
-                  <label class="color-picker-label">Pick Color</label>
+                  <label class="color-picker-label" for="color-picker-input">Pick Color</label>
                   <input
                     type="color"
+                    id="color-picker-input"
                     class="color-picker-input"
                     [value]="baseColorForGeneration || '#3b82f6'"
                     (input)="baseColorForGeneration = $any($event.target).value"
@@ -845,6 +848,7 @@ interface EditableThemeFamilyMetadata {
                 <h4>Generated Colors:</h4>
                 <div class="generated-color-grid">
                   @for (color of generatedColors(); track color) {
+                    <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
                     <div class="generated-color-item" (click)="copyColorToClipboard(color)">
                       <div class="generated-color-preview" [style.background-color]="color"></div>
                       <span class="generated-color-value">{{ color }}</span>
@@ -2159,7 +2163,7 @@ export class ThemeBuilderComponent {
     });
   }
 
-  private syncThemeFamilyWithService(activate: boolean = false): ThemeFamily {
+  private syncThemeFamilyWithService(activate = false): ThemeFamily {
     const themeFamily = this.buildEditableThemeFamily();
     this.themeService.registerThemeFamily(themeFamily);
 
@@ -2251,7 +2255,7 @@ export class ThemeBuilderComponent {
     return this.resolveCssVariableReference(value);
   }
 
-  private resolveCssVariableReference(value: string, depth: number = 0): string {
+  private resolveCssVariableReference(value: string, depth = 0): string {
     if (!value.startsWith('var(--') || depth > 8) {
       return value;
     }
@@ -2280,7 +2284,7 @@ export class ThemeBuilderComponent {
     tokenName: string,
     value: string,
     isDark: boolean,
-    recordHistory: boolean = true
+    recordHistory = true
   ): void {
     // Get old value for history
     const oldValue = getComputedStyle(document.documentElement).getPropertyValue(tokenName).trim();

@@ -1,6 +1,6 @@
 {
   "name": "@ui-suite/theme-builder",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Interactive theme builder UI and utilities for ui-component-suite — visual theme creation with real-time preview",
   "keywords": [
     "angular",

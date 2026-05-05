@@ -388,7 +388,11 @@ import {
           <!-- SELECT DEMOS -->
           @case ('select') {
             @if (exampleTitle() === 'Basic Select') {
-              <fui-select label="Country" [options]="sampleOptions()" placeholder="Select country" />
+              <fui-select
+                label="Country"
+                [options]="sampleOptions()"
+                placeholder="Select country"
+              />
             }
             @if (exampleTitle() === 'Select with Pre-selection') {
               <fui-select label="Country" [options]="sampleOptions()" value="us" />
@@ -410,7 +414,12 @@ import {
               />
             }
             @if (exampleTitle() === 'Disabled Select') {
-              <fui-select label="Country" [options]="sampleOptions()" value="us" [disabled]="true" />
+              <fui-select
+                label="Country"
+                [options]="sampleOptions()"
+                value="us"
+                [disabled]="true"
+              />
             }
           }
 
@@ -723,7 +732,7 @@ import {
             }
             @if (exampleTitle() === 'Icon with Tooltip') {
               <fui-tooltip text="More information">
-                <button></button>
+                <button aria-label="More information"></button>
               </fui-tooltip>
             }
             @if (exampleTitle() === 'Link with Tooltip') {
@@ -1299,7 +1308,11 @@ import {
               </fui-carousel>
             }
             @if (exampleTitle() === 'Fade Transition') {
-              <fui-carousel class="carousel-demo" variant="fade" ariaLabel="Fade transition example">
+              <fui-carousel
+                class="carousel-demo"
+                variant="fade"
+                ariaLabel="Fade transition example"
+              >
                 @for (slide of carouselSlides(); track slide.title) {
                   <fui-carousel-slide [label]="slide.title">
                     <article class="carousel-slide-card" [style.--carousel-accent]="slide.accent">

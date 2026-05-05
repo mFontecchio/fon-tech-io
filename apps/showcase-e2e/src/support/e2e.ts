@@ -1,4 +1,4 @@
-/// <reference types="cypress-axe" />
+import 'cypress-axe';
 
 // ***********************************************************
 // This example support/e2e.ts is processed and

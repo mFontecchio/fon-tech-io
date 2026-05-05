@@ -1,3 +1,4 @@
+<!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
 <dialog
   #dialog
   [ngClass]="modalClasses()"
@@ -22,17 +23,11 @@
             aria-label="Close modal"
             (click)="handleClose()"
           >
-            <svg 
-              width="20" 
-              height="20" 
-              viewBox="0 0 20 20" 
-              fill="none"
-              aria-hidden="true"
-            >
-              <path 
-                d="M15 5L5 15M5 5L15 15" 
-                stroke="currentColor" 
-                stroke-width="2" 
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path
+                d="M15 5L5 15M5 5L15 15"
+                stroke="currentColor"
+                stroke-width="2"
                 stroke-linecap="round"
               />
             </svg>
@@ -50,4 +45,3 @@
     </div>
   </div>
 </dialog>
-

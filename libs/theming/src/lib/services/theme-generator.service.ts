@@ -275,7 +275,7 @@ export class ThemeGeneratorService {
   createThemeFromBrandColor(
     brandColor: string,
     mode: ThemeMode = 'light',
-    themeName: string = 'Custom Theme',
+    themeName = 'Custom Theme',
     baseTheme?: Theme
   ): Theme {
     const palette = this.generatePalette(brandColor);

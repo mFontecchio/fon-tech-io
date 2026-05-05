@@ -12,7 +12,7 @@ import {
   input,
   signal,
   ElementRef,
-  inject,
+  inject, OnDestroy,
 } from '@angular/core';
 import { NgClass } from '@angular/common';
 
@@ -33,7 +33,7 @@ export type TooltipSize = 'sm' | 'md' | 'lg';
     '(focusout)': 'handleFocusOut()',
   },
 })
-export class TooltipComponent {
+export class TooltipComponent implements OnDestroy {
   /**
    * Tooltip text content
    */

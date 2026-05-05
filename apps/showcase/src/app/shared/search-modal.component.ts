@@ -35,7 +35,9 @@ interface SearchResult {
   },
   template: `
     @if (isOpen()) {
+      <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
       <div class="search-modal-backdrop" (click)="close()">
+        <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
         <dialog
           class="search-modal"
           aria-label="Search components"
@@ -462,7 +464,10 @@ export class SearchModalComponent {
   // State
   readonly isOpen = signal(false);
   readonly searchQuery = signal('');
-  readonly selectedIndex = linkedSignal(() => { this.searchQuery(); return 0; });
+  readonly selectedIndex = linkedSignal(() => {
+    this.searchQuery();
+    return 0;
+  });
 
   // All components
   private readonly allComponents = getAllComponentMetadata();

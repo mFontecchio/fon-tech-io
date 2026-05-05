@@ -252,8 +252,8 @@ export function checkContrast(
  */
 export function getContrastTextColor(
   backgroundColor: string | RgbColor,
-  blackColor: string = '#000000',
-  whiteColor: string = '#ffffff'
+  blackColor = '#000000',
+  whiteColor = '#ffffff'
 ): string {
   const contrastWithBlack = getContrastRatio(backgroundColor, blackColor);
   const contrastWithWhite = getContrastRatio(backgroundColor, whiteColor);
@@ -322,7 +322,7 @@ export function lightenColor(color: string, amount: number): string {
 export function generateHoverColor(
   color: string,
   mode: 'light' | 'dark' | 'high-contrast',
-  amount: number = 10
+  amount = 10
 ): string {
   // For light mode, darken on hover
   // For dark mode, lighten on hover
@@ -340,7 +340,7 @@ export function generateHoverColor(
 export function generateActiveColor(
   color: string,
   mode: 'light' | 'dark' | 'high-contrast',
-  amount: number = 15
+  amount = 15
 ): string {
   return mode === 'dark' ? lightenColor(color, amount) : darkenColor(color, amount);
 }

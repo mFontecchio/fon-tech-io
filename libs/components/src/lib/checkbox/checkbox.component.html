@@ -1,9 +1,6 @@
 <div class="fui-checkbox-container">
-  <label 
-    [for]="checkboxId()" 
-    class="fui-checkbox-label"
-    (click)="handleLabelClick($event)"
-  >
+  <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
+  <label [for]="checkboxId()" class="fui-checkbox-label" (click)="handleLabelClick($event)">
     <input
       #checkbox
       type="checkbox"
@@ -21,42 +18,37 @@
       [ngClass]="checkboxClasses()"
       (change)="handleChange($event)"
     />
-    
+
     <span class="fui-checkbox-box">
       @if (internalChecked() && !indeterminate()) {
-        <svg 
-          class="fui-checkbox-icon" 
-          width="16" 
-          height="16" 
-          viewBox="0 0 16 16" 
+        <svg
+          class="fui-checkbox-icon"
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
           fill="none"
           aria-hidden="true"
         >
-          <path 
-            d="M13.5 4L6 11.5L2.5 8" 
-            stroke="currentColor" 
-            stroke-width="2" 
-            stroke-linecap="round" 
+          <path
+            d="M13.5 4L6 11.5L2.5 8"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
             stroke-linejoin="round"
           />
         </svg>
       }
-      
+
       @if (indeterminate()) {
-        <svg 
-          class="fui-checkbox-icon" 
-          width="16" 
-          height="16" 
-          viewBox="0 0 16 16" 
+        <svg
+          class="fui-checkbox-icon"
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
           fill="none"
           aria-hidden="true"
         >
-          <path 
-            d="M4 8H12" 
-            stroke="currentColor" 
-            stroke-width="2" 
-            stroke-linecap="round"
-          />
+          <path d="M4 8H12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
         </svg>
       }
     </span>
@@ -72,23 +64,14 @@
   </label>
 
   @if (helperText() && !hasError()) {
-    <div 
-      [id]="helperTextId()" 
-      class="fui-checkbox-helper-text"
-    >
+    <div [id]="helperTextId()" class="fui-checkbox-helper-text">
       {{ helperText() }}
     </div>
   }
 
   @if (hasError()) {
-    <div 
-      [id]="errorId()" 
-      class="fui-checkbox-error-message"
-      role="alert"
-      aria-live="polite"
-    >
+    <div [id]="errorId()" class="fui-checkbox-error-message" role="alert" aria-live="polite">
       {{ errorMessage() }}
     </div>
   }
 </div>
-

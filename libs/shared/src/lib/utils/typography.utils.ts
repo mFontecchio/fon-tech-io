@@ -218,7 +218,7 @@ export function isReadableLineLength(characterCount: number): boolean {
  */
 export function calculateContainerWidth(
   fontSize: number,
-  characterCount: number = 65
+  characterCount = 65
 ): number {
   // Average character width is approximately 0.5em for most fonts
   const characterWidth = fontSize * 0.5;
