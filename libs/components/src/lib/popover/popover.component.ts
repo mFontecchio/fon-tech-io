@@ -1,6 +1,6 @@
 /**
  * Popover Component
- * 
+ *
  * A floating container that displays rich content when triggered.
  * Similar to Tooltip but for more complex content with interactions.
  */
@@ -14,21 +14,22 @@ import {
   signal,
   ElementRef,
   inject,
-  HostListener,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 export type PopoverPosition = 'top' | 'right' | 'bottom' | 'left';
 export type PopoverTrigger = 'click' | 'hover';
 
 @Component({
-  selector: 'ui-popover',
-  imports: [CommonModule],
+  selector: 'fui-popover',
+  imports: [NgClass],
   templateUrl: './popover.component.html',
   styleUrl: './popover.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.ui-popover-wrapper]': 'true',
+    '[class.fui-popover-wrapper]': 'true',
+    '(document:click)': 'handleClickOutside($event)',
+    '(keydown.escape)': 'handleEscape()',
   },
 })
 export class PopoverComponent {
@@ -68,18 +69,13 @@ export class PopoverComponent {
   protected readonly isOpen = signal(false);
 
   /**
-   * Dynamic position styles
-   */
-  protected readonly popoverStyles = signal<Record<string, string>>({});
-
-  /**
    * Computed CSS classes
    */
   protected readonly popoverClasses = computed(() => ({
-    'ui-popover': true,
-    [`ui-popover--${this.position()}`]: true,
-    'ui-popover--visible': this.isOpen(),
-    'ui-popover--with-arrow': this.showArrow(),
+    'fui-popover': true,
+    [`fui-popover--${this.position()}`]: true,
+    'fui-popover--visible': this.isOpen(),
+    'fui-popover--with-arrow': this.showArrow(),
   }));
 
   private elementRef = inject(ElementRef);
@@ -92,11 +88,11 @@ export class PopoverComponent {
 
     const newState = !this.isOpen();
     this.isOpen.set(newState);
-    
+
     if (newState) {
       this.updatePosition();
     }
-    
+
     this.openChange.emit(newState);
   }
 
@@ -151,7 +147,6 @@ export class PopoverComponent {
   /**
    * Click outside to close
    */
-  @HostListener('document:click', ['$event'])
   protected handleClickOutside(event: Event): void {
     if (this.trigger() !== 'click') return;
 
@@ -166,7 +161,6 @@ export class PopoverComponent {
   /**
    * Handle escape key
    */
-  @HostListener('keydown.escape')
   protected handleEscape(): void {
     if (this.isOpen()) {
       this.close();
@@ -180,39 +174,42 @@ export class PopoverComponent {
     const hostElement = this.elementRef?.nativeElement;
     if (!hostElement) return;
 
-    const trigger = hostElement.querySelector('.ui-popover-trigger');
+    const trigger = hostElement.querySelector('.fui-popover-trigger');
     if (!trigger) return;
 
     const rect = trigger.getBoundingClientRect();
     const position = this.position();
     const gap = 8;
 
-    const styles: Record<string, string> = {};
+    let left = 0;
+    let top = 0;
+    let transform = 'none';
 
     switch (position) {
       case 'top':
-        styles['left'] = `${rect.left + rect.width / 2}px`;
-        styles['top'] = `${rect.top - gap}px`;
-        styles['transform'] = 'translate(-50%, -100%)';
+        left = rect.left + rect.width / 2;
+        top = rect.top - gap;
+        transform = 'translate(-50%, -100%)';
         break;
       case 'bottom':
-        styles['left'] = `${rect.left + rect.width / 2}px`;
-        styles['top'] = `${rect.bottom + gap}px`;
-        styles['transform'] = 'translateX(-50%)';
+        left = rect.left + rect.width / 2;
+        top = rect.bottom + gap;
+        transform = 'translateX(-50%)';
         break;
       case 'left':
-        styles['left'] = `${rect.left - gap}px`;
-        styles['top'] = `${rect.top + rect.height / 2}px`;
-        styles['transform'] = 'translate(-100%, -50%)';
+        left = rect.left - gap;
+        top = rect.top + rect.height / 2;
+        transform = 'translate(-100%, -50%)';
         break;
       case 'right':
-        styles['left'] = `${rect.right + gap}px`;
-        styles['top'] = `${rect.top + rect.height / 2}px`;
-        styles['transform'] = 'translateY(-50%)';
+        left = rect.right + gap;
+        top = rect.top + rect.height / 2;
+        transform = 'translateY(-50%)';
         break;
     }
 
-    this.popoverStyles.set(styles);
+    hostElement.style.setProperty('--fui-popover-left', `${left}px`);
+    hostElement.style.setProperty('--fui-popover-top', `${top}px`);
+    hostElement.style.setProperty('--fui-popover-transform', transform);
   }
 }
-

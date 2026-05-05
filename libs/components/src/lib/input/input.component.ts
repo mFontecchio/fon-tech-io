@@ -9,29 +9,30 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   input,
+  linkedSignal,
   output,
   signal,
-  effect,
   ElementRef,
   viewChild,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 export type InputType = 'text' | 'email' | 'tel' | 'url' | 'number' | 'password' | 'search';
 
 @Component({
-  selector: 'ui-input',
-  imports: [CommonModule, FormsModule],
+  selector: 'fui-input',
+  imports: [NgClass, FormsModule],
   templateUrl: './input.component.html',
   styleUrl: './input.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.ui-input-wrapper]': 'true',
-    '[class.ui-input-wrapper--disabled]': 'disabled()',
-    '[class.ui-input-wrapper--error]': 'hasError()',
-    '[class.ui-input-wrapper--full-width]': 'fullWidth()',
+    '[class.fui-input-wrapper]': 'true',
+    '[class.fui-input-wrapper--disabled]': 'disabled()',
+    '[class.fui-input-wrapper--error]': 'hasError()',
+    '[class.fui-input-wrapper--full-width]': 'fullWidth()',
   },
 })
 export class InputComponent {
@@ -49,6 +50,21 @@ export class InputComponent {
    * Placeholder text
    */
   readonly placeholder = input<string>('');
+
+  /**
+   * Icon or text rendered before the input value
+   */
+  readonly prefixIcon = input<string | undefined>(undefined);
+
+  /**
+   * Icon or text rendered after the input value
+   */
+  readonly suffixIcon = input<string | undefined>(undefined);
+
+  /**
+   * Show a built-in password reveal toggle when type is password
+   */
+  readonly showPasswordToggle = input<boolean>(false);
 
   /**
    * Label text
@@ -153,7 +169,7 @@ export class InputComponent {
   /**
    * Internal value signal
    */
-  protected readonly internalValue = signal('');
+  protected readonly internalValue = linkedSignal(() => this.value());
 
   /**
    * Internal focus state
@@ -161,21 +177,43 @@ export class InputComponent {
   protected readonly isFocused = signal(false);
 
   /**
+   * Whether the user has interacted with the field
+   */
+  protected readonly hasInteracted = signal(false);
+
+  /**
+   * Internal validation message derived from native validity rules
+   */
+  protected readonly internalValidationMessage = signal<string | undefined>(undefined);
+
+  /**
+   * Whether password content is currently visible
+   */
+  protected readonly isPasswordVisible = signal(false);
+
+  /**
    * Reference to input element
    */
   protected readonly inputElement = viewChild<ElementRef<HTMLInputElement>>('input');
 
   /**
+   * Computed error message
+   */
+  protected readonly displayedErrorMessage = computed(
+    () => this.errorMessage() || (this.hasInteracted() ? this.internalValidationMessage() : undefined)
+  );
+
+  /**
    * Computed error state
    */
-  protected readonly hasError = computed(() => !!this.errorMessage());
+  protected readonly hasError = computed(() => !!this.displayedErrorMessage());
 
   /**
    * Computed ID for input element
    */
   protected readonly inputId = computed(() => {
     const providedId = this.id();
-    return providedId || `ui-input-${Math.random().toString(36).substr(2, 9)}`;
+    return providedId || `fui-input-${Math.random().toString(36).substr(2, 9)}`;
   });
 
   /**
@@ -213,16 +251,55 @@ export class InputComponent {
    * Computed CSS classes for input
    */
   protected readonly inputClasses = computed(() => ({
-    'ui-input': true,
-    'ui-input--error': this.hasError(),
-    'ui-input--disabled': this.disabled(),
-    'ui-input--focused': this.isFocused(),
+    'fui-input': true,
+    'fui-input--error': this.hasError(),
+    'fui-input--disabled': this.disabled(),
+    'fui-input--focused': this.isFocused(),
   }));
 
+  /**
+   * Whether the configured input type is password.
+   */
+  protected readonly isPasswordType = computed(() => this.type() === 'password');
+
+  /**
+   * Whether the built-in password toggle should render.
+   */
+  protected readonly shouldShowPasswordToggle = computed(
+    () => this.isPasswordType() && this.showPasswordToggle()
+  );
+
+  /**
+   * Type passed to the native input element.
+   */
+  protected readonly resolvedInputType = computed<InputType>(() => {
+    if (this.shouldShowPasswordToggle() && this.isPasswordVisible()) {
+      return 'text';
+    }
+
+    return this.type();
+  });
+
+  /**
+   * Accessible label for the password toggle control.
+   */
+  protected readonly passwordToggleLabel = computed(() =>
+    this.isPasswordVisible() ? 'Hide password' : 'Show password'
+  );
+
   constructor() {
-    // Sync internal value with input value
+    // Re-run validation when constraints or external value changes
     effect(() => {
-      this.internalValue.set(this.value());
+      this.internalValue();
+      this.required();
+      this.minLength();
+      this.maxLength();
+      this.pattern();
+      this.type();
+
+      if (this.hasInteracted()) {
+        queueMicrotask(() => this.updateValidationState());
+      }
     });
 
     // Auto focus if needed
@@ -244,6 +321,8 @@ export class InputComponent {
     const newValue = target.value;
     
     this.internalValue.set(newValue);
+    this.hasInteracted.set(true);
+    this.updateValidationState(target);
     this.valueChange.emit(newValue);
     this.inputted.emit(event);
   }
@@ -261,7 +340,84 @@ export class InputComponent {
    */
   protected handleBlur(event: FocusEvent): void {
     this.isFocused.set(false);
+    this.hasInteracted.set(true);
+    this.updateValidationState(event.target as HTMLInputElement | null);
     this.blurred.emit(event);
+  }
+
+  /**
+   * Toggle password visibility while preserving focus and selection.
+   */
+  protected togglePasswordVisibility(): void {
+    const input = this.inputElement()?.nativeElement;
+    const selectionStart = input?.selectionStart ?? null;
+    const selectionEnd = input?.selectionEnd ?? null;
+
+    this.isPasswordVisible.update(isVisible => !isVisible);
+
+    queueMicrotask(() => {
+      const resolvedInput = this.inputElement()?.nativeElement;
+
+      if (!resolvedInput) {
+        return;
+      }
+
+      resolvedInput.focus({ preventScroll: true });
+
+      if (selectionStart !== null && selectionEnd !== null) {
+        resolvedInput.setSelectionRange(selectionStart, selectionEnd);
+      }
+    });
+  }
+
+  /**
+   * Synchronize validation state with native input validity.
+   */
+  private updateValidationState(inputElement?: HTMLInputElement | null): void {
+    const resolvedInput = inputElement ?? this.inputElement()?.nativeElement;
+
+    if (!resolvedInput || this.disabled() || this.readonly()) {
+      this.internalValidationMessage.set(undefined);
+      return;
+    }
+
+    const validationMessage = resolvedInput.validity.valid
+      ? undefined
+      : resolvedInput.validationMessage || this.getFallbackValidationMessage(resolvedInput.value);
+
+    this.internalValidationMessage.set(validationMessage);
+  }
+
+  /**
+   * Provide fallback validation copy when browser message is unavailable.
+   */
+  private getFallbackValidationMessage(value: string): string | undefined {
+    if (this.required() && !value.trim()) {
+      return 'This field is required.';
+    }
+
+    const minLength = this.minLength();
+    if (minLength !== undefined && value.length < minLength) {
+      return `Enter at least ${minLength} characters.`;
+    }
+
+    const maxLength = this.maxLength();
+    if (maxLength !== undefined && value.length > maxLength) {
+      return `Enter no more than ${maxLength} characters.`;
+    }
+
+    const pattern = this.pattern();
+    if (pattern && value) {
+      try {
+        if (!new RegExp(pattern).test(value)) {
+          return 'Enter value in required format.';
+        }
+      } catch {
+        return 'Enter a valid value.';
+      }
+    }
+
+    return undefined;
   }
 
   /**

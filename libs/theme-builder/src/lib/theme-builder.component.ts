@@ -3,9 +3,18 @@
  * Interactive theme customization tool with live preview and export
  */
 
-import { Component, signal, computed, effect, HostListener, afterNextRender } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  signal,
+  computed,
+  effect,
+  HostListener,
+  afterNextRender,
+  inject,
+  untracked,
+} from '@angular/core';
+
 import {
   CardComponent,
   TabsComponent,
@@ -17,20 +26,26 @@ import {
   ModalComponent,
   SkeletonComponent,
 } from '@ui-suite/components';
+import { ThemeService, Theme, ThemeFamily } from '@ui-suite/theming';
 import { THEME_PRESETS, ThemePreset } from './theme-presets';
+import { convertPresetToThemeFamily } from './preset-converter';
 import {
-  getContrastRatio,
-  getWCAGLevel,
-  saveTheme,
-  getSavedThemes,
+  createThemeFamilyTokenBundle,
   deleteTheme,
-  parseCSSVariables,
-  isValidHexColor,
-  getComplementaryColor,
   getAnalogousColors,
+  getContrastRatio,
+  getSavedThemes,
+  getComplementaryColor,
+  getWCAGLevel,
+  SavedThemeRecord,
+  saveTheme,
+  ThemeFamilyTokenBundle,
+  normalizeImportedThemeData,
+  isValidHexColor,
   lightenColor,
   darkenColor,
   generateShades,
+  parseCSSVariablesByBlock,
 } from './theme-utils';
 
 interface ThemeToken {
@@ -55,12 +70,19 @@ interface HistoryEntry {
   timestamp: number;
 }
 
+interface EditableThemeFamilyMetadata {
+  id: string;
+  name: string;
+  description: string;
+  author: string;
+  version?: string;
+}
+
 @Component({
   selector: 'app-theme-builder',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
-    FormsModule,
     CardComponent,
     TabsComponent,
     TabComponent,
@@ -81,26 +103,26 @@ interface HistoryEntry {
       </div>
 
       <!-- Dual Theme Info -->
-      <ui-alert variant="info" style="margin-bottom: var(--primitive-spacing-6);">
+      <fui-alert variant="info" class="dual-theme-alert">
         <strong>Dual Theme System:</strong> Edit both Light and Dark color modes simultaneously!
         Each color token has two inputs side-by-side - Light (left) and Dark (right). Typography and
         spacing tokens are shared between both themes. Use the Light/Dark toggle buttons in the Live
         Preview section to see your theme in both modes. When you export, both light and dark color
         tokens will be included for a complete theme solution.
-      </ui-alert>
+      </fui-alert>
 
       <!-- Sticky Action Toolbar -->
       <!-- Action Toolbar with Skeleton Loader -->
       @if (isInitializing()) {
         <div class="action-toolbar">
-          <ui-skeleton variant="rectangular" height="2.5rem" width="100%" />
+          <fui-skeleton variant="rectangular" height="2.5rem" width="100%" />
         </div>
       } @else {
         <div class="action-toolbar">
           <div class="toolbar-section">
             <span class="toolbar-label">History</span>
             <div class="toolbar-buttons">
-              <ui-button
+              <fui-button
                 variant="outlined"
                 size="sm"
                 (clicked)="undo()"
@@ -121,8 +143,8 @@ interface HistoryEntry {
                   <path d="M21 17a9 9 0 00-9-9 9 9 0 00-6 2.3L3 13" />
                 </svg>
                 Undo
-              </ui-button>
-              <ui-button
+              </fui-button>
+              <fui-button
                 variant="outlined"
                 size="sm"
                 (clicked)="redo()"
@@ -143,7 +165,7 @@ interface HistoryEntry {
                   <path d="M3 17a9 9 0 019-9 9 9 0 016 2.3l3 2.7" />
                 </svg>
                 Redo
-              </ui-button>
+              </fui-button>
             </div>
           </div>
 
@@ -152,7 +174,7 @@ interface HistoryEntry {
           <div class="toolbar-section">
             <span class="toolbar-label">Tools</span>
             <div class="toolbar-buttons">
-              <ui-button variant="outlined" size="sm" (clicked)="toggleAccessibilityChecker()">
+              <fui-button variant="outlined" size="sm" (clicked)="toggleAccessibilityChecker()">
                 <svg
                   width="16"
                   height="16"
@@ -168,8 +190,8 @@ interface HistoryEntry {
                   <path d="M12 8h.01" />
                 </svg>
                 A11y Check
-              </ui-button>
-              <ui-button variant="outlined" size="sm" (clicked)="toggleColorGenerator()">
+              </fui-button>
+              <fui-button variant="outlined" size="sm" (clicked)="toggleColorGenerator()">
                 <svg
                   width="16"
                   height="16"
@@ -189,7 +211,7 @@ interface HistoryEntry {
                   />
                 </svg>
                 Colors
-              </ui-button>
+              </fui-button>
             </div>
           </div>
 
@@ -198,7 +220,7 @@ interface HistoryEntry {
           <div class="toolbar-section">
             <span class="toolbar-label">Actions</span>
             <div class="toolbar-buttons">
-              <ui-button variant="outlined" size="sm" (clicked)="resetTheme()">
+              <fui-button variant="outlined" size="sm" (clicked)="resetTheme()">
                 <svg
                   width="16"
                   height="16"
@@ -215,8 +237,8 @@ interface HistoryEntry {
                   <path d="M3 21v-5h5" />
                 </svg>
                 Reset
-              </ui-button>
-              <ui-button variant="filled" size="sm" (clicked)="exportTheme()">
+              </fui-button>
+              <fui-button variant="filled" size="sm" (clicked)="exportTheme()">
                 <svg
                   width="16"
                   height="16"
@@ -232,7 +254,7 @@ interface HistoryEntry {
                   <line x1="12" y1="15" x2="12" y2="3" />
                 </svg>
                 Export
-              </ui-button>
+              </fui-button>
             </div>
           </div>
         </div>
@@ -240,7 +262,7 @@ interface HistoryEntry {
 
       <!-- Theme Presets & Quick Actions -->
       <div class="presets-section">
-        <ui-card>
+        <fui-card>
           <div class="presets-header">
             <div>
               <h2>Theme Presets</h2>
@@ -248,71 +270,94 @@ interface HistoryEntry {
             </div>
             <div class="presets-actions">
               @if (isInitializing()) {
-                <ui-skeleton variant="rounded" height="2rem" width="5rem" />
-                <ui-skeleton variant="rounded" height="2rem" width="5rem" />
+                <fui-skeleton variant="rounded" height="2rem" width="5rem" />
+                <fui-skeleton variant="rounded" height="2rem" width="5rem" />
               } @else {
-                <ui-button variant="outlined" size="sm" (clicked)="importTheme()">
+                <fui-button variant="outlined" size="sm" (clicked)="importTheme()">
                   <svg
                     width="16"
                     height="16"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
-                    style="margin-right: 6px;"
+                    class="icon-inline"
                   >
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                     <polyline points="17 8 12 3 7 8" />
                     <line x1="12" y1="3" x2="12" y2="15" />
                   </svg>
                   Import
-                </ui-button>
-                <ui-button variant="outlined" size="sm" (clicked)="showSaveThemeModal()">
+                </fui-button>
+                <fui-button variant="outlined" size="sm" (clicked)="showSaveThemeModal()">
                   <svg
                     width="16"
                     height="16"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
-                    style="margin-right: 6px;"
+                    class="icon-inline"
                   >
                     <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
                     <polyline points="17 21 17 13 7 13 7 21" />
                     <polyline points="7 3 7 8 15 8" />
                   </svg>
                   Save
-                </ui-button>
+                </fui-button>
               }
             </div>
           </div>
 
-          <div class="presets-grid">
-            @for (preset of themePresets; track preset.id) {
-              <div class="preset-card" (click)="applyPreset(preset)">
-                <div class="preset-info">
-                  <h4>{{ preset.name }}</h4>
-                  <p>{{ preset.description }}</p>
-                  <span class="preset-author">by {{ preset.author }}</span>
-                </div>
-                <div class="preset-colors">
+          <div class="presets-compact">
+            <label for="preset-selector" class="preset-label">Quick Start with Preset:</label>
+            <div class="preset-selector-wrapper">
+              <select
+                id="preset-selector"
+                class="preset-selector"
+                (change)="onPresetChange($event)"
+                [value]="''"
+              >
+                <option value="" disabled>Select a theme preset...</option>
+                @for (preset of themePresets; track preset.id) {
+                  <option [value]="preset.id">{{ preset.name }} - {{ preset.description }}</option>
+                }
+              </select>
+              <svg
+                class="preset-selector-icon"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+              >
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </div>
+            <div class="preset-colors-preview">
+              @for (preset of themePresets.slice(0, 6); track preset.id) {
+                <button
+                  class="preset-quick-button"
+                  (click)="applyPreset(preset)"
+                  [title]="preset.name + ': ' + preset.description"
+                  [attr.aria-label]="'Apply ' + preset.name + ' preset'"
+                >
                   <div
-                    class="color-dot"
-                    [style.background-color]="preset.tokens['--semantic-brand-primary']"
+                    class="preset-color-swatch"
+                    [style.background]="
+                      'linear-gradient(135deg, ' +
+                      preset.tokens['--semantic-brand-primary'] +
+                      ' 0%, ' +
+                      preset.tokens['--semantic-brand-primary'] +
+                      ' 50%, ' +
+                      preset.tokens['--semantic-feedback-success'] +
+                      ' 50%, ' +
+                      preset.tokens['--semantic-feedback-success'] +
+                      ' 100%)'
+                    "
                   ></div>
-                  <div
-                    class="color-dot"
-                    [style.background-color]="preset.tokens['--semantic-success-primary']"
-                  ></div>
-                  <div
-                    class="color-dot"
-                    [style.background-color]="preset.tokens['--semantic-warning-primary']"
-                  ></div>
-                  <div
-                    class="color-dot"
-                    [style.background-color]="preset.tokens['--semantic-error-primary']"
-                  ></div>
-                </div>
-              </div>
-            }
+                  <span class="preset-quick-name">{{ preset.name }}</span>
+                </button>
+              }
+            </div>
           </div>
 
           @if (savedThemes().length > 0) {
@@ -321,11 +366,12 @@ interface HistoryEntry {
               <div class="saved-themes-grid">
                 @for (theme of savedThemes(); track theme.name) {
                   <div class="saved-theme-card">
+                    <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
                     <div class="saved-theme-info" (click)="loadSavedTheme(theme.name)">
                       <h4>{{ theme.name }}</h4>
                       <span class="saved-theme-date">{{ formatDate(theme.createdAt) }}</span>
                     </div>
-                    <ui-button
+                    <fui-button
                       variant="text"
                       size="sm"
                       (clicked)="deleteSavedTheme(theme.name)"
@@ -344,23 +390,23 @@ interface HistoryEntry {
                           d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
                         />
                       </svg>
-                    </ui-button>
+                    </fui-button>
                   </div>
                 }
               </div>
             </div>
           }
-        </ui-card>
+        </fui-card>
       </div>
 
       <div class="theme-builder-layout">
         <!-- Token Editor -->
         <div class="token-editor">
-          <ui-card>
+          <fui-card>
             <h2>Design Tokens</h2>
 
-            <ui-tabs>
-              <ui-tab label="Colors">
+            <fui-tabs>
+              <fui-tab label="Colors">
                 <div class="token-section">
                   @for (category of colorCategories(); track category.id) {
                     <div class="token-category">
@@ -370,6 +416,7 @@ interface HistoryEntry {
                       <div class="token-grid">
                         @for (token of category.tokens; track token.name) {
                           <div class="token-item">
+                            <!-- eslint-disable-next-line @angular-eslint/template/label-has-associated-control -->
                             <label>
                               <span class="token-label">{{ formatTokenName(token.name) }}</span>
                               @if (token.description) {
@@ -426,9 +473,9 @@ interface HistoryEntry {
                     </div>
                   }
                 </div>
-              </ui-tab>
+              </fui-tab>
 
-              <ui-tab label="Typography">
+              <fui-tab label="Typography">
                 <div class="token-section">
                   @for (category of typographyCategories(); track category.id) {
                     <div class="token-category">
@@ -438,7 +485,7 @@ interface HistoryEntry {
                       <div class="token-grid">
                         @for (token of category.tokens; track token.name) {
                           <div class="token-item">
-                            <label>
+                            <label [for]="token.name">
                               <span class="token-label">{{ formatTokenName(token.name) }}</span>
                             </label>
                             <input
@@ -454,9 +501,9 @@ interface HistoryEntry {
                     </div>
                   }
                 </div>
-              </ui-tab>
+              </fui-tab>
 
-              <ui-tab label="Spacing">
+              <fui-tab label="Spacing">
                 <div class="token-section">
                   @for (category of spacingCategories(); track category.id) {
                     <div class="token-category">
@@ -466,7 +513,7 @@ interface HistoryEntry {
                       <div class="token-grid">
                         @for (token of category.tokens; track token.name) {
                           <div class="token-item">
-                            <label>
+                            <label [for]="token.name">
                               <span class="token-label">{{ formatTokenName(token.name) }}</span>
                             </label>
                             <input
@@ -482,21 +529,21 @@ interface HistoryEntry {
                     </div>
                   }
                 </div>
-              </ui-tab>
-            </ui-tabs>
-          </ui-card>
+              </fui-tab>
+            </fui-tabs>
+          </fui-card>
         </div>
 
         <!-- Live Preview -->
         <div class="live-preview">
-          <ui-card>
+          <fui-card>
             <div class="preview-header">
               <div>
                 <h2>Live Preview</h2>
                 <p class="preview-description">See your theme changes in real-time</p>
               </div>
               <div class="preview-mode-toggle">
-                <ui-button
+                <fui-button
                   [variant]="!isPreviewingDark() ? 'filled' : 'outlined'"
                   size="sm"
                   (clicked)="setPreviewMode('light')"
@@ -510,7 +557,7 @@ interface HistoryEntry {
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    style="margin-right: 6px; vertical-align: middle;"
+                    class="icon-inline icon-inline--middle"
                   >
                     <circle cx="12" cy="12" r="5" />
                     <line x1="12" y1="1" x2="12" y2="3" />
@@ -523,8 +570,8 @@ interface HistoryEntry {
                     <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
                   </svg>
                   Light
-                </ui-button>
-                <ui-button
+                </fui-button>
+                <fui-button
                   [variant]="isPreviewingDark() ? 'filled' : 'outlined'"
                   size="sm"
                   (clicked)="setPreviewMode('dark')"
@@ -538,12 +585,12 @@ interface HistoryEntry {
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    style="margin-right: 6px; vertical-align: middle;"
+                    class="icon-inline icon-inline--middle"
                   >
                     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
                   </svg>
                   Dark
-                </ui-button>
+                </fui-button>
               </div>
             </div>
 
@@ -555,35 +602,35 @@ interface HistoryEntry {
               <div class="preview-section">
                 <h4>Buttons</h4>
                 <div class="preview-row">
-                  <ui-button variant="filled" size="sm">Small</ui-button>
-                  <ui-button variant="filled" size="md">Medium</ui-button>
-                  <ui-button variant="filled" size="lg">Large</ui-button>
+                  <fui-button variant="filled" size="sm">Small</fui-button>
+                  <fui-button variant="filled" size="md">Medium</fui-button>
+                  <fui-button variant="filled" size="lg">Large</fui-button>
                 </div>
                 <div class="preview-row">
-                  <ui-button variant="outlined">Outlined</ui-button>
-                  <ui-button variant="text">Text</ui-button>
+                  <fui-button variant="outlined">Outlined</fui-button>
+                  <fui-button variant="text">Text</fui-button>
                 </div>
               </div>
 
               <!-- Inputs -->
               <div class="preview-section">
                 <h4>Form Controls</h4>
-                <ui-input placeholder="Enter text..." label="Text Input" />
+                <fui-input placeholder="Enter text..." label="Text Input" />
               </div>
 
               <!-- Alert -->
               <div class="preview-section">
                 <h4>Feedback</h4>
-                <ui-alert variant="info">This is an informational message</ui-alert>
+                <fui-alert variant="info">This is an informational message</fui-alert>
               </div>
 
               <!-- Card -->
               <div class="preview-section">
                 <h4>Card</h4>
-                <ui-card>
+                <fui-card>
                   <h3>Card Title</h3>
                   <p>This is a sample card with your custom theme applied.</p>
-                </ui-card>
+                </fui-card>
               </div>
 
               <!-- Typography -->
@@ -599,33 +646,27 @@ interface HistoryEntry {
               <div class="preview-section">
                 <h4>Color Palette</h4>
                 <div class="color-swatches">
-                  <div class="color-swatch" style="background-color: var(--semantic-brand-primary)">
+                  <div class="color-swatch color-swatch--brand">
                     <span>Brand</span>
                   </div>
-                  <div
-                    class="color-swatch"
-                    style="background-color: var(--semantic-success-primary)"
-                  >
+                  <div class="color-swatch color-swatch--success">
                     <span>Success</span>
                   </div>
-                  <div
-                    class="color-swatch"
-                    style="background-color: var(--semantic-warning-primary)"
-                  >
+                  <div class="color-swatch color-swatch--warning">
                     <span>Warning</span>
                   </div>
-                  <div class="color-swatch" style="background-color: var(--semantic-error-primary)">
+                  <div class="color-swatch color-swatch--error">
                     <span>Error</span>
                   </div>
                 </div>
               </div>
             </div>
-          </ui-card>
+          </fui-card>
         </div>
       </div>
 
       <!-- Export Modal (shown when exporting) -->
-      <ui-modal
+      <fui-modal
         [open]="showExportModal()"
         [title]="'Export Theme'"
         [size]="'md'"
@@ -634,24 +675,24 @@ interface HistoryEntry {
         <p>Choose your export format:</p>
 
         <div class="export-options">
-          <ui-button variant="outlined" [fullWidth]="true" (clicked)="exportAsCSS()">
+          <fui-button variant="outlined" [fullWidth]="true" (clicked)="exportAsCSS()">
             Export as CSS Variables
-          </ui-button>
-          <ui-button variant="outlined" [fullWidth]="true" (clicked)="exportAsJSON()">
+          </fui-button>
+          <fui-button variant="outlined" [fullWidth]="true" (clicked)="exportAsJSON()">
             Export as JSON
-          </ui-button>
-          <ui-button variant="outlined" [fullWidth]="true" (clicked)="exportAsTypeScript()">
+          </fui-button>
+          <fui-button variant="outlined" [fullWidth]="true" (clicked)="exportAsTypeScript()">
             Export as TypeScript
-          </ui-button>
+          </fui-button>
         </div>
 
         <div slot="footer">
-          <ui-button variant="text" (clicked)="closeExportModal()">Cancel</ui-button>
+          <fui-button variant="text" (clicked)="closeExportModal()">Cancel</fui-button>
         </div>
-      </ui-modal>
+      </fui-modal>
 
       <!-- Save Theme Modal -->
-      <ui-modal
+      <fui-modal
         [open]="showSaveModal()"
         [title]="'Save Theme'"
         [size]="'md'"
@@ -659,7 +700,7 @@ interface HistoryEntry {
       >
         <p>Give your custom theme a name:</p>
 
-        <ui-input
+        <fui-input
           [value]="saveThemeName()"
           (valueChange)="saveThemeName.set($event)"
           placeholder="My Custom Theme"
@@ -667,18 +708,18 @@ interface HistoryEntry {
         />
 
         <div slot="footer">
-          <ui-button variant="text" (clicked)="closeSaveModal()">Cancel</ui-button>
-          <ui-button variant="filled" (clicked)="saveCurrentTheme()">Save</ui-button>
+          <fui-button variant="text" (clicked)="closeSaveModal()">Cancel</fui-button>
+          <fui-button variant="filled" (clicked)="saveCurrentTheme()">Save</fui-button>
         </div>
-      </ui-modal>
+      </fui-modal>
 
       <!-- Accessibility Checker Panel -->
       @if (showAccessibilityChecker()) {
         <div class="utility-panel">
-          <ui-card>
+          <fui-card>
             <div class="panel-header">
               <h2>Accessibility Checker</h2>
-              <ui-button
+              <fui-button
                 variant="text"
                 size="sm"
                 (clicked)="toggleAccessibilityChecker()"
@@ -695,7 +736,7 @@ interface HistoryEntry {
                   <line x1="18" y1="6" x2="6" y2="18" />
                   <line x1="6" y1="6" x2="18" y2="18" />
                 </svg>
-              </ui-button>
+              </fui-button>
             </div>
             <p class="panel-description">Check contrast ratios for WCAG compliance</p>
 
@@ -715,7 +756,7 @@ interface HistoryEntry {
                   </div>
                   <div class="contrast-result">
                     <span class="contrast-ratio">{{ check.ratio.toFixed(2) }}:1</span>
-                    <ui-badge
+                    <fui-badge
                       [variant]="
                         check.level === 'AAA'
                           ? 'success'
@@ -725,7 +766,7 @@ interface HistoryEntry {
                       "
                     >
                       {{ check.level }}
-                    </ui-badge>
+                    </fui-badge>
                   </div>
                 </div>
               }
@@ -739,17 +780,17 @@ interface HistoryEntry {
                 <li><strong>Fail:</strong> Does not meet minimum standards</li>
               </ul>
             </div>
-          </ui-card>
+          </fui-card>
         </div>
       }
 
       <!-- Color Generator Panel -->
       @if (showColorGenerator()) {
         <div class="utility-panel">
-          <ui-card>
+          <fui-card>
             <div class="panel-header">
               <h2>Color Palette Generator</h2>
-              <ui-button
+              <fui-button
                 variant="text"
                 size="sm"
                 (clicked)="toggleColorGenerator()"
@@ -766,27 +807,39 @@ interface HistoryEntry {
                   <line x1="18" y1="6" x2="6" y2="18" />
                   <line x1="6" y1="6" x2="18" y2="18" />
                 </svg>
-              </ui-button>
+              </fui-button>
             </div>
             <p class="panel-description">Generate harmonious color schemes</p>
 
             <div class="color-generator-controls">
-              <ui-input
-                [value]="baseColorForGeneration"
-                (valueChange)="baseColorForGeneration = $event"
-                label="Base Color"
-                placeholder="#3b82f6"
-              />
+              <div class="color-input-group">
+                <fui-input
+                  [value]="baseColorForGeneration"
+                  (valueChange)="baseColorForGeneration = $event"
+                  label="Base Color"
+                  placeholder="#3b82f6"
+                />
+                <div class="color-picker-wrapper">
+                  <label class="color-picker-label" for="color-picker-input">Pick Color</label>
+                  <input
+                    type="color"
+                    id="color-picker-input"
+                    class="color-picker-input"
+                    [value]="baseColorForGeneration || '#3b82f6'"
+                    (input)="baseColorForGeneration = $any($event.target).value"
+                  />
+                </div>
+              </div>
               <div class="generator-buttons">
-                <ui-button variant="outlined" size="sm" (clicked)="generateComplementary()">
+                <fui-button variant="outlined" size="sm" (clicked)="generateComplementary()">
                   Complementary
-                </ui-button>
-                <ui-button variant="outlined" size="sm" (clicked)="generateAnalogous()">
+                </fui-button>
+                <fui-button variant="outlined" size="sm" (clicked)="generateAnalogous()">
                   Analogous
-                </ui-button>
-                <ui-button variant="outlined" size="sm" (clicked)="generateShades()">
+                </fui-button>
+                <fui-button variant="outlined" size="sm" (clicked)="generateShades()">
                   Shades
-                </ui-button>
+                </fui-button>
               </div>
             </div>
 
@@ -795,6 +848,7 @@ interface HistoryEntry {
                 <h4>Generated Colors:</h4>
                 <div class="generated-color-grid">
                   @for (color of generatedColors(); track color) {
+                    <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
                     <div class="generated-color-item" (click)="copyColorToClipboard(color)">
                       <div class="generated-color-preview" [style.background-color]="color"></div>
                       <span class="generated-color-value">{{ color }}</span>
@@ -804,7 +858,7 @@ interface HistoryEntry {
                 <p class="hint">Click any color to copy to clipboard</p>
               </div>
             }
-          </ui-card>
+          </fui-card>
         </div>
       }
 
@@ -812,7 +866,7 @@ interface HistoryEntry {
       <input
         type="file"
         #fileInput
-        style="display: none"
+        class="file-input-hidden"
         accept=".json,.css"
         (change)="handleFileImport($event)"
       />
@@ -825,7 +879,7 @@ interface HistoryEntry {
       }
 
       /* Skeleton loader styles */
-      .presets-actions ui-skeleton {
+      .presets-actions fui-skeleton {
         display: inline-block;
       }
 
@@ -843,6 +897,38 @@ interface HistoryEntry {
 
       .theme-builder-header {
         margin-bottom: var(--primitive-spacing-6);
+      }
+
+      .dual-theme-alert {
+        margin-bottom: var(--primitive-spacing-6);
+      }
+
+      .icon-inline {
+        margin-right: var(--primitive-spacing-1);
+      }
+
+      .icon-inline--middle {
+        vertical-align: middle;
+      }
+
+      .color-swatch--brand {
+        background-color: var(--semantic-brand-primary);
+      }
+
+      .color-swatch--success {
+        background-color: var(--semantic-feedback-success);
+      }
+
+      .color-swatch--warning {
+        background-color: var(--semantic-feedback-warning);
+      }
+
+      .color-swatch--error {
+        background-color: var(--semantic-feedback-error);
+      }
+
+      .file-input-hidden {
+        display: none;
       }
 
       h1 {
@@ -915,11 +1001,11 @@ interface HistoryEntry {
         align-items: center;
       }
 
-      .toolbar-buttons ui-button {
+      .toolbar-buttons fui-button {
         white-space: nowrap;
       }
 
-      .toolbar-buttons ui-button svg {
+      .toolbar-buttons fui-button svg {
         vertical-align: middle;
         margin-right: 4px;
       }
@@ -947,24 +1033,24 @@ interface HistoryEntry {
         animation: slideInRight 0.3s ease-out;
       }
 
-      .utility-panel ::ng-deep ui-card {
+      .utility-panel ::ng-deep fui-card {
         background: transparent;
         border: none;
         box-shadow: none;
       }
 
-      .utility-panel ::ng-deep ui-input,
-      .utility-panel ::ng-deep ui-button {
+      .utility-panel ::ng-deep fui-input,
+      .utility-panel ::ng-deep fui-button {
         display: block !important;
         opacity: 1 !important;
         visibility: visible !important;
       }
 
-      .utility-panel ::ng-deep ui-input input {
+      .utility-panel ::ng-deep fui-input input {
         display: block !important;
       }
 
-      .utility-panel .generator-buttons ::ng-deep ui-button {
+      .utility-panel .generator-buttons ::ng-deep fui-button {
         flex: 1 1 auto;
         min-width: 100px;
       }
@@ -992,7 +1078,7 @@ interface HistoryEntry {
         margin: 0;
       }
 
-      .panel-header ui-button {
+      .panel-header fui-button {
         flex-shrink: 0;
       }
 
@@ -1053,7 +1139,7 @@ interface HistoryEntry {
       }
       .wcag-info {
         padding: var(--primitive-spacing-3);
-        background: var(--semantic-surface-subtle);
+        background: var(--semantic-surface-background-secondary);
         border-radius: var(--primitive-border-radius-md);
       }
       .wcag-info h4 {
@@ -1075,9 +1161,39 @@ interface HistoryEntry {
       .color-generator-controls {
         margin-bottom: var(--primitive-spacing-4);
       }
-      .color-generator-controls ui-input {
-        display: block;
-        width: 100%;
+      .color-input-group {
+        display: flex;
+        gap: var(--primitive-spacing-3);
+        align-items: flex-end;
+      }
+      .color-generator-controls fui-input {
+        flex: 1;
+      }
+      .color-picker-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: var(--primitive-spacing-1);
+      }
+      .color-picker-label {
+        font-size: var(--primitive-font-size-sm);
+        font-weight: var(--primitive-font-weight-medium);
+        color: var(--semantic-text-primary);
+      }
+      .color-picker-input {
+        width: 4rem;
+        height: 2.5rem;
+        border: 1px solid var(--semantic-border-default);
+        border-radius: var(--primitive-border-radius-md);
+        cursor: pointer;
+        background: var(--semantic-surface-card);
+        transition: border-color 0.2s ease;
+      }
+      .color-picker-input:hover {
+        border-color: var(--semantic-brand-primary);
+      }
+      .color-picker-input:focus {
+        outline: 2px solid var(--semantic-state-focus-ring);
+        outline-offset: 2px;
       }
       .generator-buttons {
         display: flex;
@@ -1086,7 +1202,7 @@ interface HistoryEntry {
         flex-wrap: wrap;
       }
       .generated-colors h4 {
-        font-size: var(--primitive-font-size-md);
+        font-size: var(--primitive-font-size-base);
         margin-bottom: var(--primitive-spacing-3);
       }
       .generated-color-grid {
@@ -1107,7 +1223,7 @@ interface HistoryEntry {
       }
       .generated-color-item:hover {
         border-color: var(--semantic-brand-primary);
-        background: var(--semantic-surface-subtle);
+        background: var(--semantic-surface-background-secondary);
       }
       .generated-color-preview {
         width: 48px;
@@ -1150,54 +1266,95 @@ interface HistoryEntry {
         gap: var(--primitive-spacing-2);
       }
 
-      .presets-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: var(--primitive-spacing-4);
+      .presets-compact {
+        display: flex;
+        flex-direction: column;
+        gap: var(--primitive-spacing-3);
         margin-bottom: var(--primitive-spacing-4);
+        padding: var(--primitive-spacing-4);
+        background-color: var(--semantic-surface-background-secondary);
+        border-radius: var(--primitive-border-radius-lg);
       }
 
-      .preset-card {
-        padding: var(--primitive-spacing-4);
+      .preset-label {
+        font-size: var(--primitive-font-size-sm);
+        font-weight: var(--primitive-font-weight-medium);
+        color: var(--semantic-text-secondary);
+      }
+
+      .preset-selector-wrapper {
+        position: relative;
+        width: 100%;
+      }
+
+      .preset-selector {
+        width: 100%;
+        padding: var(--primitive-spacing-3) var(--primitive-spacing-10) var(--primitive-spacing-3)
+          var(--primitive-spacing-3);
+        background-color: var(--semantic-surface-card);
         border: 1px solid var(--semantic-border-default);
-        border-radius: var(--primitive-border-radius-lg);
+        border-radius: var(--primitive-border-radius-md);
+        font-size: var(--primitive-font-size-sm);
+        color: var(--semantic-text-primary);
         cursor: pointer;
+        appearance: none;
         transition: all 0.2s;
       }
 
-      .preset-card:hover {
+      .preset-selector:hover {
         border-color: var(--semantic-brand-primary);
-        box-shadow: var(--primitive-shadow-md);
-        transform: translateY(-2px);
       }
 
-      .preset-info h4 {
-        font-size: var(--primitive-font-size-md);
-        margin-bottom: var(--primitive-spacing-2);
+      .preset-selector:focus {
+        outline: 2px solid var(--semantic-brand-primary);
+        outline-offset: 2px;
       }
 
-      .preset-info p {
-        font-size: var(--primitive-font-size-sm);
+      .preset-selector-icon {
+        position: absolute;
+        right: var(--primitive-spacing-3);
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
         color: var(--semantic-text-secondary);
-        margin-bottom: var(--primitive-spacing-2);
+        stroke-width: 2;
       }
 
-      .preset-author {
-        font-size: var(--primitive-font-size-xs);
-        color: var(--semantic-text-tertiary);
-      }
-
-      .preset-colors {
+      .preset-colors-preview {
         display: flex;
+        flex-wrap: wrap;
         gap: var(--primitive-spacing-2);
-        margin-top: var(--primitive-spacing-3);
       }
 
-      .color-dot {
-        width: 24px;
-        height: 24px;
-        border-radius: var(--primitive-border-radius-full);
+      .preset-quick-button {
+        display: flex;
+        align-items: center;
+        gap: var(--primitive-spacing-2);
+        padding: var(--primitive-spacing-2) var(--primitive-spacing-3);
+        background-color: var(--semantic-surface-card);
+        border: 1px solid var(--semantic-border-default);
+        border-radius: var(--primitive-border-radius-md);
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: var(--primitive-font-size-xs);
+      }
+
+      .preset-quick-button:hover {
+        border-color: var(--semantic-brand-primary);
+        transform: translateY(-1px);
         box-shadow: var(--primitive-shadow-sm);
+      }
+
+      .preset-color-swatch {
+        width: 20px;
+        height: 20px;
+        border-radius: var(--primitive-border-radius-sm);
+        box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+      }
+
+      .preset-quick-name {
+        color: var(--semantic-text-secondary);
+        font-weight: var(--primitive-font-weight-medium);
       }
 
       /* Saved Themes */
@@ -1248,12 +1405,12 @@ interface HistoryEntry {
       }
 
       /* Delete button in saved themes - custom color override */
-      .saved-theme-card ui-button svg {
-        color: var(--semantic-error-primary);
+      .saved-theme-card fui-button svg {
+        color: var(--semantic-feedback-error);
       }
 
-      .saved-theme-card ui-button:hover svg {
-        color: var(--semantic-error-primary);
+      .saved-theme-card fui-button:hover svg {
+        color: var(--semantic-feedback-error);
       }
 
       .theme-builder-layout {
@@ -1420,7 +1577,7 @@ interface HistoryEntry {
         padding: var(--primitive-spacing-4);
         border: 1px solid var(--semantic-border-default);
         border-radius: var(--primitive-border-radius-md);
-        background-color: var(--semantic-surface-subtle);
+        background-color: var(--semantic-surface-background-secondary);
         transition:
           background-color 0.3s ease,
           border-color 0.3s ease;
@@ -1431,18 +1588,21 @@ interface HistoryEntry {
         /* Semantic: Brand Colors */
         --semantic-brand-primary: var(--semantic-brand-primary-dark, #6b7fed);
         --semantic-brand-secondary: var(--semantic-brand-secondary-dark, #8b95a5);
-        --semantic-brand-subtle: var(--semantic-brand-subtle-dark, #2a2e3f);
+        --semantic-brand-primary-subtle: var(--semantic-brand-primary-subtle-dark, #2a2e3f);
 
         /* Semantic: Feedback Colors */
-        --semantic-success-primary: var(--semantic-success-primary-dark, #4ade80);
-        --semantic-warning-primary: var(--semantic-warning-primary-dark, #fbbf24);
-        --semantic-error-primary: var(--semantic-error-primary-dark, #f87171);
-        --semantic-info-primary: var(--semantic-info-primary-dark, #60a5fa);
+        --semantic-feedback-success: var(--semantic-feedback-success-dark, #4ade80);
+        --semantic-feedback-warning: var(--semantic-feedback-warning-dark, #fbbf24);
+        --semantic-feedback-error: var(--semantic-feedback-error-dark, #f87171);
+        --semantic-feedback-info: var(--semantic-feedback-info-dark, #60a5fa);
 
         /* Semantic: Surface Colors */
         --semantic-surface-background: var(--semantic-surface-background-dark, #1a1d29);
         --semantic-surface-card: var(--semantic-surface-card-dark, #232734);
-        --semantic-surface-subtle: var(--semantic-surface-subtle-dark, #2a2e3f);
+        --semantic-surface-background-secondary: var(
+          --semantic-surface-background-secondary-dark,
+          #2a2e3f
+        );
         --semantic-surface-background-secondary: var(
           --semantic-surface-background-secondary-dark,
           #2a2e3f
@@ -1472,7 +1632,10 @@ interface HistoryEntry {
         --component-input-focus-border: var(--semantic-brand-primary-dark, #6b7fed);
 
         /* Component: Alert */
-        --component-alert-info-background: var(--semantic-surface-subtle-dark, #2a2e3f);
+        --component-alert-info-background: var(
+          --semantic-surface-background-secondary-dark,
+          #2a2e3f
+        );
         --component-alert-info-text: var(--semantic-text-primary-dark, #e5e7eb);
         --component-alert-info-border: var(--semantic-border-default-dark, #374151);
       }
@@ -1494,7 +1657,7 @@ interface HistoryEntry {
       }
 
       .preview-section h4 {
-        font-size: var(--primitive-font-size-md);
+        font-size: var(--primitive-font-size-base);
         margin-bottom: var(--primitive-spacing-3);
         color: var(--semantic-text-primary);
       }
@@ -1529,24 +1692,24 @@ interface HistoryEntry {
       }
 
       /* Modal content styles */
-      ::ng-deep ui-modal p {
+      ::ng-deep fui-modal p {
         margin-bottom: var(--primitive-spacing-4);
         color: var(--semantic-text-secondary);
       }
 
-      ::ng-deep ui-modal .export-options {
+      ::ng-deep fui-modal .export-options {
         display: flex;
         flex-direction: column;
         gap: var(--primitive-spacing-3);
         margin-top: var(--primitive-spacing-4);
       }
 
-      ::ng-deep ui-modal ui-input {
+      ::ng-deep fui-modal fui-input {
         display: block;
         margin-top: var(--primitive-spacing-2);
       }
 
-      ::ng-deep ui-modal [slot='footer'] {
+      ::ng-deep fui-modal [slot='footer'] {
         display: flex;
         gap: var(--primitive-spacing-2);
         justify-content: flex-end;
@@ -1568,7 +1731,7 @@ interface HistoryEntry {
           padding: var(--primitive-spacing-3);
           border: 1px solid var(--semantic-border-default);
           border-radius: var(--primitive-border-radius-md);
-          background-color: var(--semantic-surface-subtle);
+          background-color: var(--semantic-surface-background-secondary);
         }
       }
 
@@ -1616,7 +1779,7 @@ interface HistoryEntry {
           width: 100%;
         }
 
-        .toolbar-buttons ui-button {
+        .toolbar-buttons fui-button {
           width: 100%;
           justify-content: flex-start;
         }
@@ -1630,7 +1793,7 @@ interface HistoryEntry {
           width: 100%;
         }
 
-        .preview-mode-toggle ui-button {
+        .preview-mode-toggle fui-button {
           flex: 1;
         }
 
@@ -1643,6 +1806,9 @@ interface HistoryEntry {
   ],
 })
 export class ThemeBuilderComponent {
+  // Services
+  private readonly themeService = inject(ThemeService);
+
   // Loading state for skeleton loaders
   protected readonly isInitializing = signal(true);
 
@@ -1652,12 +1818,29 @@ export class ThemeBuilderComponent {
   protected readonly showColorGenerator = signal(false);
   protected readonly saveThemeName = signal('');
   protected readonly themePresets = THEME_PRESETS;
-  protected readonly savedThemes = signal<
-    Array<{ name: string; tokens: Record<string, string>; createdAt: string }>
-  >([]);
+  protected readonly savedThemes = signal<SavedThemeRecord[]>([]);
+  protected readonly editableThemeFamilyMetadata = signal<EditableThemeFamilyMetadata>({
+    id: 'default',
+    name: 'Default',
+    description: 'Default paired light and dark theme family',
+    author: 'UI Suite',
+    version: '1.0.0',
+  });
 
-  // Preview Mode (for live preview panel)
-  protected readonly previewMode = signal<'light' | 'dark'>('light');
+  protected onPresetChange(event: Event): void {
+    const select = event.target as HTMLSelectElement;
+    const presetId = select.value;
+    const preset = this.themePresets.find((p) => p.id === presetId);
+    if (preset) {
+      this.applyPreset(preset);
+      select.value = ''; // Reset dropdown
+    }
+  }
+
+  // Preview Mode follows the active ThemeService mode.
+  protected readonly previewMode = computed<'light' | 'dark'>(() =>
+    this.themeService.currentThemeMode() === 'dark' ? 'dark' : 'light'
+  );
   protected readonly isPreviewingDark = computed(() => this.previewMode() === 'dark');
 
   // Undo/Redo History
@@ -1695,8 +1878,8 @@ export class ThemeBuilderComponent {
           category: 'brand',
         },
         {
-          name: '--semantic-brand-subtle',
-          value: this.getComputedToken('--semantic-brand-subtle'),
+          name: '--semantic-brand-primary-subtle',
+          value: this.getComputedToken('--semantic-brand-primary-subtle'),
           type: 'color',
           category: 'brand',
         },
@@ -1708,26 +1891,26 @@ export class ThemeBuilderComponent {
       description: 'Success, warning, error, and info colors',
       tokens: [
         {
-          name: '--semantic-success-primary',
-          value: this.getComputedToken('--semantic-success-primary'),
+          name: '--semantic-feedback-success',
+          value: this.getComputedToken('--semantic-feedback-success'),
           type: 'color',
           category: 'semantic',
         },
         {
-          name: '--semantic-warning-primary',
-          value: this.getComputedToken('--semantic-warning-primary'),
+          name: '--semantic-feedback-warning',
+          value: this.getComputedToken('--semantic-feedback-warning'),
           type: 'color',
           category: 'semantic',
         },
         {
-          name: '--semantic-error-primary',
-          value: this.getComputedToken('--semantic-error-primary'),
+          name: '--semantic-feedback-error',
+          value: this.getComputedToken('--semantic-feedback-error'),
           type: 'color',
           category: 'semantic',
         },
         {
-          name: '--semantic-info-primary',
-          value: this.getComputedToken('--semantic-info-primary'),
+          name: '--semantic-feedback-info',
+          value: this.getComputedToken('--semantic-feedback-info'),
           type: 'color',
           category: 'semantic',
         },
@@ -1751,8 +1934,8 @@ export class ThemeBuilderComponent {
           category: 'surfaces',
         },
         {
-          name: '--semantic-surface-subtle',
-          value: this.getComputedToken('--semantic-surface-subtle'),
+          name: '--semantic-surface-background-secondary',
+          value: this.getComputedToken('--semantic-surface-background-secondary'),
           type: 'color',
           category: 'surfaces',
         },
@@ -1792,8 +1975,8 @@ export class ThemeBuilderComponent {
       description: 'Typography font stacks',
       tokens: [
         {
-          name: '--primitive-font-family-base',
-          value: this.getComputedToken('--primitive-font-family-base'),
+          name: '--primitive-font-family-sans',
+          value: this.getComputedToken('--primitive-font-family-sans'),
           type: 'font',
           category: 'fonts',
         },
@@ -1823,8 +2006,8 @@ export class ThemeBuilderComponent {
           category: 'sizes',
         },
         {
-          name: '--primitive-font-size-md',
-          value: this.getComputedToken('--primitive-font-size-md'),
+          name: '--primitive-font-size-base',
+          value: this.getComputedToken('--primitive-font-size-base'),
           type: 'size',
           category: 'sizes',
         },
@@ -1932,27 +2115,25 @@ export class ThemeBuilderComponent {
     // Load saved themes from localStorage
     this.loadSavedThemesList();
 
-    // Initialize dark mode tokens with default values (if they don't exist)
-    this.initializeDarkTokens();
+    const initialFamily =
+      this.themeService.currentThemeFamily() ?? this.themeService.getThemeFamily('default');
+    if (initialFamily) {
+      this.loadThemeFamilyIntoEditor(initialFamily);
+    }
 
     // Initialize accessibility checks
     this.updateAccessibilityChecks();
 
-    // Apply token changes to document root
+    // Keep the active ThemeService family in sync with the editor state.
     effect(() => {
-      const colorCategories = this.colorCategories();
-      const typographyCategories = this.typographyCategories();
-      const spacingCategories = this.spacingCategories();
+      this.colorCategories();
+      this.typographyCategories();
+      this.spacingCategories();
 
-      // Apply light mode tokens
-      [...colorCategories, ...typographyCategories, ...spacingCategories].forEach((category) => {
-        category.tokens.forEach((token) => {
-          document.documentElement.style.setProperty(token.name, token.value);
-        });
+      untracked(() => {
+        this.syncThemeFamilyWithService();
+        this.updateAccessibilityChecks();
       });
-
-      // Update accessibility checks when colors change
-      this.updateAccessibilityChecks();
     });
 
     // Hide skeleton loaders after the next render cycle (Angular best practice)
@@ -1961,49 +2142,80 @@ export class ThemeBuilderComponent {
     });
   }
 
-  private initializeDarkTokens(): void {
-    // Initialize dark tokens with defaults if they don't exist
-    const colorCategories = this.colorCategories();
+  private loadThemeFamilyIntoEditor(themeFamily: ThemeFamily): void {
+    this.editableThemeFamilyMetadata.set({
+      id: themeFamily.metadata.id,
+      name: themeFamily.metadata.name,
+      description: themeFamily.metadata.description || '',
+      author: themeFamily.metadata.author || themeFamily.light.metadata.author || 'UI Suite',
+      version: themeFamily.metadata.version,
+    });
+    this.refreshCategoriesFromTheme(themeFamily.light);
+    this.applyDarkThemeTokens(themeFamily.dark);
+  }
 
-    const darkDefaults: Record<string, string> = {
-      // Brand Colors - Dark mode typically uses slightly lighter/more vibrant versions
-      '--semantic-brand-primary': '#6B7FED',
-      '--semantic-brand-secondary': '#8B95A5',
-      '--semantic-brand-subtle': '#2A2E3F',
-
-      // Semantic Colors
-      '--semantic-success-primary': '#4ADE80',
-      '--semantic-warning-primary': '#FBBF24',
-      '--semantic-error-primary': '#F87171',
-      '--semantic-info-primary': '#60A5FA',
-
-      // Surface Colors - Dark backgrounds
-      '--semantic-surface-background': '#1A1D29',
-      '--semantic-surface-card': '#232734',
-      '--semantic-surface-subtle': '#2A2E3F',
-
-      // Text Colors - Light text on dark backgrounds
-      '--semantic-text-primary': '#E5E7EB',
-      '--semantic-text-secondary': '#9CA3AF',
-      '--semantic-text-tertiary': '#6B7280',
-
-      // Border Colors
-      '--semantic-border-default': '#374151',
-    };
-
-    colorCategories.forEach((category) => {
+  private applyDarkThemeTokens(theme: Theme): void {
+    this.colorCategories().forEach((category) => {
       category.tokens.forEach((token) => {
-        const darkTokenName = `${token.name}-dark`;
-        const existingDarkValue = getComputedStyle(document.documentElement)
-          .getPropertyValue(darkTokenName)
-          .trim();
-
-        // If no dark value exists, use the default or the light value as a starting point
-        if (!existingDarkValue) {
-          const defaultDarkValue = darkDefaults[token.name] || token.value;
-          document.documentElement.style.setProperty(darkTokenName, defaultDarkValue);
-        }
+        const value = this.getTokenValueFromTheme(theme, token.name) || token.value;
+        document.documentElement.style.setProperty(`${token.name}-dark`, value);
       });
+    });
+  }
+
+  private syncThemeFamilyWithService(activate = false): ThemeFamily {
+    const themeFamily = this.buildEditableThemeFamily();
+    this.themeService.registerThemeFamily(themeFamily);
+
+    if (activate) {
+      this.themeService.setThemeFamily(themeFamily.metadata.id);
+    }
+
+    return themeFamily;
+  }
+
+  private buildEditableThemeFamily(
+    metadata: EditableThemeFamilyMetadata = this.editableThemeFamilyMetadata()
+  ): ThemeFamily {
+    const bundle = this.buildCurrentThemeTokenBundle(metadata);
+
+    return convertPresetToThemeFamily({
+      id: bundle.metadata.id,
+      name: bundle.metadata.name,
+      description: bundle.metadata.description || '',
+      author: bundle.metadata.author || 'UI Suite',
+      light: bundle.light,
+      dark: bundle.dark,
+      tokens: bundle.light,
+    });
+  }
+
+  private buildCurrentThemeTokenBundle(
+    metadata: EditableThemeFamilyMetadata = this.editableThemeFamilyMetadata()
+  ): ThemeFamilyTokenBundle {
+    const allCategories = [
+      ...this.colorCategories(),
+      ...this.typographyCategories(),
+      ...this.spacingCategories(),
+    ];
+    const lightTokens: Record<string, string> = {};
+    const darkTokens: Record<string, string> = {};
+
+    allCategories.forEach((category) => {
+      category.tokens.forEach((token) => {
+        lightTokens[token.name] = token.value;
+        darkTokens[token.name] =
+          token.category === 'brand' || token.type === 'color'
+            ? this.getDarkTokenValue(token.name)
+            : token.value;
+      });
+    });
+
+    return createThemeFamilyTokenBundle(metadata.name, lightTokens, darkTokens, {
+      id: metadata.id,
+      description: metadata.description,
+      author: metadata.author,
+      version: metadata.version,
     });
   }
 
@@ -2023,7 +2235,41 @@ export class ThemeBuilderComponent {
   }
 
   private getComputedToken(tokenName: string): string {
-    return getComputedStyle(document.documentElement).getPropertyValue(tokenName).trim();
+    const currentFamily = this.themeService.currentThemeFamily();
+    if (currentFamily) {
+      const familyValue = this.getTokenValueFromTheme(currentFamily.light, tokenName);
+      if (familyValue) {
+        return familyValue;
+      }
+    }
+
+    const resolvedThemeValue = this.getTokenValueFromTheme(
+      this.themeService.getResolvedTheme(),
+      tokenName
+    );
+    if (resolvedThemeValue) {
+      return resolvedThemeValue;
+    }
+
+    const value = getComputedStyle(document.documentElement).getPropertyValue(tokenName).trim();
+    return this.resolveCssVariableReference(value);
+  }
+
+  private resolveCssVariableReference(value: string, depth = 0): string {
+    if (!value.startsWith('var(--') || depth > 8) {
+      return value;
+    }
+
+    const variableName = value.slice(4, -1).trim();
+    const resolvedValue = getComputedStyle(document.documentElement)
+      .getPropertyValue(variableName)
+      .trim();
+
+    if (!resolvedValue || resolvedValue === value) {
+      return value;
+    }
+
+    return this.resolveCssVariableReference(resolvedValue, depth + 1);
   }
 
   protected formatTokenName(name: string): string {
@@ -2034,7 +2280,12 @@ export class ThemeBuilderComponent {
   }
 
   // Direct token update (handles both light and dark)
-  protected updateTokenDirect(tokenName: string, value: string, isDark: boolean): void {
+  protected updateTokenDirect(
+    tokenName: string,
+    value: string,
+    isDark: boolean,
+    recordHistory = true
+  ): void {
     // Get old value for history
     const oldValue = getComputedStyle(document.documentElement).getPropertyValue(tokenName).trim();
 
@@ -2069,7 +2320,7 @@ export class ThemeBuilderComponent {
     document.documentElement.style.setProperty(tokenName, value);
 
     // Record in history
-    if (oldValue !== value) {
+    if (recordHistory && oldValue !== value) {
       this.addToHistory(tokenName, oldValue, value);
     }
   }
@@ -2108,7 +2359,7 @@ export class ThemeBuilderComponent {
     });
     css += '}\n\n';
 
-    css += '/* Dark Mode */\n:root[data-theme="dark"],\n[data-theme="dark"] {\n';
+    css += '/* Dark Mode */\n:root[data-theme-mode="dark"],\n[data-theme-mode="dark"] {\n';
     // Only export dark variants for color tokens
     colorCategories.forEach((category) => {
       css += `  /* ${category.name} - Dark */\n`;
@@ -2128,74 +2379,15 @@ export class ThemeBuilderComponent {
   }
 
   protected exportAsJSON(): void {
-    const colorCategories = this.colorCategories();
-    const typographyCategories = this.typographyCategories();
-    const spacingCategories = this.spacingCategories();
-    const allCategories = [...colorCategories, ...typographyCategories, ...spacingCategories];
-
-    const themeLight: Record<string, string> = {};
-    const themeDark: Record<string, string> = {};
-
-    // All tokens go into light theme
-    allCategories.forEach((category) => {
-      category.tokens.forEach((token) => {
-        themeLight[token.name] = token.value;
-      });
-    });
-
-    // Only color tokens get dark variants
-    colorCategories.forEach((category) => {
-      category.tokens.forEach((token) => {
-        const darkValue =
-          getComputedStyle(document.documentElement)
-            .getPropertyValue(`${token.name}-dark`)
-            .trim() || token.value;
-        themeDark[token.name] = darkValue;
-      });
-    });
-
-    const fullTheme = {
-      light: themeLight,
-      dark: themeDark,
-    };
-
-    const json = JSON.stringify(fullTheme, null, 2);
+    const json = JSON.stringify(this.buildEditableThemeFamily(), null, 2);
     this.downloadFile('theme.json', json, 'application/json');
     this.closeExportModal();
   }
 
   protected exportAsTypeScript(): void {
-    const colorCategories = this.colorCategories();
-    const typographyCategories = this.typographyCategories();
-    const spacingCategories = this.spacingCategories();
-    const allCategories = [...colorCategories, ...typographyCategories, ...spacingCategories];
-
-    let ts = 'export const customTheme = {\n';
-    ts += '  light: {\n';
-    allCategories.forEach((category) => {
-      ts += `    // ${category.name}\n`;
-      category.tokens.forEach((token) => {
-        ts += `    '${token.name}': '${token.value}',\n`;
-      });
-      ts += '\n';
-    });
-    ts += '  },\n';
-
-    ts += '  dark: {\n';
-    // Only color tokens get dark variants
-    colorCategories.forEach((category) => {
-      ts += `    // ${category.name} - Dark\n`;
-      category.tokens.forEach((token) => {
-        const darkValue =
-          getComputedStyle(document.documentElement)
-            .getPropertyValue(`${token.name}-dark`)
-            .trim() || token.value;
-        ts += `    '${token.name}': '${darkValue}',\n`;
-      });
-      ts += '\n';
-    });
-    ts += '  },\n';
-    ts += '};\n';
+    const themeFamily = JSON.stringify(this.buildEditableThemeFamily(), null, 2);
+    let ts = "import type { ThemeFamily } from '@ui-suite/theming';\n\n";
+    ts += `export const customThemeFamily: ThemeFamily = ${themeFamily};\n`;
 
     this.downloadFile('theme.ts', ts, 'text/typescript');
     this.closeExportModal();
@@ -2215,10 +2407,131 @@ export class ThemeBuilderComponent {
 
   // Preset Management
   protected applyPreset(preset: ThemePreset): void {
-    // Apply all tokens from the preset
-    Object.entries(preset.tokens).forEach(([tokenName, value]) => {
-      this.updateToken(tokenName, value);
+    const themeFamily = convertPresetToThemeFamily(preset);
+
+    this.loadThemeFamilyIntoEditor(themeFamily);
+    this.themeService.setCustomThemeFamily(themeFamily);
+  }
+
+  /**
+   * Refresh local token categories from a theme object
+   */
+  private refreshCategoriesFromTheme(theme: Theme): void {
+    // Update color categories
+    const colorCats = this.colorCategories();
+    colorCats.forEach((category) => {
+      category.tokens.forEach((token) => {
+        // Extract value from theme based on token name
+        const value = this.getTokenValueFromTheme(theme, token.name);
+        if (value) {
+          token.value = value;
+        }
+      });
     });
+    this.colorCategories.set([...colorCats]);
+
+    // Update typography categories
+    const typoCats = this.typographyCategories();
+    typoCats.forEach((category) => {
+      category.tokens.forEach((token) => {
+        const value = this.getTokenValueFromTheme(theme, token.name);
+        if (value) {
+          token.value = value;
+        }
+      });
+    });
+    this.typographyCategories.set([...typoCats]);
+
+    // Update spacing categories
+    const spacingCats = this.spacingCategories();
+    spacingCats.forEach((category) => {
+      category.tokens.forEach((token) => {
+        const value = this.getTokenValueFromTheme(theme, token.name);
+        if (value) {
+          token.value = value;
+        }
+      });
+    });
+    this.spacingCategories.set([...spacingCats]);
+  }
+
+  /**
+   * Extract token value from theme object by CSS variable name
+   */
+  private getTokenValueFromTheme(theme: Theme, tokenName: string): string | undefined {
+    // Map CSS variable names to theme paths
+    const mapping: Record<string, string> = {
+      '--semantic-brand-primary': theme.semantic.brand.primary,
+      '--semantic-brand-secondary': theme.semantic.brand.secondary,
+      '--semantic-brand-primary-subtle': theme.semantic.brand.primarySubtle,
+      '--semantic-feedback-success': theme.semantic.feedback.success,
+      '--semantic-feedback-warning': theme.semantic.feedback.warning,
+      '--semantic-feedback-error': theme.semantic.feedback.error,
+      '--semantic-feedback-info': theme.semantic.feedback.info,
+      '--semantic-surface-background': theme.semantic.surface.background,
+      '--semantic-surface-card': theme.semantic.surface.card,
+      '--semantic-surface-background-secondary': theme.semantic.surface.backgroundSecondary,
+      '--semantic-text-primary': theme.semantic.text.primary,
+      '--semantic-text-secondary': theme.semantic.text.secondary,
+      '--semantic-text-tertiary': theme.semantic.text.tertiary,
+      '--primitive-font-family-sans': theme.primitive.typography.fontFamily.sans,
+      '--primitive-font-family-mono': theme.primitive.typography.fontFamily.mono,
+      '--primitive-font-size-xs': theme.primitive.typography.fontSize.xs,
+      '--primitive-font-size-sm': theme.primitive.typography.fontSize.sm,
+      '--primitive-font-size-base': theme.primitive.typography.fontSize.base,
+      '--primitive-font-size-lg': theme.primitive.typography.fontSize.lg,
+      '--primitive-font-size-xl': theme.primitive.typography.fontSize.xl,
+      '--primitive-spacing-1': theme.primitive.spacing[1],
+      '--primitive-spacing-2': theme.primitive.spacing[2],
+      '--primitive-spacing-3': theme.primitive.spacing[3],
+      '--primitive-spacing-4': theme.primitive.spacing[4],
+      '--primitive-spacing-6': theme.primitive.spacing[6],
+      '--primitive-spacing-8': theme.primitive.spacing[8],
+      '--primitive-border-radius-sm': theme.primitive.borderRadius.sm,
+      '--primitive-border-radius-md': theme.primitive.borderRadius.md,
+      '--primitive-border-radius-lg': theme.primitive.borderRadius.lg,
+      '--primitive-border-radius-full': theme.primitive.borderRadius.full,
+    };
+
+    return this.resolveThemeTokenValue(theme, mapping[tokenName]);
+  }
+
+  private resolveThemeTokenValue(theme: Theme, value: string | undefined): string | undefined {
+    if (!value || !value.startsWith('var(--')) {
+      return value;
+    }
+
+    const variableName = value.slice(4, -1).trim();
+    if (!variableName.startsWith('--primitive-')) {
+      return value;
+    }
+
+    const primitivePath = variableName.replace('--primitive-', '').split('-');
+
+    if (primitivePath.length === 1) {
+      const [name] = primitivePath;
+      if (name === 'white') {
+        return theme.primitive.colors.white;
+      }
+
+      if (name === 'black') {
+        return theme.primitive.colors.black;
+      }
+    }
+
+    if (primitivePath.length === 2) {
+      const [group, key] = primitivePath;
+      const colorGroup = group as keyof Theme['primitive']['colors'];
+
+      if (colorGroup in theme.primitive.colors) {
+        const colorValue = theme.primitive.colors[colorGroup];
+        if (typeof colorValue === 'object' && key in colorValue) {
+          return (colorValue as unknown as Record<string, string>)[key];
+        }
+      }
+    }
+
+    return value;
   }
 
   // Save/Load Management
@@ -2237,20 +2550,12 @@ export class ThemeBuilderComponent {
       return;
     }
 
-    const allCategories = [
-      ...this.colorCategories(),
-      ...this.typographyCategories(),
-      ...this.spacingCategories(),
-    ];
+    const metadata = this.createEditableMetadata(this.saveThemeName());
+    const bundle = this.buildCurrentThemeTokenBundle(metadata);
 
-    const tokens: Record<string, string> = {};
-    allCategories.forEach((category) => {
-      category.tokens.forEach((token) => {
-        tokens[token.name] = token.value;
-      });
-    });
-
-    saveTheme(this.saveThemeName(), tokens);
+    this.editableThemeFamilyMetadata.set(metadata);
+    saveTheme(metadata.name, bundle);
+    this.syncThemeFamilyWithService(true);
     this.loadSavedThemesList();
     this.closeSaveModal();
   }
@@ -2260,9 +2565,13 @@ export class ThemeBuilderComponent {
     const theme = savedThemes[name];
 
     if (theme) {
-      Object.entries(theme.tokens).forEach(([tokenName, value]) => {
-        this.updateToken(tokenName, value);
-      });
+      this.applyImportedThemeBundle(theme.family);
+
+      if (theme.isIncomplete) {
+        alert(
+          'Loaded a legacy saved theme. Dark tokens were seeded from the light variant and should be reviewed.'
+        );
+      }
     }
   }
 
@@ -2276,6 +2585,97 @@ export class ThemeBuilderComponent {
   private loadSavedThemesList(): void {
     const savedThemes = getSavedThemes();
     this.savedThemes.set(Object.values(savedThemes));
+  }
+
+  private applyImportedThemeBundle(bundle: ThemeFamilyTokenBundle): void {
+    const themeFamily = this.buildThemeFamilyFromBundle(bundle);
+    this.loadThemeFamilyIntoEditor(themeFamily);
+    this.themeService.setCustomThemeFamily(themeFamily);
+  }
+
+  private buildThemeFamilyFromBundle(bundle: ThemeFamilyTokenBundle): ThemeFamily {
+    return convertPresetToThemeFamily({
+      id: bundle.metadata.id,
+      name: bundle.metadata.name,
+      description: bundle.metadata.description || '',
+      author: bundle.metadata.author || 'UI Suite',
+      light: bundle.light,
+      dark: bundle.dark,
+      tokens: bundle.light,
+    });
+  }
+
+  private convertThemeFamilyToTokenBundle(themeFamily: ThemeFamily): ThemeFamilyTokenBundle {
+    return createThemeFamilyTokenBundle(
+      themeFamily.metadata.name,
+      this.extractTokensFromTheme(themeFamily.light),
+      this.extractTokensFromTheme(themeFamily.dark),
+      {
+        id: themeFamily.metadata.id,
+        description: themeFamily.metadata.description,
+        author: themeFamily.metadata.author,
+        version: themeFamily.metadata.version,
+      }
+    );
+  }
+
+  private extractTokensFromTheme(theme: Theme): Record<string, string> {
+    const tokens: Record<string, string> = {};
+    const allCategories = [
+      ...this.colorCategories(),
+      ...this.typographyCategories(),
+      ...this.spacingCategories(),
+    ];
+
+    allCategories.forEach((category) => {
+      category.tokens.forEach((token) => {
+        const value = this.getTokenValueFromTheme(theme, token.name);
+        if (value) {
+          tokens[token.name] = value;
+        }
+      });
+    });
+
+    return tokens;
+  }
+
+  private createEditableMetadata(name: string): EditableThemeFamilyMetadata {
+    const currentMetadata = this.editableThemeFamilyMetadata();
+
+    return {
+      ...currentMetadata,
+      id: this.toThemeId(name),
+      name,
+    };
+  }
+
+  private toThemeId(value: string): string {
+    return (
+      value
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '') || 'custom-theme'
+    );
+  }
+
+  private getFileBaseName(fileName: string): string {
+    return fileName.replace(/\.[^.]+$/, '');
+  }
+
+  private isEngineThemeFamily(value: unknown): value is ThemeFamily {
+    if (!value || typeof value !== 'object') {
+      return false;
+    }
+
+    const candidate = value as Partial<ThemeFamily>;
+    return (
+      !!candidate.metadata &&
+      !!candidate.light &&
+      !!candidate.dark &&
+      'metadata' in candidate.light &&
+      'metadata' in candidate.dark
+    );
   }
 
   // Import/Export
@@ -2295,23 +2695,30 @@ export class ThemeBuilderComponent {
     const reader = new FileReader();
     reader.onload = (e) => {
       const content = e.target?.result as string;
-      let tokens: Record<string, string> = {};
 
       try {
+        let importedTheme: ThemeFamilyTokenBundle;
+
         if (file.name.endsWith('.json')) {
-          tokens = JSON.parse(content);
+          const parsed = JSON.parse(content) as unknown;
+          importedTheme = this.isEngineThemeFamily(parsed)
+            ? this.convertThemeFamilyToTokenBundle(parsed)
+            : normalizeImportedThemeData(parsed, this.getFileBaseName(file.name));
         } else if (file.name.endsWith('.css')) {
-          tokens = parseCSSVariables(content);
+          importedTheme = normalizeImportedThemeData(
+            parseCSSVariablesByBlock(content),
+            this.getFileBaseName(file.name)
+          );
+        } else {
+          throw new Error('Unsupported file format');
         }
 
-        // Apply imported tokens
-        Object.entries(tokens).forEach(([tokenName, value]) => {
-          if (tokenName.startsWith('--')) {
-            this.updateToken(tokenName, value);
-          }
-        });
-
-        alert(`Successfully imported ${Object.keys(tokens).length} tokens!`);
+        this.applyImportedThemeBundle(importedTheme);
+        alert(
+          importedTheme.isIncomplete
+            ? `Imported legacy theme family "${importedTheme.metadata.name}". Dark tokens were seeded from the light variant and should be reviewed.`
+            : `Successfully imported theme family "${importedTheme.metadata.name}".`
+        );
       } catch (error) {
         alert('Error importing theme file. Please check the format.');
         console.error('Import error:', error);
@@ -2358,12 +2765,24 @@ export class ThemeBuilderComponent {
     this.canRedo.set(this.historyIndex < this.history.length - 1);
   }
 
+  private applyHistoryEntry(entry: HistoryEntry, value: string): void {
+    const isDark = entry.tokenName.endsWith('-dark');
+
+    if (isDark) {
+      document.documentElement.style.setProperty(entry.tokenName, value);
+    } else {
+      this.updateTokenDirect(entry.tokenName, value, false, false);
+    }
+
+    this.syncThemeFamilyWithService();
+    this.updateAccessibilityChecks();
+  }
+
   protected undo(): void {
     if (!this.canUndo()) return;
 
     const entry = this.history[this.historyIndex];
-    const isDark = entry.tokenName.endsWith('-dark');
-    document.documentElement.style.setProperty(entry.tokenName, entry.oldValue);
+    this.applyHistoryEntry(entry, entry.oldValue);
     this.historyIndex--;
     this.updateHistoryButtons();
   }
@@ -2373,8 +2792,7 @@ export class ThemeBuilderComponent {
 
     this.historyIndex++;
     const entry = this.history[this.historyIndex];
-    const isDark = entry.tokenName.endsWith('-dark');
-    document.documentElement.style.setProperty(entry.tokenName, entry.newValue);
+    this.applyHistoryEntry(entry, entry.newValue);
     this.updateHistoryButtons();
   }
 
@@ -2405,6 +2823,7 @@ export class ThemeBuilderComponent {
     const card = getTokenValue('--semantic-surface-card');
     const primary = getTokenValue('--semantic-text-primary');
     const secondary = getTokenValue('--semantic-text-secondary');
+    const inverse = getTokenValue('--semantic-text-inverse');
     const brandPrimary = getTokenValue('--semantic-brand-primary');
 
     const checks = [
@@ -2437,11 +2856,11 @@ export class ThemeBuilderComponent {
         level: getWCAGLevel(getContrastRatio(brandPrimary, bg), 'normal'),
       },
       {
-        label: 'White Text on Brand Primary',
-        foreground: '#ffffff',
+        label: 'Inverse Text on Brand Primary',
+        foreground: inverse,
         background: brandPrimary,
-        ratio: getContrastRatio('#ffffff', brandPrimary),
-        level: getWCAGLevel(getContrastRatio('#ffffff', brandPrimary), 'normal'),
+        ratio: getContrastRatio(inverse, brandPrimary),
+        level: getWCAGLevel(getContrastRatio(inverse, brandPrimary), 'normal'),
       },
     ];
 
@@ -2450,15 +2869,13 @@ export class ThemeBuilderComponent {
 
   // Preview Mode Toggle (for live preview panel only)
   protected togglePreviewMode(): void {
-    this.previewMode.update((mode) => (mode === 'light' ? 'dark' : 'light'));
-    // Update accessibility checks for the current preview mode
+    this.themeService.setThemeMode(this.isPreviewingDark() ? 'light' : 'dark');
     this.updateAccessibilityChecks();
   }
 
   // Set specific preview mode
   protected setPreviewMode(mode: 'light' | 'dark'): void {
-    this.previewMode.set(mode);
-    // Update accessibility checks for the current preview mode
+    this.themeService.setThemeMode(mode);
     this.updateAccessibilityChecks();
   }
 
@@ -2499,6 +2916,9 @@ export class ThemeBuilderComponent {
     if (oldValue !== value) {
       this.addToHistory(darkTokenName, oldValue, value);
     }
+
+    this.syncThemeFamilyWithService();
+    this.updateAccessibilityChecks();
   }
 
   // Color Generator Methods

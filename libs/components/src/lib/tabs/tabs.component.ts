@@ -1,6 +1,6 @@
 /**
  * Tabs Component
- * 
+ *
  * A themable tabs component with keyboard navigation and ARIA support.
  * Supports horizontal and vertical orientations.
  */
@@ -18,22 +18,20 @@ import {
   ElementRef,
   afterNextRender,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { TabComponent } from './tab.component';
 
 export type TabsOrientation = 'horizontal' | 'vertical';
 export type TabsSize = 'sm' | 'md' | 'lg';
 
 @Component({
-  selector: 'ui-tabs',
-  imports: [CommonModule],
+  selector: 'fui-tabs',
+  imports: [NgClass],
   templateUrl: './tabs.component.html',
   styleUrl: './tabs.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class]': 'hostClasses()',
-    '[attr.role]': '"tablist"',
-    '[attr.aria-orientation]': 'orientation()',
   },
 })
 export class TabsComponent {
@@ -91,10 +89,10 @@ export class TabsComponent {
    * Computed CSS classes
    */
   protected readonly tabsClasses = computed(() => ({
-    'ui-tabs': true,
-    [`ui-tabs--${this.orientation()}`]: true,
-    [`ui-tabs--${this.size()}`]: true,
-    'ui-tabs--full-width': this.fullWidth(),
+    'fui-tabs': true,
+    [`fui-tabs--${this.orientation()}`]: true,
+    [`fui-tabs--${this.size()}`]: true,
+    'fui-tabs--full-width': this.fullWidth(),
   }));
 
   /**
@@ -117,7 +115,7 @@ export class TabsComponent {
     effect(() => {
       const activeIdx = this.internalActiveIndex();
       const tabsList = this.tabs();
-      
+
       tabsList.forEach((tab, index) => {
         tab.setActive(index === activeIdx);
         tab.setIndex(index);
@@ -128,20 +126,20 @@ export class TabsComponent {
     effect(() => {
       // Track the active index change
       const activeIdx = this.internalActiveIndex();
-      
+
       // Only update after DOM is ready
       if (this.tabButtons().length > 0) {
-        setTimeout(() => {
+        requestAnimationFrame(() => {
           this.updateIndicator();
-        }, 0);
+        });
       }
     });
-    
+
     // Initial calculation after first render
     afterNextRender(() => {
-      setTimeout(() => {
+      requestAnimationFrame(() => {
         this.updateIndicator();
-      }, 10);
+      });
     });
   }
 
@@ -161,14 +159,14 @@ export class TabsComponent {
           // For horizontal tabs, position from left and use width
           const position = button.offsetLeft;
           const size = button.offsetWidth;
-          
+
           this.indicatorPosition.set(position);
           this.indicatorSize.set(size);
         } else {
           // For vertical tabs, position from top and use height
           const position = button.offsetTop;
           const size = button.offsetHeight;
-          
+
           this.indicatorPosition.set(position);
           this.indicatorSize.set(size);
         }
@@ -182,15 +180,15 @@ export class TabsComponent {
   protected selectTab(index: number): void {
     const tabsList = this.tabs();
     const tab = tabsList[index];
-    
+
     if (tab && !tab.disabled()) {
       this.internalActiveIndex.set(index);
       this.activeIndexChange.emit(index);
-      
+
       // Manually trigger indicator update
-      setTimeout(() => {
+      requestAnimationFrame(() => {
         this.updateIndicator();
-      }, 0);
+      });
     }
   }
 
@@ -240,8 +238,8 @@ export class TabsComponent {
     if (newIndex !== currentIndex) {
       this.selectTab(newIndex);
       // Focus the new tab
-      setTimeout(() => {
-        const buttons = document.querySelectorAll('.ui-tab-button');
+      requestAnimationFrame(() => {
+        const buttons = document.querySelectorAll('.fui-tab-button');
         if (buttons[newIndex]) {
           (buttons[newIndex] as HTMLElement).focus();
         }
@@ -301,4 +299,3 @@ export class TabsComponent {
     return tabsList.length - 1;
   }
 }
-

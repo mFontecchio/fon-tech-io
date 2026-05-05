@@ -1,6 +1,6 @@
 /**
  * Stepper Component
- * 
+ *
  * A step-by-step progress indicator component.
  * Supports linear and non-linear navigation through steps.
  */
@@ -10,11 +10,12 @@ import {
   Component,
   computed,
   input,
+  linkedSignal,
   output,
-  signal,
-  effect,
+  ElementRef,
+  inject,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 export interface Step {
   id: string;
@@ -28,13 +29,14 @@ export interface Step {
 export type StepperOrientation = 'horizontal' | 'vertical';
 
 @Component({
-  selector: 'ui-stepper',
-  imports: [CommonModule],
+  selector: 'fui-stepper',
+  imports: [NgClass],
   templateUrl: './stepper.component.html',
   styleUrl: './stepper.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class]': 'hostClasses()',
+    '(keydown)': 'handleKeyDown($event)',
   },
 })
 export class StepperComponent {
@@ -71,14 +73,14 @@ export class StepperComponent {
   /**
    * Internal active step
    */
-  protected readonly internalActiveStep = signal(0);
+  protected readonly internalActiveStep = linkedSignal(() => this.activeStep());
 
   /**
    * Computed CSS classes
    */
   protected readonly stepperClasses = computed(() => ({
-    'ui-stepper': true,
-    [`ui-stepper--${this.orientation()}`]: true,
+    'fui-stepper': true,
+    [`fui-stepper--${this.orientation()}`]: true,
   }));
 
   /**
@@ -91,11 +93,69 @@ export class StepperComponent {
       .join(' ');
   });
 
-  constructor() {
-    // Sync internal active step
-    effect(() => {
-      this.internalActiveStep.set(this.activeStep());
-    });
+  private readonly elementRef = inject(ElementRef);
+
+  /**
+   * Arrow key navigation (WAI-ARIA step/tablist pattern)
+   * Horizontal orientation: ArrowLeft / ArrowRight
+   * Vertical orientation:   ArrowUp  / ArrowDown
+   * Home / End move to the first / last focusable step.
+   */
+  protected handleKeyDown(event: KeyboardEvent): void {
+    const isHorizontal = this.orientation() === 'horizontal';
+    const prevKey = isHorizontal ? 'ArrowLeft' : 'ArrowUp';
+    const nextKey = isHorizontal ? 'ArrowRight' : 'ArrowDown';
+
+    if (![prevKey, nextKey, 'Home', 'End'].includes(event.key)) return;
+
+    event.preventDefault();
+
+    const steps = this.steps();
+    const current = this.internalActiveStep();
+
+    const firstClickable = (): number => {
+      for (let i = 0; i < steps.length; i++) {
+        if (this.isStepClickable(steps[i], i)) return i;
+      }
+      return current;
+    };
+
+    const lastClickable = (): number => {
+      for (let i = steps.length - 1; i >= 0; i--) {
+        if (this.isStepClickable(steps[i], i)) return i;
+      }
+      return current;
+    };
+
+    const nextClickable = (from: number, dir: 1 | -1): number => {
+      let i = from + dir;
+      while (i >= 0 && i < steps.length) {
+        if (this.isStepClickable(steps[i], i)) return i;
+        i += dir;
+      }
+      return from;
+    };
+
+    let target = current;
+    if (event.key === prevKey) target = nextClickable(current, -1);
+    else if (event.key === nextKey) target = nextClickable(current, 1);
+    else if (event.key === 'Home') target = firstClickable();
+    else if (event.key === 'End') target = lastClickable();
+
+    if (target !== current) {
+      this.handleStepClick(steps[target], target);
+      this.focusStep(target);
+    }
+  }
+
+  /**
+   * Programmatically focus the step button at the given index
+   */
+  private focusStep(index: number): void {
+    const buttons = Array.from(
+      this.elementRef.nativeElement.querySelectorAll('.fui-stepper-step-button')
+    ) as HTMLElement[];
+    buttons[index]?.focus();
   }
 
   /**
@@ -155,4 +215,3 @@ export class StepperComponent {
     return 'pending';
   }
 }
-

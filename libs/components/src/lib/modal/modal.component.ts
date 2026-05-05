@@ -16,19 +16,21 @@ import {
   ElementRef,
   viewChild,
   OnDestroy,
+  PLATFORM_ID,
+  inject,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { isPlatformBrowser, NgClass } from '@angular/common';
 
 export type ModalSize = 'sm' | 'md' | 'lg' | 'xl' | 'full';
 
 @Component({
-  selector: 'ui-modal',
-  imports: [CommonModule],
+  selector: 'fui-modal',
+  imports: [NgClass],
   templateUrl: './modal.component.html',
   styleUrl: './modal.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.ui-modal-host]': 'true',
+    '[class.fui-modal-host]': 'true',
   },
 })
 export class ModalComponent implements OnDestroy {
@@ -97,21 +99,23 @@ export class ModalComponent implements OnDestroy {
    */
   protected readonly titleId = computed(() => {
     const ariaLabelledby = this.ariaLabelledby();
-    return ariaLabelledby || `ui-modal-title-${Math.random().toString(36).substr(2, 9)}`;
+    return ariaLabelledby || `fui-modal-title-${Math.random().toString(36).substr(2, 9)}`;
   });
 
   /**
    * Computed CSS classes
    */
   protected readonly modalClasses = computed(() => ({
-    'ui-modal': true,
-    [`ui-modal--${this.size()}`]: true,
+    'fui-modal': true,
+    [`fui-modal--${this.size()}`]: true,
   }));
 
   /**
    * Original body overflow style (for restoration)
    */
   private originalBodyOverflow?: string;
+
+  private readonly platformId = inject(PLATFORM_ID);
 
   constructor() {
     // Sync open state and manage dialog
@@ -174,6 +178,7 @@ export class ModalComponent implements OnDestroy {
    * Prevent body scroll
    */
   private preventScroll(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
     this.originalBodyOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
   }
@@ -182,6 +187,7 @@ export class ModalComponent implements OnDestroy {
    * Restore body scroll
    */
   private restoreBodyScroll(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
     if (this.originalBodyOverflow !== undefined) {
       document.body.style.overflow = this.originalBodyOverflow;
       this.originalBodyOverflow = undefined;

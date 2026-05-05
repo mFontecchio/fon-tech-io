@@ -9,9 +9,9 @@
   (keydown)="handleKeyDown($event)"
 >
   @if (loading()) {
-    <span class="ui-button__loader" aria-hidden="true">
+    <span class="fui-button__loader" aria-hidden="true">
       <svg
-        class="ui-button__spinner"
+        class="fui-button__spinner"
         width="16"
         height="16"
         viewBox="0 0 24 24"
@@ -36,7 +36,7 @@
     </span>
   }
   
-  <span class="ui-button__content" [class.ui-button__content--loading]="loading()">
+  <span class="fui-button__content" [class.fui-button__content--loading]="loading()">
     <ng-content />
   </span>
 </button>

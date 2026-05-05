@@ -9,26 +9,27 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  ElementRef,
   input,
+  linkedSignal,
   output,
-  signal,
-  effect,
+  viewChild,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 export type DatePickerSize = 'sm' | 'md' | 'lg';
 
 @Component({
-  selector: 'ui-date-picker',
-  imports: [CommonModule, FormsModule],
+  selector: 'fui-date-picker',
+  imports: [NgClass, FormsModule],
   templateUrl: './date-picker.component.html',
   styleUrl: './date-picker.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.ui-date-picker-wrapper]': 'true',
-    '[class.ui-date-picker-wrapper--disabled]': 'disabled()',
-    '[class.ui-date-picker-wrapper--full-width]': 'fullWidth()',
+    '[class.fui-date-picker-wrapper]': 'true',
+    '[class.fui-date-picker-wrapper--disabled]': 'disabled()',
+    '[class.fui-date-picker-wrapper--full-width]': 'fullWidth()',
   },
 })
 export class DatePickerComponent {
@@ -110,7 +111,12 @@ export class DatePickerComponent {
   /**
    * Internal value
    */
-  protected readonly internalValue = signal<string | undefined>(undefined);
+  protected readonly internalValue = linkedSignal<string | undefined>(() => this.value());
+
+  /**
+   * Reference to native date input
+   */
+  protected readonly inputElement = viewChild<ElementRef<HTMLInputElement>>('input');
 
   /**
    * Computed error state
@@ -122,7 +128,7 @@ export class DatePickerComponent {
    */
   protected readonly datePickerId = computed(() => {
     const providedId = this.id();
-    return providedId || `ui-date-picker-${Math.random().toString(36).substr(2, 9)}`;
+    return providedId || `fui-date-picker-${Math.random().toString(36).substr(2, 9)}`;
   });
 
   /**
@@ -156,18 +162,11 @@ export class DatePickerComponent {
    * Computed CSS classes
    */
   protected readonly datePickerClasses = computed(() => ({
-    'ui-date-picker': true,
-    [`ui-date-picker--${this.size()}`]: true,
-    'ui-date-picker--error': this.hasError(),
-    'ui-date-picker--disabled': this.disabled(),
+    'fui-date-picker': true,
+    [`fui-date-picker--${this.size()}`]: true,
+    'fui-date-picker--error': this.hasError(),
+    'fui-date-picker--disabled': this.disabled(),
   }));
-
-  constructor() {
-    // Sync internal value
-    effect(() => {
-      this.internalValue.set(this.value());
-    });
-  }
 
   /**
    * Handle value change
@@ -183,6 +182,26 @@ export class DatePickerComponent {
   protected clear(): void {
     this.internalValue.set(undefined);
     this.valueChange.emit('');
+  }
+
+  /**
+   * Open native date picker with custom trigger button.
+   */
+  protected openPicker(): void {
+    const input = this.inputElement()?.nativeElement;
+
+    if (!input || this.disabled()) {
+      return;
+    }
+
+    input.focus();
+
+    if (typeof input.showPicker === 'function') {
+      input.showPicker();
+      return;
+    }
+
+    input.click();
   }
 }
 

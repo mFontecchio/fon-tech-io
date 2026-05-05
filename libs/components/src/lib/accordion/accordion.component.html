@@ -1,50 +1,51 @@
-<div class="ui-accordion-container">
+<div class="fui-accordion-container">
   @for (item of items(); track $index) {
-    <div 
-      class="ui-accordion-item"
-      [class.ui-accordion-item--expanded]="isExpanded($index)"
-      [class.ui-accordion-item--disabled]="item.disabled()"
+    <div
+      class="fui-accordion-item"
+      [class.fui-accordion-item--expanded]="isExpanded($index)"
+      [class.fui-accordion-item--disabled]="item.disabled()"
     >
       <button
         type="button"
-        class="ui-accordion-header"
+        class="fui-accordion-header"
         [attr.aria-expanded]="isExpanded($index)"
-        [attr.aria-controls]="'ui-accordion-panel-' + $index"
-        [attr.id]="'ui-accordion-header-' + $index"
+        [attr.aria-controls]="'fui-accordion-panel-' + $index"
+        [attr.id]="'fui-accordion-header-' + $index"
         [disabled]="item.disabled()"
         (click)="toggleItem($index)"
       >
-        <span class="ui-accordion-title">{{ item.title() }}</span>
-        <svg 
-          class="ui-accordion-icon" 
-          width="20" 
-          height="20" 
-          viewBox="0 0 20 20" 
+        <span class="fui-accordion-title">{{ item.title() }}</span>
+        <svg
+          class="fui-accordion-icon"
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
           fill="none"
           aria-hidden="true"
         >
-          <path 
-            d="M6 8L10 12L14 8" 
-            stroke="currentColor" 
-            stroke-width="2" 
-            stroke-linecap="round" 
+          <path
+            d="M6 8L10 12L14 8"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
             stroke-linejoin="round"
           />
         </svg>
       </button>
 
       <div
-        class="ui-accordion-panel"
-        [attr.id]="'ui-accordion-panel-' + $index"
-        [attr.aria-labelledby]="'ui-accordion-header-' + $index"
+        class="fui-accordion-panel"
+        [attr.id]="'fui-accordion-panel-' + $index"
+        [attr.aria-labelledby]="'fui-accordion-header-' + $index"
         [attr.role]="'region'"
-        [attr.hidden]="!isExpanded($index) ? true : null"
+        [hidden]="!isExpanded($index)"
       >
-        <div class="ui-accordion-content">
-          <ng-content></ng-content>
+        <div class="fui-accordion-content">
+          <div class="fui-accordion-content-body">
+            <ng-content></ng-content>
+          </div>
         </div>
       </div>
     </div>
   }
 </div>
-

@@ -3,6 +3,7 @@
  * 
  * A slide-in panel component that appears from the edge of the screen.
  * Supports left, right, top, and bottom positions with overlay backdrop.
+ * Uses native <dialog> element for built-in focus trap and screen reader support.
  */
 
 import {
@@ -13,24 +14,28 @@ import {
   output,
   effect,
   signal,
-  HostListener,
+  viewChild,
+  ElementRef,
+  OnDestroy,
+  PLATFORM_ID,
+  inject,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { isPlatformBrowser, NgClass } from '@angular/common';
 
 export type DrawerPosition = 'left' | 'right' | 'top' | 'bottom';
 export type DrawerSize = 'sm' | 'md' | 'lg' | 'xl' | 'full';
 
 @Component({
-  selector: 'ui-drawer',
-  imports: [CommonModule],
+  selector: 'fui-drawer',
+  imports: [NgClass],
   templateUrl: './drawer.component.html',
   styleUrl: './drawer.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.ui-drawer-host]': 'true',
+    '[class.fui-drawer-host]': 'true',
   },
 })
-export class DrawerComponent {
+export class DrawerComponent implements OnDestroy {
   /**
    * Open state
    */
@@ -77,14 +82,14 @@ export class DrawerComponent {
   readonly closed = output<void>();
 
   /**
-   * Internal open state
+   * Reference to native dialog element
    */
-  protected readonly isOpen = signal(false);
+  protected readonly dialogElement = viewChild<ElementRef<HTMLDialogElement>>('dialog');
 
   /**
-   * Visibility state (keeps drawer in DOM during close animation)
+   * Internal open state (drives CSS animation class)
    */
-  protected readonly isVisible = signal(false);
+  protected readonly isOpen = signal(false);
 
   /**
    * Timeout for closing animation
@@ -92,62 +97,78 @@ export class DrawerComponent {
   private closeTimeout?: number;
 
   /**
-   * Computed CSS classes
+   * Stored body overflow for restoration on close
+   */
+  private originalBodyOverflow?: string;
+
+  private readonly platformId = inject(PLATFORM_ID);
+
+  /**
+   * Computed CSS classes for the drawer panel
    */
   protected readonly drawerClasses = computed(() => ({
-    'ui-drawer': true,
-    [`ui-drawer--${this.position()}`]: true,
-    [`ui-drawer--${this.size()}`]: true,
-    'ui-drawer--open': this.isOpen(),
+    'fui-drawer': true,
+    [`fui-drawer--${this.position()}`]: true,
+    [`fui-drawer--${this.size()}`]: true,
+    'fui-drawer--open': this.isOpen(),
   }));
 
   constructor() {
-    // Sync internal open state
     effect(() => {
       const open = this.open();
-      
+      const dialog = this.dialogElement();
+
+      if (!isPlatformBrowser(this.platformId) || !dialog) return;
+
+      const dialogEl = dialog.nativeElement;
+
       if (open) {
-        // Opening: Clear any pending close timeout
         if (this.closeTimeout) {
           clearTimeout(this.closeTimeout);
           this.closeTimeout = undefined;
         }
-        // Make visible immediately, then open
-        this.isVisible.set(true);
-        // Small delay to ensure element is in DOM before animating
-        setTimeout(() => {
+
+        if (!dialogEl.open) {
+          dialogEl.showModal();
+        }
+
+        // requestAnimationFrame ensures the element is painted before the
+        // CSS transition starts, replacing the old setTimeout(..., 10) pattern
+        requestAnimationFrame(() => {
           this.isOpen.set(true);
-        }, 10);
-        // Lock body scroll
+        });
+
+        this.originalBodyOverflow = document.body.style.overflow;
         document.body.style.overflow = 'hidden';
       } else {
-        // Closing: Start close animation
         this.isOpen.set(false);
-        // Restore body scroll
-        document.body.style.overflow = '';
-        // Keep in DOM for animation duration (300ms + buffer)
+        // Wait for close animation (350ms) before calling dialog.close()
         this.closeTimeout = window.setTimeout(() => {
-          this.isVisible.set(false);
+          if (dialogEl.open) {
+            dialogEl.close();
+          }
           this.closeTimeout = undefined;
+          this.restoreBodyScroll();
         }, 350);
       }
     });
   }
 
-  /**
-   * Cleanup on destroy
-   */
   ngOnDestroy(): void {
-    // Clear any pending timeout
     if (this.closeTimeout) {
       clearTimeout(this.closeTimeout);
     }
-    // Ensure body overflow is reset
-    document.body.style.overflow = '';
+    this.restoreBodyScroll();
+    if (isPlatformBrowser(this.platformId)) {
+      const dialog = this.dialogElement();
+      if (dialog?.nativeElement.open) {
+        dialog.nativeElement.close();
+      }
+    }
   }
 
   /**
-   * Close drawer
+   * Close drawer and emit events
    */
   protected close(): void {
     this.isOpen.set(false);
@@ -156,21 +177,39 @@ export class DrawerComponent {
   }
 
   /**
-   * Handle backdrop click
+   * Handle click on the dialog element.
+   * A click with target === dialogEl means the user clicked the backdrop
+   * (the ::backdrop pseudo-element or the transparent dialog area outside the panel).
    */
-  protected handleBackdropClick(): void {
-    if (this.closeOnBackdrop()) {
+  protected handleBackdropClick(event: MouseEvent): void {
+    if (!this.closeOnBackdrop()) return;
+    const dialog = this.dialogElement();
+    if (!dialog) return;
+    if (event.target === dialog.nativeElement) {
       this.close();
     }
   }
 
   /**
-   * Handle ESC key
+   * Handle native dialog cancel event (triggered by ESC key).
+   * We prevent the default close and handle it ourselves to allow
+   * consumers to opt out via closeOnEsc.
    */
-  @HostListener('document:keydown.escape')
-  protected handleEscape(): void {
-    if (this.closeOnEsc() && this.isOpen()) {
+  protected handleCancel(event: Event): void {
+    event.preventDefault();
+    if (this.closeOnEsc()) {
       this.close();
+    }
+  }
+
+  /**
+   * Restore body scroll after closing
+   */
+  private restoreBodyScroll(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+    if (this.originalBodyOverflow !== undefined) {
+      document.body.style.overflow = this.originalBodyOverflow;
+      this.originalBodyOverflow = undefined;
     }
   }
 }

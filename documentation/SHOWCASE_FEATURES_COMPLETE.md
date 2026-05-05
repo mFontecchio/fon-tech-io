@@ -37,17 +37,20 @@ All showcase features have been successfully implemented and tested. The showcas
 **Component:** `ThemeSwitcherComponent`
 
 **Features:**
-- Three theme options: Light, Dark, High-Contrast
+- Family-aware theme selection with independent light and dark mode switching
+- Dedicated high-contrast accessibility mode
 - Dropdown menu with visual theme selection
 - Persistent theme selection (localStorage)
 - System preference detection on first load
+- Return-path preservation when switching from high-contrast back to the active family
 - Smooth transitions between themes
 - Keyboard accessible (Enter/Space to activate)
 - Click-outside to close dropdown
 
 **Technical Details:**
 - Uses `prefers-color-scheme` media query for initial detection
-- Sets `data-theme` attribute on document root
+- Persists theme family and mode independently in localStorage
+- Sets `data-theme` and `data-theme-mode` attributes on document root
 - Event propagation management for dropdown behavior
 - Signal-based reactive state
 
@@ -55,7 +58,35 @@ All showcase features have been successfully implemented and tested. The showcas
 - `apps/showcase/src/app/shared/theme-switcher.component.ts`
 
 **Files Modified:**
-- `apps/showcase/src/app/app.component.ts` (integrated ThemeSwitcherComponent)
+- `apps/showcase/src/app/shared/theme-switcher.component.ts`
+- `libs/theming/src/lib/services/theme.service.ts`
+
+---
+
+### 3. Dedicated Getting Started Guides
+
+**Status:** Complete  
+**Components:** `InstallationComponent`, `UsageComponent`, `ThemingComponent`
+
+**Features:**
+- Separate Installation, Usage, and Theming routes with guide-specific content
+- Workspace setup guidance and package installation commands
+- Standalone component usage examples aligned with the shared libraries
+- ThemeService documentation covering family selection, light/dark switching, and high-contrast mode
+
+**Technical Details:**
+- Each guide is a standalone Angular page with shared design-token styling
+- Code examples render through the showcase code block component
+- Routes now lazy-load distinct page components instead of reusing a placeholder shell
+
+**Files Created:**
+- `apps/showcase/src/app/pages/getting-started/usage.component.ts`
+- `apps/showcase/src/app/pages/getting-started/theming.component.ts`
+
+**Files Modified:**
+- `apps/showcase/src/app/pages/getting-started/installation.component.ts`
+- `apps/showcase/src/app/pages/getting-started/getting-started-overview.component.ts`
+- `apps/showcase/src/app/app.routes.ts`
 
 ---
 

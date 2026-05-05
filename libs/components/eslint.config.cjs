@@ -1,8 +1,9 @@
 const nx = require('@nx/eslint-plugin');
-const baseConfig = require('../../.eslintrc.json');
 
 module.exports = [
-  ...baseConfig,
+  ...nx.configs['flat/base'],
+  ...nx.configs['flat/typescript'],
+  ...nx.configs['flat/javascript'],
   ...nx.configs['flat/angular'],
   ...nx.configs['flat/angular-template'],
   {
@@ -12,7 +13,7 @@ module.exports = [
         'error',
         {
           type: 'attribute',
-          prefix: 'lib',
+          prefix: 'fui',
           style: 'camelCase',
         },
       ],
@@ -20,7 +21,7 @@ module.exports = [
         'error',
         {
           type: 'element',
-          prefix: 'lib',
+          prefix: 'fui',
           style: 'kebab-case',
         },
       ],

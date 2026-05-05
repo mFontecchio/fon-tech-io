@@ -1,34 +1,35 @@
 /**
  * Stack Component
- * 
+ *
  * A layout component for arranging items in a vertical or horizontal stack
  * with consistent spacing between items.
  */
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  input,
-} from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { NgClass } from '@angular/common';
 
 export type StackDirection = 'vertical' | 'horizontal';
 export type StackAlign = 'start' | 'center' | 'end' | 'stretch';
-export type StackJustify = 'start' | 'center' | 'end' | 'space-between' | 'space-around' | 'space-evenly';
+export type StackJustify =
+  | 'start'
+  | 'center'
+  | 'end'
+  | 'space-between'
+  | 'space-around'
+  | 'space-evenly';
 export type StackSpacing = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12;
 
 @Component({
-  selector: 'ui-stack',
-  imports: [CommonModule],
+  selector: 'fui-stack',
+  imports: [NgClass],
   templateUrl: './stack.component.html',
   styleUrl: './stack.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class]': 'hostClasses()',
-    '[style.gap]': 'gapValue()',
-    '[style.align-items]': 'alignValue()',
-    '[style.justify-content]': 'justifyValue()',
+    '[style.--fui-stack-gap]': 'gapValue()',
+    '[style.--fui-stack-align]': 'alignValue()',
+    '[style.--fui-stack-justify]': 'justifyValue()',
   },
 })
 export class StackComponent {
@@ -71,11 +72,11 @@ export class StackComponent {
    * Computed CSS classes
    */
   protected readonly stackClasses = computed(() => ({
-    'ui-stack': true,
-    [`ui-stack--${this.direction()}`]: true,
-    'ui-stack--wrap': this.wrap(),
-    'ui-stack--divider': this.divider(),
-    'ui-stack--full-size': this.fullSize(),
+    'fui-stack': true,
+    [`fui-stack--${this.direction()}`]: true,
+    'fui-stack--wrap': this.wrap(),
+    'fui-stack--divider': this.divider(),
+    'fui-stack--full-size': this.fullSize(),
   }));
 
   /**
@@ -116,4 +117,3 @@ export class StackComponent {
     return justify;
   });
 }
-

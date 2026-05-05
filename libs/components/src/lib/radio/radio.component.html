@@ -1,9 +1,6 @@
-<div class="ui-radio-container">
-  <label 
-    [for]="radioId()" 
-    class="ui-radio-label"
-    (click)="handleLabelClick($event)"
-  >
+<div class="fui-radio-container">
+  <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
+  <label [for]="radioId()" class="fui-radio-label" (click)="handleLabelClick($event)">
     <input
       #radio
       type="radio"
@@ -19,41 +16,32 @@
       [ngClass]="radioClasses()"
       (change)="handleChange($event)"
     />
-    
-    <span class="ui-radio-box">
+
+    <span class="fui-radio-box">
       @if (isChecked()) {
-        <span class="ui-radio-dot"></span>
+        <span class="fui-radio-dot"></span>
       }
     </span>
 
     @if (label()) {
-      <span class="ui-radio-label-text">
+      <span class="fui-radio-label-text">
         {{ label() }}
         @if (required()) {
-          <span class="ui-radio-required-indicator" aria-label="required">*</span>
+          <span class="fui-radio-required-indicator" aria-label="required">*</span>
         }
       </span>
     }
   </label>
 
   @if (helperText() && !hasError()) {
-    <div 
-      [id]="helperTextId()" 
-      class="ui-radio-helper-text"
-    >
+    <div [id]="helperTextId()" class="fui-radio-helper-text">
       {{ helperText() }}
     </div>
   }
 
   @if (hasError()) {
-    <div 
-      [id]="errorId()" 
-      class="ui-radio-error-message"
-      role="alert"
-      aria-live="polite"
-    >
+    <div [id]="errorId()" class="fui-radio-error-message" role="alert" aria-live="polite">
       {{ errorMessage() }}
     </div>
   }
 </div>
-

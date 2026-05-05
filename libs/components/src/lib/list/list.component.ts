@@ -12,7 +12,7 @@ import {
   input,
   output,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 export interface ListItem {
   id: string | number;
@@ -27,8 +27,8 @@ export type ListVariant = 'default' | 'bordered' | 'divided';
 export type ListSize = 'sm' | 'md' | 'lg';
 
 @Component({
-  selector: 'ui-list',
-  imports: [CommonModule],
+  selector: 'fui-list',
+  imports: [NgClass],
   templateUrl: './list.component.html',
   styleUrl: './list.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -81,11 +81,11 @@ export class ListComponent {
    * Computed CSS classes
    */
   protected readonly listClasses = computed(() => ({
-    'ui-list': true,
-    [`ui-list--${this.variant()}`]: true,
-    [`ui-list--${this.size()}`]: true,
-    'ui-list--interactive': this.interactive(),
-    'ui-list--ordered': this.ordered(),
+    'fui-list': true,
+    [`fui-list--${this.variant()}`]: true,
+    [`fui-list--${this.size()}`]: true,
+    'fui-list--interactive': this.interactive(),
+    'fui-list--ordered': this.ordered(),
   }));
 
   /**

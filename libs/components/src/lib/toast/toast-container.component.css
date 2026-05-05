@@ -2,7 +2,7 @@
  * Toast Container Component Styles
  */
 
-.ui-toast-container {
+.fui-toast-container {
   position: fixed;
   z-index: 9999;
   display: flex;
@@ -15,34 +15,34 @@
 
 /* Positions */
 
-.ui-toast-container--top-left {
+.fui-toast-container--top-left {
   top: 0;
   left: 0;
 }
 
-.ui-toast-container--top-center {
+.fui-toast-container--top-center {
   top: 0;
   left: 50%;
   transform: translateX(-50%);
 }
 
-.ui-toast-container--top-right {
+.fui-toast-container--top-right {
   top: 0;
   right: 0;
 }
 
-.ui-toast-container--bottom-left {
+.fui-toast-container--bottom-left {
   bottom: 0;
   left: 0;
 }
 
-.ui-toast-container--bottom-center {
+.fui-toast-container--bottom-center {
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
 }
 
-.ui-toast-container--bottom-right {
+.fui-toast-container--bottom-right {
   bottom: 0;
   right: 0;
 }
@@ -50,7 +50,7 @@
 /* Responsive */
 
 @media (max-width: 640px) {
-  .ui-toast-container {
+  .fui-toast-container {
     max-width: calc(100vw - 2rem);
     left: 50% !important;
     right: auto !important;

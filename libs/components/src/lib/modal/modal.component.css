@@ -2,13 +2,13 @@
  * Modal Component Styles
  */
 
-.ui-modal-host {
+.fui-modal-host {
   display: contents;
 }
 
 /* Dialog element (backdrop + modal) */
 
-.ui-modal {
+.fui-modal {
   padding: 0;
   border: none;
   border-radius: var(--primitive-border-radius-lg);
@@ -18,47 +18,47 @@
   box-shadow: none;
 }
 
-.ui-modal::backdrop {
-  background-color: rgba(0, 0, 0, 0.6);
+.fui-modal::backdrop {
+  background-color: var(--semantic-surface-overlay);
   backdrop-filter: blur(2px);
-  animation: ui-modal-backdrop-fade-in 0.2s ease-out;
+  animation: fui-modal-backdrop-fade-in var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-decelerate, cubic-bezier(0, 0, 0.2, 1));
 }
 
 /* Modal content container */
 
-.ui-modal-content {
+.fui-modal-content {
   background-color: var(--semantic-surface-card);
   border-radius: var(--primitive-border-radius-lg);
   box-shadow: var(--primitive-shadow-2xl);
   display: flex;
   flex-direction: column;
   max-height: 90vh;
-  animation: ui-modal-slide-in 0.3s ease-out;
+  animation: fui-modal-slide-in var(--semantic-animation-duration-component, 250ms) var(--semantic-animation-easing-decelerate, cubic-bezier(0, 0, 0.2, 1));
 }
 
 /* Sizes */
 
-.ui-modal--sm .ui-modal-content {
+.fui-modal--sm .fui-modal-content {
   width: 24rem;
   max-width: calc(100vw - 2rem);
 }
 
-.ui-modal--md .ui-modal-content {
+.fui-modal--md .fui-modal-content {
   width: 32rem;
   max-width: calc(100vw - 2rem);
 }
 
-.ui-modal--lg .ui-modal-content {
+.fui-modal--lg .fui-modal-content {
   width: 48rem;
   max-width: calc(100vw - 2rem);
 }
 
-.ui-modal--xl .ui-modal-content {
+.fui-modal--xl .fui-modal-content {
   width: 64rem;
   max-width: calc(100vw - 2rem);
 }
 
-.ui-modal--full .ui-modal-content {
+.fui-modal--full .fui-modal-content {
   width: calc(100vw - 2rem);
   height: calc(100vh - 2rem);
   max-width: none;
@@ -67,7 +67,7 @@
 
 /* Header */
 
-.ui-modal-header {
+.fui-modal-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -76,7 +76,7 @@
   border-bottom: 1px solid var(--semantic-border-subtle);
 }
 
-.ui-modal-title {
+.fui-modal-title {
   font-size: var(--primitive-font-size-xl);
   font-weight: var(--primitive-font-weight-semibold);
   color: var(--semantic-text-primary);
@@ -84,7 +84,7 @@
   line-height: var(--primitive-line-height-tight);
 }
 
-.ui-modal-close {
+.fui-modal-close {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -95,28 +95,28 @@
   cursor: pointer;
   color: var(--semantic-text-secondary);
   border-radius: var(--primitive-border-radius-md);
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
   flex-shrink: 0;
 }
 
-.ui-modal-close:hover {
+.fui-modal-close:hover {
   color: var(--semantic-text-primary);
-  background-color: var(--semantic-surface-subtle);
+  background-color: var(--semantic-surface-background-secondary);
 }
 
-.ui-modal-close:focus-visible {
+.fui-modal-close:focus-visible {
   outline: 2px solid var(--semantic-state-focus-ring);
   outline-offset: 2px;
 }
 
-.ui-modal-close svg {
+.fui-modal-close svg {
   display: block;
   pointer-events: none;
 }
 
 /* Body */
 
-.ui-modal-body {
+.fui-modal-body {
   flex: 1;
   overflow-y: auto;
   padding: var(--primitive-spacing-6);
@@ -126,11 +126,11 @@
 
 /* Footer */
 
-.ui-modal-footer:empty {
+.fui-modal-footer:empty {
   display: none;
 }
 
-.ui-modal-footer {
+.fui-modal-footer {
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -141,7 +141,7 @@
 
 /* Animations */
 
-@keyframes ui-modal-backdrop-fade-in {
+@keyframes fui-modal-backdrop-fade-in {
   from {
     opacity: 0;
   }
@@ -150,7 +150,7 @@
   }
 }
 
-@keyframes ui-modal-slide-in {
+@keyframes fui-modal-slide-in {
   from {
     opacity: 0;
     transform: scale(0.95) translateY(-20px);
@@ -163,36 +163,36 @@
 
 /* Scrollbar styling for modal body */
 
-.ui-modal-body::-webkit-scrollbar {
+.fui-modal-body::-webkit-scrollbar {
   width: 0.5rem;
 }
 
-.ui-modal-body::-webkit-scrollbar-track {
-  background: var(--semantic-surface-subtle);
+.fui-modal-body::-webkit-scrollbar-track {
+  background: var(--semantic-surface-background-secondary);
   border-radius: var(--primitive-border-radius-full);
 }
 
-.ui-modal-body::-webkit-scrollbar-thumb {
+.fui-modal-body::-webkit-scrollbar-thumb {
   background: var(--semantic-border-default);
   border-radius: var(--primitive-border-radius-full);
 }
 
-.ui-modal-body::-webkit-scrollbar-thumb:hover {
+.fui-modal-body::-webkit-scrollbar-thumb:hover {
   background: var(--semantic-border-strong);
 }
 
 /* Reduced motion support */
 
 @media (prefers-reduced-motion: reduce) {
-  .ui-modal::backdrop {
+  .fui-modal::backdrop {
     animation: none;
   }
 
-  .ui-modal-content {
+  .fui-modal-content {
     animation: none;
   }
 
-  .ui-modal-close {
+  .fui-modal-close {
     transition: none;
   }
 }
@@ -200,24 +200,24 @@
 /* Mobile adjustments */
 
 @media (max-width: 640px) {
-  .ui-modal-content {
+  .fui-modal-content {
     max-height: calc(100vh - 2rem);
   }
 
-  .ui-modal--sm .ui-modal-content,
-  .ui-modal--md .ui-modal-content,
-  .ui-modal--lg .ui-modal-content,
-  .ui-modal--xl .ui-modal-content {
+  .fui-modal--sm .fui-modal-content,
+  .fui-modal--md .fui-modal-content,
+  .fui-modal--lg .fui-modal-content,
+  .fui-modal--xl .fui-modal-content {
     width: calc(100vw - 2rem);
   }
 
-  .ui-modal-header,
-  .ui-modal-body,
-  .ui-modal-footer {
+  .fui-modal-header,
+  .fui-modal-body,
+  .fui-modal-footer {
     padding: var(--primitive-spacing-4);
   }
 
-  .ui-modal-title {
+  .fui-modal-title {
     font-size: var(--primitive-font-size-lg);
   }
 }
@@ -225,13 +225,14 @@
 /* High contrast mode support */
 
 @media (prefers-contrast: more) {
-  .ui-modal-content {
+  .fui-modal-content {
     border: 2px solid var(--semantic-border-strong);
   }
 
-  .ui-modal-header,
-  .ui-modal-footer {
+  .fui-modal-header,
+  .fui-modal-footer {
     border-width: 2px;
   }
 }
+
 

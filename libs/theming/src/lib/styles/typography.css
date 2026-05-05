@@ -71,84 +71,98 @@
   font-size: var(--font-size-display1);
   line-height: var(--line-height-display1);
   letter-spacing: var(--letter-spacing-display1);
+  transition: font-size 0.5s ease;
 }
 
 .typography-display2 {
   font-size: var(--font-size-display2);
   line-height: var(--line-height-display2);
   letter-spacing: var(--letter-spacing-display2);
+  transition: font-size 0.5s ease;
 }
 
 .typography-display3 {
   font-size: var(--font-size-display3);
   line-height: var(--line-height-display3);
   letter-spacing: var(--letter-spacing-display3);
+  transition: font-size 0.5s ease;
 }
 
 .typography-h1 {
   font-size: var(--font-size-h1);
   line-height: var(--line-height-h1);
   letter-spacing: var(--letter-spacing-h1);
+  transition: font-size 0.5s ease;
 }
 
 .typography-h2 {
   font-size: var(--font-size-h2);
   line-height: var(--line-height-h2);
   letter-spacing: var(--letter-spacing-h2);
+  transition: font-size 0.5s ease;
 }
 
 .typography-h3 {
   font-size: var(--font-size-h3);
   line-height: var(--line-height-h3);
   letter-spacing: var(--letter-spacing-h3);
+  transition: font-size 0.5s ease;
 }
 
 .typography-h4 {
   font-size: var(--font-size-h4);
   line-height: var(--line-height-h4);
   letter-spacing: var(--letter-spacing-h4);
+  transition: font-size 0.5s ease;
 }
 
 .typography-h5 {
   font-size: var(--font-size-h5);
   line-height: var(--line-height-h5);
   letter-spacing: var(--letter-spacing-h5);
+  transition: font-size 0.5s ease;
 }
 
 .typography-h6 {
   font-size: var(--font-size-h6);
   line-height: var(--line-height-h6);
   letter-spacing: var(--letter-spacing-h6);
+  transition: font-size 0.5s ease;
 }
 
 .typography-body {
   font-size: var(--font-size-body);
   line-height: var(--line-height-body);
   letter-spacing: var(--letter-spacing-body);
+  transition: font-size 0.5s ease;
 }
 
 .typography-body-small {
   font-size: var(--font-size-body-small);
   line-height: var(--line-height-body-small);
   letter-spacing: var(--letter-spacing-body-small);
+  transition: font-size 0.5s ease;
 }
 
 .typography-caption {
   font-size: var(--font-size-caption);
   line-height: var(--line-height-caption);
   letter-spacing: var(--letter-spacing-caption);
+  transition: font-size 0.5s ease;
 }
 
 .typography-label {
   font-size: var(--font-size-label);
   line-height: var(--line-height-label);
   letter-spacing: var(--letter-spacing-label);
+  transition: font-size 0.5s ease;
 }
 
 .typography-label-small {
   font-size: var(--font-size-label-small);
   line-height: var(--line-height-label-small);
   letter-spacing: var(--letter-spacing-label-small);
+  transition: font-size 0.5s ease;
 }
 
 /* Readable line length container */

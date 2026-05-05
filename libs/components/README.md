@@ -1,6 +1,6 @@
 # UI Component Suite - Components Library
 
-A comprehensive collection of 36+ themable, accessible Angular components built with Angular 20+ and signals.
+A comprehensive collection of 38 themable, accessible Angular components built with Angular 20+ and signals.
 
 ## Overview
 
@@ -42,11 +42,11 @@ npm install @ui-suite/components
 - **Tabs** - Tabbed interface with keyboard navigation
 - **Accordion** - Expandable panels
 - **Divider** - Visual separator
-- **Drawer** - Slide-out panel (4 positions)
+- **Drawer** - Slide-out panel (4 positions) using native `<dialog>` element for built-in focus trap and screen reader support
 - **Stack** - Flexbox layout helper
 - **Grid** - Responsive grid system
 
-### Data Display Components (8)
+### Data Display Components (9)
 
 - **Badge** - Status indicators and counts
 - **Avatar** - User avatars with fallbacks
@@ -56,6 +56,7 @@ npm install @ui-suite/components
 - **Pagination** - Page navigation
 - **Table** - Data table with sorting and selection
 - **List** - Ordered and unordered lists
+- **Code Block** - Syntax-highlighted code display
 
 ### Feedback Components (5)
 
@@ -65,10 +66,11 @@ npm install @ui-suite/components
 - **Skeleton** - Loading placeholders
 - **Toast** - Transient notifications
 
-### Navigation Components (4)
+### Navigation Components (5)
 
 - **Breadcrumb** - Navigation trail
-- **Menu** - Dropdown and context menus
+- **Menu** - Dropdown menus
+- **Context Menu** - Right-click context menu with nested submenus
 - **Navbar** - Application navigation bar
 - **Stepper** - Multi-step process indicator
 
@@ -113,6 +115,23 @@ Import the theme CSS in your application:
 // main.ts or styles.css
 import '@ui-suite/theming/styles.css';
 ```
+
+## Keyboard Navigation
+
+All interactive components support full keyboard navigation per WAI-ARIA patterns:
+
+| Component | Keys | Behavior |
+|-----------|------|----------|
+| **Tabs** | Arrow keys | Navigate between tabs |
+| **Accordion** | Enter / Space | Toggle panel |
+| **Drawer** | Escape | Close; focus trapped inside while open (native `<dialog>`) |
+| **Modal** | Escape | Close; focus trapped inside |
+| **Context Menu** | ArrowUp / ArrowDown | Navigate items; ArrowRight opens submenu; ArrowLeft closes submenu; Escape closes |
+| **Stepper (horizontal)** | ArrowLeft / ArrowRight | Navigate steps; Home = first; End = last |
+| **Stepper (vertical)** | ArrowUp / ArrowDown | Navigate steps; Home = first; End = last |
+| **Select / Multi-Select** | ArrowUp / ArrowDown | Navigate options; Enter to select |
+| **Date Picker** | Arrow keys | Navigate calendar; Enter to select |
+| **Slider** | ArrowLeft / ArrowRight | Adjust value; Home / End = min / max |
 
 ## Component Documentation
 

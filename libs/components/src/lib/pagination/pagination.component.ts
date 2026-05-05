@@ -10,22 +10,21 @@ import {
   Component,
   computed,
   input,
+  linkedSignal,
   output,
-  signal,
-  effect,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 export type PaginationSize = 'sm' | 'md' | 'lg';
 
 @Component({
-  selector: 'ui-pagination',
-  imports: [CommonModule],
+  selector: 'fui-pagination',
+  imports: [NgClass],
   templateUrl: './pagination.component.html',
   styleUrl: './pagination.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.ui-pagination-wrapper]': 'true',
+    '[class.fui-pagination-wrapper]': 'true',
   },
 })
 export class PaginationComponent {
@@ -87,12 +86,12 @@ export class PaginationComponent {
   /**
    * Internal current page
    */
-  protected readonly internalPage = signal(1);
+  protected readonly internalPage = linkedSignal(() => this.currentPage());
 
   /**
    * Internal page size
    */
-  protected readonly internalPageSize = signal(10);
+  protected readonly internalPageSize = linkedSignal(() => this.pageSize());
 
   /**
    * Total pages
@@ -127,7 +126,7 @@ export class PaginationComponent {
 
     const half = Math.floor(max / 2);
     let start = Math.max(1, current - half);
-    let end = Math.min(total, start + max - 1);
+    const end = Math.min(total, start + max - 1);
 
     if (end - start < max - 1) {
       start = Math.max(1, end - max + 1);
@@ -163,21 +162,10 @@ export class PaginationComponent {
    * Computed CSS classes
    */
   protected readonly paginationClasses = computed(() => ({
-    'ui-pagination': true,
-    [`ui-pagination--${this.size()}`]: true,
-    'ui-pagination--disabled': this.disabled(),
+    'fui-pagination': true,
+    [`fui-pagination--${this.size()}`]: true,
+    'fui-pagination--disabled': this.disabled(),
   }));
-
-  constructor() {
-    // Sync internal values
-    effect(() => {
-      this.internalPage.set(this.currentPage());
-    });
-
-    effect(() => {
-      this.internalPageSize.set(this.pageSize());
-    });
-  }
 
   /**
    * Go to specific page

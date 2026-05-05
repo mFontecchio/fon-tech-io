@@ -11,14 +11,14 @@ import {
   computed,
   input,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 export type BadgeVariant = 'default' | 'primary' | 'success' | 'warning' | 'error' | 'info';
 export type BadgeSize = 'sm' | 'md' | 'lg';
 
 @Component({
-  selector: 'ui-badge',
-  imports: [CommonModule],
+  selector: 'fui-badge',
+  imports: [NgClass],
   templateUrl: './badge.component.html',
   styleUrl: './badge.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -101,13 +101,13 @@ export class BadgeComponent {
    * Computed CSS classes
    */
   protected readonly badgeClasses = computed(() => ({
-    'ui-badge': true,
-    [`ui-badge--${this.variant()}`]: true,
-    [`ui-badge--${this.size()}`]: true,
-    'ui-badge--pill': this.pill(),
-    'ui-badge--with-dot': this.dot(),
-    'ui-badge--dismissible': this.dismissible(),
-    'ui-badge--with-icon': !!this.icon(),
+    'fui-badge': true,
+    [`fui-badge--${this.variant()}`]: true,
+    [`fui-badge--${this.size()}`]: true,
+    'fui-badge--pill': this.pill(),
+    'fui-badge--with-dot': this.dot(),
+    'fui-badge--dismissible': this.dismissible(),
+    'fui-badge--with-icon': !!this.icon(),
   }));
 
   /**

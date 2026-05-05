@@ -2,11 +2,11 @@
  * Switch Component Styles
  */
 
-.ui-switch-wrapper {
+.fui-switch-wrapper {
   display: inline-block;
 }
 
-.ui-switch-container {
+.fui-switch-container {
   display: flex;
   flex-direction: column;
   gap: var(--primitive-spacing-2);
@@ -14,7 +14,7 @@
 
 /* Label container */
 
-.ui-switch-label {
+.fui-switch-label {
   display: inline-flex;
   align-items: center;
   gap: var(--primitive-spacing-3);
@@ -23,13 +23,13 @@
   position: relative;
 }
 
-.ui-switch-wrapper--disabled .ui-switch-label {
+.fui-switch-wrapper--disabled .fui-switch-label {
   cursor: not-allowed;
 }
 
 /* Hide native checkbox */
 
-.ui-switch {
+.fui-switch {
   position: absolute;
   opacity: 0;
   width: 0;
@@ -39,7 +39,7 @@
 
 /* Switch track */
 
-.ui-switch-track {
+.fui-switch-track {
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -48,55 +48,55 @@
   height: 1.5rem;
   background-color: var(--semantic-border-default);
   border-radius: var(--primitive-border-radius-full);
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
-.ui-switch--sm + .ui-switch-track {
+.fui-switch--sm + .fui-switch-track {
   width: 2.25rem;
   height: 1.25rem;
 }
 
-.ui-switch--lg + .ui-switch-track {
+.fui-switch--lg + .fui-switch-track {
   width: 3.5rem;
   height: 2rem;
 }
 
 /* Hover state */
 
-.ui-switch:hover:not(:disabled) + .ui-switch-track {
+.fui-switch:hover:not(:disabled) + .fui-switch-track {
   background-color: var(--semantic-border-strong);
 }
 
 /* Focus state */
 
-.ui-switch:focus-visible + .ui-switch-track {
+.fui-switch:focus-visible + .fui-switch-track {
   outline: 2px solid var(--semantic-state-focus-ring);
   outline-offset: 2px;
 }
 
 /* Checked state */
 
-.ui-switch--checked + .ui-switch-track {
+.fui-switch--checked + .fui-switch-track {
   background-color: var(--semantic-brand-primary);
 }
 
-.ui-switch--checked:hover:not(:disabled) + .ui-switch-track {
+.fui-switch--checked:hover:not(:disabled) + .fui-switch-track {
   background-color: var(--semantic-brand-primary-hover);
 }
 
 /* Error state */
 
-.ui-switch--error + .ui-switch-track {
+.fui-switch--error + .fui-switch-track {
   background-color: var(--semantic-border-error);
 }
 
-.ui-switch--error.ui-switch--checked + .ui-switch-track {
+.fui-switch--error.fui-switch--checked + .fui-switch-track {
   background-color: var(--semantic-feedback-error);
 }
 
 /* Disabled state */
 
-.ui-switch--disabled + .ui-switch-track {
+.fui-switch--disabled + .fui-switch-track {
   background-color: var(--semantic-state-disabled);
   opacity: 0.6;
   cursor: not-allowed;
@@ -104,7 +104,7 @@
 
 /* Switch thumb (sliding circle) */
 
-.ui-switch-thumb {
+.fui-switch-thumb {
   position: absolute;
   display: flex;
   align-items: center;
@@ -114,37 +114,37 @@
   background-color: var(--semantic-surface-card);
   border-radius: var(--primitive-border-radius-full);
   box-shadow: var(--primitive-shadow-sm);
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
   left: 0.125rem;
 }
 
-.ui-switch--sm + .ui-switch-track .ui-switch-thumb {
+.fui-switch--sm + .fui-switch-track .fui-switch-thumb {
   width: 1rem;
   height: 1rem;
 }
 
-.ui-switch--lg + .ui-switch-track .ui-switch-thumb {
+.fui-switch--lg + .fui-switch-track .fui-switch-thumb {
   width: 1.75rem;
   height: 1.75rem;
 }
 
 /* Checked thumb position */
 
-.ui-switch--checked + .ui-switch-track .ui-switch-thumb {
+.fui-switch--checked + .fui-switch-track .fui-switch-thumb {
   left: calc(100% - 1.25rem - 0.125rem);
 }
 
-.ui-switch--sm.ui-switch--checked + .ui-switch-track .ui-switch-thumb {
+.fui-switch--sm.fui-switch--checked + .fui-switch-track .fui-switch-thumb {
   left: calc(100% - 1rem - 0.125rem);
 }
 
-.ui-switch--lg.ui-switch--checked + .ui-switch-track .ui-switch-thumb {
+.fui-switch--lg.fui-switch--checked + .fui-switch-track .fui-switch-thumb {
   left: calc(100% - 1.75rem - 0.125rem);
 }
 
 /* Thumb labels (ON/OFF) */
 
-.ui-switch-thumb-label {
+.fui-switch-thumb-label {
   font-size: 0.5rem;
   font-weight: var(--primitive-font-weight-bold);
   color: var(--semantic-text-secondary);
@@ -152,55 +152,55 @@
   letter-spacing: 0.025em;
 }
 
-.ui-switch--sm + .ui-switch-track .ui-switch-thumb-label {
+.fui-switch--sm + .fui-switch-track .fui-switch-thumb-label {
   font-size: 0.4rem;
 }
 
-.ui-switch--lg + .ui-switch-track .ui-switch-thumb-label {
+.fui-switch--lg + .fui-switch-track .fui-switch-thumb-label {
   font-size: 0.6rem;
 }
 
-.ui-switch--checked + .ui-switch-track .ui-switch-thumb-label {
+.fui-switch--checked + .fui-switch-track .fui-switch-thumb-label {
   color: var(--semantic-brand-primary);
 }
 
 /* Label text */
 
-.ui-switch-label-text {
+.fui-switch-label-text {
   font-size: var(--primitive-font-size-base);
   color: var(--semantic-text-primary);
   line-height: var(--primitive-line-height-normal);
 }
 
-.ui-switch-wrapper--disabled .ui-switch-label-text {
+.fui-switch-wrapper--disabled .fui-switch-label-text {
   color: var(--semantic-text-disabled);
 }
 
-.ui-switch-required-indicator {
+.fui-switch-required-indicator {
   color: var(--semantic-feedback-error);
   margin-left: var(--primitive-spacing-1);
 }
 
 /* Helper text */
 
-.ui-switch-helper-text {
+.fui-switch-helper-text {
   margin-left: calc(2.75rem + var(--primitive-spacing-3));
   font-size: var(--primitive-font-size-sm);
   color: var(--semantic-text-secondary);
   line-height: var(--primitive-line-height-normal);
 }
 
-.ui-switch--sm ~ .ui-switch-helper-text {
+.fui-switch--sm ~ .fui-switch-helper-text {
   margin-left: calc(2.25rem + var(--primitive-spacing-3));
 }
 
-.ui-switch--lg ~ .ui-switch-helper-text {
+.fui-switch--lg ~ .fui-switch-helper-text {
   margin-left: calc(3.5rem + var(--primitive-spacing-3));
 }
 
 /* Error message */
 
-.ui-switch-error-message {
+.fui-switch-error-message {
   margin-left: calc(2.75rem + var(--primitive-spacing-3));
   font-size: var(--primitive-font-size-sm);
   color: var(--semantic-text-error);
@@ -210,8 +210,8 @@
 /* Reduced motion support */
 
 @media (prefers-reduced-motion: reduce) {
-  .ui-switch-track,
-  .ui-switch-thumb {
+  .fui-switch-track,
+  .fui-switch-thumb {
     transition: none;
   }
 }
@@ -219,15 +219,15 @@
 /* High contrast mode support */
 
 @media (prefers-contrast: more) {
-  .ui-switch-track {
+  .fui-switch-track {
     border: 2px solid currentColor;
   }
 
-  .ui-switch:focus-visible + .ui-switch-track {
+  .fui-switch:focus-visible + .fui-switch-track {
     outline-width: 3px;
   }
 
-  .ui-switch-thumb {
+  .fui-switch-thumb {
     border: 2px solid var(--semantic-border-strong);
   }
 }

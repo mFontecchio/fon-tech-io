@@ -12,7 +12,7 @@ import {
   input,
   inject,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ToastService } from './toast.service';
 import { ToastComponent } from './toast.component';
 
@@ -25,8 +25,8 @@ export type ToastPosition =
   | 'bottom-right';
 
 @Component({
-  selector: 'ui-toast-container',
-  imports: [CommonModule, ToastComponent],
+  selector: 'fui-toast-container',
+  imports: [NgClass, ToastComponent],
   templateUrl: './toast-container.component.html',
   styleUrl: './toast-container.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -54,8 +54,8 @@ export class ToastContainerComponent {
    * Computed CSS classes
    */
   protected readonly containerClasses = computed(() => ({
-    'ui-toast-container': true,
-    [`ui-toast-container--${this.position()}`]: true,
+    'fui-toast-container': true,
+    [`fui-toast-container--${this.position()}`]: true,
   }));
 
   /**
@@ -72,7 +72,7 @@ export class ToastContainerComponent {
    * Dismiss toast
    */
   protected dismissToast(id: string): void {
-    this.toastService.dismiss(id);
+    this.toastService.dismissWithAnimation(id);
   }
 }
 

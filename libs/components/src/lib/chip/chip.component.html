@@ -9,15 +9,15 @@
   (keydown.space)="$event.preventDefault(); handleClick()"
 >
   @if (avatar()) {
-    <span class="ui-chip-avatar">{{ avatar() }}</span>
+    <span class="fui-chip-avatar">{{ avatar() }}</span>
   }
 
-  <span class="ui-chip-label">{{ label() }}</span>
+  <span class="fui-chip-label">{{ label() }}</span>
 
   @if (removable()) {
     <button
       type="button"
-      class="ui-chip-remove"
+      class="fui-chip-remove"
       [attr.aria-label]="'Remove ' + label()"
       [disabled]="disabled()"
       (click)="handleRemove($event)"

@@ -33,6 +33,9 @@ export * from './lib/pagination/pagination.component';
 export * from './lib/table/table.component';
 export * from './lib/list/list.component';
 export * from './lib/code-block/code-block.component';
+export * from './lib/carousel/carousel.component';
+export * from './lib/carousel/carousel-slide.component';
+export * from './lib/carousel/carousel.types';
 
 // Feedback Components
 export * from './lib/alert/alert.component';
@@ -46,5 +49,6 @@ export * from './lib/toast/toast.service';
 // Navigation Components
 export * from './lib/breadcrumb/breadcrumb.component';
 export * from './lib/menu/menu.component';
+export * from './lib/context-menu/context-menu.component';
 export * from './lib/navbar/navbar.component';
 export * from './lib/stepper/stepper.component';

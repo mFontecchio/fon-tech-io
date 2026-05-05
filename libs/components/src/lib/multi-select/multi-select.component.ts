@@ -1,6 +1,6 @@
 /**
  * MultiSelect Component
- * 
+ *
  * An advanced select component with multi-selection, search/filtering, and tag creation.
  * Built with Angular 20 best practices and full accessibility support.
  */
@@ -10,15 +10,14 @@ import {
   Component,
   computed,
   input,
+  linkedSignal,
   output,
   signal,
-  effect,
   ElementRef,
   viewChild,
-  HostListener,
   inject,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 export interface MultiSelectOption {
@@ -31,15 +30,17 @@ export interface MultiSelectOption {
 export type MultiSelectSize = 'sm' | 'md' | 'lg';
 
 @Component({
-  selector: 'ui-multi-select',
-  imports: [CommonModule, FormsModule],
+  selector: 'fui-multi-select',
+  imports: [NgClass, FormsModule],
   templateUrl: './multi-select.component.html',
   styleUrl: './multi-select.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.ui-multi-select-wrapper]': 'true',
-    '[class.ui-multi-select-wrapper--disabled]': 'disabled()',
-    '[class.ui-multi-select-wrapper--full-width]': 'fullWidth()',
+    '[class.fui-multi-select-wrapper]': 'true',
+    '[class.fui-multi-select-wrapper--disabled]': 'disabled()',
+    '[class.fui-multi-select-wrapper--full-width]': 'fullWidth()',
+    '(document:click)': 'handleClickOutside($event)',
+    '(keydown.escape)': 'handleEscape()',
   },
 })
 export class MultiSelectComponent {
@@ -136,7 +137,7 @@ export class MultiSelectComponent {
   /**
    * Internal selected values
    */
-  protected readonly internalValue = signal<string[]>([]);
+  protected readonly internalValue = linkedSignal<string[]>(() => this.value());
 
   /**
    * Dropdown open state
@@ -163,7 +164,7 @@ export class MultiSelectComponent {
    */
   protected readonly selectId = computed(() => {
     const providedId = this.id();
-    return providedId || `ui-multi-select-${Math.random().toString(36).substr(2, 9)}`;
+    return providedId || `fui-multi-select-${Math.random().toString(36).substr(2, 9)}`;
   });
 
   /**
@@ -181,15 +182,15 @@ export class MultiSelectComponent {
    */
   protected readonly computedAriaDescribedBy = computed(() => {
     const parts: string[] = [];
-    
+
     if (this.helperText()) {
       parts.push(this.helperTextId());
     }
-    
+
     if (this.hasError()) {
       parts.push(this.errorId());
     }
-    
+
     return parts.length > 0 ? parts.join(' ') : undefined;
   });
 
@@ -197,11 +198,11 @@ export class MultiSelectComponent {
    * Computed CSS classes
    */
   protected readonly selectClasses = computed(() => ({
-    'ui-multi-select': true,
-    [`ui-multi-select--${this.size()}`]: true,
-    'ui-multi-select--error': this.hasError(),
-    'ui-multi-select--disabled': this.disabled(),
-    'ui-multi-select--open': this.isOpen(),
+    'fui-multi-select': true,
+    [`fui-multi-select--${this.size()}`]: true,
+    'fui-multi-select--error': this.hasError(),
+    'fui-multi-select--disabled': this.disabled(),
+    'fui-multi-select--open': this.isOpen(),
   }));
 
   /**
@@ -210,14 +211,14 @@ export class MultiSelectComponent {
   protected readonly filteredOptions = computed(() => {
     const query = this.searchQuery().toLowerCase().trim();
     const allOptions = this.options();
-    
+
     if (!query) {
       return allOptions;
     }
-    
-    return allOptions.filter(option =>
-      option.label.toLowerCase().includes(query) ||
-      option.value.toLowerCase().includes(query)
+
+    return allOptions.filter(
+      (option) =>
+        option.label.toLowerCase().includes(query) || option.value.toLowerCase().includes(query)
     );
   });
 
@@ -227,7 +228,9 @@ export class MultiSelectComponent {
   protected readonly selectedOptions = computed(() => {
     const values = this.internalValue();
     const allOptions = this.options();
-    return values.map(val => allOptions.find(opt => opt.value === val)).filter(Boolean) as MultiSelectOption[];
+    return values
+      .map((val) => allOptions.find((opt) => opt.value === val))
+      .filter(Boolean) as MultiSelectOption[];
   });
 
   /**
@@ -236,13 +239,14 @@ export class MultiSelectComponent {
   protected readonly canCreateOption = computed(() => {
     const query = this.searchQuery().trim();
     if (!query || !this.allowCreate()) return false;
-    
+
     const allOptions = this.options();
-    const exists = allOptions.some(opt => 
-      opt.label.toLowerCase() === query.toLowerCase() ||
-      opt.value.toLowerCase() === query.toLowerCase()
+    const exists = allOptions.some(
+      (opt) =>
+        opt.label.toLowerCase() === query.toLowerCase() ||
+        opt.value.toLowerCase() === query.toLowerCase()
     );
-    
+
     return !exists;
   });
 
@@ -260,21 +264,14 @@ export class MultiSelectComponent {
    */
   private elementRef = inject(ElementRef);
 
-  constructor() {
-    // Sync internal value
-    effect(() => {
-      this.internalValue.set(this.value());
-    });
-  }
-
   /**
    * Toggle dropdown
    */
   protected toggleDropdown(): void {
     if (this.disabled()) return;
-    
-    this.isOpen.update(val => !val);
-    
+
+    this.isOpen.update((val) => !val);
+
     if (this.isOpen() && this.searchable()) {
       // Focus search input when opened
       setTimeout(() => {
@@ -299,10 +296,10 @@ export class MultiSelectComponent {
    */
   protected toggleOption(option: MultiSelectOption): void {
     if (option.disabled) return;
-    
+
     const currentValues = this.internalValue();
     const index = currentValues.indexOf(option.value);
-    
+
     if (index > -1) {
       // Remove
       const newValues = [...currentValues];
@@ -312,7 +309,7 @@ export class MultiSelectComponent {
     } else {
       // Add
       if (this.hasReachedMax()) return;
-      
+
       const newValues = [...currentValues, option.value];
       this.internalValue.set(newValues);
       this.valueChange.emit(newValues);
@@ -333,12 +330,12 @@ export class MultiSelectComponent {
   protected createOption(): void {
     const query = this.searchQuery().trim();
     if (!query || !this.canCreateOption()) return;
-    
+
     const newOption: MultiSelectOption = {
       value: query.toLowerCase().replace(/\s+/g, '-'),
       label: query,
     };
-    
+
     this.optionCreated.emit(newOption);
     this.toggleOption(newOption);
     this.searchQuery.set('');
@@ -362,11 +359,10 @@ export class MultiSelectComponent {
   /**
    * Click outside to close
    */
-  @HostListener('document:click', ['$event'])
   protected handleClickOutside(event: Event): void {
     const target = event.target as HTMLElement;
     const hostElement = this.elementRef.nativeElement;
-    
+
     if (!hostElement.contains(target) && this.isOpen()) {
       this.closeDropdown();
     }
@@ -375,11 +371,9 @@ export class MultiSelectComponent {
   /**
    * Handle escape key
    */
-  @HostListener('keydown.escape')
   protected handleEscape(): void {
     if (this.isOpen()) {
       this.closeDropdown();
     }
   }
 }
-

@@ -22,78 +22,81 @@ interface ComponentCategory {
   template: `
     <div class="components-overview">
       <h1>Components</h1>
-      <p class="subtitle">Browse all 37 components organized by category</p>
+      <p class="subtitle">Browse all 39 components organized by category</p>
 
       <div class="categories-grid">
         @for (category of categories; track category.name) {
           <a [routerLink]="category.link" class="category-card">
-            <ui-card>
+            <fui-card>
               <h2>{{ category.name }}</h2>
               <p>{{ category.description }}</p>
               <span class="component-count">{{ category.count }} components</span>
-            </ui-card>
+            </fui-card>
           </a>
         }
       </div>
     </div>
   `,
-  styles: [`
-    .components-overview {
-      padding: var(--primitive-spacing-8);
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+  styles: [
+    `
+      .components-overview {
+        padding: var(--primitive-spacing-8);
+        max-width: 1200px;
+        margin: 0 auto;
+      }
 
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: var(--primitive-spacing-2);
-    }
+      h1 {
+        font-size: 2.5rem;
+        margin-bottom: var(--primitive-spacing-2);
+      }
 
-    .subtitle {
-      font-size: var(--primitive-font-size-lg);
-      color: var(--semantic-text-secondary);
-      margin-bottom: var(--primitive-spacing-8);
-    }
+      .subtitle {
+        font-size: var(--primitive-font-size-lg);
+        color: var(--semantic-text-secondary);
+        margin-bottom: var(--primitive-spacing-8);
+      }
 
-    .categories-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: var(--primitive-spacing-6);
-    }
+      .categories-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: var(--primitive-spacing-6);
+      }
 
-    .category-card {
-      text-decoration: none;
-      color: inherit;
-      display: block;
-      transition: transform 0.2s;
-    }
+      .category-card {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        transition: transform var(--semantic-animation-duration-interactive, 150ms)
+          var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
+      }
 
-    .category-card:hover {
-      transform: translateY(-4px);
-    }
+      .category-card:hover {
+        transform: translateY(-4px);
+      }
 
-    h2 {
-      font-size: var(--primitive-font-size-xl);
-      margin-bottom: var(--primitive-spacing-2);
-      color: var(--semantic-text-primary);
-    }
+      h2 {
+        font-size: var(--primitive-font-size-xl);
+        margin-bottom: var(--primitive-spacing-2);
+        color: var(--semantic-text-primary);
+      }
 
-    p {
-      color: var(--semantic-text-secondary);
-      margin-bottom: var(--primitive-spacing-3);
-      line-height: 1.6;
-    }
+      p {
+        color: var(--semantic-text-secondary);
+        margin-bottom: var(--primitive-spacing-3);
+        line-height: 1.6;
+      }
 
-    .component-count {
-      display: inline-block;
-      padding: var(--primitive-spacing-1) var(--primitive-spacing-3);
-      background-color: var(--semantic-brand-subtle);
-      color: var(--semantic-brand-primary);
-      border-radius: var(--primitive-border-radius-full);
-      font-size: var(--primitive-font-size-sm);
-      font-weight: var(--primitive-font-weight-medium);
-    }
-  `],
+      .component-count {
+        display: inline-block;
+        padding: var(--primitive-spacing-1) var(--primitive-spacing-3);
+        background-color: var(--semantic-brand-primary-subtle);
+        color: var(--semantic-brand-primary);
+        border-radius: var(--primitive-border-radius-full);
+        font-size: var(--primitive-font-size-sm);
+        font-weight: var(--primitive-font-weight-medium);
+      }
+    `,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ComponentsOverviewComponent {
@@ -113,7 +116,7 @@ export class ComponentsOverviewComponent {
     {
       name: 'Data Display',
       description: 'Present information to users',
-      count: 9,
+      count: 10,
       link: '/components/data-display/badge',
     },
     {
@@ -125,9 +128,8 @@ export class ComponentsOverviewComponent {
     {
       name: 'Navigation',
       description: 'Help users navigate through your app',
-      count: 4,
+      count: 5,
       link: '/components/navigation/breadcrumb',
     },
   ];
 }
-

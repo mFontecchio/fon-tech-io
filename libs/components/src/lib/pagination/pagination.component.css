@@ -2,11 +2,11 @@
  * Pagination Component Styles
  */
 
-.ui-pagination-wrapper {
+.fui-pagination-wrapper {
   display: inline-block;
 }
 
-.ui-pagination {
+.fui-pagination {
   display: flex;
   align-items: center;
   gap: var(--primitive-spacing-4);
@@ -15,7 +15,7 @@
 
 /* List */
 
-.ui-pagination-list {
+.fui-pagination-list {
   display: flex;
   align-items: center;
   gap: var(--primitive-spacing-1);
@@ -26,7 +26,7 @@
 
 /* Button */
 
-.ui-pagination-button {
+.fui-pagination-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -41,47 +41,47 @@
   border: 1px solid var(--semantic-border-default);
   border-radius: var(--primitive-border-radius-md);
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
   user-select: none;
 }
 
-.ui-pagination-button:hover:not(:disabled) {
-  background-color: var(--semantic-surface-subtle);
+.fui-pagination-button:hover:not(:disabled) {
+  background-color: var(--semantic-surface-background-secondary);
   border-color: var(--semantic-border-strong);
 }
 
-.ui-pagination-button:focus-visible {
+.fui-pagination-button:focus-visible {
   outline: 2px solid var(--semantic-state-focus-ring);
   outline-offset: 2px;
 }
 
-.ui-pagination-button:disabled {
+.fui-pagination-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
 /* Active page */
 
-.ui-pagination-button--active {
+.fui-pagination-button--active {
   background-color: var(--semantic-brand-primary);
   color: var(--semantic-text-inverse);
   border-color: var(--semantic-brand-primary);
 }
 
-.ui-pagination-button--active:hover:not(:disabled) {
+.fui-pagination-button--active:hover:not(:disabled) {
   background-color: var(--semantic-brand-primary);
   opacity: 0.9;
 }
 
 /* Navigation buttons */
 
-.ui-pagination-button--nav {
+.fui-pagination-button--nav {
   min-width: 2.5rem;
 }
 
 /* Ellipsis */
 
-.ui-pagination-ellipsis {
+.fui-pagination-ellipsis {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -94,43 +94,43 @@
 
 /* Sizes */
 
-.ui-pagination--sm .ui-pagination-button {
+.fui-pagination--sm .fui-pagination-button {
   min-width: 2rem;
   height: 2rem;
   font-size: var(--primitive-font-size-xs);
 }
 
-.ui-pagination--sm .ui-pagination-ellipsis {
+.fui-pagination--sm .fui-pagination-ellipsis {
   min-width: 2rem;
   height: 2rem;
 }
 
-.ui-pagination--lg .ui-pagination-button {
+.fui-pagination--lg .fui-pagination-button {
   min-width: 3rem;
   height: 3rem;
   font-size: var(--primitive-font-size-base);
 }
 
-.ui-pagination--lg .ui-pagination-ellipsis {
+.fui-pagination--lg .fui-pagination-ellipsis {
   min-width: 3rem;
   height: 3rem;
 }
 
 /* Page size selector */
 
-.ui-pagination-page-size {
+.fui-pagination-page-size {
   display: flex;
   align-items: center;
   gap: var(--primitive-spacing-2);
 }
 
-.ui-pagination-page-size-label {
+.fui-pagination-page-size-label {
   font-size: var(--primitive-font-size-sm);
   color: var(--semantic-text-secondary);
   white-space: nowrap;
 }
 
-.ui-pagination-page-size-select {
+.fui-pagination-page-size-select {
   padding: var(--primitive-spacing-2) var(--primitive-spacing-3);
   font-size: var(--primitive-font-size-sm);
   font-family: inherit;
@@ -139,26 +139,26 @@
   border: 1px solid var(--semantic-border-default);
   border-radius: var(--primitive-border-radius-md);
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
-.ui-pagination-page-size-select:hover:not(:disabled) {
+.fui-pagination-page-size-select:hover:not(:disabled) {
   border-color: var(--semantic-border-strong);
 }
 
-.ui-pagination-page-size-select:focus-visible {
+.fui-pagination-page-size-select:focus-visible {
   outline: 2px solid var(--semantic-state-focus-ring);
   outline-offset: 2px;
 }
 
-.ui-pagination-page-size-select:disabled {
+.fui-pagination-page-size-select:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
 /* Disabled state */
 
-.ui-pagination--disabled {
+.fui-pagination--disabled {
   opacity: 0.6;
   pointer-events: none;
 }
@@ -166,16 +166,16 @@
 /* Responsive */
 
 @media (max-width: 640px) {
-  .ui-pagination {
+  .fui-pagination {
     flex-direction: column;
     align-items: stretch;
   }
 
-  .ui-pagination-list {
+  .fui-pagination-list {
     justify-content: center;
   }
 
-  .ui-pagination-page-size {
+  .fui-pagination-page-size {
     justify-content: center;
   }
 }
@@ -183,8 +183,8 @@
 /* Reduced motion support */
 
 @media (prefers-reduced-motion: reduce) {
-  .ui-pagination-button,
-  .ui-pagination-page-size-select {
+  .fui-pagination-button,
+  .fui-pagination-page-size-select {
     transition: none;
   }
 }
@@ -192,17 +192,18 @@
 /* High contrast mode support */
 
 @media (prefers-contrast: more) {
-  .ui-pagination-button {
+  .fui-pagination-button {
     border-width: 2px;
   }
 
-  .ui-pagination-page-size-select {
+  .fui-pagination-page-size-select {
     border-width: 2px;
   }
 
-  .ui-pagination-button:focus-visible,
-  .ui-pagination-page-size-select:focus-visible {
+  .fui-pagination-button:focus-visible,
+  .fui-pagination-page-size-select:focus-visible {
     outline-width: 3px;
   }
 }
+
 

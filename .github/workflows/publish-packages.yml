@@ -1,0 +1,95 @@
+name: Publish Packages to npm
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    name: Build and publish npm packages
+    runs-on: ubuntu-latest
+    environment: npm-publish
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.9.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Extract version from release tag
+        id: version
+        run: echo "value=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Validate version format
+        run: |
+          VERSION="${{ steps.version.outputs.value }}"
+          if ! echo "$VERSION" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.]+)?$'; then
+            echo "Error: tag '${GITHUB_REF_NAME}' does not produce a valid semver version: '$VERSION'"
+            exit 1
+          fi
+
+      - name: Build theming library
+        run: pnpm run build:theming
+
+      - name: Build shared library
+        run: pnpm run build:shared
+
+      - name: Build components library
+        run: pnpm run build:components
+
+      - name: Build theme-builder library
+        run: pnpm run build:theme-builder
+
+      - name: Stage package manifests and set version
+        run: |
+          VERSION="${{ steps.version.outputs.value }}"
+          for lib in theming shared components theme-builder; do
+            DIST="dist/libs/$lib"
+            cp "libs/$lib/package.json" "$DIST/package.json"
+            if [ -f "libs/$lib/README.md" ]; then
+              cp "libs/$lib/README.md" "$DIST/README.md"
+            fi
+            jq --arg v "$VERSION" '.version = $v' "$DIST/package.json" > "$DIST/package.json.tmp"
+            mv "$DIST/package.json.tmp" "$DIST/package.json"
+          done
+
+      - name: Publish @ui-suite/theming
+        run: npm publish --provenance --access public
+        working-directory: dist/libs/theming
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish @ui-suite/shared
+        run: npm publish --provenance --access public
+        working-directory: dist/libs/shared
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish @ui-suite/components
+        run: npm publish --provenance --access public
+        working-directory: dist/libs/components
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish @ui-suite/theme-builder
+        run: npm publish --provenance --access public
+        working-directory: dist/libs/theme-builder
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

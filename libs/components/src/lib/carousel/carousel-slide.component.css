@@ -1,0 +1,40 @@
+:host {
+  position: relative;
+  display: block;
+  flex: 0 0 calc(100% / var(--fui-carousel-visible-slides, 1));
+  width: calc(100% / var(--fui-carousel-visible-slides, 1));
+  max-width: calc(100% / var(--fui-carousel-visible-slides, 1));
+  min-width: 0;
+  transition:
+    opacity var(--semantic-animation-duration-component, 250ms)
+      var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+    visibility var(--semantic-animation-duration-component, 250ms)
+      var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+:host(.fui-carousel-slide--inactive) {
+  pointer-events: none;
+}
+
+:host(.fui-carousel-slide--fade) {
+  position: absolute;
+  inset: 0;
+  flex-basis: 100%;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+}
+
+:host(.fui-carousel-slide--fade.fui-carousel-slide--active) {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :host {
+    transition: none;
+  }
+}

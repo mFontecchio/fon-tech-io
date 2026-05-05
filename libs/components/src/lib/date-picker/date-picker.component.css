@@ -2,16 +2,16 @@
  * Date Picker Component Styles
  */
 
-.ui-date-picker-wrapper {
+.fui-date-picker-wrapper {
   display: inline-block;
 }
 
-.ui-date-picker-wrapper--full-width {
+.fui-date-picker-wrapper--full-width {
   display: block;
   width: 100%;
 }
 
-.ui-date-picker-container {
+.fui-date-picker-container {
   display: flex;
   flex-direction: column;
   gap: var(--primitive-spacing-2);
@@ -19,7 +19,7 @@
 
 /* Label */
 
-.ui-date-picker-label {
+.fui-date-picker-label {
   display: block;
   font-size: var(--primitive-font-size-sm);
   font-weight: var(--primitive-font-weight-medium);
@@ -27,23 +27,23 @@
   line-height: var(--primitive-line-height-normal);
 }
 
-.ui-date-picker-required-indicator {
+.fui-date-picker-required-indicator {
   color: var(--semantic-feedback-error);
   margin-left: var(--primitive-spacing-1);
 }
 
 /* Control wrapper */
 
-.ui-date-picker-control {
+.fui-date-picker-control {
   position: relative;
   width: 100%;
 }
 
 /* Date picker input */
 
-.ui-date-picker {
+.fui-date-picker {
   width: 100%;
-  padding: var(--primitive-spacing-3) var(--primitive-spacing-4);
+  padding: var(--primitive-spacing-3) calc(var(--primitive-spacing-4) + 4.75rem) var(--primitive-spacing-3) var(--primitive-spacing-4);
   font-size: var(--primitive-font-size-base);
   font-family: inherit;
   color: var(--semantic-text-primary);
@@ -51,46 +51,40 @@
   border: 1px solid var(--semantic-border-default);
   border-radius: var(--primitive-border-radius-md);
   outline: none;
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
-.ui-date-picker::placeholder {
+.fui-date-picker::placeholder {
   color: var(--semantic-text-placeholder);
 }
 
-/* Calendar icon from browser */
-.ui-date-picker::-webkit-calendar-picker-indicator {
-  cursor: pointer;
-  color: var(--semantic-text-secondary);
-  opacity: 0.8;
-  transition: opacity 0.2s ease-in-out;
-}
-
-.ui-date-picker::-webkit-calendar-picker-indicator:hover {
-  opacity: 1;
+/* Hide browser indicator in favor of themed trigger */
+.fui-date-picker::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* States */
 
-.ui-date-picker:hover:not(:disabled) {
+.fui-date-picker:hover:not(:disabled) {
   border-color: var(--semantic-border-strong);
 }
 
-.ui-date-picker:focus {
+.fui-date-picker:focus {
   border-color: var(--semantic-state-focus-ring);
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-.ui-date-picker--error {
+.fui-date-picker--error {
   border-color: var(--semantic-border-error);
 }
 
-.ui-date-picker--error:focus {
+.fui-date-picker--error:focus {
   border-color: var(--semantic-border-error);
   box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
 }
 
-.ui-date-picker--disabled {
+.fui-date-picker--disabled {
   background-color: var(--semantic-state-disabled);
   border-color: var(--semantic-border-subtle);
   cursor: not-allowed;
@@ -99,21 +93,21 @@
 
 /* Sizes */
 
-.ui-date-picker--sm {
+.fui-date-picker--sm {
   padding: var(--primitive-spacing-2) var(--primitive-spacing-3);
   font-size: var(--primitive-font-size-sm);
 }
 
-.ui-date-picker--lg {
+.fui-date-picker--lg {
   padding: var(--primitive-spacing-4) var(--primitive-spacing-5);
   font-size: var(--primitive-font-size-lg);
 }
 
-/* Clear button */
+/* Calendar trigger */
 
-.ui-date-picker-clear {
+.fui-date-picker-calendar {
   position: absolute;
-  right: 2.5rem;
+  right: 0.5rem;
   top: 50%;
   transform: translateY(-50%);
   display: inline-flex;
@@ -125,22 +119,56 @@
   cursor: pointer;
   color: var(--semantic-text-secondary);
   border-radius: var(--primitive-border-radius-sm);
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
-.ui-date-picker-clear:hover {
+.fui-date-picker-calendar:hover:not(:disabled) {
   color: var(--semantic-text-primary);
-  background-color: var(--semantic-surface-subtle);
+  background-color: var(--semantic-surface-background-secondary);
 }
 
-.ui-date-picker-clear:focus-visible {
+.fui-date-picker-calendar:focus-visible {
+  outline: 2px solid var(--semantic-state-focus-ring);
+  outline-offset: 2px;
+}
+
+.fui-date-picker-calendar:disabled {
+  cursor: not-allowed;
+  color: var(--semantic-text-disabled);
+}
+
+/* Clear button */
+
+.fui-date-picker-clear {
+  position: absolute;
+  right: 2.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--semantic-text-secondary);
+  border-radius: var(--primitive-border-radius-sm);
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+.fui-date-picker-clear:hover {
+  color: var(--semantic-text-primary);
+  background-color: var(--semantic-surface-background-secondary);
+}
+
+.fui-date-picker-clear:focus-visible {
   outline: 2px solid var(--semantic-state-focus-ring);
   outline-offset: 2px;
 }
 
 /* Helper text */
 
-.ui-date-picker-helper-text {
+.fui-date-picker-helper-text {
   font-size: var(--primitive-font-size-sm);
   color: var(--semantic-text-secondary);
   line-height: var(--primitive-line-height-normal);
@@ -148,7 +176,7 @@
 
 /* Error message */
 
-.ui-date-picker-error-message {
+.fui-date-picker-error-message {
   font-size: var(--primitive-font-size-sm);
   color: var(--semantic-text-error);
   line-height: var(--primitive-line-height-normal);
@@ -157,9 +185,10 @@
 /* Reduced motion support */
 
 @media (prefers-reduced-motion: reduce) {
-  .ui-date-picker,
-  .ui-date-picker-clear,
-  .ui-date-picker::-webkit-calendar-picker-indicator {
+  .fui-date-picker,
+  .fui-date-picker-calendar,
+  .fui-date-picker-clear,
+  .fui-date-picker::-webkit-calendar-picker-indicator {
     transition: none;
   }
 }
@@ -167,13 +196,14 @@
 /* High contrast mode support */
 
 @media (prefers-contrast: more) {
-  .ui-date-picker {
+  .fui-date-picker {
     border-width: 2px;
   }
 
-  .ui-date-picker:focus {
+  .fui-date-picker:focus {
     outline: 2px solid var(--semantic-state-focus-ring);
     outline-offset: 2px;
   }
 }
+
 

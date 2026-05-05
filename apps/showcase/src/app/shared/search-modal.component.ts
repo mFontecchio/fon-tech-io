@@ -6,11 +6,13 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
+  afterNextRender,
   computed,
-  effect,
   inject,
+  linkedSignal,
   signal,
-  HostListener,
+  viewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
@@ -28,16 +30,33 @@ interface SearchResult {
   selector: 'app-search-modal',
   standalone: true,
   imports: [CommonModule],
+  host: {
+    '(window:keydown)': 'handleKeyDown($event)',
+  },
   template: `
     @if (isOpen()) {
+      <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
       <div class="search-modal-backdrop" (click)="close()">
-        <div class="search-modal" (click)="$event.stopPropagation()">
+        <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
+        <dialog
+          class="search-modal"
+          aria-label="Search components"
+          open
+          (click)="$event.stopPropagation()"
+        >
           <!-- Search Header -->
           <div class="search-header">
             <div class="search-input-wrapper">
-              <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <circle cx="11" cy="11" r="8"/>
-                <path d="m21 21-4.35-4.35"/>
+              <svg
+                class="search-icon"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.35-4.35" />
               </svg>
               <input
                 #searchInput
@@ -54,7 +73,7 @@ interface SearchResult {
               @if (searchQuery()) {
                 <button class="search-clear" (click)="clearSearch()" aria-label="Clear search">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path d="M18 6L6 18M6 6l12 12"/>
+                    <path d="M18 6L6 18M6 6l12 12" />
                   </svg>
                 </button>
               }
@@ -64,8 +83,17 @@ interface SearchResult {
             </button>
           </div>
 
+          <!-- Live region for result count -->
+          <div class="search-results-live" aria-live="polite" aria-atomic="true">
+            @if (searchQuery() && searchResults().length > 0) {
+              {{ searchResults().length }} result{{ searchResults().length === 1 ? '' : 's' }} found
+            } @else if (searchQuery() && searchResults().length === 0) {
+              No results found
+            }
+          </div>
+
           <!-- Search Results -->
-          <div class="search-results">
+          <div class="search-results" role="listbox" aria-label="Search results">
             @if (searchQuery() && searchResults().length > 0) {
               @for (category of categorizedResults(); track category.name) {
                 <div class="search-category">
@@ -74,6 +102,8 @@ interface SearchResult {
                     <button
                       class="search-result-item"
                       [class.search-result-item--selected]="isSelected(result.item.id)"
+                      role="option"
+                      [attr.aria-selected]="isSelected(result.item.id)"
                       (click)="selectResult(result.item)"
                       (mouseenter)="selectedIndex.set(getGlobalIndex(result.item.id))"
                     >
@@ -89,11 +119,13 @@ interface SearchResult {
             } @else if (searchQuery() && searchResults().length === 0) {
               <div class="search-empty">
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <circle cx="11" cy="11" r="8"/>
-                  <path d="m21 21-4.35-4.35"/>
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="m21 21-4.35-4.35" />
                 </svg>
                 <p>No components found for "{{ searchQuery() }}"</p>
-                <p class="search-empty-hint">Try searching for button, input, modal, or other component names</p>
+                <p class="search-empty-hint">
+                  Try searching for button, input, modal, or other component names
+                </p>
               </div>
             } @else {
               <div class="search-suggestions">
@@ -102,6 +134,8 @@ interface SearchResult {
                   <button
                     class="search-result-item"
                     [class.search-result-item--selected]="isSelected(component.id)"
+                    role="option"
+                    [attr.aria-selected]="isSelected(component.id)"
                     (click)="selectResult(component)"
                     (mouseenter)="selectedIndex.set(getGlobalIndex(component.id))"
                   >
@@ -124,285 +158,304 @@ interface SearchResult {
               <span class="search-shortcut"><kbd>ESC</kbd> Close</span>
             </div>
           </div>
-        </div>
+        </dialog>
       </div>
     }
   `,
-  styles: [`
-    .search-modal-backdrop {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(4px);
-      z-index: 2000;
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      padding: 10vh 1rem 1rem;
-      animation: fadeIn 0.2s ease-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    .search-modal {
-      width: 100%;
-      max-width: 640px;
-      background-color: var(--semantic-surface-card);
-      border: 1px solid var(--semantic-border-default);
-      border-radius: var(--primitive-border-radius-lg);
-      box-shadow: var(--primitive-shadow-2xl);
-      display: flex;
-      flex-direction: column;
-      max-height: 80vh;
-      animation: slideDown 0.2s ease-out;
-    }
-
-    @keyframes slideDown {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
+  styles: [
+    `
+      .search-modal-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+        z-index: 2000;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 10vh 1rem 1rem;
+        animation: fadeIn var(--semantic-animation-duration-interactive, 150ms)
+          var(--semantic-animation-easing-decelerate, cubic-bezier(0, 0, 0.2, 1));
       }
-      to {
-        opacity: 1;
-        transform: translateY(0);
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
       }
-    }
 
-    /* Header */
-    .search-header {
-      display: flex;
-      align-items: center;
-      gap: var(--primitive-spacing-3);
-      padding: var(--primitive-spacing-4);
-      border-bottom: 1px solid var(--semantic-border-default);
-    }
+      .search-modal {
+        width: 100%;
+        max-width: 640px;
+        background-color: var(--semantic-surface-card);
+        border: 1px solid var(--semantic-border-default);
+        border-radius: var(--primitive-border-radius-lg);
+        box-shadow: var(--primitive-shadow-2xl);
+        display: flex;
+        flex-direction: column;
+        max-height: 80vh;
+        animation: slideDown var(--semantic-animation-duration-interactive, 150ms)
+          var(--semantic-animation-easing-decelerate, cubic-bezier(0, 0, 0.2, 1));
+      }
 
-    .search-input-wrapper {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      gap: var(--primitive-spacing-3);
-      background-color: var(--semantic-surface-subtle);
-      border-radius: var(--primitive-border-radius-md);
-      padding: var(--primitive-spacing-3);
-    }
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
 
-    .search-icon {
-      color: var(--semantic-text-secondary);
-      flex-shrink: 0;
-      stroke-width: 2;
-    }
+      /* Header */
+      .search-header {
+        display: flex;
+        align-items: center;
+        gap: var(--primitive-spacing-3);
+        padding: var(--primitive-spacing-4);
+        border-bottom: 1px solid var(--semantic-border-default);
+      }
 
-    .search-input {
-      flex: 1;
-      border: none;
-      background: transparent;
-      font-size: var(--primitive-font-size-base);
-      color: var(--semantic-text-primary);
-      outline: none;
-    }
+      .search-input-wrapper {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: var(--primitive-spacing-3);
+        background-color: var(--semantic-surface-background-secondary);
+        border-radius: var(--primitive-border-radius-md);
+        padding: var(--primitive-spacing-3);
+      }
 
-    .search-input::placeholder {
-      color: var(--semantic-text-secondary);
-    }
+      .search-icon {
+        color: var(--semantic-text-secondary);
+        flex-shrink: 0;
+        stroke-width: 2;
+      }
 
-    .search-clear,
-    .search-close {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: var(--primitive-spacing-2);
-      border: none;
-      background: transparent;
-      color: var(--semantic-text-secondary);
-      border-radius: var(--primitive-border-radius-sm);
-      cursor: pointer;
-      transition: all 0.2s;
-    }
+      .search-input {
+        flex: 1;
+        border: none;
+        background: transparent;
+        font-size: var(--primitive-font-size-base);
+        color: var(--semantic-text-primary);
+        outline: none;
+      }
 
-    .search-clear:hover,
-    .search-close:hover {
-      background-color: var(--semantic-surface-subtle);
-      color: var(--semantic-text-primary);
-    }
+      .search-input::placeholder {
+        color: var(--semantic-text-secondary);
+      }
 
-    .search-clear svg {
-      stroke-width: 2;
-    }
+      .search-clear,
+      .search-close {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: var(--primitive-spacing-2);
+        border: none;
+        background: transparent;
+        color: var(--semantic-text-secondary);
+        border-radius: var(--primitive-border-radius-sm);
+        cursor: pointer;
+        transition: all var(--semantic-animation-duration-interactive, 150ms)
+          var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
+      }
 
-    kbd {
-      display: inline-block;
-      padding: 2px 6px;
-      font-size: 11px;
-      font-family: var(--primitive-font-family-mono);
-      background-color: var(--semantic-surface-subtle);
-      border: 1px solid var(--semantic-border-default);
-      border-radius: 4px;
-      box-shadow: 0 1px 0 var(--semantic-border-default);
-    }
+      .search-clear:hover,
+      .search-close:hover {
+        background-color: var(--semantic-surface-background-secondary);
+        color: var(--semantic-text-primary);
+      }
 
-    /* Results */
-    .search-results {
-      flex: 1;
-      overflow-y: auto;
-      padding: var(--primitive-spacing-2);
-    }
+      .search-clear svg {
+        stroke-width: 2;
+      }
 
-    .search-category {
-      margin-bottom: var(--primitive-spacing-4);
-    }
+      kbd {
+        display: inline-block;
+        padding: 2px 6px;
+        font-size: 11px;
+        font-family: var(--primitive-font-family-mono);
+        background-color: var(--semantic-surface-background-secondary);
+        border: 1px solid var(--semantic-border-default);
+        border-radius: 4px;
+        box-shadow: 0 1px 0 var(--semantic-border-default);
+      }
 
-    .search-category:last-child {
-      margin-bottom: 0;
-    }
+      /* Results */
+      .search-results {
+        flex: 1;
+        overflow-y: auto;
+        padding: var(--primitive-spacing-2);
+      }
 
-    .search-category-header {
-      padding: var(--primitive-spacing-2) var(--primitive-spacing-3);
-      font-size: var(--primitive-font-size-xs);
-      font-weight: var(--primitive-font-weight-semibold);
-      color: var(--semantic-text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
+      .search-results-live {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+      }
 
-    .search-result-item {
-      display: flex;
-      align-items: center;
-      gap: var(--primitive-spacing-3);
-      width: 100%;
-      padding: var(--primitive-spacing-3);
-      border: none;
-      background: transparent;
-      border-radius: var(--primitive-border-radius-md);
-      cursor: pointer;
-      transition: all 0.2s;
-      text-align: left;
-    }
+      .search-category {
+        margin-bottom: var(--primitive-spacing-4);
+      }
 
-    .search-result-item:hover,
-    .search-result-item--selected {
-      background-color: var(--semantic-surface-subtle);
-    }
+      .search-category:last-child {
+        margin-bottom: 0;
+      }
 
-    .search-result-content {
-      flex: 1;
-      min-width: 0;
-    }
+      .search-category-header {
+        padding: var(--primitive-spacing-2) var(--primitive-spacing-3);
+        font-size: var(--primitive-font-size-xs);
+        font-weight: var(--primitive-font-weight-semibold);
+        color: var(--semantic-text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
 
-    .search-result-name {
-      font-size: var(--primitive-font-size-base);
-      font-weight: var(--primitive-font-weight-medium);
-      color: var(--semantic-text-primary);
-      margin-bottom: 2px;
-    }
+      .search-result-item {
+        display: flex;
+        align-items: center;
+        gap: var(--primitive-spacing-3);
+        width: 100%;
+        padding: var(--primitive-spacing-3);
+        border: none;
+        background: transparent;
+        border-radius: var(--primitive-border-radius-md);
+        cursor: pointer;
+        transition: all var(--semantic-animation-duration-interactive, 150ms)
+          var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
+        text-align: left;
+      }
 
-    .search-result-description {
-      font-size: var(--primitive-font-size-sm);
-      color: var(--semantic-text-secondary);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
+      .search-result-item:hover,
+      .search-result-item--selected {
+        background-color: var(--semantic-surface-background-secondary);
+      }
 
-    .search-result-category-badge {
-      padding: 2px 8px;
-      font-size: var(--primitive-font-size-xs);
-      font-weight: var(--primitive-font-weight-medium);
-      color: var(--semantic-text-secondary);
-      background-color: var(--semantic-surface-subtle);
-      border-radius: var(--primitive-border-radius-sm);
-      flex-shrink: 0;
-    }
+      .search-result-content {
+        flex: 1;
+        min-width: 0;
+      }
 
-    /* Empty State */
-    .search-empty {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: var(--primitive-spacing-10) var(--primitive-spacing-4);
-      text-align: center;
-      color: var(--semantic-text-secondary);
-    }
+      .search-result-name {
+        font-size: var(--primitive-font-size-base);
+        font-weight: var(--primitive-font-weight-medium);
+        color: var(--semantic-text-primary);
+        margin-bottom: 2px;
+      }
 
-    .search-empty svg {
-      margin-bottom: var(--primitive-spacing-4);
-      opacity: 0.3;
-      stroke-width: 1.5;
-    }
+      .search-result-description {
+        font-size: var(--primitive-font-size-sm);
+        color: var(--semantic-text-secondary);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
 
-    .search-empty p {
-      margin: 0 0 var(--primitive-spacing-2) 0;
-      font-size: var(--primitive-font-size-base);
-    }
+      .search-result-category-badge {
+        padding: 2px 8px;
+        font-size: var(--primitive-font-size-xs);
+        font-weight: var(--primitive-font-weight-medium);
+        color: var(--semantic-text-secondary);
+        background-color: var(--semantic-surface-background-secondary);
+        border-radius: var(--primitive-border-radius-sm);
+        flex-shrink: 0;
+      }
 
-    .search-empty-hint {
-      font-size: var(--primitive-font-size-sm);
-      opacity: 0.7;
-    }
+      /* Empty State */
+      .search-empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: var(--primitive-spacing-10) var(--primitive-spacing-4);
+        text-align: center;
+        color: var(--semantic-text-secondary);
+      }
 
-    /* Suggestions */
-    .search-suggestions {
-      padding: var(--primitive-spacing-2);
-    }
+      .search-empty svg {
+        margin-bottom: var(--primitive-spacing-4);
+        opacity: 0.3;
+        stroke-width: 1.5;
+      }
 
-    .search-suggestions-header {
-      padding: var(--primitive-spacing-2) var(--primitive-spacing-3);
-      font-size: var(--primitive-font-size-xs);
-      font-weight: var(--primitive-font-weight-semibold);
-      color: var(--semantic-text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
+      .search-empty p {
+        margin: 0 0 var(--primitive-spacing-2) 0;
+        font-size: var(--primitive-font-size-base);
+      }
 
-    /* Footer */
-    .search-footer {
-      padding: var(--primitive-spacing-3) var(--primitive-spacing-4);
-      border-top: 1px solid var(--semantic-border-default);
-      background-color: var(--semantic-surface-subtle);
-    }
+      .search-empty-hint {
+        font-size: var(--primitive-font-size-sm);
+        opacity: 0.7;
+      }
 
-    .search-shortcuts {
-      display: flex;
-      gap: var(--primitive-spacing-4);
-      font-size: var(--primitive-font-size-xs);
-      color: var(--semantic-text-secondary);
-    }
+      /* Suggestions */
+      .search-suggestions {
+        padding: var(--primitive-spacing-2);
+      }
 
-    .search-shortcut {
-      display: flex;
-      align-items: center;
-      gap: var(--primitive-spacing-2);
-    }
+      .search-suggestions-header {
+        padding: var(--primitive-spacing-2) var(--primitive-spacing-3);
+        font-size: var(--primitive-font-size-xs);
+        font-weight: var(--primitive-font-weight-semibold);
+        color: var(--semantic-text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
 
-    .search-shortcut kbd {
-      font-size: 10px;
-    }
+      /* Footer */
+      .search-footer {
+        padding: var(--primitive-spacing-3) var(--primitive-spacing-4);
+        border-top: 1px solid var(--semantic-border-default);
+        background-color: var(--semantic-surface-background-secondary);
+      }
 
-    /* Scrollbar */
-    .search-results::-webkit-scrollbar {
-      width: 8px;
-    }
+      .search-shortcuts {
+        display: flex;
+        gap: var(--primitive-spacing-4);
+        font-size: var(--primitive-font-size-xs);
+        color: var(--semantic-text-secondary);
+      }
 
-    .search-results::-webkit-scrollbar-track {
-      background: transparent;
-    }
+      .search-shortcut {
+        display: flex;
+        align-items: center;
+        gap: var(--primitive-spacing-2);
+      }
 
-    .search-results::-webkit-scrollbar-thumb {
-      background: var(--semantic-border-default);
-      border-radius: var(--primitive-border-radius-full);
-    }
+      .search-shortcut kbd {
+        font-size: 10px;
+      }
 
-    .search-results::-webkit-scrollbar-thumb:hover {
-      background: var(--semantic-border-strong);
-    }
-  `],
+      /* Scrollbar */
+      .search-results::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      .search-results::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      .search-results::-webkit-scrollbar-thumb {
+        background: var(--semantic-border-default);
+        border-radius: var(--primitive-border-radius-full);
+      }
+
+      .search-results::-webkit-scrollbar-thumb:hover {
+        background: var(--semantic-border-strong);
+      }
+    `,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchModalComponent {
@@ -411,7 +464,10 @@ export class SearchModalComponent {
   // State
   readonly isOpen = signal(false);
   readonly searchQuery = signal('');
-  readonly selectedIndex = signal(0);
+  readonly selectedIndex = linkedSignal(() => {
+    this.searchQuery();
+    return 0;
+  });
 
   // All components
   private readonly allComponents = getAllComponentMetadata();
@@ -435,9 +491,9 @@ export class SearchModalComponent {
   readonly searchResults = computed(() => {
     const query = this.searchQuery();
     if (!query) return [];
-    
+
     const results = this.fuse.search(query);
-    return results.map(result => ({
+    return results.map((result) => ({
       item: result.item,
       matches: result.matches,
       score: result.score,
@@ -449,7 +505,7 @@ export class SearchModalComponent {
     const results = this.searchResults();
     const categories = new Map<string, SearchResult[]>();
 
-    results.forEach(result => {
+    results.forEach((result) => {
       const category = result.item.category;
       if (!categories.has(category)) {
         categories.set(category, []);
@@ -467,21 +523,12 @@ export class SearchModalComponent {
   private readonly flatResults = computed(() => {
     const query = this.searchQuery();
     if (query) {
-      return this.searchResults().map(r => r.item);
+      return this.searchResults().map((r) => r.item);
     } else {
       return this.popularComponents;
     }
   });
 
-  constructor() {
-    // Reset selected index when search query changes
-    effect(() => {
-      this.searchQuery();
-      this.selectedIndex.set(0);
-    });
-  }
-
-  @HostListener('window:keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent): void {
     // Cmd/Ctrl+K to open
     if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
@@ -516,16 +563,16 @@ export class SearchModalComponent {
     }
   }
 
+  private readonly searchInputRef = viewChild<ElementRef<HTMLInputElement>>('searchInput');
+
   open(): void {
     this.isOpen.set(true);
     this.searchQuery.set('');
     this.selectedIndex.set(0);
-    
-    // Focus input after animation
-    setTimeout(() => {
-      const input = document.querySelector('.search-input') as HTMLInputElement;
-      input?.focus();
-    }, 100);
+
+    afterNextRender(() => {
+      this.searchInputRef()?.nativeElement.focus();
+    });
   }
 
   close(): void {
@@ -540,8 +587,7 @@ export class SearchModalComponent {
 
   clearSearch(): void {
     this.searchQuery.set('');
-    const input = document.querySelector('.search-input') as HTMLInputElement;
-    input?.focus();
+    this.searchInputRef()?.nativeElement.focus();
   }
 
   selectResult(component: ComponentMetadata): void {
@@ -560,11 +606,11 @@ export class SearchModalComponent {
 
   private navigateDown(): void {
     const maxIndex = this.flatResults().length - 1;
-    this.selectedIndex.update(i => Math.min(i + 1, maxIndex));
+    this.selectedIndex.update((i) => Math.min(i + 1, maxIndex));
   }
 
   private navigateUp(): void {
-    this.selectedIndex.update(i => Math.max(i - 1, 0));
+    this.selectedIndex.update((i) => Math.max(i - 1, 0));
   }
 
   private selectCurrentResult(): void {
@@ -579,4 +625,3 @@ export class SearchModalComponent {
     return category.charAt(0).toUpperCase() + category.slice(1) + ' Components';
   }
 }
-

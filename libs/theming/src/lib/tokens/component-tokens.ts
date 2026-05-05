@@ -172,6 +172,22 @@ export interface TableTokens {
 }
 
 /**
+ * Carousel component tokens
+ */
+export interface CarouselTokens {
+  background: string;
+  border: string;
+  borderRadius: string;
+  controlBackground: string;
+  controlBackgroundHover: string;
+  controlText: string;
+  indicatorBackground: string;
+  indicatorActiveBackground: string;
+  thumbnailBorder: string;
+  thumbnailActiveBorder: string;
+}
+
+/**
  * Complete component token interface
  */
 export interface ComponentTokens {
@@ -182,6 +198,7 @@ export interface ComponentTokens {
   tooltip: TooltipTokens;
   badge: BadgeTokens;
   table: TableTokens;
+  carousel: CarouselTokens;
 }
 
 /**
@@ -330,6 +347,18 @@ export const defaultComponentTokens: ComponentTokens = {
     rowBorder: 'var(--semantic-border-subtle)',
     cellPadding: 'var(--primitive-spacing-3) var(--primitive-spacing-4)',
     fontSize: 'var(--primitive-font-size-sm)',
+  },
+  carousel: {
+    background: 'var(--semantic-surface-card)',
+    border: 'var(--semantic-border-subtle)',
+    borderRadius: 'var(--primitive-border-radius-xl)',
+    controlBackground: 'var(--semantic-surface-overlay)',
+    controlBackgroundHover: 'var(--semantic-surface-background-secondary)',
+    controlText: 'var(--semantic-text-primary)',
+    indicatorBackground: 'var(--semantic-surface-background-secondary)',
+    indicatorActiveBackground: 'var(--semantic-brand-primary)',
+    thumbnailBorder: 'var(--semantic-border-subtle)',
+    thumbnailActiveBorder: 'var(--semantic-brand-primary)',
   },
 };
 

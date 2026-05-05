@@ -12,7 +12,7 @@ import {
   input,
   output,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 export interface BreadcrumbItem {
   label: string;
@@ -24,8 +24,8 @@ export interface BreadcrumbItem {
 export type BreadcrumbSize = 'sm' | 'md' | 'lg';
 
 @Component({
-  selector: 'ui-breadcrumb',
-  imports: [CommonModule],
+  selector: 'fui-breadcrumb',
+  imports: [NgClass],
   templateUrl: './breadcrumb.component.html',
   styleUrl: './breadcrumb.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -80,8 +80,8 @@ export class BreadcrumbComponent {
    * Computed CSS classes
    */
   protected readonly breadcrumbClasses = computed(() => ({
-    'ui-breadcrumb': true,
-    [`ui-breadcrumb--${this.size()}`]: true,
+    'fui-breadcrumb': true,
+    [`fui-breadcrumb--${this.size()}`]: true,
   }));
 
   /**

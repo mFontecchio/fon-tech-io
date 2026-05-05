@@ -1,0 +1,60 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    name: Lint, Build, and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.9.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint all projects
+        run: pnpm lint
+
+      - name: Build theming library
+        run: pnpm run build:theming
+
+      - name: Build shared library
+        run: pnpm run build:shared
+
+      - name: Build components library
+        run: pnpm run build:components
+
+      - name: Build theme-builder library
+        run: pnpm run build:theme-builder
+
+      - name: Build showcase application
+        run: pnpm run build:showcase
+
+      - name: Run tests
+        run: pnpm test

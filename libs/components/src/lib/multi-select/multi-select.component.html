@@ -1,14 +1,14 @@
-<div class="ui-multi-select-container">
+<div class="fui-multi-select-container">
   @if (label()) {
-    <label [for]="selectId()" class="ui-multi-select-label">
+    <label [for]="selectId()" class="fui-multi-select-label">
       {{ label() }}
       @if (required()) {
-        <span class="ui-multi-select-required-indicator" aria-label="required">*</span>
+        <span class="fui-multi-select-required-indicator" aria-label="required">*</span>
       }
     </label>
   }
 
-  <div class="ui-multi-select-control">
+  <div class="fui-multi-select-control">
     <div
       [id]="selectId()"
       [ngClass]="selectClasses()"
@@ -24,55 +24,65 @@
       (keydown.space)="$event.preventDefault(); toggleDropdown()"
       (keydown.enter)="$event.preventDefault(); toggleDropdown()"
     >
-      <div class="ui-multi-select-values">
+      <div class="fui-multi-select-values">
         @if (selectedOptions().length > 0) {
           @for (option of selectedOptions(); track option.value) {
-            <span class="ui-multi-select-tag">
-              <span class="ui-multi-select-tag-label">{{ option.label }}</span>
+            <span class="fui-multi-select-tag">
+              <span class="fui-multi-select-tag-label">{{ option.label }}</span>
               <button
                 type="button"
-                class="ui-multi-select-tag-remove"
+                class="fui-multi-select-tag-remove"
                 [attr.aria-label]="'Remove ' + option.label"
                 (click)="removeOption(option, $event)"
                 [disabled]="disabled()"
               >
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                  <path d="M10.5 3.5L3.5 10.5M3.5 3.5L10.5 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <path
+                    d="M10.5 3.5L3.5 10.5M3.5 3.5L10.5 10.5"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                  />
                 </svg>
               </button>
             </span>
           }
         } @else {
-          <span class="ui-multi-select-placeholder">{{ placeholder() }}</span>
+          <span class="fui-multi-select-placeholder">{{ placeholder() }}</span>
         }
       </div>
 
-      <div class="ui-multi-select-actions">
+      <div class="fui-multi-select-actions">
         @if (selectedOptions().length > 0 && !disabled()) {
           <button
             type="button"
-            class="ui-multi-select-clear"
+            class="fui-multi-select-clear"
             aria-label="Clear all"
             (click)="clearAll(); $event.stopPropagation()"
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <path d="M12 4L4 12M4 4L12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path
+                d="M12 4L4 12M4 4L12 12"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
             </svg>
           </button>
         }
-        <svg 
-          class="ui-multi-select-arrow" 
-          width="20" 
-          height="20" 
-          viewBox="0 0 20 20" 
+        <svg
+          class="fui-multi-select-arrow"
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
           fill="none"
           aria-hidden="true"
         >
-          <path 
-            d="M6 8L10 12L14 8" 
-            stroke="currentColor" 
-            stroke-width="2" 
-            stroke-linecap="round" 
+          <path
+            d="M6 8L10 12L14 8"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
             stroke-linejoin="round"
           />
         </svg>
@@ -80,13 +90,13 @@
     </div>
 
     @if (isOpen() && !disabled()) {
-      <div class="ui-multi-select-dropdown" role="listbox">
+      <div class="fui-multi-select-dropdown" role="listbox">
         @if (searchable()) {
-          <div class="ui-multi-select-search">
+          <div class="fui-multi-select-search">
             <input
               #searchInput
               type="text"
-              class="ui-multi-select-search-input"
+              class="fui-multi-select-search-input"
               placeholder="Search..."
               [(ngModel)]="searchQuery"
               [attr.aria-label]="'Search options'"
@@ -95,71 +105,66 @@
           </div>
         }
 
-        <div class="ui-multi-select-options">
+        <div class="fui-multi-select-options">
           @if (filteredOptions().length > 0) {
             @for (option of filteredOptions(); track option.value) {
+              <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
               <div
-                class="ui-multi-select-option"
-                [class.ui-multi-select-option--selected]="isSelected(option)"
-                [class.ui-multi-select-option--disabled]="option.disabled"
+                class="fui-multi-select-option"
+                [class.fui-multi-select-option--selected]="isSelected(option)"
+                [class.fui-multi-select-option--disabled]="option.disabled"
                 [attr.role]="'option'"
                 [attr.aria-selected]="isSelected(option)"
                 [attr.aria-disabled]="option.disabled"
                 (click)="toggleOption(option)"
               >
-                <div class="ui-multi-select-checkbox">
+                <div class="fui-multi-select-checkbox">
                   @if (isSelected(option)) {
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                      <path d="M11.667 3.5L5.25 9.917L2.333 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path
+                        d="M11.667 3.5L5.25 9.917L2.333 7"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
                     </svg>
                   }
                 </div>
-                <span class="ui-multi-select-option-label">{{ option.label }}</span>
+                <span class="fui-multi-select-option-label">{{ option.label }}</span>
               </div>
             }
           } @else if (canCreateOption()) {
+            <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
             <div
-              class="ui-multi-select-option ui-multi-select-option--create"
+              class="fui-multi-select-option fui-multi-select-option--create"
               (click)="createOption()"
             >
-              <span class="ui-multi-select-option-label">
+              <span class="fui-multi-select-option-label">
                 <strong>Create:</strong> "{{ searchQuery() }}"
               </span>
             </div>
           } @else {
-            <div class="ui-multi-select-empty">
-              No options found
-            </div>
+            <div class="fui-multi-select-empty">No options found</div>
           }
         </div>
 
         @if (hasReachedMax()) {
-          <div class="ui-multi-select-limit">
-            Maximum {{ maxSelections() }} selections reached
-          </div>
+          <div class="fui-multi-select-limit">Maximum {{ maxSelections() }} selections reached</div>
         }
       </div>
     }
   </div>
 
   @if (helperText() && !hasError()) {
-    <div 
-      [id]="helperTextId()" 
-      class="ui-multi-select-helper-text"
-    >
+    <div [id]="helperTextId()" class="fui-multi-select-helper-text">
       {{ helperText() }}
     </div>
   }
 
   @if (hasError()) {
-    <div 
-      [id]="errorId()" 
-      class="ui-multi-select-error-message"
-      role="alert"
-      aria-live="polite"
-    >
+    <div [id]="errorId()" class="fui-multi-select-error-message" role="alert" aria-live="polite">
       {{ errorMessage() }}
     </div>
   }
 </div>
-

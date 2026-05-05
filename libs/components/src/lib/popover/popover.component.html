@@ -1,52 +1,54 @@
-<div class="ui-popover-container">
+<div class="fui-popover-container">
   <!-- Trigger -->
-  <div
-    class="ui-popover-trigger"
+  <button
+    type="button"
+    class="fui-popover-trigger"
     [attr.aria-haspopup]="true"
     [attr.aria-expanded]="isOpen()"
-    [attr.tabindex]="disabled() ? -1 : 0"
+    [attr.disabled]="disabled() ? true : null"
     (click)="handleTriggerClick()"
     (mouseenter)="handleTriggerMouseEnter()"
     (mouseleave)="handleTriggerMouseLeave()"
-    (keydown.enter)="handleTriggerClick()"
-    (keydown.space)="$event.preventDefault(); handleTriggerClick()"
   >
     <ng-content select="[trigger]"></ng-content>
-  </div>
+  </button>
 
   <!-- Popover content -->
-  <div
+  <dialog
     [ngClass]="popoverClasses()"
-    [ngStyle]="popoverStyles()"
-    [attr.role]="'dialog'"
+    [attr.open]="isOpen() ? true : null"
     [attr.aria-modal]="false"
     [attr.hidden]="!isOpen() ? true : null"
   >
     @if (showArrow()) {
-      <div class="ui-popover-arrow"></div>
+      <div class="fui-popover-arrow"></div>
     }
 
-    <div class="ui-popover-content-wrapper">
+    <div class="fui-popover-content-wrapper">
       @if (title()) {
-        <div class="ui-popover-header">
-          <h3 class="ui-popover-title">{{ title() }}</h3>
+        <div class="fui-popover-header">
+          <h3 class="fui-popover-title">{{ title() }}</h3>
           <button
             type="button"
-            class="ui-popover-close"
+            class="fui-popover-close"
             aria-label="Close popover"
             (click)="close()"
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <path d="M12 4L4 12M4 4L12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path
+                d="M12 4L4 12M4 4L12 12"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
             </svg>
           </button>
         </div>
       }
 
-      <div class="ui-popover-content">
+      <div class="fui-popover-content">
         <ng-content></ng-content>
       </div>
     </div>
-  </div>
+  </dialog>
 </div>
-

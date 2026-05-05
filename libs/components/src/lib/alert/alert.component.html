@@ -1,7 +1,7 @@
 @if (isVisible()) {
   <div [ngClass]="alertClasses()">
     @if (showIcon()) {
-      <div class="ui-alert-icon" aria-hidden="true">
+      <div class="fui-alert-icon" aria-hidden="true">
         <svg 
           width="20" 
           height="20" 
@@ -17,12 +17,12 @@
       </div>
     }
 
-    <div class="ui-alert-content">
+    <div class="fui-alert-content">
       @if (title()) {
-        <div class="ui-alert-title">{{ title() }}</div>
+        <div class="fui-alert-title">{{ title() }}</div>
       }
       
-      <div class="ui-alert-message">
+      <div class="fui-alert-message">
         <ng-content></ng-content>
       </div>
     </div>
@@ -30,7 +30,7 @@
     @if (dismissible()) {
       <button
         type="button"
-        class="ui-alert-dismiss"
+        class="fui-alert-dismiss"
         aria-label="Dismiss alert"
         (click)="handleDismiss()"
       >

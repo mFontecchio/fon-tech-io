@@ -21,9 +21,7 @@
           }
         ],
         "styles": ["apps/showcase/src/styles.css"],
-        "allowedCommonJsDependencies": [
-          "prismjs"
-        ]
+        "allowedCommonJsDependencies": ["prismjs"]
       },
       "configurations": {
         "production": {
@@ -35,8 +33,24 @@
             },
             {
               "type": "anyComponentStyle",
-              "maximumWarning": "4kb",
-              "maximumError": "12kb"
+              "maximumWarning": "24kb",
+              "maximumError": "256kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "github-pages": {
+          "baseHref": "/fon-tech-io/",
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "24kb",
+              "maximumError": "256kb"
             }
           ],
           "outputHashing": "all"

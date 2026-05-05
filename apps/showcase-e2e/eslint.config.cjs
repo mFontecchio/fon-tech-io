@@ -1,10 +1,11 @@
 const cypress = require('eslint-plugin-cypress/flat');
-const baseConfig = require('../../.eslintrc.json');
+const nx = require('@nx/eslint-plugin');
 
 module.exports = [
   cypress.configs['recommended'],
-
-  ...baseConfig,
+  ...nx.configs['flat/base'],
+  ...nx.configs['flat/typescript'],
+  ...nx.configs['flat/javascript'],
   {
     // Override or add rules here
     rules: {},

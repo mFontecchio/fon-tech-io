@@ -1,6 +1,6 @@
 /**
  * Slider Component
- * 
+ *
  * A range input component for selecting numeric values.
  * Supports single value or dual-handle range selection.
  */
@@ -14,20 +14,20 @@ import {
   signal,
   effect,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 export type SliderSize = 'sm' | 'md' | 'lg';
 
 @Component({
-  selector: 'ui-slider',
-  imports: [CommonModule, FormsModule],
+  selector: 'fui-slider',
+  imports: [NgClass, FormsModule],
   templateUrl: './slider.component.html',
   styleUrl: './slider.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.ui-slider-wrapper]': 'true',
-    '[class.ui-slider-wrapper--disabled]': 'disabled()',
+    '[class.fui-slider-wrapper]': 'true',
+    '[class.fui-slider-wrapper--disabled]': 'disabled()',
   },
 })
 export class SliderComponent {
@@ -131,17 +131,17 @@ export class SliderComponent {
    */
   protected readonly sliderId = computed(() => {
     const providedId = this.id();
-    return providedId || `ui-slider-${Math.random().toString(36).substr(2, 9)}`;
+    return providedId || `fui-slider-${Math.random().toString(36).substr(2, 9)}`;
   });
 
   /**
    * Computed CSS classes
    */
   protected readonly sliderClasses = computed(() => ({
-    'ui-slider': true,
-    [`ui-slider--${this.size()}`]: true,
-    'ui-slider--disabled': this.disabled(),
-    'ui-slider--range': this.isRange(),
+    'fui-slider': true,
+    [`fui-slider--${this.size()}`]: true,
+    'fui-slider--disabled': this.disabled(),
+    'fui-slider--range': this.isRange(),
   }));
 
   /**
@@ -152,33 +152,37 @@ export class SliderComponent {
     const max = this.max();
     const value = this.internalValue();
     const range = max - min;
-    
+
     if (range === 0) return 0;
-    
+
     return ((value - min) / range) * 100;
   });
 
   /**
-   * Range fill style (for dual handle)
+   * CSS left offset for range fill (dual handle)
    */
-  protected readonly rangeFillStyle = computed(() => {
-    if (!this.isRange()) return {};
-    
+  protected readonly rangeFillLeft = computed(() => {
+    if (!this.isRange()) return null;
+    const min = this.min();
+    const max = this.max();
+    const start = this.internalValue();
+    const range = max - min;
+    if (range === 0) return null;
+    return `${((start - min) / range) * 100}%`;
+  });
+
+  /**
+   * CSS width for range fill (dual handle)
+   */
+  protected readonly rangeFillWidth = computed(() => {
+    if (!this.isRange()) return null;
     const min = this.min();
     const max = this.max();
     const start = this.internalValue();
     const end = this.internalValueEnd() || max;
     const range = max - min;
-    
-    if (range === 0) return {};
-    
-    const leftPercent = ((start - min) / range) * 100;
-    const widthPercent = ((end - start) / range) * 100;
-    
-    return {
-      left: `${leftPercent}%`,
-      width: `${widthPercent}%`,
-    };
+    if (range === 0) return null;
+    return `${((end - start) / range) * 100}%`;
   });
 
   constructor() {
@@ -198,7 +202,7 @@ export class SliderComponent {
   protected handleValueChange(value: number): void {
     // Ensure value is within min/max bounds
     value = Math.max(this.min(), Math.min(this.max(), value));
-    
+
     // In range mode, ensure start doesn't exceed end
     if (this.isRange()) {
       const endValue = this.internalValueEnd();
@@ -207,7 +211,7 @@ export class SliderComponent {
         value = endValue;
       }
     }
-    
+
     this.internalValue.set(value);
     this.valueChange.emit(value);
   }
@@ -218,13 +222,13 @@ export class SliderComponent {
   protected handleValueEndChange(value: number): void {
     // Ensure value is within min/max bounds
     value = Math.max(this.min(), Math.min(this.max(), value));
-    
+
     // Ensure end doesn't go below start (handles can't swap)
     const startValue = this.internalValue();
     if (value < startValue) {
       value = startValue;
     }
-    
+
     this.internalValueEnd.set(value);
     this.valueEndChange.emit(value);
   }
@@ -235,7 +239,7 @@ export class SliderComponent {
   protected onStartHandleMouseDown(event: MouseEvent | TouchEvent): void {
     event.stopPropagation();
     this.activeHandle.set('start');
-    
+
     // Reset on mouse/touch up
     const resetHandle = () => {
       this.activeHandle.set(null);
@@ -252,7 +256,7 @@ export class SliderComponent {
   protected onEndHandleMouseDown(event: MouseEvent | TouchEvent): void {
     event.stopPropagation();
     this.activeHandle.set('end');
-    
+
     // Reset on mouse/touch up
     const resetHandle = () => {
       this.activeHandle.set(null);
@@ -263,4 +267,3 @@ export class SliderComponent {
     document.addEventListener('touchend', resetHandle);
   }
 }
-

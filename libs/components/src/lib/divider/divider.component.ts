@@ -11,14 +11,13 @@ import {
   computed,
   input,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 export type DividerOrientation = 'horizontal' | 'vertical';
 export type DividerAlign = 'left' | 'center' | 'right';
 
 @Component({
-  selector: 'ui-divider',
-  imports: [CommonModule],
+  selector: 'fui-divider',
+  imports: [],
   templateUrl: './divider.component.html',
   styleUrl: './divider.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -53,11 +52,11 @@ export class DividerComponent {
    * Computed CSS classes
    */
   protected readonly dividerClasses = computed(() => ({
-    'ui-divider': true,
-    [`ui-divider--${this.orientation()}`]: true,
-    [`ui-divider--${this.align()}`]: !!this.label(),
-    'ui-divider--dashed': this.dashed(),
-    'ui-divider--with-label': !!this.label(),
+    'fui-divider': true,
+    [`fui-divider--${this.orientation()}`]: true,
+    [`fui-divider--${this.align()}`]: !!this.label(),
+    'fui-divider--dashed': this.dashed(),
+    'fui-divider--with-label': !!this.label(),
   }));
 
   /**

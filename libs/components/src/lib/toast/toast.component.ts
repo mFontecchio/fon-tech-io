@@ -11,13 +11,13 @@ import {
   input,
   output,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 export type ToastVariant = 'info' | 'success' | 'warning' | 'error';
 
 @Component({
-  selector: 'ui-toast',
-  imports: [CommonModule],
+  selector: 'fui-toast',
+  imports: [NgClass],
   templateUrl: './toast.component.html',
   styleUrl: './toast.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -42,16 +42,22 @@ export class ToastComponent {
   readonly dismissible = input<boolean>(true);
 
   /**
-   * Dismissed event
+   * Whether the toast is currently playing its dismiss animation
    */
-  readonly dismissed = output<void>();
+  readonly dismissing = input<boolean>(false);
+
+  /**
+   * Dismiss request event
+   */
+  readonly dismissRequested = output<void>();
 
   /**
    * Computed CSS classes
    */
   protected readonly toastClasses = computed(() => ({
-    'ui-toast': true,
-    [`ui-toast--${this.variant()}`]: true,
+    'fui-toast': true,
+    'fui-toast--dismissing': this.dismissing(),
+    [`fui-toast--${this.variant()}`]: true,
   }));
 
   /**
@@ -82,10 +88,10 @@ export class ToastComponent {
   });
 
   /**
-   * Handle dismiss
+   * Handle dismiss request
    */
   protected handleDismiss(): void {
-    this.dismissed.emit();
+    this.dismissRequested.emit();
   }
 }
 

@@ -10,13 +10,12 @@ import {
   Component,
   computed,
   input,
+  linkedSignal,
   output,
-  signal,
-  effect,
   ElementRef,
   viewChild,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass, KeyValuePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 export type SelectSize = 'sm' | 'md' | 'lg';
@@ -29,15 +28,15 @@ export interface SelectOption {
 }
 
 @Component({
-  selector: 'ui-select',
-  imports: [CommonModule, FormsModule],
+  selector: 'fui-select',
+  imports: [NgClass, FormsModule, KeyValuePipe],
   templateUrl: './select.component.html',
   styleUrl: './select.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.ui-select-wrapper]': 'true',
-    '[class.ui-select-wrapper--disabled]': 'disabled()',
-    '[class.ui-select-wrapper--full-width]': 'fullWidth()',
+    '[class.fui-select-wrapper]': 'true',
+    '[class.fui-select-wrapper--disabled]': 'disabled()',
+    '[class.fui-select-wrapper--full-width]': 'fullWidth()',
   },
 })
 export class SelectComponent {
@@ -114,7 +113,7 @@ export class SelectComponent {
   /**
    * Internal value state
    */
-  protected readonly internalValue = signal<string | undefined>(undefined);
+  protected readonly internalValue = linkedSignal<string | undefined>(() => this.value());
 
   /**
    * Reference to select element
@@ -131,7 +130,7 @@ export class SelectComponent {
    */
   protected readonly selectId = computed(() => {
     const providedId = this.id();
-    return providedId || `ui-select-${Math.random().toString(36).substr(2, 9)}`;
+    return providedId || `fui-select-${Math.random().toString(36).substr(2, 9)}`;
   });
 
   /**
@@ -165,11 +164,11 @@ export class SelectComponent {
    * Computed CSS classes
    */
   protected readonly selectClasses = computed(() => ({
-    'ui-select': true,
-    [`ui-select--${this.size()}`]: true,
-    'ui-select--error': this.hasError(),
-    'ui-select--disabled': this.disabled(),
-    'ui-select--has-value': !!this.internalValue(),
+    'fui-select': true,
+    [`fui-select--${this.size()}`]: true,
+    'fui-select--error': this.hasError(),
+    'fui-select--disabled': this.disabled(),
+    'fui-select--has-value': !!this.internalValue(),
   }));
 
   /**
@@ -196,13 +195,6 @@ export class SelectComponent {
   protected readonly hasGroups = computed(() => {
     return this.options().some(opt => opt.group !== undefined);
   });
-
-  constructor() {
-    // Sync internal value
-    effect(() => {
-      this.internalValue.set(this.value());
-    });
-  }
 
   /**
    * Handle select change

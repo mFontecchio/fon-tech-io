@@ -10,26 +10,26 @@ import {
   Component,
   computed,
   input,
+  linkedSignal,
   output,
-  signal,
   effect,
   ElementRef,
   viewChild,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 export type CheckboxSize = 'sm' | 'md' | 'lg';
 
 @Component({
-  selector: 'ui-checkbox',
-  imports: [CommonModule, FormsModule],
+  selector: 'fui-checkbox',
+  imports: [NgClass, FormsModule],
   templateUrl: './checkbox.component.html',
   styleUrl: './checkbox.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.ui-checkbox-wrapper]': 'true',
-    '[class.ui-checkbox-wrapper--disabled]': 'disabled()',
+    '[class.fui-checkbox-wrapper]': 'true',
+    '[class.fui-checkbox-wrapper--disabled]': 'disabled()',
   },
 })
 export class CheckboxComponent {
@@ -101,7 +101,7 @@ export class CheckboxComponent {
   /**
    * Internal checked state
    */
-  protected readonly internalChecked = signal(false);
+  protected readonly internalChecked = linkedSignal(() => this.checked());
 
   /**
    * Reference to checkbox input element
@@ -118,7 +118,7 @@ export class CheckboxComponent {
    */
   protected readonly checkboxId = computed(() => {
     const providedId = this.id();
-    return providedId || `ui-checkbox-${Math.random().toString(36).substr(2, 9)}`;
+    return providedId || `fui-checkbox-${Math.random().toString(36).substr(2, 9)}`;
   });
 
   /**
@@ -152,20 +152,15 @@ export class CheckboxComponent {
    * Computed CSS classes
    */
   protected readonly checkboxClasses = computed(() => ({
-    'ui-checkbox': true,
-    [`ui-checkbox--${this.size()}`]: true,
-    'ui-checkbox--checked': this.internalChecked(),
-    'ui-checkbox--indeterminate': this.indeterminate(),
-    'ui-checkbox--disabled': this.disabled(),
-    'ui-checkbox--error': this.hasError(),
+    'fui-checkbox': true,
+    [`fui-checkbox--${this.size()}`]: true,
+    'fui-checkbox--checked': this.internalChecked(),
+    'fui-checkbox--indeterminate': this.indeterminate(),
+    'fui-checkbox--disabled': this.disabled(),
+    'fui-checkbox--error': this.hasError(),
   }));
 
   constructor() {
-    // Sync internal checked state
-    effect(() => {
-      this.internalChecked.set(this.checked());
-    });
-
     // Set indeterminate state on native element
     effect(() => {
       const checkbox = this.checkboxElement();

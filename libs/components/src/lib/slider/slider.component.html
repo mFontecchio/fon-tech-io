@@ -1,27 +1,31 @@
-<div class="ui-slider-container">
+<div class="fui-slider-container">
   @if (label()) {
-    <label [for]="sliderId()" class="ui-slider-label">
+    <label [for]="sliderId()" class="fui-slider-label">
       {{ label() }}
     </label>
   }
 
-    <div class="ui-slider-control">
-      <div [ngClass]="sliderClasses()">
-        <!-- Visual track -->
-        <div class="ui-slider-track">
-          @if (isRange()) {
-            <div class="ui-slider-fill ui-slider-fill--range" [ngStyle]="rangeFillStyle()"></div>
-          } @else {
-            <div class="ui-slider-fill" [style.width.%]="fillPercentage()"></div>
-          }
-        </div>
+  <div class="fui-slider-control">
+    <div [ngClass]="sliderClasses()">
+      <!-- Visual track -->
+      <div class="fui-slider-track">
+        @if (isRange()) {
+          <div
+            class="fui-slider-fill fui-slider-fill--range"
+            [style.--fui-slider-range-left]="rangeFillLeft()"
+            [style.--fui-slider-range-width]="rangeFillWidth()"
+          ></div>
+        } @else {
+          <div class="fui-slider-fill" [style.--fui-slider-fill]="fillPercentage() + '%'"></div>
+        }
+      </div>
 
       <!-- Single handle or start handle -->
       <input
         type="range"
-        class="ui-slider-input"
-        [class.ui-slider-input--start]="isRange()"
-        [class.ui-slider-input--active]="activeHandle() === 'start'"
+        class="fui-slider-input"
+        [class.fui-slider-input--start]="isRange()"
+        [class.fui-slider-input--active]="activeHandle() === 'start'"
         [id]="sliderId()"
         [name]="name()"
         [min]="min()"
@@ -42,8 +46,8 @@
       @if (isRange()) {
         <input
           type="range"
-          class="ui-slider-input ui-slider-input--end"
-          [class.ui-slider-input--active]="activeHandle() === 'end'"
+          class="fui-slider-input fui-slider-input--end"
+          [class.fui-slider-input--active]="activeHandle() === 'end'"
           [min]="min()"
           [max]="max()"
           [step]="step()"
@@ -61,12 +65,12 @@
     </div>
 
     @if (showMinMax() || showValue()) {
-      <div class="ui-slider-labels">
+      <div class="fui-slider-labels">
         @if (showMinMax()) {
-          <span class="ui-slider-label-min">{{ min() }}</span>
+          <span class="fui-slider-label-min">{{ min() }}</span>
         }
         @if (showValue()) {
-          <span class="ui-slider-value">
+          <span class="fui-slider-value">
             @if (isRange()) {
               {{ internalValue() }} - {{ internalValueEnd() }}
             } @else {
@@ -75,10 +79,9 @@
           </span>
         }
         @if (showMinMax()) {
-          <span class="ui-slider-label-max">{{ max() }}</span>
+          <span class="fui-slider-label-max">{{ max() }}</span>
         }
       </div>
     }
   </div>
 </div>
-

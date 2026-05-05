@@ -13,20 +13,20 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 export type ButtonVariant = 'filled' | 'outlined' | 'text';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 export type ButtonType = 'button' | 'submit' | 'reset';
 
 @Component({
-  selector: 'ui-button',
-  imports: [CommonModule],
+  selector: 'fui-button',
+  imports: [NgClass],
   templateUrl: './button.component.html',
   styleUrl: './button.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.ui-button-wrapper]': 'true',
+    '[class.fui-button-wrapper]': 'true',
   },
 })
 export class ButtonComponent {
@@ -89,13 +89,13 @@ export class ButtonComponent {
    * Computed CSS classes
    */
   protected readonly buttonClasses = computed(() => ({
-    'ui-button': true,
-    [`ui-button--${this.variant()}`]: true,
-    [`ui-button--${this.size()}`]: true,
-    'ui-button--disabled': this.isDisabled(),
-    'ui-button--loading': this.loading(),
-    'ui-button--full-width': this.fullWidth(),
-    'ui-button--icon-only': this.iconOnly(),
+    'fui-button': true,
+    [`fui-button--${this.variant()}`]: true,
+    [`fui-button--${this.size()}`]: true,
+    'fui-button--disabled': this.isDisabled(),
+    'fui-button--loading': this.loading(),
+    'fui-button--full-width': this.fullWidth(),
+    'fui-button--icon-only': this.iconOnly(),
   }));
 
   /**

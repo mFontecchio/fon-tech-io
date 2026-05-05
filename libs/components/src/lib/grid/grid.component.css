@@ -4,89 +4,90 @@
 
 :host {
   display: grid;
+  grid-template-columns: var(--fui-grid-columns, repeat(12, 1fr));
+  gap: var(--fui-grid-gap, 0);
 }
 
-:host.ui-grid--full-width {
+:host.fui-grid--full-width {
   width: 100%;
 }
 
 /* Responsive columns */
 
 @media (min-width: 768px) {
-  :host.ui-grid--cols-md-1 {
+  :host.fui-grid--cols-md-1 {
     grid-template-columns: repeat(1, 1fr);
   }
-  
-  :host.ui-grid--cols-md-2 {
+
+  :host.fui-grid--cols-md-2 {
     grid-template-columns: repeat(2, 1fr);
   }
-  
-  :host.ui-grid--cols-md-3 {
+
+  :host.fui-grid--cols-md-3 {
     grid-template-columns: repeat(3, 1fr);
   }
-  
-  :host.ui-grid--cols-md-4 {
+
+  :host.fui-grid--cols-md-4 {
     grid-template-columns: repeat(4, 1fr);
   }
-  
-  :host.ui-grid--cols-md-6 {
+
+  :host.fui-grid--cols-md-6 {
     grid-template-columns: repeat(6, 1fr);
   }
-  
-  :host.ui-grid--cols-md-12 {
+
+  :host.fui-grid--cols-md-12 {
     grid-template-columns: repeat(12, 1fr);
   }
 }
 
 @media (min-width: 1024px) {
-  :host.ui-grid--cols-lg-1 {
+  :host.fui-grid--cols-lg-1 {
     grid-template-columns: repeat(1, 1fr);
   }
-  
-  :host.ui-grid--cols-lg-2 {
+
+  :host.fui-grid--cols-lg-2 {
     grid-template-columns: repeat(2, 1fr);
   }
-  
-  :host.ui-grid--cols-lg-3 {
+
+  :host.fui-grid--cols-lg-3 {
     grid-template-columns: repeat(3, 1fr);
   }
-  
-  :host.ui-grid--cols-lg-4 {
+
+  :host.fui-grid--cols-lg-4 {
     grid-template-columns: repeat(4, 1fr);
   }
-  
-  :host.ui-grid--cols-lg-6 {
+
+  :host.fui-grid--cols-lg-6 {
     grid-template-columns: repeat(6, 1fr);
   }
-  
-  :host.ui-grid--cols-lg-12 {
+
+  :host.fui-grid--cols-lg-12 {
     grid-template-columns: repeat(12, 1fr);
   }
 }
 
 /* Grid item utility classes (can be used on children) */
 
-:host ::ng-deep .ui-grid-span-2 {
+:host ::ng-deep .fui-grid-span-2 {
   grid-column: span 2;
 }
 
-:host ::ng-deep .ui-grid-span-3 {
+:host ::ng-deep .fui-grid-span-3 {
   grid-column: span 3;
 }
 
-:host ::ng-deep .ui-grid-span-4 {
+:host ::ng-deep .fui-grid-span-4 {
   grid-column: span 4;
 }
 
-:host ::ng-deep .ui-grid-span-6 {
+:host ::ng-deep .fui-grid-span-6 {
   grid-column: span 6;
 }
 
-:host ::ng-deep .ui-grid-span-12 {
+:host ::ng-deep .fui-grid-span-12 {
   grid-column: span 12;
 }
 
-:host ::ng-deep .ui-grid-span-full {
+:host ::ng-deep .fui-grid-span-full {
   grid-column: 1 / -1;
 }
-

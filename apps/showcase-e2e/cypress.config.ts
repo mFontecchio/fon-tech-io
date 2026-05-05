@@ -13,5 +13,7 @@ export default defineConfig({
       ciBaseUrl: 'http://localhost:4200',
     }),
     baseUrl: 'http://localhost:4200',
+    specPattern: 'apps/showcase-e2e/src/e2e/**/*.cy.ts',
+    supportFile: 'apps/showcase-e2e/src/support/e2e.ts',
   },
 });

@@ -1,9 +1,6 @@
-<div class="ui-switch-container">
-  <label 
-    [for]="switchId()" 
-    class="ui-switch-label"
-    (click)="handleLabelClick($event)"
-  >
+<div class="fui-switch-container">
+  <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
+  <label [for]="switchId()" class="fui-switch-label" (click)="handleLabelClick($event)">
     <input
       #switch
       type="checkbox"
@@ -21,11 +18,11 @@
       [ngClass]="switchClasses()"
       (change)="handleChange($event)"
     />
-    
-    <span class="ui-switch-track">
-      <span class="ui-switch-thumb">
+
+    <span class="fui-switch-track">
+      <span class="fui-switch-thumb">
         @if (showLabels()) {
-          <span class="ui-switch-thumb-label">
+          <span class="fui-switch-thumb-label">
             {{ internalChecked() ? onLabel() : offLabel() }}
           </span>
         }
@@ -33,33 +30,24 @@
     </span>
 
     @if (label()) {
-      <span class="ui-switch-label-text">
+      <span class="fui-switch-label-text">
         {{ label() }}
         @if (required()) {
-          <span class="ui-switch-required-indicator" aria-label="required">*</span>
+          <span class="fui-switch-required-indicator" aria-label="required">*</span>
         }
       </span>
     }
   </label>
 
   @if (helperText() && !hasError()) {
-    <div 
-      [id]="helperTextId()" 
-      class="ui-switch-helper-text"
-    >
+    <div [id]="helperTextId()" class="fui-switch-helper-text">
       {{ helperText() }}
     </div>
   }
 
   @if (hasError()) {
-    <div 
-      [id]="errorId()" 
-      class="ui-switch-error-message"
-      role="alert"
-      aria-live="polite"
-    >
+    <div [id]="errorId()" class="fui-switch-error-message" role="alert" aria-live="polite">
       {{ errorMessage() }}
     </div>
   }
 </div>
-

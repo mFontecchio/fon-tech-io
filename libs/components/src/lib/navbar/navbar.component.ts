@@ -13,7 +13,7 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 export interface NavbarLink {
   id: string;
@@ -26,8 +26,8 @@ export interface NavbarLink {
 export type NavbarVariant = 'default' | 'sticky' | 'fixed';
 
 @Component({
-  selector: 'ui-navbar',
-  imports: [CommonModule],
+  selector: 'fui-navbar',
+  imports: [NgClass],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -70,9 +70,9 @@ export class NavbarComponent {
    * Computed CSS classes
    */
   protected readonly navbarClasses = computed(() => ({
-    'ui-navbar': true,
-    [`ui-navbar--${this.variant()}`]: true,
-    'ui-navbar--mobile-open': this.mobileMenuOpen(),
+    'fui-navbar': true,
+    [`fui-navbar--${this.variant()}`]: true,
+    'fui-navbar--mobile-open': this.mobileMenuOpen(),
   }));
 
   /**

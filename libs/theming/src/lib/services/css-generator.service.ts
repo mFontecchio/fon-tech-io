@@ -1,20 +1,12 @@
 /**
  * CSS Generator Service
- * 
+ *
  * Converts theme tokens to CSS custom properties
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, inject, CSP_NONCE, DOCUMENT } from '@angular/core';
 import { Theme } from '../tokens/theme.interface';
-import {
-  PrimitiveTokens,
-  ColorPalette,
-  PrimitiveSpacing,
-  PrimitiveTypography,
-  PrimitiveBorderRadius,
-  PrimitiveShadows,
-  PrimitiveZIndex,
-} from '../tokens/primitive-tokens';
+import { PrimitiveTokens, ColorPalette } from '../tokens/primitive-tokens';
 import { SemanticTokens } from '../tokens/semantic-tokens';
 import { ComponentTokens } from '../tokens/component-tokens';
 
@@ -22,6 +14,9 @@ import { ComponentTokens } from '../tokens/component-tokens';
   providedIn: 'root',
 })
 export class CssGeneratorService {
+  private readonly nonce = inject(CSP_NONCE, { optional: true });
+  private readonly document = inject(DOCUMENT);
+
   /**
    * Generate CSS custom properties from a theme
    */
@@ -41,21 +36,26 @@ export class CssGeneratorService {
   }
 
   /**
-   * Apply theme to document
+   * Apply theme to document by injecting a nonce-compatible `<style>` element.
+   * Reuses the existing element on subsequent calls to avoid DOM churn.
    */
   applyTheme(theme: Theme): void {
-    const root = document.documentElement;
+    const cssText = this.generateCssVariables(theme);
+    const styleId = 'fui-suite-theme';
+    let styleEl = this.document.getElementById(styleId) as HTMLStyleElement | null;
 
-    // Apply primitive tokens
-    this.applyPrimitiveTokens(root, theme.primitive);
+    if (!styleEl) {
+      styleEl = this.document.createElement('style') as HTMLStyleElement;
+      styleEl.id = styleId;
+      if (this.nonce) {
+        styleEl.nonce = this.nonce;
+      }
+      this.document.head.appendChild(styleEl);
+    }
 
-    // Apply semantic tokens
-    this.applySemanticTokens(root, theme.semantic);
+    styleEl.textContent = cssText;
 
-    // Apply component tokens
-    this.applyComponentTokens(root, theme.component);
-
-    // Set theme mode attribute
+    const root = this.document.documentElement;
     root.setAttribute('data-theme', theme.metadata.id);
     root.setAttribute('data-theme-mode', theme.metadata.mode);
   }
@@ -115,6 +115,16 @@ export class CssGeneratorService {
       vars.push(`  --primitive-z-index-${this.kebabCase(key)}: ${value};`);
     });
 
+    // Animation durations
+    Object.entries(primitive.animation.duration).forEach(([key, value]) => {
+      vars.push(`  --primitive-animation-duration-${this.kebabCase(key)}: ${value};`);
+    });
+
+    // Animation easings
+    Object.entries(primitive.animation.easing).forEach(([key, value]) => {
+      vars.push(`  --primitive-animation-easing-${this.kebabCase(key)}: ${value};`);
+    });
+
     return vars.join('\n');
   }
 
@@ -154,6 +164,14 @@ export class CssGeneratorService {
       vars.push(`  --semantic-feedback-${this.kebabCase(key)}: ${value};`);
     });
 
+    // Animation tokens
+    Object.entries(semantic.animation.duration).forEach(([key, value]) => {
+      vars.push(`  --semantic-animation-duration-${this.kebabCase(key)}: ${value};`);
+    });
+    Object.entries(semantic.animation.easing).forEach(([key, value]) => {
+      vars.push(`  --semantic-animation-easing-${this.kebabCase(key)}: ${value};`);
+    });
+
     return vars.join('\n');
   }
 
@@ -173,101 +191,6 @@ export class CssGeneratorService {
     });
 
     return vars.join('\n');
-  }
-
-  /**
-   * Apply primitive tokens to DOM element
-   */
-  private applyPrimitiveTokens(element: HTMLElement, primitive: PrimitiveTokens): void {
-    // Colors
-    Object.entries(primitive.colors).forEach(([colorName, colorValue]) => {
-      if (typeof colorValue === 'string') {
-        element.style.setProperty(`--primitive-${this.kebabCase(colorName)}`, colorValue);
-      } else {
-        Object.entries(colorValue as ColorPalette).forEach(([shade, value]) => {
-          element.style.setProperty(`--primitive-${this.kebabCase(colorName)}-${shade}`, value);
-        });
-      }
-    });
-
-    // Spacing
-    Object.entries(primitive.spacing).forEach(([key, value]) => {
-      element.style.setProperty(`--primitive-spacing-${key}`, value);
-    });
-
-    // Typography
-    Object.entries(primitive.typography.fontFamily).forEach(([key, value]) => {
-      element.style.setProperty(`--primitive-font-family-${key}`, value);
-    });
-    Object.entries(primitive.typography.fontSize).forEach(([key, value]) => {
-      element.style.setProperty(`--primitive-font-size-${key}`, value);
-    });
-    Object.entries(primitive.typography.fontWeight).forEach(([key, value]) => {
-      element.style.setProperty(`--primitive-font-weight-${key}`, value);
-    });
-    Object.entries(primitive.typography.lineHeight).forEach(([key, value]) => {
-      element.style.setProperty(`--primitive-line-height-${key}`, value);
-    });
-    Object.entries(primitive.typography.letterSpacing).forEach(([key, value]) => {
-      element.style.setProperty(`--primitive-letter-spacing-${key}`, value);
-    });
-
-    // Border radius
-    Object.entries(primitive.borderRadius).forEach(([key, value]) => {
-      element.style.setProperty(`--primitive-border-radius-${key}`, value);
-    });
-
-    // Shadows
-    Object.entries(primitive.shadows).forEach(([key, value]) => {
-      element.style.setProperty(`--primitive-shadow-${key}`, value);
-    });
-
-    // Z-index
-    Object.entries(primitive.zIndex).forEach(([key, value]) => {
-      element.style.setProperty(`--primitive-z-index-${this.kebabCase(key)}`, String(value));
-    });
-  }
-
-  /**
-   * Apply semantic tokens to DOM element
-   */
-  private applySemanticTokens(element: HTMLElement, semantic: SemanticTokens): void {
-    Object.entries(semantic.surface).forEach(([key, value]) => {
-      element.style.setProperty(`--semantic-surface-${this.kebabCase(key)}`, value);
-    });
-
-    Object.entries(semantic.text).forEach(([key, value]) => {
-      element.style.setProperty(`--semantic-text-${this.kebabCase(key)}`, value);
-    });
-
-    Object.entries(semantic.border).forEach(([key, value]) => {
-      element.style.setProperty(`--semantic-border-${this.kebabCase(key)}`, value);
-    });
-
-    Object.entries(semantic.state).forEach(([key, value]) => {
-      element.style.setProperty(`--semantic-state-${this.kebabCase(key)}`, value);
-    });
-
-    Object.entries(semantic.brand).forEach(([key, value]) => {
-      element.style.setProperty(`--semantic-brand-${this.kebabCase(key)}`, value);
-    });
-
-    Object.entries(semantic.feedback).forEach(([key, value]) => {
-      element.style.setProperty(`--semantic-feedback-${this.kebabCase(key)}`, value);
-    });
-  }
-
-  /**
-   * Apply component tokens to DOM element
-   */
-  private applyComponentTokens(element: HTMLElement, component: ComponentTokens): void {
-    Object.entries(component).forEach(([componentName, componentTokens]) => {
-      this.flattenObject(componentTokens, `component-${this.kebabCase(componentName)}`).forEach(
-        ([key, value]) => {
-          element.style.setProperty(`--${key}`, String(value));
-        }
-      );
-    });
   }
 
   /**
@@ -302,4 +225,3 @@ export class CssGeneratorService {
       .toLowerCase();
   }
 }
-

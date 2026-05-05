@@ -15,7 +15,7 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'theme-builder',
-    loadComponent: () => import('./pages/theme-builder/theme-builder.component').then(m => m.ThemeBuilderComponent),
+    loadComponent: () => import('@ui-suite/theme-builder').then(m => m.ThemeBuilderComponent),
   },
   {
     path: 'getting-started',
@@ -27,11 +27,11 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'getting-started/usage',
-    loadComponent: () => import('./pages/getting-started/installation.component').then(m => m.InstallationComponent), // Reuse for now
+    loadComponent: () => import('./pages/getting-started/usage.component').then(m => m.UsageComponent),
   },
   {
     path: 'getting-started/theming',
-    loadComponent: () => import('./pages/getting-started/installation.component').then(m => m.InstallationComponent), // Reuse for now
+    loadComponent: () => import('./pages/getting-started/theming.component').then(m => m.ThemingComponent),
   },
   {
     path: '**',

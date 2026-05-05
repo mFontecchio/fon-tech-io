@@ -1,0 +1,40 @@
+{
+  "name": "@ui-suite/theming",
+  "version": "1.0.0",
+  "description": "Design system engine for ui-component-suite — three-tier token system, ThemeService, and CSS generation",
+  "keywords": [
+    "angular",
+    "theming",
+    "design-system",
+    "design-tokens",
+    "css-variables"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "main": "src/index.js",
+  "types": "src/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./src/index.js",
+      "types": "./src/index.d.ts"
+    }
+  },
+  "sideEffects": false,
+  "peerDependencies": {
+    "@angular/core": ">=20.0.0",
+    "@angular/common": ">=20.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mFontecchio/ui-component-suite.git",
+    "directory": "libs/theming"
+  },
+  "homepage": "https://mfontecchio.github.io/ui-component-suite",
+  "bugs": {
+    "url": "https://github.com/mFontecchio/ui-component-suite/issues"
+  }
+}

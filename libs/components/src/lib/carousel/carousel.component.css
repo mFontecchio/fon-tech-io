@@ -1,0 +1,226 @@
+:host {
+  display: grid;
+  width: 100%;
+  gap: var(--primitive-spacing-4);
+  color: var(--semantic-text-primary);
+}
+
+.fui-carousel__viewport {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: var(--semantic-surface-card);
+  border: 1px solid var(--semantic-border-subtle);
+  border-radius: var(--primitive-border-radius-xl);
+  min-height: 16rem;
+}
+
+.fui-carousel__track {
+  position: relative;
+  display: flex;
+  width: 100%;
+  min-height: 16rem;
+  transform: translateX(var(--fui-carousel-track-translate, 0%));
+  transition: transform var(--semantic-animation-duration-component, 250ms)
+    var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
+  touch-action: pan-y;
+}
+
+:host(.fui-carousel--dragging) .fui-carousel__track {
+  transition: none;
+  cursor: grabbing;
+}
+
+:host(.fui-carousel--fade) .fui-carousel__track {
+  display: block;
+  transform: none;
+}
+
+.fui-carousel__control,
+.fui-carousel__autoplay-toggle,
+.fui-carousel__indicator,
+.fui-carousel__thumbnail {
+  font: inherit;
+}
+
+.fui-carousel__control,
+.fui-carousel__autoplay-toggle {
+  position: absolute;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  border: 1px solid var(--semantic-border-subtle);
+  border-radius: var(--primitive-border-radius-full);
+  background: color-mix(in srgb, var(--semantic-surface-overlay) 88%, transparent);
+  color: var(--semantic-text-primary);
+  box-shadow: var(--primitive-shadow-md);
+  cursor: pointer;
+  transition:
+    background-color var(--semantic-animation-duration-interactive, 150ms)
+      var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+    border-color var(--semantic-animation-duration-interactive, 150ms)
+      var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+    transform var(--semantic-animation-duration-interactive, 150ms)
+      var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+.fui-carousel__control:hover,
+.fui-carousel__autoplay-toggle:hover {
+  background: var(--semantic-surface-overlay);
+  border-color: var(--semantic-border-strong);
+}
+
+.fui-carousel__control:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.fui-carousel__control--previous {
+  top: 50%;
+  left: var(--primitive-spacing-3);
+  transform: translateY(-50%);
+}
+
+.fui-carousel__control--next {
+  top: 50%;
+  right: var(--primitive-spacing-3);
+  transform: translateY(-50%);
+}
+
+.fui-carousel__autoplay-toggle {
+  right: var(--primitive-spacing-3);
+  bottom: var(--primitive-spacing-3);
+  padding: 0 var(--primitive-spacing-3);
+}
+
+.fui-carousel__status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.fui-carousel__indicators,
+.fui-carousel__thumbnails {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--primitive-spacing-2);
+  align-items: center;
+}
+
+.fui-carousel__indicators {
+  justify-content: center;
+}
+
+.fui-carousel__indicator {
+  width: 0.875rem;
+  height: 0.875rem;
+  padding: 0;
+  border: 1px solid var(--semantic-border-subtle);
+  border-radius: var(--primitive-border-radius-full);
+  background: var(--semantic-surface-background-secondary);
+  cursor: pointer;
+  transition:
+    background-color var(--semantic-animation-duration-interactive, 150ms)
+      var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+    border-color var(--semantic-animation-duration-interactive, 150ms)
+      var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+    transform var(--semantic-animation-duration-interactive, 150ms)
+      var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+.fui-carousel__indicator--active {
+  background: var(--semantic-brand-primary);
+  border-color: var(--semantic-brand-primary);
+}
+
+.fui-carousel__thumbnail {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 4rem;
+  min-height: 4rem;
+  padding: var(--primitive-spacing-1);
+  border: 2px solid var(--semantic-border-subtle);
+  border-radius: var(--primitive-border-radius-lg);
+  background: var(--semantic-surface-card);
+  color: var(--semantic-text-secondary);
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    border-color var(--semantic-animation-duration-interactive, 150ms)
+      var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+    transform var(--semantic-animation-duration-interactive, 150ms)
+      var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+    color var(--semantic-animation-duration-interactive, 150ms)
+      var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+.fui-carousel__thumbnail--active {
+  border-color: var(--semantic-brand-primary);
+  color: var(--semantic-text-primary);
+}
+
+.fui-carousel__thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.fui-carousel__control:focus-visible,
+.fui-carousel__autoplay-toggle:focus-visible,
+.fui-carousel__indicator:focus-visible,
+.fui-carousel__thumbnail:focus-visible {
+  outline: 2px solid var(--semantic-border-focus);
+  outline-offset: 2px;
+}
+
+:host(.fui-carousel--sm) .fui-carousel__control,
+:host(.fui-carousel--sm) .fui-carousel__autoplay-toggle {
+  min-width: 2.5rem;
+  min-height: 2.5rem;
+}
+
+:host(.fui-carousel--lg) .fui-carousel__control,
+:host(.fui-carousel--lg) .fui-carousel__autoplay-toggle {
+  min-width: 3rem;
+  min-height: 3rem;
+}
+
+@media (max-width: 768px) {
+  :host {
+    gap: var(--primitive-spacing-3);
+  }
+
+  .fui-carousel__viewport {
+    min-height: 13rem;
+  }
+
+  .fui-carousel__track {
+    min-height: 13rem;
+  }
+
+  .fui-carousel__thumbnails {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: var(--primitive-spacing-1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fui-carousel__track,
+  .fui-carousel__control,
+  .fui-carousel__autoplay-toggle,
+  .fui-carousel__indicator,
+  .fui-carousel__thumbnail {
+    transition: none;
+  }
+}

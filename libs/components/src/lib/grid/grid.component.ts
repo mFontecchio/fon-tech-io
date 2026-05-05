@@ -1,31 +1,25 @@
 /**
  * Grid Component
- * 
+ *
  * A responsive grid layout component with customizable columns and gaps.
  * Built with CSS Grid for modern, flexible layouts.
  */
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  input,
-} from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
 export type GridColumns = 1 | 2 | 3 | 4 | 6 | 12 | 'auto';
 export type GridGap = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12;
 
 @Component({
-  selector: 'ui-grid',
-  imports: [CommonModule],
+  selector: 'fui-grid',
+  imports: [],
   templateUrl: './grid.component.html',
   styleUrl: './grid.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class]': 'hostClasses()',
-    '[style.grid-template-columns]': 'columnsValue()',
-    '[style.gap]': 'gapValue()',
+    '[style.--fui-grid-columns]': 'columnsValue()',
+    '[style.--fui-grid-gap]': 'gapValue()',
   },
 })
 export class GridComponent {
@@ -73,10 +67,10 @@ export class GridComponent {
    * Computed CSS classes
    */
   protected readonly gridClasses = computed(() => ({
-    'ui-grid': true,
-    'ui-grid--full-width': this.fullWidth(),
-    [`ui-grid--cols-md-${this.columnsMd()}`]: !!this.columnsMd(),
-    [`ui-grid--cols-lg-${this.columnsLg()}`]: !!this.columnsLg(),
+    'fui-grid': true,
+    'fui-grid--full-width': this.fullWidth(),
+    [`fui-grid--cols-md-${this.columnsMd()}`]: !!this.columnsMd(),
+    [`fui-grid--cols-lg-${this.columnsLg()}`]: !!this.columnsLg(),
   }));
 
   /**
@@ -94,11 +88,11 @@ export class GridComponent {
    */
   protected readonly columnsValue = computed(() => {
     const columns = this.columns();
-    
+
     if (columns === 'auto') {
       return `repeat(auto-fit, minmax(${this.minColumnWidth()}rem, 1fr))`;
     }
-    
+
     return `repeat(${columns}, 1fr)`;
   });
 
@@ -108,12 +102,11 @@ export class GridComponent {
   protected readonly gapValue = computed(() => {
     const rowGap = this.rowGap() ?? this.gap();
     const columnGap = this.columnGap() ?? this.gap();
-    
+
     if (rowGap === columnGap) {
       return `var(--primitive-spacing-${this.gap()})`;
     }
-    
+
     return `var(--primitive-spacing-${rowGap}) var(--primitive-spacing-${columnGap})`;
   });
 }
-

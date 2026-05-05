@@ -1,20 +1,12 @@
 /**
  * File Upload Component
- * 
+ *
  * A file upload component with drag-drop support, preview, and progress tracking.
  * Built with accessibility and modern file handling in mind.
  */
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  input,
-  output,
-  signal,
-  HostListener,
-} from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
+import { NgClass } from '@angular/common';
 
 export interface UploadedFile {
   file: File;
@@ -24,13 +16,16 @@ export interface UploadedFile {
 }
 
 @Component({
-  selector: 'ui-file-upload',
-  imports: [CommonModule],
+  selector: 'fui-file-upload',
+  imports: [NgClass],
   templateUrl: './file-upload.component.html',
   styleUrl: './file-upload.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.ui-file-upload-wrapper]': 'true',
+    '[class.fui-file-upload-wrapper]': 'true',
+    '(dragover)': 'handleDragOver($event)',
+    '(dragleave)': 'handleDragLeave($event)',
+    '(drop)': 'handleDrop($event)',
   },
 })
 export class FileUploadComponent {
@@ -108,10 +103,10 @@ export class FileUploadComponent {
    * Computed CSS classes
    */
   protected readonly dropzoneClasses = computed(() => ({
-    'ui-file-upload-dropzone': true,
-    'ui-file-upload-dropzone--drag-over': this.isDragOver(),
-    'ui-file-upload-dropzone--disabled': this.disabled(),
-    'ui-file-upload-dropzone--error': this.hasError(),
+    'fui-file-upload-dropzone': true,
+    'fui-file-upload-dropzone--drag-over': this.isDragOver(),
+    'fui-file-upload-dropzone--disabled': this.disabled(),
+    'fui-file-upload-dropzone--error': this.hasError(),
   }));
 
   /**
@@ -128,10 +123,9 @@ export class FileUploadComponent {
   /**
    * Handle drag over
    */
-  @HostListener('dragover', ['$event'])
   protected handleDragOver(event: DragEvent): void {
     if (this.disabled()) return;
-    
+
     event.preventDefault();
     event.stopPropagation();
     this.isDragOver.set(true);
@@ -140,7 +134,6 @@ export class FileUploadComponent {
   /**
    * Handle drag leave
    */
-  @HostListener('dragleave', ['$event'])
   protected handleDragLeave(event: DragEvent): void {
     event.preventDefault();
     event.stopPropagation();
@@ -150,10 +143,9 @@ export class FileUploadComponent {
   /**
    * Handle drop
    */
-  @HostListener('drop', ['$event'])
   protected handleDrop(event: DragEvent): void {
     if (this.disabled()) return;
-    
+
     event.preventDefault();
     event.stopPropagation();
     this.isDragOver.set(false);
@@ -184,7 +176,7 @@ export class FileUploadComponent {
     }
 
     // Validate files
-    const uploadedFiles: UploadedFile[] = validFiles.map(file => {
+    const uploadedFiles: UploadedFile[] = validFiles.map((file) => {
       let error: string | undefined;
 
       // Check size
@@ -214,14 +206,12 @@ export class FileUploadComponent {
     if (!this.multiple()) {
       this.uploadedFiles.set(uploadedFiles);
     } else {
-      this.uploadedFiles.update(current => [...current, ...uploadedFiles]);
+      this.uploadedFiles.update((current) => [...current, ...uploadedFiles]);
     }
 
     // Emit valid files
-    const validFilesOnly = uploadedFiles
-      .filter(uf => !uf.error)
-      .map(uf => uf.file);
-    
+    const validFilesOnly = uploadedFiles.filter((uf) => !uf.error).map((uf) => uf.file);
+
     if (validFilesOnly.length > 0) {
       this.filesSelected.emit(validFilesOnly);
     }
@@ -245,10 +235,8 @@ export class FileUploadComponent {
   protected removeFile(index: number): void {
     const files = this.uploadedFiles();
     const file = files[index];
-    
-    this.uploadedFiles.update(current => 
-      current.filter((_, i) => i !== index)
-    );
+
+    this.uploadedFiles.update((current) => current.filter((_, i) => i !== index));
 
     this.fileRemoved.emit(file.file);
   }
@@ -261,16 +249,16 @@ export class FileUploadComponent {
     const k = 1024;
     const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+    return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
   }
 
   /**
    * Check if file type is accepted
    */
   private isFileTypeAccepted(file: File, accept: string): boolean {
-    const acceptTypes = accept.split(',').map(t => t.trim());
-    
-    return acceptTypes.some(type => {
+    const acceptTypes = accept.split(',').map((t) => t.trim());
+
+    return acceptTypes.some((type) => {
       if (type.startsWith('.')) {
         return file.name.toLowerCase().endsWith(type.toLowerCase());
       }
@@ -281,4 +269,3 @@ export class FileUploadComponent {
     });
   }
 }
-

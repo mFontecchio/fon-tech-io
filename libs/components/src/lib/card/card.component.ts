@@ -11,20 +11,20 @@ import {
   computed,
   input,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 export type CardVariant = 'elevated' | 'outlined' | 'filled';
 
 @Component({
-  selector: 'ui-card',
-  imports: [CommonModule],
+  selector: 'fui-card',
+  imports: [NgClass],
   templateUrl: './card.component.html',
   styleUrl: './card.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.ui-card-host]': 'true',
-    '[class.ui-card-host--full-width]': 'fullWidth()',
-    '[class.ui-card-host--interactive]': 'interactive()',
+    '[class.fui-card-host]': 'true',
+    '[class.fui-card-host--full-width]': 'fullWidth()',
+    '[class.fui-card-host--interactive]': 'interactive()',
   },
 })
 export class CardComponent {
@@ -62,10 +62,10 @@ export class CardComponent {
    * Computed CSS classes
    */
   protected readonly cardClasses = computed(() => ({
-    'ui-card': true,
-    [`ui-card--${this.variant()}`]: true,
-    'ui-card--no-padding': this.noPadding(),
-    'ui-card--interactive': this.interactive(),
+    'fui-card': true,
+    [`fui-card--${this.variant()}`]: true,
+    'fui-card--no-padding': this.noPadding(),
+    'fui-card--interactive': this.interactive(),
   }));
 
   /**

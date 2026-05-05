@@ -4,7 +4,7 @@
  * Pre-built themes that can be used out of the box
  */
 
-import { Theme } from '../tokens/theme.interface';
+import { Theme, ThemeFamily, ThemeFamilyMode } from '../tokens/theme.interface';
 import {
   defaultPrimitiveTokens,
   PrimitiveTokens,
@@ -45,7 +45,30 @@ export const darkTheme: Theme = {
   },
   primitive: defaultPrimitiveTokens,
   semantic: defaultDarkSemanticTokens,
-  component: defaultComponentTokens,
+  component: {
+    ...defaultComponentTokens,
+    tooltip: {
+      ...defaultComponentTokens.tooltip,
+      // In dark mode the neutral-900 background blends with card surfaces;
+      // invert to a light tooltip so it stands out clearly.
+      background: 'var(--primitive-neutral-100)',
+      text: 'var(--primitive-neutral-900)',
+    },
+  },
+};
+
+/**
+ * Default paired family used for standard light and dark modes
+ */
+export const defaultThemeFamily: ThemeFamily = {
+  metadata: {
+    id: 'default',
+    name: 'Default',
+    description: 'Default paired light and dark theme family',
+    version: '1.0.0',
+  },
+  light: lightTheme,
+  dark: darkTheme,
 };
 
 /**
@@ -106,6 +129,20 @@ export const defaultThemes: Record<string, Theme> = {
 };
 
 /**
+ * Map of all default paired theme families
+ */
+export const defaultThemeFamilies: Record<string, ThemeFamily> = {
+  [defaultThemeFamily.metadata.id]: defaultThemeFamily,
+};
+
+/**
+ * Default standalone themes that remain outside the family model
+ */
+export const standaloneDefaultThemes: Record<string, Theme> = {
+  'high-contrast': highContrastTheme,
+};
+
+/**
  * Get a default theme by ID
  */
 export function getDefaultTheme(id: string): Theme | undefined {
@@ -113,9 +150,33 @@ export function getDefaultTheme(id: string): Theme | undefined {
 }
 
 /**
+ * Get a default theme family by ID
+ */
+export function getDefaultThemeFamily(id: string): ThemeFamily | undefined {
+  return defaultThemeFamilies[id];
+}
+
+/**
+ * Resolve a leaf theme from a default family and variant mode
+ */
+export function getDefaultThemeFamilyVariant(
+  familyId: string,
+  mode: ThemeFamilyMode
+): Theme | undefined {
+  return defaultThemeFamilies[familyId]?.[mode];
+}
+
+/**
  * Get all default theme IDs
  */
 export function getDefaultThemeIds(): string[] {
   return Object.keys(defaultThemes);
+}
+
+/**
+ * Get all default theme family IDs
+ */
+export function getDefaultThemeFamilyIds(): string[] {
+  return Object.keys(defaultThemeFamilies);
 }
 

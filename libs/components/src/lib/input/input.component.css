@@ -4,17 +4,17 @@
  * Uses design tokens from the theming system
  */
 
-.ui-input-wrapper {
+.fui-input-wrapper {
   display: inline-block;
   width: auto;
 }
 
-.ui-input-wrapper--full-width {
+.fui-input-wrapper--full-width {
   display: block;
   width: 100%;
 }
 
-.ui-input-container {
+.fui-input-container {
   display: flex;
   flex-direction: column;
   gap: var(--primitive-spacing-2);
@@ -22,7 +22,7 @@
 
 /* Label */
 
-.ui-input-label {
+.fui-input-label {
   display: block;
   font-size: var(--primitive-font-size-sm);
   font-weight: var(--primitive-font-weight-medium);
@@ -30,92 +30,112 @@
   line-height: var(--primitive-line-height-tight);
 }
 
-.ui-input-label--disabled {
+.fui-input-label--disabled {
   color: var(--semantic-text-disabled);
 }
 
-.ui-input-required-indicator {
+.fui-input-required-indicator {
   color: var(--semantic-feedback-error);
   margin-left: var(--primitive-spacing-1);
 }
 
 /* Input field wrapper */
 
-.ui-input-field-wrapper {
+.fui-input-field-wrapper {
   position: relative;
   display: flex;
   align-items: center;
   gap: var(--primitive-spacing-2);
-}
-
-/* Input element */
-
-.ui-input {
-  width: 100%;
-  padding: var(--component-input-padding-y) var(--component-input-padding-x);
-  font-size: var(--component-input-font-size);
-  font-family: var(--primitive-font-family-sans);
-  line-height: var(--primitive-line-height-normal);
-  color: var(--component-input-default-text);
+  min-height: calc(
+    var(--component-input-padding-y) * 2 +
+    var(--component-input-font-size) * var(--primitive-line-height-normal) +
+    var(--component-input-border-width) * 2
+  );
+  padding: 0 var(--component-input-padding-x);
   background-color: var(--component-input-default-background);
   border: var(--component-input-border-width) solid var(--component-input-default-border);
   border-radius: var(--component-input-border-radius);
-  outline: none;
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
-.ui-input::placeholder {
-  color: var(--component-input-default-placeholder);
-  opacity: 1;
+.fui-input-field-wrapper--with-action {
+  gap: var(--primitive-spacing-1);
 }
 
-/* Hover state */
-
-.ui-input:hover:not(:disabled):not(:focus) {
+.fui-input-field-wrapper:hover:not(.fui-input-field-wrapper--disabled) {
   border-color: var(--component-input-hover-border);
 }
 
-/* Focus state */
-
-.ui-input:focus,
-.ui-input--focused {
+.fui-input-field-wrapper--focused {
   border-color: var(--component-input-focus-border);
   box-shadow: 0 0 0 var(--component-input-focus-ring-width) var(--component-input-focus-ring);
 }
 
-/* Error state */
-
-.ui-input--error,
-.ui-input--error:hover,
-.ui-input--error:focus {
+.fui-input-field-wrapper--error,
+.fui-input-field-wrapper--error:hover,
+.fui-input-field-wrapper--error.fui-input-field-wrapper--focused {
   border-color: var(--component-input-error-border);
 }
 
-.ui-input--error:focus {
+.fui-input-field-wrapper--error.fui-input-field-wrapper--focused {
   box-shadow: 0 0 0 var(--component-input-focus-ring-width) var(--semantic-border-error);
 }
 
-/* Disabled state */
-
-.ui-input:disabled,
-.ui-input--disabled {
+.fui-input-field-wrapper--disabled {
   background-color: var(--component-input-disabled-background);
-  color: var(--component-input-disabled-text);
   border-color: var(--component-input-disabled-border);
   opacity: var(--component-input-disabled-opacity);
   cursor: not-allowed;
 }
 
+/* Input element */
+
+.fui-input {
+  width: 100%;
+  min-width: 0;
+  padding: var(--component-input-padding-y) 0;
+  font-size: var(--component-input-font-size);
+  font-family: var(--primitive-font-family-sans);
+  line-height: var(--primitive-line-height-normal);
+  color: var(--component-input-default-text);
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  outline: none;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+.fui-input::placeholder {
+  color: var(--component-input-default-placeholder);
+  opacity: 1;
+}
+
+/* Disabled state */
+
+.fui-input:disabled,
+.fui-input--disabled {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: var(--component-input-disabled-background);
+  border-color: transparent;
+  box-shadow: 0 0 0 1000px var(--component-input-disabled-background) inset;
+  -webkit-box-shadow: 0 0 0 1000px var(--component-input-disabled-background) inset;
+  color: var(--component-input-disabled-text);
+  -webkit-text-fill-color: var(--component-input-disabled-text);
+  cursor: inherit;
+  pointer-events: none;
+}
+
 /* Readonly state */
 
-.ui-input:read-only {
+.fui-input:read-only {
   background-color: var(--semantic-surface-background-secondary);
   cursor: default;
 }
 
 /* Helper text */
 
-.ui-input-helper-text {
+.fui-input-helper-text {
   font-size: var(--primitive-font-size-sm);
   color: var(--semantic-text-secondary);
   line-height: var(--primitive-line-height-normal);
@@ -123,7 +143,7 @@
 
 /* Error message */
 
-.ui-input-error-message {
+.fui-input-error-message {
   font-size: var(--primitive-font-size-sm);
   color: var(--component-input-error-text);
   line-height: var(--primitive-line-height-normal);
@@ -134,71 +154,124 @@
 
 /* Full width */
 
-.ui-input-wrapper--full-width .ui-input {
+.fui-input-wrapper--full-width .fui-input {
   width: 100%;
 }
 
 /* Prefix and suffix slots */
 
-.ui-input-field-wrapper ::ng-deep [prefix],
-.ui-input-field-wrapper ::ng-deep [suffix] {
+.fui-input-prefix,
+.fui-input-suffix {
   display: flex;
   align-items: center;
+  gap: var(--primitive-spacing-1);
   color: var(--semantic-text-secondary);
-  font-size: var(--primitive-font-size-sm);
+  font-size: var(--component-input-font-size);
   flex-shrink: 0;
 }
 
-.ui-input-field-wrapper ::ng-deep [prefix] {
-  padding-left: var(--primitive-spacing-2);
+.fui-input-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 }
 
-.ui-input-field-wrapper ::ng-deep [suffix] {
-  padding-right: var(--primitive-spacing-2);
+.fui-input-prefix:empty,
+.fui-input-suffix:empty,
+.fui-input-prefix:not(:has(*)),
+.fui-input-suffix:not(:has(*)) {
+  display: none;
+}
+
+.fui-input-prefix {
+  padding-left: 0;
+}
+
+.fui-input-suffix {
+  padding-right: 0;
+}
+
+.fui-input-affix-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0.5rem;
+  background: none;
+  border: none;
+  color: var(--semantic-text-secondary);
+  font-size: var(--primitive-font-size-sm);
+  font-weight: var(--primitive-font-weight-medium);
+  line-height: 1;
+  cursor: pointer;
+  border-radius: var(--primitive-border-radius-sm);
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+.fui-input-affix-action:hover:not(:disabled) {
+  color: var(--semantic-text-primary);
+  background-color: var(--semantic-surface-background-secondary);
+}
+
+.fui-input-affix-action:focus-visible {
+  outline: 2px solid var(--component-input-focus-border);
+  outline-offset: 1px;
+}
+
+.fui-input-affix-action:disabled {
+  color: var(--semantic-text-disabled);
+  cursor: not-allowed;
 }
 
 /* Number input - hide spinners */
 
-.ui-input[type="number"]::-webkit-inner-spin-button,
-.ui-input[type="number"]::-webkit-outer-spin-button {
+.fui-input[type="number"]::-webkit-inner-spin-button,
+.fui-input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-.ui-input[type="number"] {
+.fui-input[type="number"] {
+  appearance: textfield;
   -moz-appearance: textfield;
 }
 
 /* Search input - custom clear button */
 
-.ui-input[type="search"]::-webkit-search-decoration,
-.ui-input[type="search"]::-webkit-search-cancel-button,
-.ui-input[type="search"]::-webkit-search-results-button,
-.ui-input[type="search"]::-webkit-search-results-decoration {
+.fui-input[type="search"]::-webkit-search-decoration,
+.fui-input[type="search"]::-webkit-search-cancel-button,
+.fui-input[type="search"]::-webkit-search-results-button,
+.fui-input[type="search"]::-webkit-search-results-decoration {
   -webkit-appearance: none;
 }
 
 /* Password input */
 
-.ui-input[type="password"] {
+.fui-input[type="password"] {
   font-family: var(--primitive-font-family-mono);
   letter-spacing: 0.1em;
 }
 
 /* Autofill styles */
 
-.ui-input:-webkit-autofill,
-.ui-input:-webkit-autofill:hover,
-.ui-input:-webkit-autofill:focus {
+.fui-input:-webkit-autofill,
+.fui-input:-webkit-autofill:hover,
+.fui-input:-webkit-autofill:focus {
   -webkit-text-fill-color: var(--component-input-default-text);
-  -webkit-box-shadow: 0 0 0 1000px var(--component-input-default-background) inset;
+  -webkit-box-shadow: 0 0 0 1000px transparent inset;
+  /*
+   * Intentional browser workaround: A very long transition duration effectively
+   * prevents the browser from rendering its default autofill background color,
+   * allowing the component's own background token to show through. This is a
+   * well-known CSS technique and is not subject to the animation token system.
+   */
   transition: background-color 5000s ease-in-out 0s;
 }
 
 /* Reduced motion support */
 
 @media (prefers-reduced-motion: reduce) {
-  .ui-input {
+  .fui-input {
     transition: none;
   }
 }
@@ -206,13 +279,14 @@
 /* High contrast mode support */
 
 @media (prefers-contrast: more) {
-  .ui-input {
+  .fui-input-field-wrapper {
     border-width: 2px;
   }
 
-  .ui-input:focus {
+  .fui-input-field-wrapper--focused {
     outline: 2px solid var(--component-input-focus-border);
     outline-offset: 2px;
   }
 }
+
 

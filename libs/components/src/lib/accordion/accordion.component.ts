@@ -10,24 +10,23 @@ import {
   Component,
   computed,
   input,
+  linkedSignal,
   output,
-  signal,
   contentChildren,
   effect,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { AccordionItemComponent } from './accordion-item.component';
 
 export type AccordionMode = 'single' | 'multiple';
 
 @Component({
-  selector: 'ui-accordion',
-  imports: [CommonModule],
+  selector: 'fui-accordion',
+  imports: [],
   templateUrl: './accordion.component.html',
   styleUrl: './accordion.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.ui-accordion]': 'true',
+    '[class.fui-accordion]': 'true',
   },
 })
 export class AccordionComponent {
@@ -54,14 +53,9 @@ export class AccordionComponent {
   /**
    * Internal expanded indices
    */
-  protected readonly internalExpanded = signal<number[]>([]);
+  protected readonly internalExpanded = linkedSignal<number[]>(() => this.expanded());
 
   constructor() {
-    // Sync internal expanded state
-    effect(() => {
-      this.internalExpanded.set(this.expanded());
-    });
-
     // Update items expanded state
     effect(() => {
       const expandedIndices = this.internalExpanded();

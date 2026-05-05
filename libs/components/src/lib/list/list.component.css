@@ -2,66 +2,66 @@
  * List Component Styles
  */
 
-.ui-list {
+.fui-list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.ui-list--ordered {
+.fui-list--ordered {
   list-style: decimal;
   padding-left: var(--primitive-spacing-6);
 }
 
 /* Variants */
 
-.ui-list--bordered {
+.fui-list--bordered {
   border: 1px solid var(--semantic-border-default);
   border-radius: var(--primitive-border-radius-md);
   overflow: hidden;
 }
 
-.ui-list--divided .ui-list-item {
+.fui-list--divided .fui-list-item {
   border-bottom: 1px solid var(--semantic-border-subtle);
 }
 
-.ui-list--divided .ui-list-item:last-child {
+.fui-list--divided .fui-list-item:last-child {
   border-bottom: none;
 }
 
 /* List item */
 
-.ui-list-item {
+.fui-list-item {
   display: flex;
   align-items: flex-start;
   gap: var(--primitive-spacing-3);
   padding: var(--primitive-spacing-4);
   background-color: var(--semantic-surface-card);
-  transition: all 0.2s ease-in-out;
+  transition: all var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
-.ui-list--interactive .ui-list-item {
+.fui-list--interactive .fui-list-item {
   cursor: pointer;
 }
 
-.ui-list--interactive .ui-list-item:hover:not(.ui-list-item--disabled) {
-  background-color: var(--semantic-surface-subtle);
+.fui-list--interactive .fui-list-item:hover:not(.fui-list-item--disabled) {
+  background-color: var(--semantic-surface-background-secondary);
 }
 
-.ui-list--interactive .ui-list-item:focus-visible {
+.fui-list--interactive .fui-list-item:focus-visible {
   outline: 2px solid var(--semantic-state-focus-ring);
   outline-offset: -2px;
   z-index: 1;
 }
 
-.ui-list-item--disabled {
+.fui-list-item--disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
 /* Icon */
 
-.ui-list-item-icon {
+.fui-list-item-icon {
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
@@ -74,7 +74,7 @@
 
 /* Content */
 
-.ui-list-item-content {
+.fui-list-item-content {
   flex: 1;
   min-width: 0;
   display: flex;
@@ -82,14 +82,14 @@
   gap: var(--primitive-spacing-1);
 }
 
-.ui-list-item-label {
+.fui-list-item-label {
   font-size: var(--primitive-font-size-base);
   font-weight: var(--primitive-font-weight-medium);
   color: var(--semantic-text-primary);
   line-height: var(--primitive-line-height-normal);
 }
 
-.ui-list-item-description {
+.fui-list-item-description {
   font-size: var(--primitive-font-size-sm);
   color: var(--semantic-text-secondary);
   line-height: var(--primitive-line-height-normal);
@@ -97,47 +97,47 @@
 
 /* Sizes */
 
-.ui-list--sm .ui-list-item {
+.fui-list--sm .fui-list-item {
   padding: var(--primitive-spacing-2) var(--primitive-spacing-3);
   gap: var(--primitive-spacing-2);
 }
 
-.ui-list--sm .ui-list-item-icon {
+.fui-list--sm .fui-list-item-icon {
   width: 1.25rem;
   height: 1.25rem;
   font-size: var(--primitive-font-size-base);
 }
 
-.ui-list--sm .ui-list-item-label {
+.fui-list--sm .fui-list-item-label {
   font-size: var(--primitive-font-size-sm);
 }
 
-.ui-list--sm .ui-list-item-description {
+.fui-list--sm .fui-list-item-description {
   font-size: var(--primitive-font-size-xs);
 }
 
-.ui-list--lg .ui-list-item {
+.fui-list--lg .fui-list-item {
   padding: var(--primitive-spacing-5) var(--primitive-spacing-6);
   gap: var(--primitive-spacing-4);
 }
 
-.ui-list--lg .ui-list-item-icon {
+.fui-list--lg .fui-list-item-icon {
   width: 2rem;
   height: 2rem;
   font-size: var(--primitive-font-size-xl);
 }
 
-.ui-list--lg .ui-list-item-label {
+.fui-list--lg .fui-list-item-label {
   font-size: var(--primitive-font-size-lg);
 }
 
-.ui-list--lg .ui-list-item-description {
+.fui-list--lg .fui-list-item-description {
   font-size: var(--primitive-font-size-base);
 }
 
 /* Empty state */
 
-.ui-list-empty {
+.fui-list-empty {
   padding: var(--primitive-spacing-8) var(--primitive-spacing-4);
   text-align: center;
   color: var(--semantic-text-secondary);
@@ -147,7 +147,7 @@
 /* Reduced motion support */
 
 @media (prefers-reduced-motion: reduce) {
-  .ui-list-item {
+  .fui-list-item {
     transition: none;
   }
 }
@@ -155,16 +155,17 @@
 /* High contrast mode support */
 
 @media (prefers-contrast: more) {
-  .ui-list--bordered {
+  .fui-list--bordered {
     border-width: 2px;
   }
 
-  .ui-list--divided .ui-list-item {
+  .fui-list--divided .fui-list-item {
     border-bottom-width: 2px;
   }
 
-  .ui-list--interactive .ui-list-item:focus-visible {
+  .fui-list--interactive .fui-list-item:focus-visible {
     outline-width: 3px;
   }
 }
+
 

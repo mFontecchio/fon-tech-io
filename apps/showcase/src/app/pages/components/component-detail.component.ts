@@ -39,21 +39,21 @@ import { getComponentMetadata } from '../../data/component-metadata';
     ResponsivePreviewComponent,
   ],
   template: `
-    <div class="component-detail-page">
+    <article class="component-detail-page">
       <!-- Header -->
-      <div class="component-header">
+      <header class="component-header">
         <h1>{{ componentName() }}</h1>
         <p class="category-badge">{{ category() }}</p>
         @if (metadata()) {
           <p class="component-description">{{ metadata()!.description }}</p>
         }
-      </div>
+      </header>
 
       <!-- Documentation Tabs -->
       @if (metadata()) {
-        <ui-tabs>
+        <fui-tabs>
           <!-- Overview Tab -->
-          <ui-tab label="Overview">
+          <fui-tab label="Overview">
             <div class="tab-content">
               <h2>About</h2>
               <p>{{ metadata()!.description }}</p>
@@ -67,7 +67,7 @@ import { getComponentMetadata } from '../../data/component-metadata';
                     [exampleTitle]="metadata()!.examples[0].title"
                   />
                 </div>
-                <ui-code-block
+                <fui-code-block
                   [code]="metadata()!.examples[0].template ?? ''"
                   [title]="'HTML'"
                   language="html"
@@ -75,7 +75,7 @@ import { getComponentMetadata } from '../../data/component-metadata';
               }
 
               <h3>Selector</h3>
-              <ui-code-block
+              <fui-code-block
                 [code]="'<' + metadata()!.selector + '></' + metadata()!.selector + '>'"
                 [title]="'Usage'"
                 language="html"
@@ -104,10 +104,10 @@ import { getComponentMetadata } from '../../data/component-metadata';
                 </div>
               }
             </div>
-          </ui-tab>
+          </fui-tab>
 
           <!-- API Tab -->
-          <ui-tab label="API">
+          <fui-tab label="API">
             <div class="tab-content">
               @if (metadata()!.inputs && metadata()!.inputs.length > 0) {
                 <h2>Inputs</h2>
@@ -138,10 +138,10 @@ import { getComponentMetadata } from '../../data/component-metadata';
                 </div>
               }
             </div>
-          </ui-tab>
+          </fui-tab>
 
           <!-- Examples Tab -->
-          <ui-tab label="Examples">
+          <fui-tab label="Examples">
             <div class="tab-content">
               <!-- Responsive Preview Toggle -->
               <div class="examples-toolbar">
@@ -149,7 +149,8 @@ import { getComponentMetadata } from '../../data/component-metadata';
                   class="responsive-toggle"
                   [class.responsive-toggle--active]="showResponsivePreview()"
                   (click)="toggleResponsivePreview()"
-                  title="Toggle responsive preview"
+                  aria-label="Toggle responsive preview"
+                  [attr.aria-pressed]="showResponsivePreview()"
                 >
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                     <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
@@ -185,7 +186,7 @@ import { getComponentMetadata } from '../../data/component-metadata';
                           />
                         </div>
                       }
-                      <ui-code-block
+                      <fui-code-block
                         [code]="example.template"
                         [title]="'HTML'"
                         [filename]="generateFilename(example.title, 'html')"
@@ -194,7 +195,7 @@ import { getComponentMetadata } from '../../data/component-metadata';
                     }
 
                     @if (example.typescript) {
-                      <ui-code-block
+                      <fui-code-block
                         [code]="example.typescript"
                         [title]="'TypeScript'"
                         [filename]="generateFilename(example.title, 'ts')"
@@ -204,13 +205,13 @@ import { getComponentMetadata } from '../../data/component-metadata';
                   </div>
                 }
               } @else {
-                <ui-alert variant="info">No examples available for this component yet.</ui-alert>
+                <fui-alert variant="info">No examples available for this component yet.</fui-alert>
               }
             </div>
-          </ui-tab>
+          </fui-tab>
 
           <!-- Accessibility Tab -->
-          <ui-tab label="Accessibility">
+          <fui-tab label="Accessibility">
             <div class="tab-content">
               @if (metadata()!.accessibility) {
                 <h3>ARIA Support</h3>
@@ -233,17 +234,17 @@ import { getComponentMetadata } from '../../data/component-metadata';
                 <h3>Screen Reader Notes</h3>
                 <p>{{ metadata()!.accessibility!.screenReaderNotes }}</p>
               } @else {
-                <ui-alert variant="info">Accessibility documentation coming soon.</ui-alert>
+                <fui-alert variant="info">Accessibility documentation coming soon.</fui-alert>
               }
             </div>
-          </ui-tab>
-        </ui-tabs>
+          </fui-tab>
+        </fui-tabs>
       } @else {
-        <ui-alert variant="warning">
+        <fui-alert variant="warning">
           Documentation for <strong>{{ componentName() }}</strong> is in progress or not found.
-        </ui-alert>
+        </fui-alert>
       }
-    </div>
+    </article>
   `,
   styles: [
     `
@@ -265,7 +266,7 @@ import { getComponentMetadata } from '../../data/component-metadata';
 
       .category-badge {
         display: inline-block;
-        background-color: var(--semantic-surface-subtle);
+        background-color: var(--semantic-surface-background-secondary);
         color: var(--semantic-text-secondary);
         padding: var(--primitive-spacing-1) var(--primitive-spacing-3);
         border-radius: var(--primitive-border-radius-full);
@@ -302,7 +303,7 @@ import { getComponentMetadata } from '../../data/component-metadata';
 
       .tab-content p,
       .tab-content ul {
-        font-size: var(--primitive-font-size-md);
+        font-size: var(--primitive-font-size-base);
         line-height: var(--primitive-line-height-lg);
         color: var(--semantic-text-secondary);
         margin-bottom: var(--primitive-spacing-4);
@@ -327,7 +328,7 @@ import { getComponentMetadata } from '../../data/component-metadata';
       }
 
       .method-item {
-        background-color: var(--semantic-surface-subtle);
+        background-color: var(--semantic-surface-background-secondary);
         border-left: 4px solid var(--semantic-brand-primary);
         padding: var(--primitive-spacing-4);
         border-radius: var(--primitive-border-radius-md);
@@ -351,7 +352,7 @@ import { getComponentMetadata } from '../../data/component-metadata';
       }
 
       .method-item .return-type {
-        font-size: var(--primitive-font-size-md);
+        font-size: var(--primitive-font-size-base);
         color: var(--semantic-text-tertiary);
         margin-left: var(--primitive-spacing-3);
       }
@@ -368,17 +369,18 @@ import { getComponentMetadata } from '../../data/component-metadata';
 
       .related-chip {
         padding: var(--primitive-spacing-2) var(--primitive-spacing-4);
-        background-color: var(--semantic-surface-subtle);
+        background-color: var(--semantic-surface-background-secondary);
         border-radius: var(--primitive-border-radius-md);
         text-decoration: none;
         color: var(--semantic-text-primary);
         font-size: var(--primitive-font-size-sm);
-        transition: all 0.2s;
+        transition: all var(--semantic-animation-duration-interactive, 150ms)
+          var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
         text-transform: capitalize;
       }
 
       .related-chip:hover {
-        background-color: var(--semantic-brand-subtle);
+        background-color: var(--semantic-brand-primary-subtle);
         color: var(--semantic-brand-primary);
       }
 
@@ -402,13 +404,14 @@ import { getComponentMetadata } from '../../data/component-metadata';
         color: var(--semantic-text-secondary);
         border-radius: var(--primitive-border-radius-md);
         cursor: pointer;
-        transition: all 0.2s;
+        transition: all var(--semantic-animation-duration-interactive, 150ms)
+          var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
         font-size: var(--primitive-font-size-sm);
         font-weight: var(--primitive-font-weight-medium);
       }
 
       .responsive-toggle:hover {
-        background-color: var(--semantic-surface-subtle);
+        background-color: var(--semantic-surface-background-secondary);
         color: var(--semantic-text-primary);
         border-color: var(--semantic-border-strong);
       }

@@ -1,19 +1,19 @@
-<div class="ui-textarea-container">
+<div class="fui-textarea-container">
   @if (label()) {
     <label 
       [for]="textareaId()" 
-      class="ui-textarea-label"
-      [class.ui-textarea-label--required]="required()"
-      [class.ui-textarea-label--disabled]="disabled()"
+      class="fui-textarea-label"
+      [class.fui-textarea-label--required]="required()"
+      [class.fui-textarea-label--disabled]="disabled()"
     >
       {{ label() }}
       @if (required()) {
-        <span class="ui-textarea-required-indicator" aria-label="required">*</span>
+        <span class="fui-textarea-required-indicator" aria-label="required">*</span>
       }
     </label>
   }
 
-  <div class="ui-textarea-field-wrapper">
+  <div class="fui-textarea-field-wrapper">
     <textarea
       #textarea
       [id]="textareaId()"
@@ -37,12 +37,12 @@
     ></textarea>
   </div>
 
-  <div class="ui-textarea-footer">
-    <div class="ui-textarea-messages">
+  <div class="fui-textarea-footer">
+    <div class="fui-textarea-messages">
       @if (helperText() && !hasError()) {
         <div 
           [id]="helperTextId()" 
-          class="ui-textarea-helper-text"
+          class="fui-textarea-helper-text"
         >
           {{ helperText() }}
         </div>
@@ -51,7 +51,7 @@
       @if (hasError()) {
         <div 
           [id]="errorId()" 
-          class="ui-textarea-error-message"
+          class="fui-textarea-error-message"
           role="alert"
           aria-live="polite"
         >
@@ -61,7 +61,7 @@
     </div>
 
     @if (showCharacterCount()) {
-      <div class="ui-textarea-character-count" aria-live="polite">
+      <div class="fui-textarea-character-count" aria-live="polite">
         {{ characterCount() }}@if (maxLength()) {
           <span> / {{ maxLength() }}</span>
         }

@@ -13,7 +13,7 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector: 'ui-accordion-item',
+  selector: 'fui-accordion-item',
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,

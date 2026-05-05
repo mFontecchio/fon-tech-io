@@ -2,11 +2,11 @@
  * Accordion Component Styles
  */
 
-.ui-accordion {
+.fui-accordion {
   display: block;
 }
 
-.ui-accordion-container {
+.fui-accordion-container {
   display: flex;
   flex-direction: column;
   border: 1px solid var(--semantic-border-default);
@@ -16,17 +16,17 @@
 
 /* Accordion Item */
 
-.ui-accordion-item {
+.fui-accordion-item {
   border-bottom: 1px solid var(--semantic-border-subtle);
 }
 
-.ui-accordion-item:last-child {
+.fui-accordion-item:last-child {
   border-bottom: none;
 }
 
 /* Header/Trigger */
 
-.ui-accordion-header {
+.fui-accordion-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -36,31 +36,33 @@
   border: none;
   cursor: pointer;
   text-align: left;
-  transition: all 0.2s ease-in-out;
+  transition:
+    background-color var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+    box-shadow var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
-.ui-accordion-header:hover:not(:disabled) {
-  background-color: var(--semantic-surface-subtle);
+.fui-accordion-header:hover:not(:disabled) {
+  background-color: var(--semantic-surface-background-secondary);
 }
 
-.ui-accordion-header:focus-visible {
+.fui-accordion-header:focus-visible {
   outline: 2px solid var(--semantic-state-focus-ring);
   outline-offset: -2px;
   z-index: 1;
 }
 
-.ui-accordion-header:disabled {
+.fui-accordion-header:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
-.ui-accordion-item--expanded .ui-accordion-header {
-  background-color: var(--semantic-surface-subtle);
+.fui-accordion-item--expanded .fui-accordion-header {
+  background-color: var(--semantic-surface-background-secondary);
 }
 
 /* Title */
 
-.ui-accordion-title {
+.fui-accordion-title {
   flex: 1;
   font-size: var(--primitive-font-size-base);
   font-weight: var(--primitive-font-weight-semibold);
@@ -70,39 +72,65 @@
 
 /* Icon */
 
-.ui-accordion-icon {
+.fui-accordion-icon {
   flex-shrink: 0;
   color: var(--semantic-text-secondary);
-  transition: transform 0.2s ease-in-out;
+  transition:
+    transform var(--semantic-animation-duration-component, 250ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+    color var(--semantic-animation-duration-interactive, 150ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
-.ui-accordion-item--expanded .ui-accordion-icon {
+.fui-accordion-item--expanded .fui-accordion-icon {
   transform: rotate(180deg);
+  color: var(--semantic-brand-primary);
 }
 
-/* Panel */
+/* Panel — uses grid-template-rows instead of max-height to avoid magic number */
 
-.ui-accordion-panel {
-  overflow: hidden;
+.fui-accordion-panel {
+  display: grid;
+  grid-template-rows: 0fr;
   background-color: var(--semantic-surface-card);
+  transition:
+    grid-template-rows var(--semantic-animation-duration-component, 250ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+    opacity var(--semantic-animation-duration-component, 250ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
+  opacity: 0;
 }
 
-.ui-accordion-panel[hidden] {
-  display: none;
+.fui-accordion-item--expanded .fui-accordion-panel {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transition:
+    grid-template-rows var(--semantic-animation-duration-page, 350ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+    opacity var(--semantic-animation-duration-component, 250ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
-/* Content */
+.fui-accordion-panel[aria-hidden='true'] {
+  pointer-events: none;
+}
 
-.ui-accordion-content {
-  padding: var(--primitive-spacing-4) var(--primitive-spacing-5);
+/* Content — direct grid child, must have overflow:hidden and min-height:0 for grid trick */
+
+.fui-accordion-content {
+  overflow: hidden;
+  min-height: 0;
   color: var(--semantic-text-primary);
   line-height: var(--primitive-line-height-relaxed);
-  animation: ui-accordion-expand 0.2s ease-out;
+  transform: translateY(-8px);
+  transition: transform var(--semantic-animation-duration-component, 250ms) var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+.fui-accordion-content-body {
+  padding: var(--primitive-spacing-4) var(--primitive-spacing-5);
+}
+
+.fui-accordion-item--expanded .fui-accordion-content {
+  transform: translateY(0);
 }
 
 /* Animation */
 
-@keyframes ui-accordion-expand {
+@keyframes fui-accordion-expand {
   from {
     opacity: 0;
     transform: translateY(-8px);
@@ -116,12 +144,14 @@
 /* Reduced motion support */
 
 @media (prefers-reduced-motion: reduce) {
-  .ui-accordion-header,
-  .ui-accordion-icon {
+  .fui-accordion-header,
+  .fui-accordion-icon,
+  .fui-accordion-panel,
+  .fui-accordion-content {
     transition: none;
   }
 
-  .ui-accordion-content {
+  .fui-accordion-content {
     animation: none;
   }
 }
@@ -129,15 +159,15 @@
 /* High contrast mode support */
 
 @media (prefers-contrast: more) {
-  .ui-accordion-container {
+  .fui-accordion-container {
     border-width: 2px;
   }
 
-  .ui-accordion-item {
+  .fui-accordion-item {
     border-bottom-width: 2px;
   }
 
-  .ui-accordion-header:focus-visible {
+  .fui-accordion-header:focus-visible {
     outline-width: 3px;
   }
 }

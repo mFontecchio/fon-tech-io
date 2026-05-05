@@ -1,24 +1,32 @@
-<div class="ui-input-container">
+<div class="fui-input-container">
   @if (label()) {
     <label 
       [for]="inputId()" 
-      class="ui-input-label"
-      [class.ui-input-label--required]="required()"
-      [class.ui-input-label--disabled]="disabled()"
+      class="fui-input-label"
+      [class.fui-input-label--required]="required()"
+      [class.fui-input-label--disabled]="disabled()"
     >
       {{ label() }}
       @if (required()) {
-        <span class="ui-input-required-indicator" aria-label="required">*</span>
+        <span class="fui-input-required-indicator" aria-label="required">*</span>
       }
     </label>
   }
 
-  <div class="ui-input-field-wrapper">
-    <ng-content select="[prefix]" />
+  <div
+    class="fui-input-field-wrapper"
+    [class.fui-input-field-wrapper--focused]="isFocused()"
+    [class.fui-input-field-wrapper--error]="hasError()"
+    [class.fui-input-field-wrapper--disabled]="disabled()"
+    [class.fui-input-field-wrapper--with-action]="shouldShowPasswordToggle()"
+  >
+    <div class="fui-input-prefix">@if (prefixIcon()) {
+      <span class="fui-input-icon" aria-hidden="true">{{ prefixIcon() }}</span>
+    }<ng-content select="[prefix]" /></div>
     
     <input
       #input
-      [type]="type()"
+      [type]="resolvedInputType()"
       [id]="inputId()"
       [name]="name()"
       [value]="internalValue()"
@@ -40,13 +48,28 @@
       (blur)="handleBlur($event)"
     />
     
-    <ng-content select="[suffix]" />
+    <div class="fui-input-suffix">@if (suffixIcon()) {
+      <span class="fui-input-icon" aria-hidden="true">{{ suffixIcon() }}</span>
+    }<ng-content select="[suffix]" />
+
+    @if (shouldShowPasswordToggle()) {
+      <button
+        type="button"
+        class="fui-input-affix-action fui-input-password-toggle"
+        [disabled]="disabled()"
+        [attr.aria-label]="passwordToggleLabel()"
+        [attr.aria-pressed]="isPasswordVisible()"
+        (click)="togglePasswordVisibility()"
+      >
+        {{ isPasswordVisible() ? 'Hide' : 'Show' }}
+      </button>
+    }</div>
   </div>
 
   @if (helperText() && !hasError()) {
     <div 
       [id]="helperTextId()" 
-      class="ui-input-helper-text"
+      class="fui-input-helper-text"
     >
       {{ helperText() }}
     </div>
@@ -55,11 +78,11 @@
   @if (hasError()) {
     <div 
       [id]="errorId()" 
-      class="ui-input-error-message"
+      class="fui-input-error-message"
       role="alert"
       aria-live="polite"
     >
-      {{ errorMessage() }}
+      {{ displayedErrorMessage() }}
     </div>
   }
 </div>

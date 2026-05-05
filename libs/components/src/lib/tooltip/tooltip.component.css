@@ -2,41 +2,47 @@
  * Tooltip Component Styles
  */
 
-.ui-tooltip-wrapper {
+.fui-tooltip-wrapper {
   position: relative;
   display: inline-block;
 }
 
-.ui-tooltip-trigger {
+.fui-tooltip-trigger {
   position: relative;
   display: inline-block;
 }
 
 /* Tooltip */
 
-.ui-tooltip {
+.fui-tooltip {
   position: fixed;
   z-index: 9999;
+  left: var(--fui-tooltip-left, 0);
+  top: var(--fui-tooltip-top, 0);
   pointer-events: none;
   opacity: 0;
-  transform: scale(0.95);
-  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+  transform: var(--fui-tooltip-transform, none) scale(0.95);
+  transition:
+    opacity var(--semantic-animation-duration-interactive, 150ms)
+      var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+    transform var(--semantic-animation-duration-interactive, 150ms)
+      var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
   will-change: transform, opacity;
 }
 
-.ui-tooltip--visible {
+.fui-tooltip--visible {
   opacity: 1;
-  transform: scale(1);
+  transform: var(--fui-tooltip-transform, none) scale(1);
 }
 
 /* Positioning handled dynamically via inline styles */
 
 /* Tooltip content */
 
-.ui-tooltip-content {
+.fui-tooltip-content {
   padding: var(--primitive-spacing-2) var(--primitive-spacing-3);
-  background-color: var(--semantic-text-primary);
-  color: var(--semantic-text-inverse);
+  background-color: var(--component-tooltip-background);
+  color: var(--component-tooltip-text);
   font-size: var(--primitive-font-size-sm);
   line-height: var(--primitive-line-height-normal);
   border-radius: var(--primitive-border-radius-md);
@@ -47,13 +53,13 @@
 
 /* Sizes */
 
-.ui-tooltip--sm .ui-tooltip-content {
+.fui-tooltip--sm .fui-tooltip-content {
   padding: var(--primitive-spacing-1) var(--primitive-spacing-2);
   font-size: var(--primitive-font-size-xs);
   max-width: 15rem;
 }
 
-.ui-tooltip--lg .ui-tooltip-content {
+.fui-tooltip--lg .fui-tooltip-content {
   padding: var(--primitive-spacing-3) var(--primitive-spacing-4);
   font-size: var(--primitive-font-size-base);
   max-width: 25rem;
@@ -62,33 +68,33 @@
 
 /* Arrow */
 
-.ui-tooltip-arrow {
+.fui-tooltip-arrow {
   position: absolute;
   width: 0.5rem;
   height: 0.5rem;
-  background-color: var(--semantic-text-primary);
+  background-color: var(--component-tooltip-background);
   transform: rotate(45deg);
 }
 
-.ui-tooltip--top .ui-tooltip-arrow {
+.fui-tooltip--top .fui-tooltip-arrow {
   bottom: -0.25rem;
   left: 50%;
   margin-left: -0.25rem;
 }
 
-.ui-tooltip--bottom .ui-tooltip-arrow {
+.fui-tooltip--bottom .fui-tooltip-arrow {
   top: -0.25rem;
   left: 50%;
   margin-left: -0.25rem;
 }
 
-.ui-tooltip--left .ui-tooltip-arrow {
+.fui-tooltip--left .fui-tooltip-arrow {
   right: -0.25rem;
   top: 50%;
   margin-top: -0.25rem;
 }
 
-.ui-tooltip--right .ui-tooltip-arrow {
+.fui-tooltip--right .fui-tooltip-arrow {
   left: -0.25rem;
   top: 50%;
   margin-top: -0.25rem;
@@ -97,18 +103,19 @@
 /* Reduced motion support */
 
 @media (prefers-reduced-motion: reduce) {
-  .ui-tooltip {
-    transition: opacity 0.1s ease-in-out;
+  .fui-tooltip {
+    transition: opacity var(--primitive-animation-duration-fast, 150ms)
+      var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
     transform: scale(1) !important;
   }
 
-  .ui-tooltip--top,
-  .ui-tooltip--bottom {
+  .fui-tooltip--top,
+  .fui-tooltip--bottom {
     transform: translateX(-50%) !important;
   }
 
-  .ui-tooltip--left,
-  .ui-tooltip--right {
+  .fui-tooltip--left,
+  .fui-tooltip--right {
     transform: translateY(-50%) !important;
   }
 }
@@ -116,21 +123,7 @@
 /* High contrast mode support */
 
 @media (prefers-contrast: more) {
-  .ui-tooltip-content {
+  .fui-tooltip-content {
     border: 2px solid var(--semantic-border-strong);
   }
 }
-
-/* Dark mode adjustments */
-
-@media (prefers-color-scheme: dark) {
-  .ui-tooltip-content {
-    background-color: rgba(255, 255, 255, 0.95);
-    color: var(--semantic-text-primary);
-  }
-
-  .ui-tooltip-arrow {
-    background-color: rgba(255, 255, 255, 0.95);
-  }
-}
-

@@ -1,11 +1,11 @@
 /**
  * Typography Service
- * 
+ *
  * Service for managing responsive typography and providing utilities
  * for calculating font sizes, line heights, and other typography properties
  */
 
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, inject, CSP_NONCE, DOCUMENT } from '@angular/core';
 import {
   fluidFontSize,
   calculateLineHeight,
@@ -24,6 +24,9 @@ export { type TypeScaleConfig, type Breakpoint } from '@ui-suite/shared';
   providedIn: 'root',
 })
 export class TypographyService {
+  private readonly nonce = inject(CSP_NONCE, { optional: true });
+  private readonly document = inject(DOCUMENT);
+
   /**
    * Current breakpoint (signal)
    */
@@ -96,23 +99,23 @@ export class TypographyService {
   }
 
   /**
-   * Apply typography CSS to document
+   * Apply typography CSS to document by injecting a nonce-compatible `<style>` element.
+   * Reuses the existing element on subsequent calls to avoid DOM churn.
    */
   applyTypographyCss(): void {
-    if (typeof document === 'undefined') {
-      return;
+    const styleId = 'fui-suite-typography';
+    let styleEl = this.document.getElementById(styleId) as HTMLStyleElement | null;
+
+    if (!styleEl) {
+      styleEl = this.document.createElement('style') as HTMLStyleElement;
+      styleEl.id = styleId;
+      if (this.nonce) {
+        styleEl.nonce = this.nonce;
+      }
+      this.document.head.appendChild(styleEl);
     }
 
-    const styleId = 'ui-suite-typography';
-    let styleElement = document.getElementById(styleId) as HTMLStyleElement;
-
-    if (!styleElement) {
-      styleElement = document.createElement('style');
-      styleElement.id = styleId;
-      document.head.appendChild(styleElement);
-    }
-
-    styleElement.textContent = this.generateCss();
+    styleEl.textContent = this.generateCss();
   }
 
   /**
@@ -168,4 +171,3 @@ export class TypographyService {
     return minOrMax === 'min' ? width >= breakpointWidth : width <= breakpointWidth;
   }
 }
-

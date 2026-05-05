@@ -1,43 +1,40 @@
 <div [ngClass]="tabsClasses()">
-  <div class="ui-tabs-list">
+  <div class="fui-tabs-list" role="tablist" [attr.aria-orientation]="orientation()">
     @for (tab of tabs(); track $index) {
       <button
         #tabButton
         type="button"
-        class="ui-tab-button"
-        [class.ui-tab-button--active]="$index === internalActiveIndex()"
-        [class.ui-tab-button--disabled]="tab.disabled()"
+        class="fui-tab-button"
+        [class.fui-tab-button--active]="$index === internalActiveIndex()"
+        [class.fui-tab-button--disabled]="tab.disabled()"
         [attr.role]="'tab'"
         [attr.aria-selected]="$index === internalActiveIndex()"
-        [attr.aria-controls]="'ui-tab-panel-' + $index"
-        [attr.id]="'ui-tab-' + $index"
+        [attr.aria-controls]="'fui-tab-panel-' + $index"
+        [attr.id]="'fui-tab-' + $index"
         [attr.tabindex]="$index === internalActiveIndex() ? 0 : -1"
         [disabled]="tab.disabled()"
         (click)="selectTab($index)"
         (keydown)="handleKeyDown($event, $index)"
       >
         @if (tab.icon()) {
-          <span class="ui-tab-icon">{{ tab.icon() }}</span>
+          <span class="fui-tab-icon">{{ tab.icon() }}</span>
         }
-        <span class="ui-tab-label">{{ tab.label() }}</span>
+        <span class="fui-tab-label">{{ tab.label() }}</span>
         @if (tab.badge()) {
-          <span class="ui-tab-badge">{{ tab.badge() }}</span>
+          <span class="fui-tab-badge">{{ tab.badge() }}</span>
         }
       </button>
     }
     @if (indicatorSize() > 0) {
-      <div 
-        class="ui-tabs-indicator"
-        [style.left]="orientation() === 'horizontal' ? indicatorPosition() + 'px' : 'auto'"
-        [style.top]="orientation() === 'vertical' ? indicatorPosition() + 'px' : 'auto'"
-        [style.width]="orientation() === 'horizontal' ? indicatorSize() + 'px' : '2px'"
-        [style.height]="orientation() === 'vertical' ? indicatorSize() + 'px' : '2px'"
+      <div
+        class="fui-tabs-indicator"
+        [style.--fui-tabs-indicator-pos]="indicatorPosition() + 'px'"
+        [style.--fui-tabs-indicator-size]="indicatorSize() + 'px'"
       ></div>
     }
   </div>
 
-  <div class="ui-tabs-panels">
+  <div class="fui-tabs-panels">
     <ng-content></ng-content>
   </div>
 </div>
-

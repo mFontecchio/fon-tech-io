@@ -16,20 +16,20 @@ import {
   ElementRef,
   viewChild,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'ui-textarea',
-  imports: [CommonModule, FormsModule],
+  selector: 'fui-textarea',
+  imports: [NgClass, FormsModule],
   templateUrl: './textarea.component.html',
   styleUrl: './textarea.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.ui-textarea-wrapper]': 'true',
-    '[class.ui-textarea-wrapper--disabled]': 'disabled()',
-    '[class.ui-textarea-wrapper--error]': 'hasError()',
-    '[class.ui-textarea-wrapper--full-width]': 'fullWidth()',
+    '[class.fui-textarea-wrapper]': 'true',
+    '[class.fui-textarea-wrapper--disabled]': 'disabled()',
+    '[class.fui-textarea-wrapper--error]': 'hasError()',
+    '[class.fui-textarea-wrapper--full-width]': 'fullWidth()',
   },
 })
 export class TextareaComponent {
@@ -176,7 +176,7 @@ export class TextareaComponent {
    */
   protected readonly textareaId = computed(() => {
     const providedId = this.id();
-    return providedId || `ui-textarea-${Math.random().toString(36).substr(2, 9)}`;
+    return providedId || `fui-textarea-${Math.random().toString(36).substr(2, 9)}`;
   });
 
   /**
@@ -210,11 +210,11 @@ export class TextareaComponent {
    * Computed CSS classes for textarea
    */
   protected readonly textareaClasses = computed(() => ({
-    'ui-textarea': true,
-    'ui-textarea--error': this.hasError(),
-    'ui-textarea--disabled': this.disabled(),
-    'ui-textarea--focused': this.isFocused(),
-    'ui-textarea--auto-resize': this.autoResize(),
+    'fui-textarea': true,
+    'fui-textarea--error': this.hasError(),
+    'fui-textarea--disabled': this.disabled(),
+    'fui-textarea--focused': this.isFocused(),
+    'fui-textarea--auto-resize': this.autoResize(),
   }));
 
   constructor() {
