@@ -51,6 +51,11 @@ import { CardComponent, CodeBlockComponent } from '@ui-suite/components';
   `,
   styles: [
     `
+      :host {
+        display: block;
+        min-width: 0;
+      }
+
       .doc-page {
         padding: var(--primitive-spacing-8);
         max-width: 900px;
@@ -72,8 +77,14 @@ import { CardComponent, CodeBlockComponent } from '@ui-suite/components';
 
       .content-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
         gap: var(--primitive-spacing-6);
+        width: 100%;
+        min-width: 0;
+      }
+
+      .doc-page > * {
+        min-width: 0;
       }
 
       h2 {
@@ -94,7 +105,7 @@ import { CardComponent, CodeBlockComponent } from '@ui-suite/components';
 
       @media (max-width: 768px) {
         .doc-page {
-          padding: var(--primitive-spacing-6);
+          padding: var(--primitive-spacing-4);
         }
       }
     `,

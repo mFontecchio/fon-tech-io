@@ -50,9 +50,11 @@ import { ThemeService } from '@ui-suite/theming';
 
       .app-main {
         flex: 1;
+        min-width: 0;
         margin-left: 280px;
         min-height: calc(100vh - 4rem);
         background-color: var(--semantic-surface-background);
+        overflow-x: hidden;
         transition: margin-left var(--animation-duration-normal) var(--animation-easing-default);
       }
 
