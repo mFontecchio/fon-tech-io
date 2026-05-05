@@ -40,7 +40,7 @@
           "outputHashing": "all"
         },
         "github-pages": {
-          "baseHref": "/ui-component-suite/",
+          "baseHref": "/fon-tech-io/",
           "budgets": [
             {
               "type": "initial",

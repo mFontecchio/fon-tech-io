@@ -44,7 +44,7 @@ All styling uses CSS custom properties from this hierarchy:
 **Tier 1: Primitive Tokens** (`libs/theming/src/lib/tokens/primitive-tokens.ts`)
 
 - Raw values: colors (50-950 shades), spacing (0-64, 4px multiplier), typography, shadows
-- Example: `--primitive-spacing-4`, `--primitive-color-primary-500`
+- Example: `--primitive-spacing-4`, `--primitive-primary-500`
 
 **Tier 2: Semantic Tokens** (`libs/theming/src/lib/tokens/semantic-tokens.ts`)
 
@@ -206,7 +206,7 @@ constructor(private cssGenerator = inject(CssGeneratorService)) {}
 
 // Generate CSS string from theme
 const cssString = this.cssGenerator.generateCssVariables(theme);
-// Returns: ":root { --primitive-color-primary-500: #3b82f6; ... }"
+// Returns: ":root { --primitive-primary-500: #3b82f6; ... }"
 
 // Apply theme to DOM element
 this.cssGenerator.applyTheme(theme); // Applies to document.documentElement
@@ -219,8 +219,8 @@ this.cssGenerator.applyThemeToElement(theme, elementRef.nativeElement);
 The service flattens nested token objects into kebab-case CSS variables:
 
 ```typescript
-// Input: { primitive: { color: { primary: { 500: '#3b82f6' } } } }
-// Output: --primitive-color-primary-500: #3b82f6;
+// Input: { primitive: { colors: { primary: { 500: '#3b82f6' } } } }
+// Output: --primitive-primary-500: #3b82f6;
 ```
 
 **When to Use**:
@@ -453,7 +453,7 @@ const myCustomTheme: Theme = {
     version: '1.0.0',
   },
   primitive: {
-    color: {
+    colors: {
       primary: {
         500: '#0066cc', // Brand blue
         // ... other shades
@@ -464,7 +464,7 @@ const myCustomTheme: Theme = {
   semantic: {
     // Semantic tokens reference primitive tokens
     brand: {
-      primary: 'var(--primitive-color-primary-500)',
+      primary: 'var(--primitive-primary-500)',
     },
   },
   component: {
