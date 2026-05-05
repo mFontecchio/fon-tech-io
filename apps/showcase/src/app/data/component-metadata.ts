@@ -16,6 +16,31 @@ const BUTTON_METADATA: ComponentMetadata = {
   description:
     'A themable button component with multiple variants, sizes, and states. Supports loading states and full accessibility.',
   selector: 'fui-button',
+  setup: {
+    importStatement: "import { ButtonComponent } from '@ui-suite/components';",
+    usageSnippet: `<fui-button>Click Me</fui-button>`,
+    setupNotes: 'No additional setup required. Add ButtonComponent to the imports array of your standalone component.',
+  },
+  forms: {
+    recommendedBinding:
+      'Use native form semantics. Place the button inside a standard HTML form and set the type input to submit or reset when appropriate.',
+    changeBinding: '(clicked)',
+    supportsControlValueAccessor: false,
+    supportsTemplateDrivenForms: false,
+    supportsReactiveForms: false,
+    notes: [
+      'This component does not represent a form value; it participates in forms through native button submit and reset behavior.',
+      'Handle form submission on the parent form element or in the clicked output.',
+    ],
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Uses native button semantics and is safe for SSR output.',
+      'No browser-only APIs are required for core rendering behavior.',
+    ],
+  },
   inputs: [
     {
       name: 'variant',
@@ -72,6 +97,48 @@ const BUTTON_METADATA: ComponentMetadata = {
       description: 'Emitted when button is clicked (only if not disabled or loading)',
     },
   ],
+  passthroughs: [
+    {
+      name: 'Default content',
+      type: 'slot',
+      selector: '(default)',
+      description: 'Button label text or any inline content such as icons. Rendered inside the native button element.',
+      optional: true,
+    },
+    {
+      name: 'type',
+      type: 'passthrough',
+      selector: 'type',
+      description: 'Forwarded to the native button type attribute. Accepts button, submit, or reset.',
+      optional: true,
+    },
+    {
+      name: 'disabled',
+      type: 'passthrough',
+      selector: 'disabled',
+      description: 'Forwarded to the native button disabled attribute. Also sets aria-disabled.',
+      optional: true,
+    },
+  ],
+  theming: {
+    tokens: [
+      { token: '--component-button-border-radius', description: 'Border radius applied to all button variants.' },
+      { token: '--component-button-border-width', description: 'Border width for the outlined variant.' },
+      { token: '--component-button-font-weight', description: 'Font weight of button label text.' },
+      { token: '--component-button-sizes-sm-padding-y', description: 'Vertical padding for the small size.' },
+      { token: '--component-button-sizes-sm-padding-x', description: 'Horizontal padding for the small size.' },
+      { token: '--component-button-sizes-md-padding-y', description: 'Vertical padding for the medium size.' },
+      { token: '--component-button-sizes-md-padding-x', description: 'Horizontal padding for the medium size.' },
+      { token: '--component-button-sizes-lg-padding-y', description: 'Vertical padding for the large size.' },
+      { token: '--component-button-sizes-lg-padding-x', description: 'Horizontal padding for the large size.' },
+      { token: '--semantic-brand-primary', description: 'Background color of the filled variant.' },
+      { token: '--semantic-brand-primary-hover', description: 'Hover background color of the filled variant.' },
+      { token: '--semantic-text-inverse', description: 'Label text color on filled backgrounds.' },
+      { token: '--semantic-state-disabled', description: 'Background color when the button is disabled.' },
+      { token: '--semantic-text-disabled', description: 'Label color when the button is disabled.' },
+    ],
+    customizationNotes: 'Override component tokens on a scoped ancestor element. For example: .my-context { --component-button-border-radius: 2px; }. Avoid ::ng-deep.',
+  },
   examples: [
     {
       title: 'Basic Usage',
@@ -140,6 +207,33 @@ const INPUT_METADATA: ComponentMetadata = {
   description:
     'A themable text input component with validation states, projected affixes, native validity feedback, and optional password reveal support.',
   selector: 'fui-input',
+  setup: {
+    importStatement: "import { InputComponent } from '@ui-suite/components';",
+    usageSnippet: `<fui-input label="Email" placeholder="Enter your email" />`,
+    setupNotes: 'No additional setup required. Add InputComponent to the imports array of your standalone component.',
+  },
+  forms: {
+    recommendedBinding:
+      'Bind the current value with [value] and update application state from (valueChange). This matches the component\'s explicit Angular 20 input/output contract.',
+    valueBinding: '[value]',
+    changeBinding: '(valueChange)',
+    supportsControlValueAccessor: false,
+    supportsTemplateDrivenForms: false,
+    supportsReactiveForms: false,
+    notes: [
+      'Use signals or component state to hold the current value and write updates back through the valueChange output.',
+      'formControlName and ngModel are not built in because the component does not implement ControlValueAccessor.',
+      'Native validation attributes such as required, pattern, minlength, and maxlength still apply on the underlying input element.',
+    ],
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Core input rendering is SSR-friendly.',
+      'Auto-focus and programmatic focus behavior depend on browser DOM APIs after hydration.',
+    ],
+  },
   inputs: [
     {
       name: 'type',
@@ -211,6 +305,47 @@ const INPUT_METADATA: ComponentMetadata = {
       description: 'Emitted on every native input event',
     },
   ],
+  passthroughs: [
+    {
+      name: 'Prefix slot',
+      type: 'slot',
+      selector: '[prefix]',
+      description: 'Arbitrary content placed before the input field — typically an icon or symbol. Use the prefix attribute on a child element.',
+      optional: true,
+    },
+    {
+      name: 'Suffix slot',
+      type: 'slot',
+      selector: '[suffix]',
+      description: 'Arbitrary content placed after the input field — typically an icon, button, or unit label. Use the suffix attribute on a child element.',
+      optional: true,
+    },
+    {
+      name: 'Native input attributes',
+      type: 'passthrough',
+      selector: 'type, name, id, autocomplete, pattern, maxlength, minlength, required, readonly, disabled',
+      description: 'All these native attributes are forwarded to the underlying <input> element via explicit component inputs of the same name.',
+      optional: true,
+    },
+  ],
+  theming: {
+    tokens: [
+      { token: '--component-input-padding-y', description: 'Vertical padding inside the input field.' },
+      { token: '--component-input-padding-x', description: 'Horizontal padding inside the input field.' },
+      { token: '--component-input-font-size', description: 'Font size of input text.' },
+      { token: '--component-input-border-radius', description: 'Border radius of the input wrapper.' },
+      { token: '--component-input-border-width', description: 'Width of the input border.' },
+      { token: '--component-input-default-border', description: 'Default border color.' },
+      { token: '--component-input-hover-border', description: 'Border color on hover.' },
+      { token: '--component-input-focus-border', description: 'Border color when focused.' },
+      { token: '--component-input-focus-ring', description: 'Focus ring color and style.' },
+      { token: '--component-input-error-border', description: 'Border color in the error state.' },
+      { token: '--component-input-disabled-background', description: 'Background color when disabled.' },
+      { token: '--component-input-default-text', description: 'Text color of the input value.' },
+      { token: '--component-input-default-placeholder', description: 'Placeholder text color.' },
+    ],
+    customizationNotes: 'Override component tokens on an ancestor element to restyle inputs in a specific context. For example: .my-form { --component-input-border-radius: 0; }. Do not use ::ng-deep.',
+  },
   examples: [
     {
       title: 'Basic Input',
@@ -323,6 +458,33 @@ const TEXTAREA_METADATA: ComponentMetadata = {
   category: 'form',
   description: 'A multi-line text input component with auto-resize and character counter support.',
   selector: 'fui-textarea',
+  setup: {
+    importStatement: "import { TextareaComponent } from '@ui-suite/components';",
+    usageSnippet: `<fui-textarea label="Message" placeholder="Enter your message" />`,
+    setupNotes: 'No additional setup required. Add TextareaComponent to the imports array of your standalone component.',
+  },
+  forms: {
+    recommendedBinding:
+      'Bind textarea content with [value] and respond to (valueChange) to keep Angular state in sync.',
+    valueBinding: '[value]',
+    changeBinding: '(valueChange)',
+    supportsControlValueAccessor: false,
+    supportsTemplateDrivenForms: false,
+    supportsReactiveForms: false,
+    notes: [
+      'Use a signal or component field as the source of truth for the textarea value.',
+      'Reactive forms and ngModel require a wrapper because this component does not provide ControlValueAccessor.',
+      'Readonly, minlength, maxlength, and required are forwarded to the native textarea element.',
+    ],
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Core textarea rendering is SSR-friendly.',
+      'Auto-resize and programmatic focus behavior run against browser DOM APIs after hydration.',
+    ],
+  },
   inputs: [
     { name: 'label', type: 'string', description: 'Label text displayed above the textarea' },
     { name: 'placeholder', type: 'string', description: 'Placeholder text shown when empty' },
@@ -368,6 +530,29 @@ const TEXTAREA_METADATA: ComponentMetadata = {
     { name: 'fullWidth', type: 'boolean', description: 'Whether textarea takes full width', defaultValue: 'false' },
   ],
   outputs: [{ name: 'valueChange', type: 'string', description: 'Emitted when value changes' }],
+  passthroughs: [
+    {
+      name: 'Native textarea attributes',
+      type: 'passthrough',
+      selector: 'name, id, placeholder, disabled, readonly, required, maxlength, minlength, rows, autocomplete',
+      description: 'Forwarded to the underlying <textarea> element via explicit component inputs of the same name.',
+      optional: true,
+    },
+  ],
+  theming: {
+    tokens: [
+      { token: '--component-input-padding-y', description: 'Vertical padding inside the textarea.' },
+      { token: '--component-input-padding-x', description: 'Horizontal padding inside the textarea.' },
+      { token: '--component-input-font-size', description: 'Font size of textarea text.' },
+      { token: '--component-input-border-radius', description: 'Border radius of the textarea.' },
+      { token: '--component-input-border-width', description: 'Width of the textarea border.' },
+      { token: '--component-input-default-border', description: 'Default border color.' },
+      { token: '--component-input-focus-border', description: 'Border color when focused.' },
+      { token: '--component-input-error-border', description: 'Border color in the error state.' },
+      { token: '--component-input-disabled-background', description: 'Background when disabled.' },
+    ],
+    customizationNotes: 'Textarea shares input tokens. Override --component-input-* tokens on an ancestor to apply consistent form styling.',
+  },
   examples: [
     {
       title: 'Basic Textarea',
@@ -464,6 +649,33 @@ const CHECKBOX_METADATA: ComponentMetadata = {
   category: 'form',
   description: 'A themable checkbox component with label support and indeterminate state.',
   selector: 'fui-checkbox',
+  setup: {
+    importStatement: "import { CheckboxComponent } from '@ui-suite/components';",
+    usageSnippet: `<fui-checkbox label="Accept terms and conditions" />`,
+    setupNotes: 'No additional setup required. Add CheckboxComponent to the imports array of your standalone component.',
+  },
+  forms: {
+    recommendedBinding:
+      'Bind checked state with [checked] and handle (checkedChange) for updates. This is the supported Angular contract for the component.',
+    valueBinding: '[checked]',
+    changeBinding: '(checkedChange)',
+    supportsControlValueAccessor: false,
+    supportsTemplateDrivenForms: false,
+    supportsReactiveForms: false,
+    notes: [
+      'Use checked for boolean state and value only when you need native form submission semantics.',
+      'The component forwards native checkbox attributes but does not integrate with formControlName or ngModel on its own.',
+      'Indeterminate state is managed separately through the indeterminate input.',
+    ],
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Markup and state are SSR-compatible.',
+      'Indeterminate state is applied to the native checkbox element in the browser runtime.',
+    ],
+  },
   inputs: [
     { name: 'checked', type: 'boolean', description: 'Whether checked', defaultValue: 'false' },
     { name: 'disabled', type: 'boolean', description: 'Whether disabled', defaultValue: 'false' },
@@ -486,6 +698,26 @@ const CHECKBOX_METADATA: ComponentMetadata = {
   outputs: [
     { name: 'checkedChange', type: 'boolean', description: 'Emitted when checked state changes' },
   ],
+  passthroughs: [
+    {
+      name: 'Native checkbox attributes',
+      type: 'passthrough',
+      selector: 'name, id, value, checked, disabled, required',
+      description: 'Forwarded to the underlying <input type="checkbox"> element via explicit component inputs of the same name.',
+      optional: true,
+    },
+  ],
+  theming: {
+    tokens: [
+      { token: '--semantic-brand-primary', description: 'Background color of the checked state indicator.' },
+      { token: '--semantic-brand-primary-hover', description: 'Hover color for the checked state.' },
+      { token: '--semantic-border-default', description: 'Default border color of the checkbox control.' },
+      { token: '--semantic-border-error', description: 'Border color in the error state.' },
+      { token: '--semantic-state-disabled', description: 'Appearance modifier when disabled.' },
+      { token: '--semantic-text-primary', description: 'Label text color.' },
+    ],
+    customizationNotes: 'Override semantic brand tokens to change the checked color globally, or scope overrides to a parent element for context-specific variants.',
+  },
   examples: [
     {
       title: 'Basic Checkbox',
@@ -543,6 +775,34 @@ const RADIO_METADATA: ComponentMetadata = {
   description:
     'A themable radio button component for mutually exclusive selections using Angular model binding for group state.',
   selector: 'fui-radio',
+  setup: {
+    importStatement: "import { RadioComponent } from '@ui-suite/components';",
+    usageSnippet: `<fui-radio name="plan" value="free" label="Free Plan" [(modelValue)]="selectedPlan" />\n<fui-radio name="plan" value="pro" label="Pro Plan" [(modelValue)]="selectedPlan" />`,
+    usageTypescript: `import { signal } from '@angular/core';\n\nexport class MyComponent {\n  protected readonly selectedPlan = signal<string>('free');\n}`,
+    setupNotes: 'Import signal from @angular/core. Add RadioComponent to the imports array of your standalone component.',
+  },
+  forms: {
+    recommendedBinding:
+      'Use Angular\'s model input syntax with [(modelValue)] across every radio in the same group and keep the native name input identical for mutual exclusion.',
+    valueBinding: '[(modelValue)]',
+    changeBinding: '(modelValueChange)',
+    supportsControlValueAccessor: false,
+    supportsTemplateDrivenForms: false,
+    supportsReactiveForms: false,
+    notes: [
+      'All radios in a group must share the same name input and the same modelValue signal or state field.',
+      'This component uses Angular model() for two-way binding but does not implement ControlValueAccessor for ngModel or formControlName.',
+      'Use the generated modelValueChange output if you need to listen without banana-in-a-box syntax.',
+    ],
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Group rendering and selection logic are SSR-compatible.',
+      'Programmatic focus and generated IDs rely on browser-side hydration for interactive behavior.',
+    ],
+  },
   inputs: [
     {
       name: 'modelValue',
@@ -607,7 +867,13 @@ const RADIO_METADATA: ComponentMetadata = {
       defaultValue: 'undefined',
     },
   ],
-  outputs: [],
+  outputs: [
+    {
+      name: 'modelValueChange',
+      type: 'string | undefined',
+      description: 'Emitted when this radio updates the shared modelValue binding',
+    },
+  ],
   methods: [
     {
       name: 'focus',
@@ -616,6 +882,26 @@ const RADIO_METADATA: ComponentMetadata = {
       description: 'Programmatically focus the radio button',
     },
   ],
+  passthroughs: [
+    {
+      name: 'Native radio attributes',
+      type: 'passthrough',
+      selector: 'name, id, value, disabled, required',
+      description: 'Forwarded to the underlying <input type="radio"> element via explicit component inputs. All radio buttons in a group must share the same name.',
+      optional: true,
+    },
+  ],
+  theming: {
+    tokens: [
+      { token: '--semantic-brand-primary', description: 'Fill color of the selected radio indicator.' },
+      { token: '--semantic-brand-primary-hover', description: 'Hover color of the radio control.' },
+      { token: '--semantic-border-default', description: 'Default border of the radio control ring.' },
+      { token: '--semantic-border-error', description: 'Border color in the error state.' },
+      { token: '--semantic-state-disabled', description: 'Appearance modifier when disabled.' },
+      { token: '--semantic-text-primary', description: 'Label text color.' },
+    ],
+    customizationNotes: 'Override semantic brand tokens on an ancestor to restyle all radios within a form section.',
+  },
   examples: [
     {
       title: 'Basic Radio Group',
@@ -697,6 +983,32 @@ const SWITCH_METADATA: ComponentMetadata = {
   category: 'form',
   description: 'A toggle switch component for binary on/off states.',
   selector: 'fui-switch',
+  setup: {
+    importStatement: "import { SwitchComponent } from '@ui-suite/components';",
+    usageSnippet: `<fui-switch label="Enable notifications" />`,
+    setupNotes: 'No additional setup required. Add SwitchComponent to the imports array of your standalone component.',
+  },
+  forms: {
+    recommendedBinding:
+      'Bind the boolean state with [checked] and respond to (checkedChange) when the switch toggles.',
+    valueBinding: '[checked]',
+    changeBinding: '(checkedChange)',
+    supportsControlValueAccessor: false,
+    supportsTemplateDrivenForms: false,
+    supportsReactiveForms: false,
+    notes: [
+      'Treat the switch as a specialized checkbox with its own checked input and checkedChange output.',
+      'If you need ngModel or formControlName, add a small adapter directive or wrapper component.',
+    ],
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Switch markup and state are SSR-compatible.',
+      'Programmatic focus and generated IDs rely on browser-side hydration for full interactivity.',
+    ],
+  },
   inputs: [
     {
       name: 'checked',
@@ -725,6 +1037,25 @@ const SWITCH_METADATA: ComponentMetadata = {
   outputs: [
     { name: 'checkedChange', type: 'boolean', description: 'Emitted when checked state changes' },
   ],
+  passthroughs: [
+    {
+      name: 'Native switch attributes',
+      type: 'passthrough',
+      selector: 'name, id, checked, disabled, required',
+      description: 'Forwarded to the underlying <input type="checkbox" role="switch"> element via explicit component inputs.',
+      optional: true,
+    },
+  ],
+  theming: {
+    tokens: [
+      { token: '--semantic-brand-primary', description: 'Track color in the on (checked) state.' },
+      { token: '--semantic-brand-primary-hover', description: 'Track hover color in the on state.' },
+      { token: '--semantic-border-default', description: 'Track border color in the off state.' },
+      { token: '--semantic-state-disabled', description: 'Appearance modifier when disabled.' },
+      { token: '--semantic-surface-card', description: 'Thumb (toggle knob) background color.' },
+    ],
+    customizationNotes: 'Override semantic brand tokens on an ancestor element to restyle switches in a specific context.',
+  },
   examples: [
     {
       title: 'Basic Switch',
@@ -780,6 +1111,33 @@ const SELECT_METADATA: ComponentMetadata = {
   category: 'form',
   description: 'A native HTML select component with enhanced styling, grouped options, helper text, and validation messaging.',
   selector: 'fui-select',
+  setup: {
+    importStatement: "import { SelectComponent } from '@ui-suite/components';",
+    usageSnippet: `<fui-select label="Country" [options]="countries" placeholder="Choose a country" />`,
+    usageTypescript: `export class MyComponent {\n  protected readonly countries = [\n    { value: 'us', label: 'United States' },\n    { value: 'uk', label: 'United Kingdom' },\n    { value: 'ca', label: 'Canada' },\n  ];\n}`,
+    setupNotes: 'No additional setup required. Add SelectComponent to the imports array of your standalone component.',
+  },
+  forms: {
+    recommendedBinding:
+      'Bind the selected option with [value] and update state from (valueChange).',
+    valueBinding: '[value]',
+    changeBinding: '(valueChange)',
+    supportsControlValueAccessor: false,
+    supportsTemplateDrivenForms: false,
+    supportsReactiveForms: false,
+    notes: [
+      'This component wraps a native select element but exposes an explicit input/output contract rather than ControlValueAccessor.',
+      'Use the name input only for native form submission or testing hooks; Angular Forms adapters are still manual.',
+    ],
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Native select rendering is SSR-compatible.',
+      'Programmatic focus and generated fallback IDs rely on browser APIs after hydration.',
+    ],
+  },
   inputs: [
     { name: 'label', type: 'string', description: 'Label text displayed above select' },
     { name: 'placeholder', type: 'string', description: 'Placeholder text when no selection' },
@@ -841,6 +1199,27 @@ const SELECT_METADATA: ComponentMetadata = {
       description: 'Programmatically focus the native select element',
     },
   ],
+  passthroughs: [
+    {
+      name: 'Native select attributes',
+      type: 'passthrough',
+      selector: 'name, id, disabled, required',
+      description: 'Forwarded to the underlying native select element via explicit component inputs.',
+      optional: true,
+    },
+  ],
+  theming: {
+    tokens: [
+      { token: '--semantic-surface-card', description: 'Dropdown panel background color.' },
+      { token: '--semantic-border-default', description: 'Default border of the select control.' },
+      { token: '--semantic-border-strong', description: 'Border color on hover.' },
+      { token: '--semantic-state-focus-ring', description: 'Focus ring styling.' },
+      { token: '--semantic-border-error', description: 'Border color in the error state.' },
+      { token: '--semantic-state-disabled', description: 'Appearance modifier when disabled.' },
+      { token: '--primitive-border-radius-md', description: 'Border radius of the control and panel.' },
+    ],
+    customizationNotes: 'Override --semantic-* tokens on an ancestor element to restyle selects in a specific context.',
+  },
   examples: [
     {
       title: 'Basic Select',
@@ -950,6 +1329,34 @@ const MULTI_SELECT_METADATA: ComponentMetadata = {
   category: 'form',
   description: 'A multi-selection dropdown with chips for selected values.',
   selector: 'fui-multi-select',
+  setup: {
+    importStatement: "import { MultiSelectComponent } from '@ui-suite/components';",
+    usageSnippet: `<fui-multi-select label="Skills" [options]="skills" placeholder="Select skills" />`,
+    usageTypescript: `export class MyComponent {\n  protected readonly skills = [\n    { value: 'ts', label: 'TypeScript' },\n    { value: 'angular', label: 'Angular' },\n    { value: 'rxjs', label: 'RxJS' },\n  ];\n}`,
+    setupNotes: 'No additional setup required. Add MultiSelectComponent to the imports array of your standalone component.',
+  },
+  forms: {
+    recommendedBinding:
+      'Treat the selected values array as explicit component state and sync it with [value] plus (valueChange).',
+    valueBinding: '[value]',
+    changeBinding: '(valueChange)',
+    supportsControlValueAccessor: false,
+    supportsTemplateDrivenForms: false,
+    supportsReactiveForms: false,
+    notes: [
+      'Use valueChange to patch a signal, store, or custom FormControl wrapper with the latest string array.',
+      'The hidden native input supports form submission semantics only; Angular Forms integration remains manual.',
+      'When allowCreate is enabled, also handle optionCreated to persist newly created options.',
+    ],
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Initial rendering is SSR-compatible.',
+      'Dropdown interaction uses document-level click handling and timed focus in the browser runtime.',
+    ],
+  },
   inputs: [
     { name: 'label', type: 'string', description: 'Label text displayed above select' },
     { name: 'placeholder', type: 'string', description: 'Placeholder text when no selection' },
@@ -1001,6 +1408,27 @@ const MULTI_SELECT_METADATA: ComponentMetadata = {
   outputs: [
     { name: 'valueChange', type: 'string[]', description: 'Emitted when selection changes' },
   ],
+  passthroughs: [
+    {
+      name: 'Native attributes',
+      type: 'passthrough',
+      selector: 'name, id, disabled, required',
+      description: 'Forwarded to the underlying hidden input element via explicit component inputs. Used for form submission.',
+      optional: true,
+    },
+  ],
+  theming: {
+    tokens: [
+      { token: '--semantic-surface-card', description: 'Dropdown panel background.' },
+      { token: '--semantic-border-default', description: 'Default border of the control.' },
+      { token: '--semantic-brand-primary', description: 'Background of selected option chips.' },
+      { token: '--semantic-text-inverse', description: 'Text color on selected option chips.' },
+      { token: '--semantic-state-focus-ring', description: 'Focus ring styling.' },
+      { token: '--semantic-border-error', description: 'Border color in the error state.' },
+      { token: '--primitive-border-radius-md', description: 'Border radius of the control and panel.' },
+    ],
+    customizationNotes: 'Override --semantic-brand-primary to change the selected chip color. Scope overrides to a parent element to affect only a specific form.',
+  },
   examples: [
     {
       title: 'Basic Multi-Select',
@@ -1076,6 +1504,32 @@ const SLIDER_METADATA: ComponentMetadata = {
   category: 'form',
   description: 'A range slider component with single or dual handles for numeric value selection.',
   selector: 'fui-slider',
+  setup: {
+    importStatement: "import { SliderComponent } from '@ui-suite/components';",
+    usageSnippet: `<fui-slider label="Volume" [min]="0" [max]="100" [value]="50" />`,
+    setupNotes: 'No additional setup required. Add SliderComponent to the imports array of your standalone component.',
+  },
+  forms: {
+    recommendedBinding:
+      'For single-value sliders, bind [value] and listen to (valueChange). In range mode, wire both [valueEnd] and (valueEndChange) as well.',
+    valueBinding: '[value]',
+    changeBinding: '(valueChange)',
+    supportsControlValueAccessor: false,
+    supportsTemplateDrivenForms: false,
+    supportsReactiveForms: false,
+    notes: [
+      'Range sliders expose two value channels: value/valueChange for the start handle and valueEnd/valueEndChange for the end handle.',
+      'If you need to store the slider in a FormControl, bridge these outputs into your form model manually.',
+    ],
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Slider rendering is SSR-compatible.',
+      'Pointer and drag interactions attach document listeners in the browser runtime.',
+    ],
+  },
   inputs: [
     { name: 'value', type: 'number', description: 'Current slider value', defaultValue: '0' },
     { name: 'valueEnd', type: 'number', description: 'End value for range mode (dual handles)' },
@@ -1103,6 +1557,25 @@ const SLIDER_METADATA: ComponentMetadata = {
       description: 'Emitted when end value changes (range mode)',
     },
   ],
+  passthroughs: [
+    {
+      name: 'Native range attributes',
+      type: 'passthrough',
+      selector: 'min, max, step, value, disabled',
+      description: 'Forwarded to the underlying <input type="range"> element(s) via explicit component inputs.',
+      optional: true,
+    },
+  ],
+  theming: {
+    tokens: [
+      { token: '--semantic-brand-primary', description: 'Track fill color and thumb color.' },
+      { token: '--semantic-surface-background-secondary', description: 'Unfilled track background.' },
+      { token: '--semantic-state-focus-ring', description: 'Focus ring on the thumb.' },
+      { token: '--semantic-state-disabled', description: 'Appearance modifier when disabled.' },
+      { token: '--primitive-border-radius-full', description: 'Track and thumb border radius.' },
+    ],
+    customizationNotes: 'Override --semantic-brand-primary to change the slider accent color in a given context.',
+  },
   examples: [
     {
       title: 'Basic Slider',
@@ -1184,6 +1657,32 @@ const DATEPICKER_METADATA: ComponentMetadata = {
   description:
     'A native HTML date input with a themed trigger button, helper text, and support for min/max validation in ISO date format.',
   selector: 'fui-date-picker',
+  setup: {
+    importStatement: "import { DatePickerComponent } from '@ui-suite/components';",
+    usageSnippet: `<fui-date-picker label="Start date" placeholder="Select a date" />`,
+    setupNotes: 'No additional setup required. Add DatePickerComponent to the imports array of your standalone component.',
+  },
+  forms: {
+    recommendedBinding:
+      'Bind ISO date strings with [value] and respond to (valueChange) when the user types or picks a date.',
+    valueBinding: '[value]',
+    changeBinding: '(valueChange)',
+    supportsControlValueAccessor: false,
+    supportsTemplateDrivenForms: false,
+    supportsReactiveForms: false,
+    notes: [
+      'The component emits dates as YYYY-MM-DD strings. Keep that format in your Angular state for predictable comparisons and submission.',
+      'Min, max, and required are enforced through the native date input, but Angular Forms adapters are not built in.',
+    ],
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Native date input markup is SSR-compatible.',
+      'Triggering showPicker is browser-dependent and gracefully falls back to focus/click behavior.',
+    ],
+  },
   inputs: [
     { name: 'label', type: 'string', description: 'Label text displayed above the date picker' },
     {
@@ -1231,6 +1730,26 @@ const DATEPICKER_METADATA: ComponentMetadata = {
   outputs: [
     { name: 'valueChange', type: 'string', description: 'Emitted when date changes (ISO format)' },
   ],
+  passthroughs: [
+    {
+      name: 'Native date input attributes',
+      type: 'passthrough',
+      selector: 'name, id, disabled, required, min, max',
+      description: 'Forwarded to the underlying <input type="date"> element via explicit component inputs.',
+      optional: true,
+    },
+  ],
+  theming: {
+    tokens: [
+      { token: '--semantic-surface-card', description: 'Calendar panel background.' },
+      { token: '--semantic-border-default', description: 'Default border of the control.' },
+      { token: '--semantic-brand-primary', description: 'Selected date highlight color.' },
+      { token: '--semantic-state-focus-ring', description: 'Focus ring styling.' },
+      { token: '--semantic-border-error', description: 'Border color in the error state.' },
+      { token: '--primitive-border-radius-md', description: 'Border radius of the control and panel.' },
+    ],
+    customizationNotes: 'Override --semantic-brand-primary to change the selected date accent. Scope to a parent element for context-specific calendars.',
+  },
   examples: [
     {
       title: 'Basic Date Picker',
@@ -1344,6 +1863,31 @@ const FILEUPLOAD_METADATA: ComponentMetadata = {
   description:
     'A comprehensive file upload component with drag-and-drop support, file type validation, size restrictions, and file preview. Supports both single and multiple file uploads with progress indication.',
   selector: 'fui-file-upload',
+  setup: {
+    importStatement: "import { FileUploadComponent } from '@ui-suite/components';",
+    usageSnippet: `<fui-file-upload label="Upload documents" />`,
+    setupNotes: 'No additional setup required. Add FileUploadComponent to the imports array of your standalone component.',
+  },
+  forms: {
+    recommendedBinding:
+      'Handle uploads as an event-driven interaction. Listen to (filesSelected) and patch application state or a form model manually.',
+    changeBinding: '(filesSelected)',
+    supportsControlValueAccessor: false,
+    supportsTemplateDrivenForms: false,
+    supportsReactiveForms: false,
+    notes: [
+      'The internal native file input is not exposed as a ControlValueAccessor because browsers restrict programmatic file value assignment.',
+      'Use filesSelected to update your own upload queue or FormData builder and fileRemoved to keep that state in sync.',
+    ],
+  },
+  runtime: {
+    supportsSSR: false,
+    requiresBrowserAPIs: true,
+    notes: [
+      'File objects, drag-and-drop, and FileReader previews are browser-only capabilities.',
+      'Render file upload components conditionally in SSR routes when file interaction is not required.',
+    ],
+  },
   inputs: [
     { name: 'label', type: 'string', description: 'Label text displayed above the upload area' },
     {
@@ -1396,6 +1940,26 @@ const FILEUPLOAD_METADATA: ComponentMetadata = {
     },
     { name: 'fileRemoved', type: 'File', description: 'Emitted when a file is removed' },
   ],
+  passthroughs: [
+    {
+      name: 'Native file input attributes',
+      type: 'passthrough',
+      selector: 'accept, multiple, disabled',
+      description: 'Forwarded to the underlying <input type="file"> element via explicit component inputs. Use accept to filter allowed file types.',
+      optional: true,
+    },
+  ],
+  theming: {
+    tokens: [
+      { token: '--semantic-border-default', description: 'Dropzone border color in the idle state.' },
+      { token: '--semantic-brand-primary', description: 'Accent color on hover/drag-over.' },
+      { token: '--semantic-brand-primary-subtle', description: 'Dropzone background on drag-over.' },
+      { token: '--semantic-surface-background-secondary', description: 'Dropzone idle background.' },
+      { token: '--semantic-border-error', description: 'Border color in the error state.' },
+      { token: '--primitive-border-radius-md', description: 'Border radius of the dropzone.' },
+    ],
+    customizationNotes: 'Override --semantic-brand-primary to change the drag-over accent. Scope to a parent element for isolated forms.',
+  },
   examples: [
     {
       title: 'Basic File Upload',
@@ -1525,6 +2089,18 @@ const CARD_METADATA: ComponentMetadata = {
   description:
     'A versatile container component for grouping related content with optional header and footer.',
   selector: 'fui-card',
+  setup: {
+    importStatement: "import { CardComponent } from '@ui-suite/components';",
+    usageSnippet: `<fui-card>\n  <div header>Card Title</div>\n  <p>Card content goes here.</p>\n  <div footer>Footer actions</div>\n</fui-card>`,
+    setupNotes: 'No additional setup required. Add CardComponent to the imports array of your standalone component. Use [header] and [footer] attributes to project content into the header and footer slots.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Card rendering is fully SSR-friendly with no browser-only dependencies for core behavior.',
+    ],
+  },
   inputs: [
     {
       name: 'variant',
@@ -1562,6 +2138,40 @@ const CARD_METADATA: ComponentMetadata = {
     },
   ],
   outputs: [],
+  passthroughs: [
+    {
+      name: 'Header slot',
+      type: 'slot',
+      selector: '[header]',
+      description: 'Content projected into the card header region. Hidden when empty. Apply the header attribute to a child element.',
+      optional: true,
+    },
+    {
+      name: 'Default content',
+      type: 'slot',
+      selector: '(default)',
+      description: 'Primary card body content — rendered inside fui-card__body with standard padding.',
+      optional: true,
+    },
+    {
+      name: 'Footer slot',
+      type: 'slot',
+      selector: '[footer]',
+      description: 'Content projected into the card footer region. Hidden when empty. Apply the footer attribute to a child element.',
+      optional: true,
+    },
+  ],
+  theming: {
+    tokens: [
+      { token: '--component-card-background', description: 'Card surface background color.' },
+      { token: '--component-card-border-radius', description: 'Corner radius of the card.' },
+      { token: '--component-card-padding', description: 'Padding applied to header, body, and footer sections.' },
+      { token: '--component-card-shadow', description: 'Box shadow for the elevated variant.' },
+      { token: '--component-card-shadow-hover', description: 'Box shadow when hovered in interactive mode.' },
+      { token: '--component-card-border', description: 'Border color for the outlined variant.' },
+    ],
+    customizationNotes: 'Override --component-card-* tokens on an ancestor element. For example: .tight-card { --component-card-padding: var(--primitive-spacing-3); }.',
+  },
   examples: [
     {
       title: 'Basic Card',
@@ -1614,6 +2224,20 @@ const MODAL_METADATA: ComponentMetadata = {
   description:
     'A dialog overlay component for focused user interactions with backdrop and animations.',
   selector: 'fui-modal',
+  setup: {
+    importStatement: "import { ModalComponent } from '@ui-suite/components';",
+    usageSnippet: `<button (click)="isOpen.set(true)">Open Modal</button>\n<fui-modal [open]="isOpen()" title="Hello" (closed)="isOpen.set(false)">\n  <p>Modal content goes here.</p>\n  <div slot="footer">\n    <fui-button (clicked)="isOpen.set(false)">Close</fui-button>\n  </div>\n</fui-modal>`,
+    usageTypescript: `import { signal } from '@angular/core';\n\nexport class MyComponent {\n  protected readonly isOpen = signal(false);\n}`,
+    setupNotes: 'Import signal from @angular/core. Add ModalComponent to the imports array of your standalone component.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Markup is SSR-compatible, while dialog open/close lifecycle runs in the browser after hydration.',
+      'Body scroll locking relies on browser document APIs.',
+    ],
+  },
   inputs: [
     {
       name: 'open',
@@ -1664,6 +2288,40 @@ const MODAL_METADATA: ComponentMetadata = {
     },
   ],
   outputs: [{ name: 'closed', type: 'void', description: 'Emitted when modal is closed' }],
+  passthroughs: [
+    {
+      name: 'Default content',
+      type: 'slot',
+      selector: '(default)',
+      description: 'Primary modal body content — rendered inside the scrollable fui-modal-body area.',
+      optional: true,
+    },
+    {
+      name: 'Footer slot',
+      type: 'slot',
+      selector: "[slot='footer']",
+      description: "Content projected into the modal footer area, typically action buttons. Apply slot='footer' to a child element.",
+      optional: true,
+    },
+    {
+      name: 'Native dialog attributes',
+      type: 'passthrough',
+      selector: 'aria-label, aria-labelledby',
+      description: 'Forwarded to the underlying native <dialog> element. The component also sets aria-labelledby automatically when a title is provided.',
+      optional: true,
+    },
+  ],
+  theming: {
+    tokens: [
+      { token: '--semantic-surface-overlay', description: 'Backdrop overlay color.' },
+      { token: '--semantic-surface-card', description: 'Modal panel background.' },
+      { token: '--primitive-shadow-2xl', description: 'Box shadow of the modal panel.' },
+      { token: '--primitive-border-radius-lg', description: 'Corner radius of the modal panel.' },
+      { token: '--semantic-border-subtle', description: 'Border between header and body.' },
+      { token: '--semantic-animation-duration-component', description: 'Entry/exit animation duration.' },
+    ],
+    customizationNotes: 'Override semantic surface tokens to restyle the backdrop or panel. Avoid sizing the modal with CSS — use the size input instead.',
+  },
   examples: [
     {
       title: 'Basic Modal',
@@ -1724,6 +2382,19 @@ const TABS_METADATA: ComponentMetadata = {
   category: 'layout',
   description: 'A tabbed interface component for organizing content into separate panels.',
   selector: 'fui-tabs',
+  setup: {
+    importStatement: "import { TabsComponent, TabComponent } from '@ui-suite/components';",
+    usageSnippet: `<fui-tabs>\n  <fui-tab label="First">First tab content</fui-tab>\n  <fui-tab label="Second">Second tab content</fui-tab>\n</fui-tabs>`,
+    setupNotes: 'Import both TabsComponent and TabComponent. Both must be in the imports array of your standalone component.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Tabs render correctly during SSR.',
+      'Indicator positioning and interactive focus behavior rely on browser DOM measurements after hydration.',
+    ],
+  },
   inputs: [
     {
       name: 'activeIndex',
@@ -1753,6 +2424,34 @@ const TABS_METADATA: ComponentMetadata = {
   outputs: [
     { name: 'activeIndexChange', type: 'number', description: 'Emitted when active tab changes' },
   ],
+  passthroughs: [
+    {
+      name: 'Tab children',
+      type: 'slot',
+      selector: 'fui-tab',
+      description: 'Place fui-tab components as direct children of fui-tabs. Each tab provides a label input and projects its own content.',
+      optional: false,
+    },
+    {
+      name: 'Tab default content',
+      type: 'slot',
+      selector: '(default inside fui-tab)',
+      description: 'Content inside each fui-tab element is projected into the tab panel area when that tab is active.',
+      optional: true,
+    },
+  ],
+  theming: {
+    tokens: [
+      { token: '--semantic-surface-card', description: 'Tab list and panel background.' },
+      { token: '--semantic-brand-primary', description: 'Active tab indicator color.' },
+      { token: '--semantic-text-primary', description: 'Active tab label color.' },
+      { token: '--semantic-text-secondary', description: 'Inactive tab label color.' },
+      { token: '--semantic-text-disabled', description: 'Disabled tab label color.' },
+      { token: '--semantic-state-focus-ring', description: 'Focus ring on tab buttons.' },
+      { token: '--semantic-border-subtle', description: 'Tab list bottom border.' },
+    ],
+    customizationNotes: 'Override --semantic-brand-primary to change the active indicator color. Scope to a parent element for section-specific tab styles.',
+  },
   examples: [
     {
       title: 'Basic Tabs',
@@ -1826,6 +2525,19 @@ const ACCORDION_METADATA: ComponentMetadata = {
   category: 'layout',
   description: 'A vertically stacked set of collapsible content panels for organizing information.',
   selector: 'fui-accordion',
+  setup: {
+    importStatement: "import { AccordionComponent } from '@ui-suite/components';",
+    usageSnippet: `<fui-accordion [items]="items" mode="single" />`,
+    usageTypescript: `export class MyComponent {\n  protected readonly items = [\n    { title: 'Section 1', content: 'Content for section 1' },\n    { title: 'Section 2', content: 'Content for section 2' },\n  ];\n}`,
+    setupNotes: 'No additional setup required. Add AccordionComponent to the imports array of your standalone component.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Accordion content and expansion state are SSR-friendly.',
+    ],
+  },
   inputs: [
     {
       name: 'mode',
@@ -1847,6 +2559,26 @@ const ACCORDION_METADATA: ComponentMetadata = {
       description: 'Emitted when expansion state changes',
     },
   ],
+  passthroughs: [
+    {
+      name: 'Panel body content',
+      type: 'slot',
+      selector: '(default inside accordion panel)',
+      description: 'When items are passed as an array, the content field provides panel text. For richer content, use the accordion in composition mode.',
+      optional: true,
+    },
+  ],
+  theming: {
+    tokens: [
+      { token: '--semantic-surface-card', description: 'Accordion panel background.' },
+      { token: '--semantic-border-default', description: 'Border between accordion items.' },
+      { token: '--semantic-border-subtle', description: 'Separator between header and body.' },
+      { token: '--semantic-brand-primary', description: 'Expand/collapse icon accent color.' },
+      { token: '--semantic-animation-duration-component', description: 'Panel open/close animation duration.' },
+      { token: '--primitive-border-radius-md', description: 'Corner radius of each accordion item.' },
+    ],
+    customizationNotes: 'Override --semantic-brand-primary to change the indicator accent. Scope token overrides to a parent element.',
+  },
   examples: [
     {
       title: 'Single Mode Accordion',
@@ -1915,6 +2647,18 @@ const DIVIDER_METADATA: ComponentMetadata = {
   category: 'layout',
   description: 'A visual separator for content sections with customizable styles.',
   selector: 'fui-divider',
+  setup: {
+    importStatement: "import { DividerComponent } from '@ui-suite/components';",
+    usageSnippet: `<fui-divider />`,
+    setupNotes: 'No additional setup required. Add DividerComponent to the imports array of your standalone component.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Divider is purely presentational and safe for SSR with no runtime browser dependency.',
+    ],
+  },
   inputs: [
     {
       name: 'orientation',
@@ -1941,6 +2685,16 @@ const DIVIDER_METADATA: ComponentMetadata = {
     },
   ],
   outputs: [],
+  passthroughs: [],
+  theming: {
+    tokens: [
+      { token: '--semantic-border-subtle', description: 'Line color for horizontal and vertical dividers.' },
+      { token: '--semantic-border-default', description: 'Alternative line color for the dashed variant.' },
+      { token: '--semantic-text-secondary', description: 'Color of optional label text.' },
+      { token: '--primitive-font-size-sm', description: 'Label font size.' },
+    ],
+    customizationNotes: 'Override --semantic-border-subtle on an ancestor to restyle all dividers in a section.',
+  },
   examples: [
     {
       title: 'Horizontal Divider',
@@ -1995,6 +2749,20 @@ const DRAWER_METADATA: ComponentMetadata = {
   description:
     'A slide-in panel component that appears from the edge of the screen for navigation or content.',
   selector: 'fui-drawer',
+  setup: {
+    importStatement: "import { DrawerComponent } from '@ui-suite/components';",
+    usageSnippet: `<button (click)="isOpen.set(true)">Open Drawer</button>\n<fui-drawer [open]="isOpen()" title="Settings" (closed)="isOpen.set(false)">\n  <p>Drawer content goes here.</p>\n  <div footer>\n    <fui-button (clicked)="isOpen.set(false)">Done</fui-button>\n  </div>\n</fui-drawer>`,
+    usageTypescript: `import { signal } from '@angular/core';\n\nexport class MyComponent {\n  protected readonly isOpen = signal(false);\n}`,
+    setupNotes: 'Import signal from @angular/core. Add DrawerComponent to the imports array of your standalone component.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Drawer markup is SSR-compatible.',
+      'Dialog state transitions and body scroll locking rely on browser document and window APIs.',
+    ],
+  },
   inputs: [
     {
       name: 'open',
@@ -2026,6 +2794,39 @@ const DRAWER_METADATA: ComponentMetadata = {
     { name: 'openChange', type: 'boolean', description: 'Emitted when open state changes' },
     { name: 'closed', type: 'void', description: 'Emitted when drawer is closed' },
   ],
+  passthroughs: [
+    {
+      name: 'Default content',
+      type: 'slot',
+      selector: '(default)',
+      description: 'Primary drawer body content — rendered inside the scrollable fui-drawer-content area.',
+      optional: true,
+    },
+    {
+      name: 'Footer slot',
+      type: 'slot',
+      selector: '[footer]',
+      description: 'Content projected into the drawer footer, typically action buttons. Apply the footer attribute to a child element.',
+      optional: true,
+    },
+    {
+      name: 'Native dialog attributes',
+      type: 'passthrough',
+      selector: 'aria-label, aria-labelledby',
+      description: 'Forwarded to the underlying native <dialog> element. The component also sets aria-labelledby automatically when a title is provided.',
+      optional: true,
+    },
+  ],
+  theming: {
+    tokens: [
+      { token: '--semantic-surface-card', description: 'Drawer panel background.' },
+      { token: '--semantic-surface-overlay', description: 'Backdrop overlay color.' },
+      { token: '--primitive-shadow-xl', description: 'Panel box shadow.' },
+      { token: '--semantic-border-subtle', description: 'Footer top border.' },
+      { token: '--semantic-animation-duration-component', description: 'Slide in/out animation duration.' },
+    ],
+    customizationNotes: 'Override --semantic-surface-card to change the drawer panel background. Avoid sizing the panel with CSS — use the size input instead.',
+  },
   examples: [
     {
       title: 'Left Drawer',
@@ -2126,6 +2927,18 @@ const STACK_METADATA: ComponentMetadata = {
   description:
     'A layout component for arranging children in a vertical or horizontal stack with consistent spacing.',
   selector: 'fui-stack',
+  setup: {
+    importStatement: "import { StackComponent } from '@ui-suite/components';",
+    usageSnippet: `<fui-stack direction="vertical" [spacing]="4">\n  <div>Item 1</div>\n  <div>Item 2</div>\n  <div>Item 3</div>\n</fui-stack>`,
+    setupNotes: 'No additional setup required. Add StackComponent to the imports array of your standalone component.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Stack layout is CSS-driven and SSR-friendly.',
+    ],
+  },
   inputs: [
     {
       name: 'direction',
@@ -2171,6 +2984,22 @@ const STACK_METADATA: ComponentMetadata = {
     },
   ],
   outputs: [],
+  passthroughs: [
+    {
+      name: 'Default content',
+      type: 'slot',
+      selector: '(default)',
+      description: 'Child elements to arrange. The stack applies flex layout and spacing between all direct children.',
+      optional: false,
+    },
+  ],
+  theming: {
+    tokens: [
+      { token: '--semantic-border-subtle', description: 'Divider line color when dividers are enabled.' },
+      { token: '--primitive-spacing-4', description: 'Reference spacing unit. Actual gap is set by the spacing input multiplied against the base unit.' },
+    ],
+    customizationNotes: 'The stack component primarily exposes layout behaviour through its inputs (direction, spacing, align, justify). Override tokens only for visual dividers.',
+  },
   examples: [
     {
       title: 'Vertical Stack',
@@ -2220,6 +3049,18 @@ const GRID_METADATA: ComponentMetadata = {
   category: 'layout',
   description: 'A responsive grid layout component with customizable columns and gaps.',
   selector: 'fui-grid',
+  setup: {
+    importStatement: "import { GridComponent } from '@ui-suite/components';",
+    usageSnippet: `<fui-grid [columns]="3" [gap]="4">\n  <div>Column 1</div>\n  <div>Column 2</div>\n  <div>Column 3</div>\n</fui-grid>`,
+    setupNotes: 'No additional setup required. Add GridComponent to the imports array of your standalone component.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Grid layout is CSS-driven and renders predictably in SSR.',
+    ],
+  },
   inputs: [
     {
       name: 'columns',
@@ -2267,6 +3108,19 @@ const GRID_METADATA: ComponentMetadata = {
     },
   ],
   outputs: [],
+  passthroughs: [
+    {
+      name: 'Default content',
+      type: 'slot',
+      selector: '(default)',
+      description: 'Child elements placed into the CSS grid. Each direct child occupies one grid cell by default.',
+      optional: false,
+    },
+  ],
+  theming: {
+    tokens: [],
+    customizationNotes: 'Grid layout is driven by the columns and gap inputs. For advanced layouts (spans, offsets) apply CSS grid properties directly to child elements using a scoped class.',
+  },
   examples: [
     {
       title: '3-Column Grid',
@@ -2317,6 +3171,18 @@ const BADGE_METADATA: ComponentMetadata = {
   category: 'data-display',
   description: 'A small label for displaying status, count, or category.',
   selector: 'fui-badge',
+  setup: {
+    importStatement: "import { BadgeComponent } from '@ui-suite/components';",
+    usageSnippet: `<fui-badge variant="primary">New</fui-badge>`,
+    setupNotes: 'No additional setup required. Add BadgeComponent to the imports array of your standalone component.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Badge is presentation-focused and fully SSR-friendly.',
+    ],
+  },
   inputs: [
     {
       name: 'variant',
@@ -2366,6 +3232,29 @@ const BADGE_METADATA: ComponentMetadata = {
     },
   ],
   outputs: [],
+  passthroughs: [
+    {
+      name: 'Default content',
+      type: 'slot',
+      selector: '(default)',
+      description: 'Optional custom content to render inside the badge instead of the label input. Use this for rich inline markup.',
+      optional: true,
+    },
+  ],
+  theming: {
+    tokens: [
+      { token: '--semantic-brand-primary', description: 'Background of the primary variant.' },
+      { token: '--semantic-text-inverse', description: 'Label color on colored backgrounds.' },
+      { token: '--semantic-surface-background-secondary', description: 'Background of the default variant.' },
+      { token: '--semantic-text-primary', description: 'Label color of the default variant.' },
+      { token: '--semantic-feedback-success', description: 'Background of the success variant.' },
+      { token: '--semantic-feedback-warning', description: 'Background of the warning variant.' },
+      { token: '--semantic-feedback-error', description: 'Background of the error variant.' },
+      { token: '--primitive-border-radius-full', description: 'Full pill border radius.' },
+      { token: '--primitive-border-radius-md', description: 'Rounded border radius.' },
+    ],
+    customizationNotes: 'Override variant-specific semantic tokens to restyle badges in a given context. Do not add ::ng-deep rules.',
+  },
   examples: [
     {
       title: 'Badge Variants',
@@ -2423,6 +3312,18 @@ const AVATAR_METADATA: ComponentMetadata = {
   description:
     'A component for displaying user profile images or initials in a circular container.',
   selector: 'fui-avatar',
+  setup: {
+    importStatement: "import { AvatarComponent } from '@ui-suite/components';",
+    usageSnippet: `<fui-avatar initials="JD" alt="John Doe" size="md" />`,
+    setupNotes: 'No additional setup required. Add AvatarComponent to the imports array of your standalone component.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Avatar rendering is SSR-compatible. Image loading and fallbacks are handled by native browser behavior after hydration.',
+    ],
+  },
   inputs: [
     { name: 'src', type: 'string', description: 'Image URL' },
     { name: 'alt', type: 'string', description: 'Alt text for image accessibility', defaultValue: "'Avatar'" },
@@ -2471,6 +3372,20 @@ const AVATAR_METADATA: ComponentMetadata = {
     },
   ],
   outputs: [],
+  passthroughs: [],
+  theming: {
+    tokens: [
+      { token: '--semantic-surface-background-secondary', description: 'Fallback background when no image or initials are provided.' },
+      { token: '--semantic-text-primary', description: 'Initials text color.' },
+      { token: '--semantic-feedback-success', description: 'Online status indicator color.' },
+      { token: '--semantic-text-disabled', description: 'Offline status indicator color.' },
+      { token: '--semantic-feedback-warning', description: 'Away status indicator color.' },
+      { token: '--semantic-feedback-error', description: 'Busy status indicator color.' },
+      { token: '--primitive-border-radius-full', description: 'Circle shape border radius.' },
+      { token: '--primitive-border-radius-md', description: 'Rounded square shape border radius.' },
+    ],
+    customizationNotes: 'Status indicator colors map to semantic feedback tokens. Override them on an ancestor for custom status palettes.',
+  },
   examples: [
     {
       title: 'Avatar with Initials',
@@ -2541,6 +3456,19 @@ const TOOLTIP_METADATA: ComponentMetadata = {
   category: 'data-display',
   description: 'A popup that displays contextual information when hovering or focusing an element.',
   selector: 'fui-tooltip',
+  setup: {
+    importStatement: "import { TooltipComponent } from '@ui-suite/components';",
+    usageSnippet: `<button fui-tooltip text="Save your changes">Save</button>`,
+    setupNotes: 'The tooltip is applied as an attribute directive on a host element. Add TooltipComponent to the imports array of your standalone component.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Tooltip host markup is SSR-compatible.',
+      'Show/hide timing and placement behavior rely on browser runtime APIs.',
+    ],
+  },
   inputs: [
     { name: 'text', type: 'string', description: 'Tooltip text content', required: true },
     {
@@ -2575,6 +3503,25 @@ const TOOLTIP_METADATA: ComponentMetadata = {
     },
   ],
   outputs: [],
+  passthroughs: [
+    {
+      name: 'Host element content',
+      type: 'slot',
+      selector: '(default)',
+      description: 'The element to which the tooltip is attached. The tooltip activates on hover or focus of this projected host content.',
+      optional: false,
+    },
+  ],
+  theming: {
+    tokens: [
+      { token: '--component-tooltip-background', description: 'Tooltip bubble background color.' },
+      { token: '--component-tooltip-text', description: 'Tooltip text color.' },
+      { token: '--primitive-font-size-sm', description: 'Tooltip font size.' },
+      { token: '--primitive-border-radius-md', description: 'Tooltip bubble corner radius.' },
+      { token: '--primitive-shadow-lg', description: 'Tooltip drop shadow.' },
+    ],
+    customizationNotes: 'Override --component-tooltip-background and --component-tooltip-text to create inverted or brand-colored tooltips.',
+  },
   examples: [
     {
       title: 'Basic Tooltip',
@@ -2631,6 +3578,18 @@ const CHIP_METADATA: ComponentMetadata = {
   category: 'data-display',
   description: 'A compact element for tags, filters, or selections with optional remove action.',
   selector: 'fui-chip',
+  setup: {
+    importStatement: "import { ChipComponent } from '@ui-suite/components';",
+    usageSnippet: `<fui-chip label="Angular" variant="primary" />\n<fui-chip label="Removable" [removable]="true" (removed)="onRemove()" />`,
+    setupNotes: 'No additional setup required. Add ChipComponent to the imports array of your standalone component.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Chip rendering and interaction bindings are SSR-compatible.',
+    ],
+  },
   inputs: [
     { name: 'label', type: 'string', description: 'Chip label text', required: true },
     {
@@ -2673,6 +3632,20 @@ const CHIP_METADATA: ComponentMetadata = {
     { name: 'removed', type: 'void', description: 'Emitted when remove button is clicked' },
     { name: 'clicked', type: 'void', description: 'Emitted when the chip is clicked (requires clickable)' },
   ],
+  passthroughs: [],
+  theming: {
+    tokens: [
+      { token: '--semantic-surface-background-secondary', description: 'Background of the default variant.' },
+      { token: '--semantic-text-primary', description: 'Label color of the default variant.' },
+      { token: '--semantic-brand-primary', description: 'Background of the primary variant.' },
+      { token: '--semantic-text-inverse', description: 'Label color on colored chip backgrounds.' },
+      { token: '--semantic-feedback-success', description: 'Background of the success variant.' },
+      { token: '--semantic-feedback-warning', description: 'Background of the warning variant.' },
+      { token: '--semantic-feedback-error', description: 'Background of the error variant.' },
+      { token: '--primitive-border-radius-full', description: 'Pill shape border radius.' },
+    ],
+    customizationNotes: 'Override variant-specific semantic tokens on an ancestor element to restyle chips in a particular context.',
+  },
   examples: [
     {
       title: 'Basic Chip',
@@ -2748,6 +3721,19 @@ const POPOVER_METADATA: ComponentMetadata = {
   description:
     'A floating panel that displays rich content relative to a trigger element, similar to tooltip but interactive.',
   selector: 'fui-popover',
+  setup: {
+    importStatement: "import { PopoverComponent } from '@ui-suite/components';",
+    usageSnippet: `<button [fui-popover]="myPopover" trigger="click">Open Popover</button>\n<ng-template #myPopover>\n  <p>Popover content here.</p>\n</ng-template>`,
+    setupNotes: 'The popover is applied as an attribute directive binding a template reference. Add PopoverComponent to the imports array of your standalone component.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Popover content definition is SSR-compatible.',
+      'Overlay positioning, trigger handling, and dismissal depend on browser document and viewport APIs.',
+    ],
+  },
   inputs: [
     {
       name: 'title',
@@ -2782,6 +3768,32 @@ const POPOVER_METADATA: ComponentMetadata = {
   outputs: [
     { name: 'openChange', type: 'boolean', description: 'Emitted when open state changes' },
   ],
+  passthroughs: [
+    {
+      name: 'Trigger slot',
+      type: 'slot',
+      selector: '[trigger]',
+      description: 'The element that triggers the popover. Apply the trigger attribute to a child element inside fui-popover, or use the [fui-popover] directive pattern.',
+      optional: true,
+    },
+    {
+      name: 'Default content',
+      type: 'slot',
+      selector: '(default)',
+      description: 'Content rendered inside the popover panel.',
+      optional: true,
+    },
+  ],
+  theming: {
+    tokens: [
+      { token: '--semantic-surface-card', description: 'Popover panel background.' },
+      { token: '--semantic-border-default', description: 'Panel border color.' },
+      { token: '--primitive-border-radius-md', description: 'Panel corner radius.' },
+      { token: '--primitive-shadow-lg', description: 'Panel drop shadow.' },
+      { token: '--semantic-animation-duration-interactive', description: 'Open/close animation duration.' },
+    ],
+    customizationNotes: 'Override --semantic-surface-card and shadow tokens to restyle the popover panel. Use the width input or CSS max-width on the panel class for sizing.',
+  },
   examples: [
     {
       title: 'Click Popover',
@@ -2843,6 +3855,19 @@ const PAGINATION_METADATA: ComponentMetadata = {
   category: 'data-display',
   description: 'A component for navigating through paginated data with page numbers and controls.',
   selector: 'fui-pagination',
+  setup: {
+    importStatement: "import { PaginationComponent } from '@ui-suite/components';",
+    usageSnippet: `<fui-pagination\n  [total]="100"\n  [pageSize]="10"\n  [page]="currentPage()"\n  (pageChange)="currentPage.set($event)"\n/>`,
+    usageTypescript: `import { signal } from '@angular/core';\n\nexport class MyComponent {\n  protected readonly currentPage = signal(1);\n}`,
+    setupNotes: 'Import signal from @angular/core. Add PaginationComponent to the imports array of your standalone component.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Pagination rendering and state transitions are SSR-compatible.',
+    ],
+  },
   inputs: [
     {
       name: 'currentPage',
@@ -2911,6 +3936,18 @@ const PAGINATION_METADATA: ComponentMetadata = {
       description: 'Emitted when the user changes the page size',
     },
   ],
+  passthroughs: [],
+  theming: {
+    tokens: [
+      { token: '--semantic-brand-primary', description: 'Background and border of the active page button.' },
+      { token: '--semantic-text-inverse', description: 'Text color of the active page button.' },
+      { token: '--semantic-surface-card', description: 'Background of inactive page buttons.' },
+      { token: '--semantic-border-default', description: 'Border of inactive page buttons.' },
+      { token: '--primitive-border-radius-md', description: 'Border radius of page buttons.' },
+      { token: '--semantic-state-focus-ring', description: 'Focus ring on page buttons.' },
+    ],
+    customizationNotes: 'Override --semantic-brand-primary to change the active page color. Scope to a parent element for context-specific paginations.',
+  },
   examples: [
     {
       title: 'Basic Pagination',
@@ -2979,6 +4016,19 @@ const TABLE_METADATA: ComponentMetadata = {
   description:
     'A data table component with sorting, selection, and customizable columns for displaying structured data.',
   selector: 'fui-table',
+  setup: {
+    importStatement: "import { TableComponent } from '@ui-suite/components';",
+    usageSnippet: `<fui-table [columns]="columns" [data]="rows" />`,
+    usageTypescript: `export class MyComponent {\n  protected readonly columns = [\n    { key: 'name', label: 'Name' },\n    { key: 'email', label: 'Email' },\n  ];\n  protected readonly rows = [\n    { name: 'Alice', email: 'alice@example.com' },\n    { name: 'Bob', email: 'bob@example.com' },\n  ];\n}`,
+    setupNotes: 'No additional setup required. Add TableComponent to the imports array of your standalone component.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Table markup and sorting state projection are SSR-compatible.',
+    ],
+  },
   inputs: [
     {
       name: 'columns',
@@ -3051,6 +4101,19 @@ const TABLE_METADATA: ComponentMetadata = {
     { name: 'rowClick', type: '{ row: any; index: number }', description: 'Emitted when a row is clicked' },
     { name: 'selectionChange', type: 'number[]', description: 'Emitted when row selection changes' },
   ],
+  passthroughs: [],
+  theming: {
+    tokens: [
+      { token: '--semantic-surface-card', description: 'Table background.' },
+      { token: '--semantic-surface-background-secondary', description: 'Table header background.' },
+      { token: '--semantic-border-default', description: 'Table outer border.' },
+      { token: '--semantic-border-subtle', description: 'Row divider lines.' },
+      { token: '--semantic-brand-primary', description: 'Sort indicator and selected row accent.' },
+      { token: '--primitive-border-radius-md', description: 'Table container corner radius.' },
+      { token: '--primitive-font-size-sm', description: 'Cell font size.' },
+    ],
+    customizationNotes: 'Override --semantic-surface-background-secondary to restyle the header. Scope token overrides to a parent element for context-specific tables.',
+  },
   examples: [
     {
       title: 'Basic Table',
@@ -3118,6 +4181,19 @@ const LIST_METADATA: ComponentMetadata = {
   category: 'data-display',
   description: 'A component for displaying lists of items with optional interactivity and styling.',
   selector: 'fui-list',
+  setup: {
+    importStatement: "import { ListComponent } from '@ui-suite/components';",
+    usageSnippet: `<fui-list [items]="items()" />`,
+    usageTypescript: `import { signal } from '@angular/core';\n\nexport class MyComponent {\n  protected readonly items = signal([\n    { id: '1', primary: 'First item', secondary: 'Subtitle' },\n    { id: '2', primary: 'Second item', secondary: 'Subtitle' },\n  ]);\n}`,
+    setupNotes: 'Import signal from @angular/core. Add ListComponent to the imports array of your standalone component.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'List rendering and item projections are SSR-compatible.',
+    ],
+  },
   inputs: [
     {
       name: 'items',
@@ -3165,6 +4241,19 @@ const LIST_METADATA: ComponentMetadata = {
   outputs: [
     { name: 'itemClick', type: 'ListItem', description: 'Emitted when an item is clicked' },
   ],
+  passthroughs: [],
+  theming: {
+    tokens: [
+      { token: '--semantic-surface-card', description: 'List background.' },
+      { token: '--semantic-border-default', description: 'List outer border.' },
+      { token: '--semantic-border-subtle', description: 'Item divider lines.' },
+      { token: '--semantic-surface-background-secondary', description: 'Item hover background.' },
+      { token: '--semantic-text-primary', description: 'Primary item text color.' },
+      { token: '--semantic-text-secondary', description: 'Secondary/subtitle text color.' },
+      { token: '--primitive-border-radius-md', description: 'List container corner radius.' },
+    ],
+    customizationNotes: 'Override --semantic-border-subtle to restyle item dividers. Scope to a parent element for isolated list styles.',
+  },
   examples: [
     {
       title: 'Simple List',
@@ -3233,6 +4322,19 @@ const CAROUSEL_METADATA: ComponentMetadata = {
   description:
     'A composition-based carousel component for rotating projected content with keyboard navigation, autoplay controls, indicators, thumbnails, and reduced-motion support.',
   selector: 'fui-carousel',
+  setup: {
+    importStatement: "import { CarouselComponent, CarouselSlideComponent } from '@ui-suite/components';",
+    usageSnippet: `<fui-carousel ariaLabel="Featured slides">\n  <fui-carousel-slide>\n    <div class="slide-content">Slide 1</div>\n  </fui-carousel-slide>\n  <fui-carousel-slide>\n    <div class="slide-content">Slide 2</div>\n  </fui-carousel-slide>\n</fui-carousel>`,
+    setupNotes: 'Import both CarouselComponent and CarouselSlideComponent. Both must be in the imports array of your standalone component. Slides are projected as fui-carousel-slide children.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Carousel structure is SSR-compatible.',
+      'Autoplay timers, pointer gestures, and viewport-aware interactions rely on browser window/document APIs.',
+    ],
+  },
   inputs: [
     {
       name: 'variant',
@@ -3313,6 +4415,26 @@ const CAROUSEL_METADATA: ComponentMetadata = {
       description: 'Emits the previous and next slide indices after a transition.',
     },
   ],
+  passthroughs: [
+    {
+      name: 'Slide children',
+      type: 'slot',
+      selector: 'fui-carousel-slide',
+      description: 'Place fui-carousel-slide elements as direct children of fui-carousel. Each slide hosts arbitrary content.',
+      optional: false,
+    },
+  ],
+  theming: {
+    tokens: [
+      { token: '--semantic-surface-card', description: 'Carousel slide background.' },
+      { token: '--semantic-border-subtle', description: 'Inactive slide indicator color.' },
+      { token: '--semantic-brand-primary', description: 'Active slide indicator color.' },
+      { token: '--semantic-surface-overlay', description: 'Navigation button backdrop.' },
+      { token: '--primitive-border-radius-md', description: 'Carousel container corner radius.' },
+      { token: '--semantic-animation-duration-component', description: 'Slide transition duration.' },
+    ],
+    customizationNotes: 'Override --semantic-brand-primary to change the active indicator. Use the autoplay and interval inputs to control timing rather than CSS.',
+  },
   examples: [
     {
       title: 'Basic Carousel',
@@ -3422,6 +4544,20 @@ const CODE_BLOCK_METADATA: ComponentMetadata = {
   description:
     'A component for displaying formatted code with syntax highlighting, copy-to-clipboard, and download functionality. Supports multiple languages and themes.',
   selector: 'fui-code-block',
+  setup: {
+    importStatement: "import { CodeBlockComponent } from '@ui-suite/components';",
+    usageSnippet: `<fui-code-block [code]="snippet" language="typescript" title="example.ts" />`,
+    usageTypescript: `export class MyComponent {\n  protected readonly snippet = \`const greeting = 'Hello, world!';\`;\n}`,
+    setupNotes: 'No additional setup required. Add CodeBlockComponent to the imports array of your standalone component.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Code rendering and syntax highlighting are SSR-compatible.',
+      'Copy/download actions rely on browser clipboard and document APIs.',
+    ],
+  },
   inputs: [
     { name: 'code', type: 'string', description: 'The code content to display', required: true },
     {
@@ -3450,6 +4586,18 @@ const CODE_BLOCK_METADATA: ComponentMetadata = {
     },
   ],
   outputs: [],
+  passthroughs: [],
+  theming: {
+    tokens: [
+      { token: '--semantic-surface-card', description: 'Code block panel background.' },
+      { token: '--semantic-border-subtle', description: 'Code block panel border.' },
+      { token: '--semantic-text-secondary', description: 'Language label and filename text color.' },
+      { token: '--primitive-font-family-mono', description: 'Monospace font used for code text.' },
+      { token: '--primitive-font-size-sm', description: 'Code font size.' },
+      { token: '--primitive-border-radius-md', description: 'Panel corner radius.' },
+    ],
+    customizationNotes: 'Syntax highlight colors are determined by the active theme class applied by the theming engine. Override --primitive-font-family-mono to change the code font.',
+  },
   examples: [
     {
       title: 'Basic Code Block',
@@ -3533,6 +4681,18 @@ const ALERT_METADATA: ComponentMetadata = {
   category: 'feedback',
   description: 'A component for displaying important messages with different severity levels.',
   selector: 'fui-alert',
+  setup: {
+    importStatement: "import { AlertComponent } from '@ui-suite/components';",
+    usageSnippet: `<fui-alert variant="info">Your changes have been saved.</fui-alert>`,
+    setupNotes: 'No additional setup required. Add AlertComponent to the imports array of your standalone component. Content is projected directly inside the element.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Alert content and semantics are SSR-compatible.',
+    ],
+  },
   inputs: [
     {
       name: 'variant',
@@ -3633,6 +4793,18 @@ const SPINNER_METADATA: ComponentMetadata = {
   category: 'feedback',
   description: 'A loading spinner component to indicate processing or loading states.',
   selector: 'fui-spinner',
+  setup: {
+    importStatement: "import { SpinnerComponent } from '@ui-suite/components';",
+    usageSnippet: `<fui-spinner />\n<fui-spinner size="lg" color="primary" />`,
+    setupNotes: 'No additional setup required. Add SpinnerComponent to the imports array of your standalone component.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Spinner rendering is SSR-compatible. Animation is CSS-driven.',
+    ],
+  },
   inputs: [
     { name: 'size', type: "'xs' | 'sm' | 'md' | 'lg' | 'xl'", description: 'Spinner size', defaultValue: "'md'" },
     {
@@ -3705,6 +4877,18 @@ const PROGRESS_METADATA: ComponentMetadata = {
   category: 'feedback',
   description: 'A progress bar component for showing task completion with visual feedback.',
   selector: 'fui-progress',
+  setup: {
+    importStatement: "import { ProgressComponent } from '@ui-suite/components';",
+    usageSnippet: `<fui-progress [value]="75" [showValue]="true" />`,
+    setupNotes: 'No additional setup required. Add ProgressComponent to the imports array of your standalone component.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Progress bar rendering and value projection are SSR-compatible.',
+    ],
+  },
   inputs: [
     { name: 'value', type: 'number', description: 'Progress value (0-max)', defaultValue: '0' },
     { name: 'max', type: 'number', description: 'Maximum value for the progress bar', defaultValue: '100' },
@@ -3802,6 +4986,18 @@ const SKELETON_METADATA: ComponentMetadata = {
   category: 'feedback',
   description: 'A placeholder component for loading content with animated shimmer effect.',
   selector: 'fui-skeleton',
+  setup: {
+    importStatement: "import { SkeletonComponent } from '@ui-suite/components';",
+    usageSnippet: `<fui-skeleton variant="text" width="80%" />\n<fui-skeleton variant="circular" width="40px" height="40px" />\n<fui-skeleton variant="rectangular" width="100%" height="120px" />`,
+    setupNotes: 'No additional setup required. Add SkeletonComponent to the imports array of your standalone component.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Skeleton placeholders are SSR-compatible. Motion is CSS-driven and respects reduced-motion preferences.',
+    ],
+  },
   inputs: [
     {
       name: 'variant',
@@ -3825,6 +5021,17 @@ const SKELETON_METADATA: ComponentMetadata = {
     },
   ],
   outputs: [],
+  passthroughs: [],
+  theming: {
+    tokens: [
+      { token: '--semantic-border-default', description: 'Skeleton base background color.' },
+      { token: '--semantic-border-subtle', description: 'Shimmer highlight color.' },
+      { token: '--semantic-animation-duration-shimmer', description: 'Shimmer sweep animation duration.' },
+      { token: '--primitive-border-radius-md', description: 'Skeleton block corner radius.' },
+      { token: '--primitive-border-radius-full', description: 'Circle skeleton border radius.' },
+    ],
+    customizationNotes: 'Override the shimmer tokens to match your brand. Use noAnimation to disable the shimmer for reduced-motion environments — the component also respects prefers-reduced-motion.',
+  },
   examples: [
     {
       title: 'Text Skeleton',
@@ -3888,6 +5095,31 @@ const TOAST_METADATA: ComponentMetadata = {
   description:
     'A temporary notification component that appears at screen edges for non-intrusive feedback.',
   selector: 'fui-toast',
+  setup: {
+    importStatement: "import { ToastComponent, ToastService } from '@ui-suite/components';",
+    usageSnippet: `<!-- Place once in your app root or layout component -->
+<fui-toast />`,
+    usageTypescript: `import { inject } from '@angular/core';
+import { ToastService } from '@ui-suite/components';
+
+export class MyComponent {
+  private readonly toastService = inject(ToastService);
+
+  save(): void {
+    // ... save logic ...
+    this.toastService.show('Changes saved successfully', 'success');
+  }
+}`,
+    setupNotes: 'Place the fui-toast outlet once in your app root or layout. Inject ToastService into any component to trigger toasts programmatically. The service is provided at root level.',
+  },
+  runtime: {
+    supportsSSR: false,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Toast timing and dismissal use window timers in the runtime service.',
+      'Render the toast outlet only in browser-capable layouts when strict SSR isolation is required.',
+    ],
+  },
   inputs: [
     { name: 'message', type: 'string', description: 'Notification message text', required: true },
     {
@@ -3910,12 +5142,36 @@ const TOAST_METADATA: ComponentMetadata = {
     },
   ],
   outputs: [{ name: 'dismissRequested', type: 'void', description: 'Emitted when the user requests dismissal' }],
+  passthroughs: [
+    {
+      name: 'Default content',
+      type: 'slot',
+      selector: '(default)',
+      description: 'Rich HTML content rendered inside the toast body. Use when the message input is insufficient.',
+      optional: true,
+    },
+  ],
+  theming: {
+    tokens: [
+      { token: '--semantic-surface-card', description: 'Toast panel background.' },
+      { token: '--primitive-border-radius-md', description: 'Toast corner radius.' },
+      { token: '--primitive-shadow-lg', description: 'Toast drop shadow.' },
+      { token: '--semantic-feedback-info', description: 'Info variant accent color.' },
+      { token: '--semantic-feedback-success', description: 'Success variant accent color.' },
+      { token: '--semantic-feedback-warning', description: 'Warning variant accent color.' },
+      { token: '--semantic-feedback-error', description: 'Error variant accent color.' },
+      { token: '--semantic-animation-duration-component', description: 'Entry/exit animation duration.' },
+    ],
+    customizationNotes: 'Toasts are managed by ToastService and rendered into a portal. Scope token overrides to the toast container element for global restyling.',
+  },
   examples: [
     {
       title: 'Toast Variants',
       description: 'Different semantic toast types',
-      typescript: `// Inject toast service
-constructor(private toastService: ToastService) {}
+      typescript: `import { inject } from '@angular/core';
+import { ToastService } from '@ui-suite/components';
+
+private readonly toastService = inject(ToastService);
 
 showToasts() {
   this.toastService.show('Information message', 'info');
@@ -3975,6 +5231,25 @@ const BREADCRUMB_METADATA: ComponentMetadata = {
   description:
     'A navigation component showing the current page location within the site hierarchy.',
   selector: 'fui-breadcrumb',
+  setup: {
+    importStatement: "import { BreadcrumbComponent } from '@ui-suite/components';",
+    usageSnippet: `<fui-breadcrumb [items]="breadcrumbs" />`,
+    usageTypescript: `export class MyComponent {
+  protected readonly breadcrumbs = [
+    { label: 'Home', href: '/' },
+    { label: 'Products', href: '/products' },
+    { label: 'Details' },
+  ];
+}`,
+    setupNotes: 'No additional setup required. Add BreadcrumbComponent to the imports array of your standalone component.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Breadcrumb navigation is SSR-friendly with no browser-only requirements for core rendering.',
+    ],
+  },
   inputs: [
     {
       name: 'items',
@@ -4008,6 +5283,17 @@ const BREADCRUMB_METADATA: ComponentMetadata = {
       description: 'Emitted when a breadcrumb item is clicked',
     },
   ],
+  passthroughs: [],
+  theming: {
+    tokens: [
+      { token: '--semantic-text-secondary', description: 'Color of non-active breadcrumb links.' },
+      { token: '--semantic-text-primary', description: 'Color of the active (current) breadcrumb item.' },
+      { token: '--semantic-brand-primary', description: 'Link hover color.' },
+      { token: '--semantic-border-subtle', description: 'Separator icon color.' },
+      { token: '--semantic-state-focus-ring', description: 'Focus ring on breadcrumb links.' },
+    ],
+    customizationNotes: 'Override --semantic-text-secondary and --semantic-brand-primary to restyle breadcrumb navigation for a given section.',
+  },
   examples: [
     {
       title: 'Basic Breadcrumb',
@@ -4060,6 +5346,26 @@ const MENU_METADATA: ComponentMetadata = {
   category: 'navigation',
   description: 'A dropdown menu component with nested submenu support for contextual actions.',
   selector: 'fui-menu',
+  setup: {
+    importStatement: "import { MenuComponent } from '@ui-suite/components';",
+    usageSnippet: `<button [fui-menu]="menuItems">Actions</button>`,
+    usageTypescript: `export class MyComponent {
+  protected readonly menuItems = [
+    { id: 'edit', label: 'Edit' },
+    { id: 'delete', label: 'Delete' },
+  ];
+}`,
+    additionalImports: ['MenuItem'],
+    setupNotes: 'No additional setup required. Add MenuComponent to the imports array of your standalone component.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Menu markup is SSR-compatible.',
+      'Overlay positioning and keyboard focus traversal rely on browser document and viewport APIs after hydration.',
+    ],
+  },
   inputs: [
     {
       name: 'items',
@@ -4090,6 +5396,27 @@ const MENU_METADATA: ComponentMetadata = {
     { name: 'openChange', type: 'boolean', description: 'Emitted when the open state changes' },
     { name: 'itemClick', type: 'MenuItem', description: 'Emitted when a menu item is selected' },
   ],
+  passthroughs: [
+    {
+      name: 'Trigger slot',
+      type: 'slot',
+      selector: '[trigger]',
+      description: 'The element that opens and closes the menu. Apply the trigger attribute to a child element inside fui-menu.',
+      optional: true,
+    },
+  ],
+  theming: {
+    tokens: [
+      { token: '--semantic-surface-card', description: 'Menu panel background.' },
+      { token: '--semantic-border-default', description: 'Panel border color.' },
+      { token: '--semantic-surface-background-secondary', description: 'Item hover background.' },
+      { token: '--semantic-text-primary', description: 'Item text color.' },
+      { token: '--semantic-text-disabled', description: 'Disabled item text color.' },
+      { token: '--primitive-border-radius-md', description: 'Panel corner radius.' },
+      { token: '--primitive-shadow-lg', description: 'Panel drop shadow.' },
+    ],
+    customizationNotes: 'Override surface and shadow tokens to restyle the menu panel. Use the items input to define the menu structure rather than custom HTML.',
+  },
   examples: [
     {
       title: 'Basic Dropdown Menu',
@@ -4153,6 +5480,36 @@ const CONTEXT_MENU_METADATA: ComponentMetadata = {
   description:
     'A right-click context menu component with nested submenu support, icons, and keyboard shortcuts.',
   selector: 'fui-context-menu',
+  setup: {
+    importStatement: "import { ContextMenuComponent } from '@ui-suite/components';",
+    usageSnippet: `<fui-context-menu [items]="menuItems()" (itemClick)="handleClick($event)">
+  <div class="context-area">Right-click anywhere in this area</div>
+</fui-context-menu>`,
+    usageTypescript: `import { signal } from '@angular/core';
+import { ContextMenuItem } from '@ui-suite/components';
+
+export class MyComponent {
+  protected readonly menuItems = signal<ContextMenuItem[]>([
+    { id: 'cut', label: 'Cut', shortcut: 'Ctrl+X' },
+    { id: 'copy', label: 'Copy', shortcut: 'Ctrl+C' },
+    { id: 'paste', label: 'Paste', shortcut: 'Ctrl+V' },
+  ]);
+
+  handleClick(item: ContextMenuItem): void {
+    console.log('Clicked:', item.id);
+  }
+}`,
+    additionalImports: ['ContextMenuItem'],
+    setupNotes: 'Import signal from @angular/core and ContextMenuItem from @ui-suite/components. Add ContextMenuComponent to the imports array of your standalone component.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Context menu structure is SSR-compatible.',
+      'Right-click interaction, viewport collision handling, and focus management require browser window/document APIs.',
+    ],
+  },
   inputs: [
     {
       name: 'items',
@@ -4176,6 +5533,28 @@ const CONTEXT_MENU_METADATA: ComponentMetadata = {
     { name: 'opened', type: 'MouseEvent', description: 'Emitted when the context menu opens' },
     { name: 'closed', type: 'void', description: 'Emitted when the context menu closes' },
   ],
+  passthroughs: [
+    {
+      name: 'Context area content',
+      type: 'slot',
+      selector: '(default)',
+      description: 'The area on which right-click opens the context menu. Project the target element inside fui-context-menu to make it context-aware.',
+      optional: false,
+    },
+  ],
+  theming: {
+    tokens: [
+      { token: '--semantic-surface-card', description: 'Context menu panel background.' },
+      { token: '--semantic-border-default', description: 'Panel border color.' },
+      { token: '--semantic-border-subtle', description: 'Divider between item groups.' },
+      { token: '--semantic-surface-background-secondary', description: 'Item hover background.' },
+      { token: '--semantic-text-primary', description: 'Item text color.' },
+      { token: '--semantic-text-disabled', description: 'Disabled item text color.' },
+      { token: '--primitive-border-radius-md', description: 'Panel corner radius.' },
+      { token: '--primitive-shadow-lg', description: 'Panel drop shadow.' },
+    ],
+    customizationNotes: 'Override surface and shadow tokens globally or scoped to a container. Group items with the separator property on individual menu items.',
+  },
   examples: [
     {
       title: 'Basic Context Menu',
@@ -4306,6 +5685,30 @@ const NAVBAR_METADATA: ComponentMetadata = {
   category: 'navigation',
   description: 'A navigation bar component for app-wide navigation with logo and links.',
   selector: 'fui-navbar',
+  setup: {
+    importStatement: "import { NavbarComponent } from '@ui-suite/components';",
+    usageSnippet: `<fui-navbar brand="My App" [links]="navLinks">
+  <span brand>My App</span>
+  <div actions>
+    <fui-button variant="outlined" size="sm">Sign In</fui-button>
+  </div>
+</fui-navbar>`,
+    usageTypescript: `export class MyComponent {
+  protected readonly navLinks = [
+    { label: 'Home', href: '/' },
+    { label: 'About', href: '/about' },
+    { label: 'Contact', href: '/contact' },
+  ];
+}`,
+    setupNotes: 'No additional setup required. Add NavbarComponent to the imports array of your standalone component. Use [brand], [brand-logo], and [actions] slots to project custom content.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Navbar rendering is SSR-friendly for static and router-driven navigation links.',
+    ],
+  },
   inputs: [
     { name: 'brandText', type: 'string', description: 'Brand or logo text displayed on the left' },
     {
@@ -4330,6 +5733,41 @@ const NAVBAR_METADATA: ComponentMetadata = {
   outputs: [
     { name: 'linkClick', type: 'NavbarLink', description: 'Emitted when a navigation link is clicked' },
   ],
+  passthroughs: [
+    {
+      name: 'Brand logo slot',
+      type: 'slot',
+      selector: '[brand-logo]',
+      description: 'Custom logo element rendered in the navbar brand area. Replaces the default text brand.',
+      optional: true,
+    },
+    {
+      name: 'Brand slot',
+      type: 'slot',
+      selector: '[brand]',
+      description: 'Custom brand content — use for styled text or composite logo+name elements.',
+      optional: true,
+    },
+    {
+      name: 'Actions slot',
+      type: 'slot',
+      selector: '[actions]',
+      description: 'Content projected into the navbar actions region (far-right). Suitable for icon buttons, user avatars, or dropdowns.',
+      optional: true,
+    },
+  ],
+  theming: {
+    tokens: [
+      { token: '--semantic-surface-card', description: 'Navbar background.' },
+      { token: '--semantic-border-subtle', description: 'Bottom border of the navbar.' },
+      { token: '--semantic-text-primary', description: 'Navigation link text color.' },
+      { token: '--semantic-text-secondary', description: 'Inactive link text color.' },
+      { token: '--semantic-brand-primary', description: 'Active link and indicator color.' },
+      { token: '--semantic-state-focus-ring', description: 'Focus ring on nav links.' },
+      { token: '--primitive-shadow-sm', description: 'Navbar drop shadow (sticky variant).' },
+    ],
+    customizationNotes: 'Override --semantic-surface-card to change the navbar background. For custom height, override the --component-navbar-height token if defined in your theme.',
+  },
   examples: [
     {
       title: 'Basic Navbar',
@@ -4383,6 +5821,32 @@ const STEPPER_METADATA: ComponentMetadata = {
   category: 'navigation',
   description: 'A component for multi-step processes with progress indication and step navigation.',
   selector: 'fui-stepper',
+  setup: {
+    importStatement: "import { StepperComponent } from '@ui-suite/components';",
+    usageSnippet: `<fui-stepper
+  [steps]="steps"
+  [activeStep]="activeStep()"
+  (activeStepChange)="activeStep.set($event)"
+/>`,
+    usageTypescript: `import { signal } from '@angular/core';
+
+export class MyComponent {
+  protected readonly activeStep = signal(0);
+  protected readonly steps = [
+    { title: 'Account', description: 'Create your account' },
+    { title: 'Profile', description: 'Set up your profile' },
+    { title: 'Confirm', description: 'Review and confirm' },
+  ];
+}`,
+    setupNotes: 'Import signal from @angular/core. Add StepperComponent to the imports array of your standalone component.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Stepper rendering and state projection are SSR-compatible.',
+    ],
+  },
   inputs: [
     {
       name: 'steps',
@@ -4410,6 +5874,19 @@ const STEPPER_METADATA: ComponentMetadata = {
       description: 'Emitted when user navigates to different step',
     },
   ],
+  passthroughs: [],
+  theming: {
+    tokens: [
+      { token: '--semantic-brand-primary', description: 'Active and completed step indicator color.' },
+      { token: '--semantic-feedback-error', description: 'Error state step indicator color.' },
+      { token: '--semantic-surface-background-secondary', description: 'Inactive step indicator background.' },
+      { token: '--semantic-border-default', description: 'Connector line between steps.' },
+      { token: '--primitive-border-radius-full', description: 'Circular step indicator border radius.' },
+      { token: '--semantic-text-primary', description: 'Step label text color.' },
+      { token: '--semantic-text-secondary', description: 'Inactive step label color.' },
+    ],
+    customizationNotes: 'Override --semantic-brand-primary to change the active and completed step color. Scope to a parent element for section-specific steppers.',
+  },
   examples: [
     {
       title: 'Horizontal Stepper',

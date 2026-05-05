@@ -22,6 +22,7 @@ import {
 import { PropTableComponent } from '../../shared/prop-table.component';
 import { ComponentDemoComponent } from '../../shared/component-demo.component';
 import { ResponsivePreviewComponent } from '../../shared/responsive-preview.component';
+import { PassthroughTableComponent } from '../../shared/passthrough-table.component';
 import { getComponentMetadata } from '../../data/component-metadata';
 
 @Component({
@@ -37,6 +38,7 @@ import { getComponentMetadata } from '../../data/component-metadata';
     CodeBlockComponent,
     ComponentDemoComponent,
     ResponsivePreviewComponent,
+    PassthroughTableComponent,
   ],
   template: `
     <article class="component-detail-page">
@@ -55,10 +57,44 @@ import { getComponentMetadata } from '../../data/component-metadata';
           <!-- Overview Tab -->
           <fui-tab label="Overview">
             <div class="tab-content">
-              <h2>About</h2>
-              <p>{{ metadata()!.description }}</p>
+              <!-- Standalone Import & Setup -->
+              @if (metadata()!.setup) {
+                <h3>Installation &amp; Import</h3>
+                <fui-code-block
+                  [code]="buildImportSnippet()"
+                  [title]="'TypeScript'"
+                  language="typescript"
+                />
 
-              <!-- Single Example Preview -->
+                @if (metadata()!.setup!.setupNotes) {
+                  <p class="setup-notes">{{ metadata()!.setup!.setupNotes }}</p>
+                }
+
+                <h3>Minimal Usage</h3>
+                <fui-code-block
+                  [code]="metadata()!.setup!.usageSnippet"
+                  [title]="'HTML'"
+                  language="html"
+                />
+
+                @if (metadata()!.setup!.usageTypescript) {
+                  <fui-code-block
+                    [code]="metadata()!.setup!.usageTypescript!"
+                    [title]="'TypeScript'"
+                    language="typescript"
+                  />
+                }
+              } @else {
+                <!-- Fallback selector hint for components without explicit setup metadata -->
+                <h3>Selector</h3>
+                <fui-code-block
+                  [code]="'<' + metadata()!.selector + '></' + metadata()!.selector + '>'"
+                  [title]="'Usage'"
+                  language="html"
+                />
+              }
+
+              <!-- Quick Example Preview -->
               @if (metadata()!.examples && metadata()!.examples.length > 0) {
                 <h3>Quick Example</h3>
                 <div class="example-preview">
@@ -72,14 +108,14 @@ import { getComponentMetadata } from '../../data/component-metadata';
                   [title]="'HTML'"
                   language="html"
                 />
+                @if (metadata()!.examples[0].typescript) {
+                  <fui-code-block
+                    [code]="metadata()!.examples[0].typescript!"
+                    [title]="'TypeScript'"
+                    language="typescript"
+                  />
+                }
               }
-
-              <h3>Selector</h3>
-              <fui-code-block
-                [code]="'<' + metadata()!.selector + '></' + metadata()!.selector + '>'"
-                [title]="'Usage'"
-                language="html"
-              />
 
               @if (metadata()!.bestPractices && metadata()!.bestPractices!.length > 0) {
                 <h3>Best Practices</h3>
@@ -103,66 +139,28 @@ import { getComponentMetadata } from '../../data/component-metadata';
                   }
                 </div>
               }
-            </div>
-          </fui-tab>
 
-          <!-- API Tab -->
-          <fui-tab label="API">
-            <div class="tab-content">
-              @if (metadata()!.inputs && metadata()!.inputs.length > 0) {
-                <h2>Inputs</h2>
-                <app-prop-table [inputs]="metadata()!.inputs" [outputs]="[]" />
-              }
-
-              @if (metadata()!.outputs && metadata()!.outputs.length > 0) {
-                <h2>Outputs</h2>
-                <app-prop-table
-                  [inputs]="[]"
-                  [outputs]="metadata()!.outputs"
-                  [showDefault]="false"
-                />
-              }
-
-              @if (metadata()!.methods && metadata()!.methods!.length > 0) {
-                <h2>Methods</h2>
-                <div class="methods-list">
-                  @for (method of metadata()!.methods; track method.name) {
-                    <div class="method-item">
-                      <h4>
-                        <code>{{ method.name }}{{ method.parameters }}</code>
-                        <span class="return-type">→ {{ method.returnType }}</span>
-                      </h4>
-                      <p>{{ method.description }}</p>
-                    </div>
-                  }
+              <!-- All Examples -->
+              @if (metadata()!.examples && metadata()!.examples.length > 1) {
+                <h2 style="margin-top: var(--primitive-spacing-8)">More Examples</h2>
+                <div class="examples-toolbar">
+                  <button
+                    class="responsive-toggle"
+                    [class.responsive-toggle--active]="showResponsivePreview()"
+                    (click)="toggleResponsivePreview()"
+                    aria-label="Toggle responsive preview"
+                    [attr.aria-pressed]="showResponsivePreview()"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                      <path d="M8 21h8" />
+                      <path d="M12 17v4" />
+                    </svg>
+                    <span>Responsive Preview</span>
+                  </button>
                 </div>
-              }
-            </div>
-          </fui-tab>
 
-          <!-- Examples Tab -->
-          <fui-tab label="Examples">
-            <div class="tab-content">
-              <!-- Responsive Preview Toggle -->
-              <div class="examples-toolbar">
-                <button
-                  class="responsive-toggle"
-                  [class.responsive-toggle--active]="showResponsivePreview()"
-                  (click)="toggleResponsivePreview()"
-                  aria-label="Toggle responsive preview"
-                  [attr.aria-pressed]="showResponsivePreview()"
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
-                    <path d="M8 21h8" />
-                    <path d="M12 17v4" />
-                  </svg>
-                  <span>Responsive Preview</span>
-                </button>
-              </div>
-
-              @if (metadata()!.examples && metadata()!.examples.length > 0) {
-                @for (example of metadata()!.examples; track example.title) {
+                @for (example of metadata()!.examples.slice(1); track example.title) {
                   <div class="example-section">
                     <h3>{{ example.title }}</h3>
                     <p>{{ example.description }}</p>
@@ -204,11 +202,177 @@ import { getComponentMetadata } from '../../data/component-metadata';
                     }
                   </div>
                 }
-              } @else {
-                <fui-alert variant="info">No examples available for this component yet.</fui-alert>
               }
             </div>
           </fui-tab>
+
+          <!-- API Tab -->
+          <fui-tab label="API">
+            <div class="tab-content">
+              @if (metadata()!.inputs && metadata()!.inputs.length > 0) {
+                <h2>Inputs</h2>
+                <app-prop-table [inputs]="metadata()!.inputs" [outputs]="[]" />
+              }
+
+              @if (metadata()!.outputs && metadata()!.outputs.length > 0) {
+                <h2>Outputs</h2>
+                <app-prop-table
+                  [inputs]="[]"
+                  [outputs]="metadata()!.outputs"
+                  [showDefault]="false"
+                />
+              }
+
+              @if (metadata()!.forms) {
+                <h2>Angular Forms</h2>
+                <div class="forms-grid">
+                  <div class="forms-card">
+                    <h3>Recommended Binding</h3>
+                    <p>{{ metadata()!.forms!.recommendedBinding }}</p>
+                    @if (metadata()!.forms!.valueBinding || metadata()!.forms!.changeBinding) {
+                      <dl class="forms-bindings">
+                        @if (metadata()!.forms!.valueBinding) {
+                          <div>
+                            <dt>Value</dt>
+                            <dd><code>{{ metadata()!.forms!.valueBinding }}</code></dd>
+                          </div>
+                        }
+                        @if (metadata()!.forms!.changeBinding) {
+                          <div>
+                            <dt>Change</dt>
+                            <dd><code>{{ metadata()!.forms!.changeBinding }}</code></dd>
+                          </div>
+                        }
+                      </dl>
+                    }
+                  </div>
+
+                  <div class="forms-card">
+                    <h3>Compatibility</h3>
+                    <ul class="forms-compatibility-list">
+                      <li>
+                        <span>ControlValueAccessor</span>
+                        <strong>{{ metadata()!.forms!.supportsControlValueAccessor ? 'Supported' : 'Not built in' }}</strong>
+                      </li>
+                      <li>
+                        <span>Template-driven forms</span>
+                        <strong>{{ metadata()!.forms!.supportsTemplateDrivenForms ? 'Supported' : 'Manual adapter required' }}</strong>
+                      </li>
+                      <li>
+                        <span>Reactive forms</span>
+                        <strong>{{ metadata()!.forms!.supportsReactiveForms ? 'Supported' : 'Manual adapter required' }}</strong>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                @if (metadata()!.forms!.notes && metadata()!.forms!.notes!.length > 0) {
+                  <ul class="forms-notes-list">
+                    @for (note of metadata()!.forms!.notes!; track note) {
+                      <li>{{ note }}</li>
+                    }
+                  </ul>
+                }
+              }
+
+              @if (metadata()!.runtime) {
+                <h2>Runtime &amp; SSR</h2>
+                <div class="forms-grid">
+                  <div class="forms-card">
+                    <h3>Compatibility</h3>
+                    <ul class="forms-compatibility-list">
+                      <li>
+                        <span>Server-side rendering</span>
+                        <strong>{{ metadata()!.runtime!.supportsSSR ? 'Supported' : 'Browser-only behavior' }}</strong>
+                      </li>
+                      <li>
+                        <span>Browser APIs required</span>
+                        <strong>{{ metadata()!.runtime!.requiresBrowserAPIs ? 'Yes' : 'No' }}</strong>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                @if (metadata()!.runtime!.notes && metadata()!.runtime!.notes!.length > 0) {
+                  <ul class="forms-notes-list">
+                    @for (note of metadata()!.runtime!.notes!; track note) {
+                      <li>{{ note }}</li>
+                    }
+                  </ul>
+                }
+              }
+
+              @if (metadata()!.methods && metadata()!.methods!.length > 0) {
+                <h2>Methods</h2>
+                <div class="methods-list">
+                  @for (method of metadata()!.methods; track method.name) {
+                    <div class="method-item">
+                      <h4>
+                        <code>{{ method.name }}{{ method.parameters }}</code>
+                        <span class="return-type">→ {{ method.returnType }}</span>
+                      </h4>
+                      <p>{{ method.description }}</p>
+                    </div>
+                  }
+                </div>
+              }
+
+              @if (metadata()!.passthroughs && metadata()!.passthroughs!.length > 0) {
+                <h2>Content Projection &amp; Passthroughs</h2>
+                <app-passthrough-table [passthroughs]="metadata()!.passthroughs!" />
+              }
+            </div>
+          </fui-tab>
+
+          <!-- Theming Tab -->
+          @if (metadata()!.theming) {
+            <fui-tab label="Theming">
+              <div class="tab-content">
+                <h2>Design Tokens</h2>
+                <p>
+                  This component is styled exclusively through CSS custom properties (design tokens).
+                  Override these tokens at the nearest ancestor scope to theme the component without
+                  modifying source files.
+                </p>
+
+                <div class="token-table-wrapper">
+                  <table class="token-table">
+                    <thead>
+                      <tr>
+                        <th>Token</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (tokenMeta of metadata()!.theming!.tokens; track tokenMeta.token) {
+                        <tr>
+                          <td><code class="token-code">{{ tokenMeta.token }}</code></td>
+                          <td class="token-description">{{ tokenMeta.description }}</td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+
+                @if (metadata()!.theming!.customizationNotes) {
+                  <h3>Customisation</h3>
+                  <p>{{ metadata()!.theming!.customizationNotes }}</p>
+                }
+
+                <h3>Override Example</h3>
+                <p>
+                  Scope token overrides to a CSS class or host element to avoid affecting other
+                  components.  Do not use <code>::ng-deep</code>; use design tokens or CSS layers
+                  instead.
+                </p>
+                <fui-code-block
+                  [code]="buildTokenOverrideExample()"
+                  [title]="'CSS'"
+                  language="css"
+                />
+              </div>
+            </fui-tab>
+          }
 
           <!-- Accessibility Tab -->
           <fui-tab label="Accessibility">
@@ -256,6 +420,75 @@ import { getComponentMetadata } from '../../data/component-metadata';
 
       .component-header {
         margin-bottom: var(--primitive-spacing-8);
+      }
+
+      .forms-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: var(--primitive-spacing-4);
+        margin-bottom: var(--primitive-spacing-4);
+      }
+
+      .forms-card {
+        padding: var(--primitive-spacing-4);
+        border: 1px solid var(--semantic-border-subtle);
+        border-radius: var(--primitive-border-radius-md);
+        background: var(--semantic-surface-card);
+      }
+
+      .forms-card h3 {
+        margin: 0 0 var(--primitive-spacing-3);
+      }
+
+      .forms-card p {
+        margin: 0;
+        color: var(--semantic-text-secondary);
+      }
+
+      .forms-bindings {
+        margin: var(--primitive-spacing-3) 0 0;
+        display: grid;
+        gap: var(--primitive-spacing-2);
+      }
+
+      .forms-bindings div {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--primitive-spacing-3);
+      }
+
+      .forms-bindings dt {
+        font-weight: var(--primitive-font-weight-semibold);
+        color: var(--semantic-text-primary);
+      }
+
+      .forms-bindings dd {
+        margin: 0;
+      }
+
+      .forms-compatibility-list,
+      .forms-notes-list {
+        margin: 0;
+        padding-left: var(--primitive-spacing-5);
+      }
+
+      .forms-compatibility-list li {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--primitive-spacing-3);
+        padding: var(--primitive-spacing-2) 0;
+        color: var(--semantic-text-secondary);
+      }
+
+      .forms-compatibility-list strong {
+        color: var(--semantic-text-primary);
+        white-space: nowrap;
+      }
+
+      .forms-notes-list {
+        color: var(--semantic-text-secondary);
       }
 
       h1 {
@@ -473,6 +706,70 @@ import { getComponentMetadata } from '../../data/component-metadata';
         font-size: var(--primitive-font-size-sm);
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
       }
+
+      /* Setup notes */
+      .setup-notes {
+        font-size: var(--primitive-font-size-base);
+        color: var(--semantic-text-secondary);
+        background: var(--semantic-surface-background-secondary);
+        border-left: 3px solid var(--semantic-brand-primary);
+        padding: var(--primitive-spacing-3) var(--primitive-spacing-4);
+        border-radius: 0 var(--primitive-border-radius-md) var(--primitive-border-radius-md) 0;
+        margin-bottom: var(--primitive-spacing-4);
+      }
+
+      /* Token table */
+      .token-table-wrapper {
+        overflow-x: auto;
+        margin-bottom: var(--primitive-spacing-6);
+      }
+
+      .token-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: var(--primitive-font-size-sm);
+      }
+
+      .token-table thead tr {
+        background-color: var(--semantic-surface-background-secondary);
+      }
+
+      .token-table th {
+        text-align: left;
+        padding: var(--primitive-spacing-3) var(--primitive-spacing-4);
+        font-weight: var(--primitive-font-weight-semibold);
+        color: var(--semantic-text-primary);
+        border-bottom: 2px solid var(--semantic-border-default);
+      }
+
+      .token-table td {
+        padding: var(--primitive-spacing-3) var(--primitive-spacing-4);
+        border-bottom: 1px solid var(--semantic-border-subtle);
+        vertical-align: top;
+      }
+
+      .token-table tr:last-child td {
+        border-bottom: none;
+      }
+
+      .token-table tr:hover td {
+        background-color: var(--semantic-surface-background-secondary);
+      }
+
+      .token-code {
+        font-size: var(--primitive-font-size-xs);
+        white-space: nowrap;
+        background-color: var(--semantic-surface-code);
+        color: var(--semantic-text-code);
+        padding: var(--primitive-spacing-1) var(--primitive-spacing-2);
+        border-radius: var(--primitive-border-radius-sm);
+        box-shadow: none;
+      }
+
+      .token-description {
+        color: var(--semantic-text-secondary);
+        line-height: var(--primitive-line-height-lg);
+      }
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -514,5 +811,29 @@ export class ComponentDetailComponent implements OnInit {
   protected generateFilename(exampleTitle: string, extension: string): string {
     const cleanTitle = exampleTitle.toLowerCase().replace(/\s+/g, '-');
     return `${this.componentId()}-${cleanTitle}.${extension}`;
+  }
+
+  /** Builds the import statement code block shown in the Overview setup section. */
+  protected buildImportSnippet(): string {
+    const setup = this.metadata()?.setup;
+    if (!setup) return '';
+    const lines: string[] = [setup.importStatement];
+    if (setup.additionalImports?.length) {
+      lines.push(
+        `// Additional types`,
+        ...setup.additionalImports.map(
+          (imp) => `import { ${imp} } from '@ui-suite/components';`
+        )
+      );
+    }
+    return lines.join('\n');
+  }
+
+  /** Builds a CSS snippet showing how to scope-override the first component token. */
+  protected buildTokenOverrideExample(): string {
+    const tokens = this.metadata()?.theming?.tokens;
+    if (!tokens?.length) return '';
+    const firstToken = tokens[0].token;
+    return `.my-custom-${this.componentId()} {\n  ${firstToken}: /* your value */;\n}`;
   }
 }

@@ -2,11 +2,12 @@
  * Card Component Styles
  */
 
-.fui-card-host {
+:host {
   display: block;
+  min-width: 0;
 }
 
-.fui-card-host--full-width {
+:host(.fui-card-host--full-width) {
   width: 100%;
 }
 

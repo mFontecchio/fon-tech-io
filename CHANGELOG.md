@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- **Expanded component documentation**: Enhanced all 38 components with comprehensive setup, passthrough, and theming metadata. Showcase now includes:
+  - Installation & Import sections with exact import statements and minimal usage examples for each component
+  - Passthroughs documentation listing named content projection slots and native attribute forwarding patterns
+  - Design Tokens sections showing all applicable CSS custom properties with descriptions and customization examples
+  - Complete three-tier token system reference (primitive, semantic, and component-specific tokens)
+- **Angular forms integration guidance**: Added a dedicated Angular Forms section to component API pages describing the supported binding contract, whether `ControlValueAccessor` is built in, and when manual adapters are required for `ngModel` or `formControlName`
+- **Runtime and SSR compatibility guidance**: Added a dedicated Runtime & SSR section to showcase API pages with per-component compatibility indicators and caveats for browser-dependent behavior
+- **Runtime metadata backfill for all components**: Added `runtime` metadata blocks to every showcase component entry so the Runtime & SSR API section is consistently populated across layout, navigation, data-display, feedback, and form components
+
+### Fixed
+- **README accuracy for Angular 20 consumers**: Corrected standalone component selectors, removed an unsupported theming stylesheet import path, and aligned package guidance with the showcase as the canonical documentation source
+- **Showcase example modernization**: Updated stale toast examples to use `inject()` instead of constructor injection so documentation matches current Angular 20 guidance
+- **Context menu README reconciliation**: Updated `libs/components/src/lib/context-menu/README.md` to use `fui-context-menu` examples, removed outdated `::ng-deep` styling guidance, and aligned snippets with token-based customization practices
+
+---
+
 ## [1.0.1] - 2026-05-05
 
 ### Fixed

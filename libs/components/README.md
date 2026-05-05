@@ -88,9 +88,9 @@ import { ButtonComponent, RadioComponent } from '@ui-suite/components';
   selector: 'app-example',
   imports: [ButtonComponent, RadioComponent],
   template: `
-    <ui-button (clicked)="handleClick()">Click Me</ui-button>
+    <fui-button (clicked)="handleClick()">Click Me</fui-button>
     
-    <ui-radio 
+    <fui-radio 
       name="plan" 
       value="pro" 
       label="Pro Plan"
@@ -109,12 +109,24 @@ export class ExampleComponent {
 
 ### Setup Theming
 
-Import the theme CSS in your application:
+Components consume CSS custom properties from `@ui-suite/theming`. Use the showcase theming guide as the source of truth for applying a theme family and generated tokens in Angular applications.
 
-```typescript
-// main.ts or styles.css
-import '@ui-suite/theming/styles.css';
+```bash
+nx serve showcase
 ```
+
+Then open `/getting-started/theming` in the showcase for the supported Angular 20 setup path.
+
+## Angular Forms Integration
+
+Form-oriented components expose explicit Angular bindings such as `[value]` with `(valueChange)`, `[checked]` with `(checkedChange)`, or `[(modelValue)]` for radio groups.
+
+- `fui-input`, `fui-textarea`, `fui-select`, `fui-multi-select`, `fui-slider`, and `fui-date-picker` use explicit input/output bindings.
+- `fui-checkbox` and `fui-switch` use `[checked]` and `(checkedChange)`.
+- `fui-radio` uses `[(modelValue)]` across a group that shares the same `name`.
+- These components do not currently implement Angular `ControlValueAccessor` unless explicitly documented in the showcase.
+
+If your application relies on `formControlName` or `ngModel`, add a thin adapter directive or wrapper component that bridges your `FormControl` to the component's documented bindings.
 
 ## Keyboard Navigation
 
@@ -135,18 +147,39 @@ All interactive components support full keyboard navigation per WAI-ARIA pattern
 
 ## Component Documentation
 
-Each component has detailed documentation:
+Comprehensive documentation for all 38 components is available in the **Showcase Application** including:
 
-- **API Reference** - Complete input/output documentation
-- **Usage Examples** - Common use cases with code
-- **Accessibility** - ARIA, keyboard navigation, screen reader support
-- **Best Practices** - When and how to use each component
+- **Setup & Installation** - Import statements and minimal usage examples for each component
+- **API Reference** - Complete inputs, outputs, and method documentation
+- **Content Projection & Passthroughs** - Slot names and native attribute forwarding patterns
+- **Design Tokens & Theming** - Complete token reference with customization examples
+- **Accessibility** - ARIA attributes, keyboard navigation, screen reader support
+- **Best Practices** - When and how to use each component effectively
 
-View component documentation:
+### Three-Tier Design Token System
 
-- Online: [Component Documentation Site](https://your-docs-site.com)
-- Local: `/libs/components/src/lib/[component-name]/README.md`
-- Showcase: Run `nx serve showcase` to view live examples
+All components are styled exclusively through CSS custom properties organized in three tiers:
+
+1. **Primitive Tokens** (`--primitive-*`) - Raw values: colors, spacing, typography, shadows, animations
+2. **Semantic Tokens** (`--semantic-*`) - Purpose-driven: brand colors, surface backgrounds, text colors, states
+3. **Component Tokens** (`--component-*`) - Component-specific: padding, border-radius, shadows
+
+Override tokens at any ancestor scope to customize components without modifying source code.
+
+### View Documentation
+
+Run the showcase application to browse all component documentation with live examples:
+
+```bash
+nx serve showcase
+# Opens http://localhost:4200/components
+```
+
+Browse component pages to view:
+- Full API with inputs, outputs, and methods
+- Passthroughs for content projection
+- Design tokens and theming examples
+- Accessibility details and best practices
 
 ## Development
 
@@ -196,7 +229,7 @@ MIT License - see LICENSE file for details
 
 ## Support
 
-- **Documentation**: See `/documentation/components/` for detailed guides
+- **Documentation**: Run `nx serve showcase` and browse the component pages and getting-started guides
 - **Issues**: Report bugs and request features on GitHub
 - **Discussions**: Join the community discussions
 

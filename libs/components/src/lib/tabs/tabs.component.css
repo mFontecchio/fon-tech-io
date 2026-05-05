@@ -22,6 +22,12 @@
   display: flex;
   background-color: var(--semantic-surface-card);
   border-bottom: 1px solid var(--semantic-border-subtle);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.fui-tabs-list::-webkit-scrollbar {
+  display: none;
 }
 
 .fui-tabs--horizontal .fui-tabs-list {
