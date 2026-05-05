@@ -28,12 +28,6 @@ import { ThemeService } from '@ui-suite/theming';
           [mobileNavigationOpen]="mobileNavigationOpen()"
           (closeNavigation)="closeMobileNavigation()"
         />
-        <div
-          class="app-overlay"
-          [class.app-overlay--active]="mobileNavigationOpen()"
-          (click)="closeMobileNavigation()"
-          aria-hidden="true"
-        ></div>
         <main class="app-main">
           <router-outlet />
         </main>
@@ -65,24 +59,6 @@ import { ThemeService } from '@ui-suite/theming';
       @media (max-width: 1024px) {
         .app-layout {
           padding-top: 0;
-        }
-
-        .app-overlay {
-          display: none;
-          position: fixed;
-          inset: 0;
-          z-index: 99;
-          background-color: transparent;
-        }
-
-        .app-overlay--active {
-          display: block;
-        }
-
-        @media (min-width: 1025px) {
-          .app-overlay {
-            display: none !important;
-          }
         }
 
         .app-main {
