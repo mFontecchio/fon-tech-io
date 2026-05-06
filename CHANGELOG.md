@@ -8,7 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- **Expanded component documentation**: Enhanced all 38 components with comprehensive setup, passthrough, and theming metadata. Showcase now includes:
+- **Custom brand theme families**: Added Smith, DuPre, Puckett, Xayavong, Greaff, Simpson, and Garrett as built-in theme builder presets, each with paired light and dark variants derived from a single brand hue and a distinct visual treatment ranging from rounded to edgy.
+- **Expanded direct Angular forms support**: `fui-input`, `fui-textarea`, `fui-checkbox`, `fui-switch`, `fui-select`, `fui-date-picker`, `fui-multi-select`, and `fui-radio` now implement `ControlValueAccessor` while preserving their existing explicit input/output bindings or model-based APIs for signal-based and manual state management. `fui-slider` now supports `ControlValueAccessor` in single-value mode while range mode continues to use explicit `valueEnd` / `valueEndChange` bindings.
+- **Radio and slider contract normalization**: `fui-radio` now exposes `selectedValue` / `selectedValueChange` as the preferred explicit group-selection contract while preserving the legacy `modelValue` alias, and `fui-slider` range mode now exposes a tuple-based `rangeValue` / `rangeValueChange` contract while keeping `valueEnd` compatibility.
+- **Modal controlled-state alignment**: Added `openChange` to `fui-modal` so its dismiss interactions follow the same controlled overlay pattern as `fui-drawer`, while preserving the existing `closed` event.
+- **Overlay focus restoration**: `fui-modal` and `fui-drawer` now restore focus to the previously focused trigger element after closing or teardown, aligning runtime behavior with their accessibility guidance.
+- **Menu keyboard focus management**: `fui-menu` now uses roving tabindex, moves focus to the first enabled item on open, keeps submenu focus synchronized, and restores focus to its trigger on close.
+- **Table sortable header accessibility**: `fui-table` sortable columns now use keyboard-focusable header buttons, and the showcase docs/examples now match the actual supported sorting and selection interactions.
+- **Tooltip and popover associations**: `fui-tooltip` now wires `aria-describedby` to its projected trigger while visible, and `fui-popover` now links its trigger and dialog with stable accessibility IDs and dialog semantics.
+- **Expanded component documentation**: Enhanced all 39 documented components with comprehensive setup, passthrough, and theming metadata. Showcase now includes:
   - Installation & Import sections with exact import statements and minimal usage examples for each component
   - Passthroughs documentation listing named content projection slots and native attribute forwarding patterns
   - Design Tokens sections showing all applicable CSS custom properties with descriptions and customization examples
@@ -18,6 +26,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Runtime metadata backfill for all components**: Added `runtime` metadata blocks to every showcase component entry so the Runtime & SSR API section is consistently populated across layout, navigation, data-display, feedback, and form components
 
 ### Fixed
+- **Showcase initial bundle budget**: Moved the global search modal behind a true dynamic import from the header shell so `fuse.js` and the component metadata registry no longer ship in the initial browser bundle. The showcase initial payload dropped below the 500 kB warning budget.
+- **Documentation count alignment**: Updated canonical docs and agent guidance to reflect the current 39 documented showcase components and the broader 43 exported component-class surface that includes helper building blocks.
 - **README accuracy for Angular 20 consumers**: Corrected standalone component selectors, removed an unsupported theming stylesheet import path, and aligned package guidance with the showcase as the canonical documentation source
 - **Showcase example modernization**: Updated stale toast examples to use `inject()` instead of constructor injection so documentation matches current Angular 20 guidance
 - **Context menu README reconciliation**: Updated `libs/components/src/lib/context-menu/README.md` to use `fui-context-menu` examples, removed outdated `::ng-deep` styling guidance, and aligned snippets with token-based customization practices

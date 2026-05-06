@@ -42,7 +42,7 @@
       >
         <div class="fui-accordion-content">
           <div class="fui-accordion-content-body">
-            <ng-content></ng-content>
+            <ng-container [ngTemplateOutlet]="item.contentTemplate()"></ng-container>
           </div>
         </div>
       </div>

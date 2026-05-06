@@ -1,7 +1,7 @@
 <div class="fui-textarea-container">
   @if (label()) {
-    <label 
-      [for]="textareaId()" 
+    <label
+      [for]="textareaId()"
       class="fui-textarea-label"
       [class.fui-textarea-label--required]="required()"
       [class.fui-textarea-label--disabled]="disabled()"
@@ -20,7 +20,7 @@
       [name]="name()"
       [value]="internalValue()"
       [placeholder]="placeholder()"
-      [disabled]="disabled()"
+      [disabled]="isDisabled()"
       [readonly]="readonly()"
       [required]="required()"
       [attr.maxlength]="maxLength()"
@@ -40,21 +40,13 @@
   <div class="fui-textarea-footer">
     <div class="fui-textarea-messages">
       @if (helperText() && !hasError()) {
-        <div 
-          [id]="helperTextId()" 
-          class="fui-textarea-helper-text"
-        >
+        <div [id]="helperTextId()" class="fui-textarea-helper-text">
           {{ helperText() }}
         </div>
       }
 
       @if (hasError()) {
-        <div 
-          [id]="errorId()" 
-          class="fui-textarea-error-message"
-          role="alert"
-          aria-live="polite"
-        >
+        <div [id]="errorId()" class="fui-textarea-error-message" role="alert" aria-live="polite">
           {{ errorMessage() }}
         </div>
       }
@@ -62,11 +54,11 @@
 
     @if (showCharacterCount()) {
       <div class="fui-textarea-character-count" aria-live="polite">
-        {{ characterCount() }}@if (maxLength()) {
+        {{ characterCount() }}
+        @if (maxLength()) {
           <span> / {{ maxLength() }}</span>
         }
       </div>
     }
   </div>
 </div>
-

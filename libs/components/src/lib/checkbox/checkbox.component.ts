@@ -1,6 +1,6 @@
 /**
  * Checkbox Component
- * 
+ *
  * A themable checkbox component with indeterminate state support.
  * Uses native HTML checkbox with Angular 20 best practices.
  */
@@ -13,26 +13,35 @@ import {
   linkedSignal,
   output,
   effect,
+  forwardRef,
   ElementRef,
   viewChild,
 } from '@angular/core';
 import { NgClass } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { FormValueAccessorBase } from '../forms/form-value-accessor.base';
 
 export type CheckboxSize = 'sm' | 'md' | 'lg';
 
+const CHECKBOX_VALUE_ACCESSOR = {
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(() => CheckboxComponent),
+  multi: true,
+};
+
 @Component({
   selector: 'fui-checkbox',
-  imports: [NgClass, FormsModule],
+  imports: [NgClass],
   templateUrl: './checkbox.component.html',
   styleUrl: './checkbox.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [CHECKBOX_VALUE_ACCESSOR],
   host: {
     '[class.fui-checkbox-wrapper]': 'true',
-    '[class.fui-checkbox-wrapper--disabled]': 'disabled()',
+    '[class.fui-checkbox-wrapper--disabled]': 'isDisabled()',
   },
 })
-export class CheckboxComponent {
+export class CheckboxComponent extends FormValueAccessorBase<boolean> {
   /**
    * Checked state
    */
@@ -104,6 +113,11 @@ export class CheckboxComponent {
   protected readonly internalChecked = linkedSignal(() => this.checked());
 
   /**
+   * Effective disabled state including Angular forms state.
+   */
+  protected readonly isDisabled = computed(() => this.disabled() || this.valueAccessorDisabled());
+
+  /**
    * Reference to checkbox input element
    */
   protected readonly checkboxElement = viewChild<ElementRef<HTMLInputElement>>('checkbox');
@@ -136,15 +150,15 @@ export class CheckboxComponent {
    */
   protected readonly computedAriaDescribedBy = computed(() => {
     const parts: string[] = [];
-    
+
     if (this.helperText()) {
       parts.push(this.helperTextId());
     }
-    
+
     if (this.hasError()) {
       parts.push(this.errorId());
     }
-    
+
     return parts.length > 0 ? parts.join(' ') : undefined;
   });
 
@@ -156,11 +170,13 @@ export class CheckboxComponent {
     [`fui-checkbox--${this.size()}`]: true,
     'fui-checkbox--checked': this.internalChecked(),
     'fui-checkbox--indeterminate': this.indeterminate(),
-    'fui-checkbox--disabled': this.disabled(),
+    'fui-checkbox--disabled': this.isDisabled(),
     'fui-checkbox--error': this.hasError(),
   }));
 
   constructor() {
+    super();
+
     // Set indeterminate state on native element
     effect(() => {
       const checkbox = this.checkboxElement();
@@ -176,9 +192,17 @@ export class CheckboxComponent {
   protected handleChange(event: Event): void {
     const target = event.target as HTMLInputElement;
     const newChecked = target.checked;
-    
+
     this.internalChecked.set(newChecked);
+    this.emitValueChange(newChecked);
     this.checkedChange.emit(newChecked);
+  }
+
+  /**
+   * Handle blur to mark Angular forms state as touched.
+   */
+  protected handleBlur(): void {
+    this.markAsTouched();
   }
 
   /**
@@ -195,11 +219,12 @@ export class CheckboxComponent {
    * Toggle checked state programmatically
    */
   public toggle(): void {
-    if (!this.disabled()) {
+    if (!this.isDisabled()) {
       const newChecked = !this.internalChecked();
       this.internalChecked.set(newChecked);
+      this.emitValueChange(newChecked);
       this.checkedChange.emit(newChecked);
-      
+
       const checkbox = this.checkboxElement();
       if (checkbox) {
         checkbox.nativeElement.checked = newChecked;
@@ -216,5 +241,8 @@ export class CheckboxComponent {
       checkbox.nativeElement.focus();
     }
   }
-}
 
+  protected setValue(value: boolean | null | undefined): void {
+    this.internalChecked.set(!!value);
+  }
+}

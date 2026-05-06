@@ -1,6 +1,7 @@
 <div class="fui-menu-container">
   <!-- Trigger -->
   <button
+    #trigger
     type="button"
     class="fui-menu-trigger"
     [attr.aria-haspopup]="true"
@@ -28,8 +29,9 @@
               [attr.aria-disabled]="item.disabled"
               [attr.aria-haspopup]="item.submenu && item.submenu.length > 0"
               [attr.aria-expanded]="isSubmenuActive(item.id)"
-              [attr.tabindex]="item.disabled ? -1 : 0"
+              [attr.tabindex]="getItemTabIndex(item)"
               [attr.data-item-id]="item.id"
+              (focus)="handleItemFocus(item.id)"
               (click)="handleItemClick(item, $event)"
               (keydown.enter)="handleItemClick(item, $event)"
               (keydown.space)="$event.preventDefault(); handleItemClick(item, $event)"
@@ -71,7 +73,9 @@
                         [class.fui-menu-item--disabled]="subitem.disabled"
                         [attr.role]="'menuitem'"
                         [attr.aria-disabled]="subitem.disabled"
-                        [attr.tabindex]="subitem.disabled ? -1 : 0"
+                        [attr.tabindex]="getItemTabIndex(subitem)"
+                        [attr.data-item-id]="subitem.id"
+                        (focus)="handleItemFocus(subitem.id)"
                         (click)="handleItemClick(subitem, $event)"
                         (keydown.enter)="handleItemClick(subitem, $event)"
                         (keydown.space)="$event.preventDefault(); handleItemClick(subitem, $event)"

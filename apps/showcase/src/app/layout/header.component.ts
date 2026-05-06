@@ -3,22 +3,27 @@
  * Top navigation bar with logo, search, and theme toggle
  */
 
-import { ChangeDetectionStrategy, Component, input, output, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ComponentRef,
+  input,
+  output,
+  ViewContainerRef,
+  viewChild,
+} from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ThemeSwitcherComponent } from '../shared/theme-switcher.component';
-import { SearchModalComponent } from '../shared/search-modal.component';
+import type { SearchModalComponent } from '../shared/search-modal.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterLink,
-    RouterLinkActive,
-    ThemeSwitcherComponent,
-    SearchModalComponent,
-  ],
+  imports: [CommonModule, RouterLink, RouterLinkActive, ThemeSwitcherComponent],
+  host: {
+    '(window:keydown)': 'handleWindowKeydown($event)',
+  },
   template: `
     <header class="app-header">
       <div class="app-header-content">
@@ -89,9 +94,7 @@ import { SearchModalComponent } from '../shared/search-modal.component';
         </div>
       </div>
     </header>
-
-    <!-- Search Modal -->
-    <app-search-modal />
+    <ng-container #searchModalHost></ng-container>
   `,
   styles: [
     `
@@ -328,18 +331,40 @@ export class HeaderComponent {
   readonly mobileNavigationOpen = input(false);
   readonly mobileNavigationClose = output<void>();
   readonly mobileNavigationToggle = output<void>();
-
-  private readonly searchModal = viewChild.required(SearchModalComponent);
+  private readonly searchModalHost = viewChild.required('searchModalHost', {
+    read: ViewContainerRef,
+  });
+  private searchModalRef?: ComponentRef<SearchModalComponent>;
 
   protected toggleMobileNavigation(): void {
     this.mobileNavigationToggle.emit();
   }
 
-  protected openSearch(): void {
+  protected async openSearch(): Promise<void> {
     if (this.mobileNavigationOpen()) {
       this.mobileNavigationClose.emit();
     }
 
-    this.searchModal().open();
+    const searchModal = await this.ensureSearchModal();
+    searchModal.open();
+  }
+
+  protected handleWindowKeydown(event: KeyboardEvent): void {
+    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+      event.preventDefault();
+      void this.openSearch();
+    }
+  }
+
+  private async ensureSearchModal(): Promise<SearchModalComponent> {
+    if (this.searchModalRef) {
+      return this.searchModalRef.instance;
+    }
+
+    const { SearchModalComponent } = await import('../shared/search-modal.component');
+    const host = this.searchModalHost();
+    host.clear();
+    this.searchModalRef = host.createComponent(SearchModalComponent);
+    return this.searchModalRef.instance;
   }
 }

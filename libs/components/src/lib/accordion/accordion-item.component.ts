@@ -1,6 +1,6 @@
 /**
  * Accordion Item Component
- * 
+ *
  * Individual collapsible item within an Accordion.
  * This component is for configuration only; content is projected in the parent.
  */
@@ -10,11 +10,13 @@ import {
   Component,
   input,
   signal,
+  TemplateRef,
+  viewChild,
 } from '@angular/core';
 
 @Component({
   selector: 'fui-accordion-item',
-  template: '',
+  template: '<ng-template #contentTemplate><ng-content /></ng-template>',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
@@ -28,6 +30,11 @@ export class AccordionItemComponent {
    * Disabled state
    */
   readonly disabled = input<boolean>(false);
+
+  /**
+   * Item-specific projected content captured for the parent accordion to render.
+   */
+  readonly contentTemplate = viewChild.required<TemplateRef<unknown>>('contentTemplate');
 
   /**
    * Internal expanded state (set by parent)
@@ -60,4 +67,3 @@ export class AccordionItemComponent {
     return this.isExpanded();
   }
 }
-

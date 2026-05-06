@@ -1,6 +1,6 @@
 /**
  * Accordion Component
- * 
+ *
  * A vertically stacked set of interactive headings with collapsible content panels.
  * Supports single or multiple expanded items.
  */
@@ -8,20 +8,20 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
   input,
   linkedSignal,
   output,
   contentChildren,
   effect,
 } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
 import { AccordionItemComponent } from './accordion-item.component';
 
 export type AccordionMode = 'single' | 'multiple';
 
 @Component({
   selector: 'fui-accordion',
-  imports: [],
+  imports: [NgTemplateOutlet],
   templateUrl: './accordion.component.html',
   styleUrl: './accordion.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -60,7 +60,7 @@ export class AccordionComponent {
     effect(() => {
       const expandedIndices = this.internalExpanded();
       const itemsList = this.items();
-      
+
       itemsList.forEach((item, index) => {
         item.setExpanded(expandedIndices.includes(index));
         item.setIndex(index);
@@ -73,7 +73,7 @@ export class AccordionComponent {
    */
   protected toggleItem(index: number): void {
     const currentExpanded = this.internalExpanded();
-    
+
     if (this.mode() === 'single') {
       // Single mode: only one item can be expanded
       const newExpanded = currentExpanded.includes(index) ? [] : [index];
@@ -82,7 +82,7 @@ export class AccordionComponent {
     } else {
       // Multiple mode: toggle individual item
       const newExpanded = currentExpanded.includes(index)
-        ? currentExpanded.filter(i => i !== index)
+        ? currentExpanded.filter((i) => i !== index)
         : [...currentExpanded, index];
       this.internalExpanded.set(newExpanded);
       this.expandedChange.emit(newExpanded);
@@ -96,4 +96,3 @@ export class AccordionComponent {
     return this.internalExpanded().includes(index);
   }
 }
-

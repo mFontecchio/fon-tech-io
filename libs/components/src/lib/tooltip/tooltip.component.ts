@@ -12,7 +12,8 @@ import {
   input,
   signal,
   ElementRef,
-  inject, OnDestroy,
+  inject,
+  OnDestroy,
 } from '@angular/core';
 import { NgClass } from '@angular/common';
 
@@ -34,6 +35,8 @@ export type TooltipSize = 'sm' | 'md' | 'lg';
   },
 })
 export class TooltipComponent implements OnDestroy {
+  protected readonly tooltipId = `fui-tooltip-${Math.random().toString(36).slice(2, 11)}`;
+
   /**
    * Tooltip text content
    */
@@ -99,6 +102,7 @@ export class TooltipComponent implements OnDestroy {
 
     this.showTimeoutId = window.setTimeout(() => {
       this.updatePosition();
+      this.syncTriggerDescription(true);
       this.isVisible.set(true);
     }, this.showDelay());
   }
@@ -112,6 +116,7 @@ export class TooltipComponent implements OnDestroy {
     this.clearShowTimeout();
 
     this.hideTimeoutId = window.setTimeout(() => {
+      this.syncTriggerDescription(false);
       this.isVisible.set(false);
     }, this.hideDelay());
   }
@@ -124,6 +129,7 @@ export class TooltipComponent implements OnDestroy {
 
     this.clearHideTimeout();
     this.updatePosition();
+    this.syncTriggerDescription(true);
     this.isVisible.set(true);
   }
 
@@ -134,6 +140,7 @@ export class TooltipComponent implements OnDestroy {
     if (this.disabled()) return;
 
     this.clearShowTimeout();
+    this.syncTriggerDescription(false);
     this.isVisible.set(false);
   }
 
@@ -206,6 +213,46 @@ export class TooltipComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.clearShowTimeout();
     this.clearHideTimeout();
+    this.syncTriggerDescription(false);
+  }
+
+  /**
+   * Associate or disassociate the tooltip with its projected trigger.
+   */
+  private syncTriggerDescription(visible: boolean): void {
+    const triggerElement = this.findTriggerElement();
+    if (!triggerElement) return;
+
+    const existing = (triggerElement.getAttribute('aria-describedby') ?? '')
+      .split(/\s+/)
+      .filter(Boolean);
+
+    const next = visible
+      ? Array.from(new Set([...existing, this.tooltipId]))
+      : existing.filter((id) => id !== this.tooltipId);
+
+    if (next.length > 0) {
+      triggerElement.setAttribute('aria-describedby', next.join(' '));
+    } else {
+      triggerElement.removeAttribute('aria-describedby');
+    }
+  }
+
+  /**
+   * Find the primary interactive trigger element inside the projected content.
+   */
+  private findTriggerElement(): HTMLElement | null {
+    const hostElement = this.elementRef?.nativeElement as HTMLElement | undefined;
+    const triggerContainer = hostElement?.querySelector('.fui-tooltip-trigger');
+    if (!triggerContainer) return null;
+
+    return (
+      triggerContainer.querySelector<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      ) ??
+      (triggerContainer.firstElementChild as HTMLElement | null) ??
+      null
+    );
   }
 
   private elementRef = inject(ElementRef);

@@ -9,6 +9,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  forwardRef,
   input,
   linkedSignal,
   output,
@@ -18,7 +19,8 @@ import {
   inject,
 } from '@angular/core';
 import { NgClass } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { FormValueAccessorBase } from '../forms/form-value-accessor.base';
 
 export interface MultiSelectOption {
   value: string;
@@ -29,21 +31,29 @@ export interface MultiSelectOption {
 
 export type MultiSelectSize = 'sm' | 'md' | 'lg';
 
+const MULTI_SELECT_VALUE_ACCESSOR = {
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(() => MultiSelectComponent),
+  multi: true,
+};
+
 @Component({
   selector: 'fui-multi-select',
   imports: [NgClass, FormsModule],
   templateUrl: './multi-select.component.html',
   styleUrl: './multi-select.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [MULTI_SELECT_VALUE_ACCESSOR],
   host: {
     '[class.fui-multi-select-wrapper]': 'true',
-    '[class.fui-multi-select-wrapper--disabled]': 'disabled()',
+    '[class.fui-multi-select-wrapper--disabled]': 'isDisabled()',
     '[class.fui-multi-select-wrapper--full-width]': 'fullWidth()',
     '(document:click)': 'handleClickOutside($event)',
     '(keydown.escape)': 'handleEscape()',
+    '(focusout)': 'handleFocusOut($event)',
   },
 })
-export class MultiSelectComponent {
+export class MultiSelectComponent extends FormValueAccessorBase<string[]> {
   /**
    * Available options
    */
@@ -140,6 +150,11 @@ export class MultiSelectComponent {
   protected readonly internalValue = linkedSignal<string[]>(() => this.value());
 
   /**
+   * Effective disabled state including Angular forms state.
+   */
+  protected readonly isDisabled = computed(() => this.disabled() || this.valueAccessorDisabled());
+
+  /**
    * Dropdown open state
    */
   protected readonly isOpen = signal(false);
@@ -201,7 +216,7 @@ export class MultiSelectComponent {
     'fui-multi-select': true,
     [`fui-multi-select--${this.size()}`]: true,
     'fui-multi-select--error': this.hasError(),
-    'fui-multi-select--disabled': this.disabled(),
+    'fui-multi-select--disabled': this.isDisabled(),
     'fui-multi-select--open': this.isOpen(),
   }));
 
@@ -268,7 +283,7 @@ export class MultiSelectComponent {
    * Toggle dropdown
    */
   protected toggleDropdown(): void {
-    if (this.disabled()) return;
+    if (this.isDisabled()) return;
 
     this.isOpen.update((val) => !val);
 
@@ -295,7 +310,7 @@ export class MultiSelectComponent {
    * Toggle option selection
    */
   protected toggleOption(option: MultiSelectOption): void {
-    if (option.disabled) return;
+    if (option.disabled || this.isDisabled()) return;
 
     const currentValues = this.internalValue();
     const index = currentValues.indexOf(option.value);
@@ -305,6 +320,7 @@ export class MultiSelectComponent {
       const newValues = [...currentValues];
       newValues.splice(index, 1);
       this.internalValue.set(newValues);
+      this.emitValueChange(newValues);
       this.valueChange.emit(newValues);
     } else {
       // Add
@@ -312,8 +328,11 @@ export class MultiSelectComponent {
 
       const newValues = [...currentValues, option.value];
       this.internalValue.set(newValues);
+      this.emitValueChange(newValues);
       this.valueChange.emit(newValues);
     }
+
+    this.markAsTouched();
   }
 
   /**
@@ -346,6 +365,8 @@ export class MultiSelectComponent {
    */
   protected clearAll(): void {
     this.internalValue.set([]);
+    this.emitValueChange([]);
+    this.markAsTouched();
     this.valueChange.emit([]);
   }
 
@@ -375,5 +396,21 @@ export class MultiSelectComponent {
     if (this.isOpen()) {
       this.closeDropdown();
     }
+  }
+
+  /**
+   * Mark control as touched when focus leaves the component tree.
+   */
+  protected handleFocusOut(event: FocusEvent): void {
+    const nextFocused = event.relatedTarget as Node | null;
+    const hostElement = this.elementRef.nativeElement as HTMLElement;
+
+    if (!nextFocused || !hostElement.contains(nextFocused)) {
+      this.markAsTouched();
+    }
+  }
+
+  protected setValue(value: string[] | null | undefined): void {
+    this.internalValue.set(value ?? []);
   }
 }

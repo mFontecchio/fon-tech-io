@@ -13,7 +13,7 @@
       #select
       [id]="selectId()"
       [name]="name()"
-      [disabled]="disabled()"
+      [disabled]="isDisabled()"
       [required]="required()"
       [attr.aria-label]="ariaLabel() || label()"
       [attr.aria-describedby]="computedAriaDescribedBy()"
@@ -22,6 +22,7 @@
       [ngClass]="selectClasses()"
       [value]="internalValue() || ''"
       (change)="handleChange($event)"
+      (blur)="handleBlur()"
     >
       <option value="" disabled [selected]="!internalValue()">
         {{ placeholder() }}
@@ -29,7 +30,7 @@
 
       @if (!hasGroups()) {
         @for (option of options(); track option.value) {
-          <option 
+          <option
             [value]="option.value"
             [disabled]="option.disabled || false"
             [selected]="internalValue() === option.value"
@@ -42,7 +43,7 @@
           @if (group.key) {
             <optgroup [label]="group.key">
               @for (option of group.value; track option.value) {
-                <option 
+                <option
                   [value]="option.value"
                   [disabled]="option.disabled || false"
                   [selected]="internalValue() === option.value"
@@ -53,7 +54,7 @@
             </optgroup>
           } @else {
             @for (option of group.value; track option.value) {
-              <option 
+              <option
                 [value]="option.value"
                 [disabled]="option.disabled || false"
                 [selected]="internalValue() === option.value"
@@ -66,42 +67,33 @@
       }
     </select>
 
-    <svg 
-      class="fui-select-icon" 
-      width="20" 
-      height="20" 
-      viewBox="0 0 20 20" 
+    <svg
+      class="fui-select-icon"
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
       fill="none"
       aria-hidden="true"
     >
-      <path 
-        d="M6 8L10 12L14 8" 
-        stroke="currentColor" 
-        stroke-width="2" 
-        stroke-linecap="round" 
+      <path
+        d="M6 8L10 12L14 8"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
         stroke-linejoin="round"
       />
     </svg>
   </div>
 
   @if (helperText() && !hasError()) {
-    <div 
-      [id]="helperTextId()" 
-      class="fui-select-helper-text"
-    >
+    <div [id]="helperTextId()" class="fui-select-helper-text">
       {{ helperText() }}
     </div>
   }
 
   @if (hasError()) {
-    <div 
-      [id]="errorId()" 
-      class="fui-select-error-message"
-      role="alert"
-      aria-live="polite"
-    >
+    <div [id]="errorId()" class="fui-select-error-message" role="alert" aria-live="polite">
       {{ errorMessage() }}
     </div>
   }
 </div>
-

@@ -8,7 +8,7 @@
       [name]="name()"
       [value]="value()"
       [checked]="internalChecked()"
-      [disabled]="disabled()"
+      [disabled]="isDisabled()"
       [required]="required()"
       [attr.aria-label]="ariaLabel() || label()"
       [attr.aria-describedby]="computedAriaDescribedBy()"
@@ -17,6 +17,7 @@
       [attr.aria-checked]="indeterminate() ? 'mixed' : internalChecked()"
       [ngClass]="checkboxClasses()"
       (change)="handleChange($event)"
+      (blur)="handleBlur()"
     />
 
     <span class="fui-checkbox-box">

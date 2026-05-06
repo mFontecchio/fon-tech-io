@@ -9,28 +9,40 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  forwardRef,
   input,
   output,
   signal,
   effect,
 } from '@angular/core';
 import { NgClass } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { FormValueAccessorBase } from '../forms/form-value-accessor.base';
 
 export type SliderSize = 'sm' | 'md' | 'lg';
+export type SliderRangeValue = readonly [number, number];
+
+const UNSET_SLIDER_RANGE_VALUE = Symbol('unset-slider-range-value');
+
+const SLIDER_VALUE_ACCESSOR = {
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(() => SliderComponent),
+  multi: true,
+};
 
 @Component({
   selector: 'fui-slider',
-  imports: [NgClass, FormsModule],
+  imports: [NgClass],
   templateUrl: './slider.component.html',
   styleUrl: './slider.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [SLIDER_VALUE_ACCESSOR],
   host: {
     '[class.fui-slider-wrapper]': 'true',
-    '[class.fui-slider-wrapper--disabled]': 'disabled()',
+    '[class.fui-slider-wrapper--disabled]': 'isDisabled()',
   },
 })
-export class SliderComponent {
+export class SliderComponent extends FormValueAccessorBase<number> {
   /**
    * Current value (single handle) or start value (dual handle)
    */
@@ -40,6 +52,13 @@ export class SliderComponent {
    * End value (only for dual handle/range mode)
    */
   readonly valueEnd = input<number | undefined>(undefined);
+
+  /**
+   * Composite range value for dual-handle mode.
+   */
+  readonly rangeValue = input<SliderRangeValue | typeof UNSET_SLIDER_RANGE_VALUE>(
+    UNSET_SLIDER_RANGE_VALUE
+  );
 
   /**
    * Minimum value
@@ -107,9 +126,19 @@ export class SliderComponent {
   readonly valueEndChange = output<number>();
 
   /**
+   * Composite range value change event for dual-handle mode.
+   */
+  readonly rangeValueChange = output<SliderRangeValue>();
+
+  /**
    * Internal value
    */
   protected readonly internalValue = signal<number>(0);
+
+  /**
+   * Effective disabled state including Angular forms state.
+   */
+  protected readonly isDisabled = computed(() => this.disabled() || this.valueAccessorDisabled());
 
   /**
    * Internal end value
@@ -122,9 +151,16 @@ export class SliderComponent {
   protected readonly activeHandle = signal<'start' | 'end' | null>(null);
 
   /**
-   * Is range/dual handle mode
+   * Range tuple when the new composite range contract is used.
    */
-  protected readonly isRange = computed(() => this.valueEnd() !== undefined);
+  protected readonly explicitRangeValue = computed<SliderRangeValue | undefined>(() => {
+    const rangeValue = this.rangeValue();
+    return rangeValue === UNSET_SLIDER_RANGE_VALUE ? undefined : rangeValue;
+  });
+
+  protected readonly isRange = computed(
+    () => this.explicitRangeValue() !== undefined || this.valueEnd() !== undefined
+  );
 
   /**
    * Computed ID
@@ -140,7 +176,7 @@ export class SliderComponent {
   protected readonly sliderClasses = computed(() => ({
     'fui-slider': true,
     [`fui-slider--${this.size()}`]: true,
-    'fui-slider--disabled': this.disabled(),
+    'fui-slider--disabled': this.isDisabled(),
     'fui-slider--range': this.isRange(),
   }));
 
@@ -186,13 +222,37 @@ export class SliderComponent {
   });
 
   constructor() {
+    super();
+
     // Sync internal values
     effect(() => {
-      this.internalValue.set(this.value());
+      const explicitRangeValue = this.explicitRangeValue();
+      if (explicitRangeValue) {
+        const [startValue, endValue] = this.normalizeRangeValue(explicitRangeValue);
+        this.internalValue.set(startValue);
+        this.internalValueEnd.set(endValue);
+        return;
+      }
+
+      const value = this.clampValue(this.value());
+      const valueEnd = this.valueEnd();
+      if (valueEnd !== undefined) {
+        this.internalValue.set(Math.min(value, this.clampValue(valueEnd)));
+        return;
+      }
+
+      this.internalValue.set(value);
     });
 
     effect(() => {
-      this.internalValueEnd.set(this.valueEnd());
+      if (this.explicitRangeValue()) {
+        return;
+      }
+
+      const valueEnd = this.valueEnd();
+      this.internalValueEnd.set(
+        valueEnd === undefined ? undefined : this.clampRangeEnd(this.internalValue(), valueEnd)
+      );
     });
   }
 
@@ -201,7 +261,7 @@ export class SliderComponent {
    */
   protected handleValueChange(value: number): void {
     // Ensure value is within min/max bounds
-    value = Math.max(this.min(), Math.min(this.max(), value));
+    value = this.clampValue(value);
 
     // In range mode, ensure start doesn't exceed end
     if (this.isRange()) {
@@ -213,7 +273,12 @@ export class SliderComponent {
     }
 
     this.internalValue.set(value);
+    this.emitValueChange(value);
     this.valueChange.emit(value);
+
+    if (this.isRange()) {
+      this.emitRangeValueChange(value, this.internalValueEnd());
+    }
   }
 
   /**
@@ -221,7 +286,7 @@ export class SliderComponent {
    */
   protected handleValueEndChange(value: number): void {
     // Ensure value is within min/max bounds
-    value = Math.max(this.min(), Math.min(this.max(), value));
+    value = this.clampValue(value);
 
     // Ensure end doesn't go below start (handles can't swap)
     const startValue = this.internalValue();
@@ -231,6 +296,14 @@ export class SliderComponent {
 
     this.internalValueEnd.set(value);
     this.valueEndChange.emit(value);
+    this.emitRangeValueChange(this.internalValue(), value);
+  }
+
+  /**
+   * Mark control as touched for Angular forms.
+   */
+  protected handleBlur(): void {
+    this.markAsTouched();
   }
 
   /**
@@ -265,5 +338,46 @@ export class SliderComponent {
     };
     document.addEventListener('mouseup', resetHandle);
     document.addEventListener('touchend', resetHandle);
+  }
+
+  protected setValue(value: number | null | undefined): void {
+    this.internalValue.set(this.clampValue(value ?? this.min()));
+  }
+
+  /**
+   * Clamp a numeric value to the configured slider bounds.
+   */
+  private clampValue(value: number): number {
+    return Math.max(this.min(), Math.min(this.max(), value));
+  }
+
+  /**
+   * Clamp the end handle while keeping it at or above the start handle.
+   */
+  private clampRangeEnd(startValue: number, endValue: number): number {
+    return Math.max(startValue, this.clampValue(endValue));
+  }
+
+  /**
+   * Normalize a composite range tuple within slider bounds and ordering.
+   */
+  private normalizeRangeValue(rangeValue: SliderRangeValue): SliderRangeValue {
+    const [startInput, endInput] = rangeValue;
+    const startValue = this.clampValue(startInput);
+    const endValue = this.clampValue(endInput);
+    const normalizedStart = Math.min(startValue, endValue);
+    const normalizedEnd = Math.max(normalizedStart, endValue);
+    return [normalizedStart, normalizedEnd];
+  }
+
+  /**
+   * Emit the composite range contract when the slider is operating in range mode.
+   */
+  private emitRangeValueChange(startValue: number, endValue: number | undefined): void {
+    if (endValue === undefined) {
+      return;
+    }
+
+    this.rangeValueChange.emit([startValue, endValue]);
   }
 }

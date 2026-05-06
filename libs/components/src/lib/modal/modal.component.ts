@@ -1,6 +1,6 @@
 /**
  * Modal Component
- * 
+ *
  * A themable modal/dialog component with proper accessibility support.
  * Uses HTML dialog element for semantic HTML and native keyboard handling.
  */
@@ -80,6 +80,11 @@ export class ModalComponent implements OnDestroy {
   readonly ariaLabelledby = input<string | undefined>(undefined);
 
   /**
+   * Open state change event
+   */
+  readonly openChange = output<boolean>();
+
+  /**
    * Closed event
    */
   readonly closed = output<void>();
@@ -115,6 +120,11 @@ export class ModalComponent implements OnDestroy {
    */
   private originalBodyOverflow?: string;
 
+  /**
+   * Previously focused element before the modal opened.
+   */
+  private previouslyFocusedElement?: HTMLElement;
+
   private readonly platformId = inject(PLATFORM_ID);
 
   constructor() {
@@ -136,6 +146,7 @@ export class ModalComponent implements OnDestroy {
   ngOnDestroy(): void {
     // Restore body scroll on component destroy
     this.restoreBodyScroll();
+    this.restoreFocus();
   }
 
   /**
@@ -146,11 +157,12 @@ export class ModalComponent implements OnDestroy {
     if (!dialog) return;
 
     const dialogEl = dialog.nativeElement;
-    
+
     if (!dialogEl.open) {
+      this.captureFocusedElement();
       dialogEl.showModal();
       this.isOpen.set(true);
-      
+
       if (this.preventBodyScroll()) {
         this.preventScroll();
       }
@@ -165,12 +177,38 @@ export class ModalComponent implements OnDestroy {
     if (!dialog) return;
 
     const dialogEl = dialog.nativeElement;
-    
+
     if (dialogEl.open) {
       dialogEl.close();
       this.isOpen.set(false);
       this.restoreBodyScroll();
+      this.restoreFocus();
       this.closed.emit();
+    }
+  }
+
+  /**
+   * Capture the currently focused element so it can be restored on close.
+   */
+  private captureFocusedElement(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    const activeElement = document.activeElement;
+    this.previouslyFocusedElement =
+      activeElement instanceof HTMLElement ? activeElement : undefined;
+  }
+
+  /**
+   * Restore focus to the element that opened the modal.
+   */
+  private restoreFocus(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    const element = this.previouslyFocusedElement;
+    this.previouslyFocusedElement = undefined;
+
+    if (element?.isConnected) {
+      element.focus();
     }
   }
 
@@ -205,7 +243,7 @@ export class ModalComponent implements OnDestroy {
 
     const dialogEl = dialog.nativeElement;
     const rect = dialogEl.getBoundingClientRect();
-    
+
     // Check if click was outside dialog content
     const isOutside =
       event.clientX < rect.left ||
@@ -222,7 +260,7 @@ export class ModalComponent implements OnDestroy {
    * Handle close button click
    */
   protected handleClose(): void {
-    this.closeDialog();
+    this.close();
   }
 
   /**
@@ -241,7 +279,7 @@ export class ModalComponent implements OnDestroy {
    * Programmatically close the modal
    */
   public close(): void {
+    this.openChange.emit(false);
     this.closeDialog();
   }
 }
-

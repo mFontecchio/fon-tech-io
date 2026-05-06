@@ -8,7 +8,7 @@
       [id]="switchId()"
       [name]="name()"
       [checked]="internalChecked()"
-      [disabled]="disabled()"
+      [disabled]="isDisabled()"
       [required]="required()"
       [attr.aria-label]="ariaLabel() || label()"
       [attr.aria-describedby]="computedAriaDescribedBy()"
@@ -17,6 +17,7 @@
       [attr.aria-checked]="internalChecked()"
       [ngClass]="switchClasses()"
       (change)="handleChange($event)"
+      (blur)="handleBlur()"
     />
 
     <span class="fui-switch-track">

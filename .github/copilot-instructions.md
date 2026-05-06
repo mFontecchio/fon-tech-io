@@ -2,13 +2,13 @@
 
 ## Project Overview
 
-Enterprise-grade Angular 20 component library (38 components) with a three-tier design token system, built in an Nx monorepo with pnpm. The library emphasizes HTML5-first architecture, signals-based reactivity, and comprehensive theming.
+Enterprise-grade Angular 20 component library with 39 documented components and 43 exported component classes, built in an Nx monorepo with pnpm. The library emphasizes HTML5-first architecture, signals-based reactivity, and comprehensive theming.
 
 **Master Implementation Plan**: `/documentation/plan/angular-component-library-suite.plan.md`
 
 - Comprehensive 8-phase plan covering foundation → components → theme builder → documentation
-- Current Status: **Phase 7 (Developer Experience)** - All 38 components complete, theming system implemented
-- Target: 30+ components (achieved 34), complete design system, theme builder UI, showcase site
+- Current Status: **Phase 7 (Developer Experience)** - All 39 documented components complete, theming system implemented
+- Target: 30+ components (achieved 39 documented components and 43 exported component classes), complete design system, theme builder UI, showcase site
 
 ## Architecture Quick Reference
 
@@ -18,7 +18,7 @@ Enterprise-grade Angular 20 component library (38 components) with a three-tier 
 libs/
 ├── theming/          # Design system engine (@ui-suite/theming)
 ├── shared/           # Utilities & types (@ui-suite/shared)
-├── components/       # 34 UI components (@ui-suite/components)
+├── components/       # 39 documented components (+ helper exports) (@ui-suite/components)
 └── theme-builder/    # Theme creation UI (@ui-suite/theme-builder)
 apps/
 ├── showcase/         # Documentation & demos
@@ -161,7 +161,7 @@ The theme builder (`libs/theme-builder/`) is a fully implemented library providi
 
 **Theme Builder Features**:
 
-- Real-time preview with all 38 components visible
+- Real-time preview with all 39 documented components visible
 - Accessibility contrast checker (WCAG AA/AAA validation)
 - Import/export themes as JSON
 - Preset theme library (Material, Bootstrap, Dark, Minimal, Ocean, Sunset, and more)
@@ -582,8 +582,8 @@ Configuration: `jest.config.ts` (root) + per-project configs in each lib/app
 - **Theme Interface**: `libs/theming/src/lib/tokens/theme.interface.ts`
 - **Default Themes**: `libs/theming/src/lib/themes/default-themes.ts`
 - **CSS Generator**: `libs/theming/src/lib/services/css-generator.service.ts` (converts tokens → CSS vars)
-- **Component Catalog**: All 38 components in `libs/components/src/lib/` (accordion, alert, avatar, badge, breadcrumb, button, card, checkbox, chip, code-block, context-menu, date-picker, divider, drawer, file-upload, grid, input, list, menu, modal, multi-select, navbar, pagination, popover, progress, radio, select, skeleton, slider, spinner, stack, stepper, switch, table, tabs, textarea, toast, tooltip)
-- **Documentation Status**: `documentation/FINAL_100_PERCENT_COMPLETION.md` (all 38 components fully documented)
+- **Component Catalog**: All 39 documented components in `libs/components/src/lib/` (accordion, alert, avatar, badge, breadcrumb, button, card, carousel, checkbox, chip, code-block, context-menu, date-picker, divider, drawer, file-upload, grid, input, list, menu, modal, multi-select, navbar, pagination, popover, progress, radio, select, skeleton, slider, spinner, stack, stepper, switch, table, tabs, textarea, toast, tooltip)
+- **Documentation Status**: `documentation/FINAL_100_PERCENT_COMPLETION.md` (all 39 documented components fully covered)
 
 ## Project-Specific Context
 
@@ -592,7 +592,7 @@ Configuration: `jest.config.ts` (root) + per-project configs in each lib/app
 - **Nx Version**: 22.0.3 - monorepo tooling
 - **TypeScript**: Strict mode enabled - `noImplicitReturns`, `noFallthroughCasesInSwitch`, etc.
 - **Browser Target**: ES2022 - modern browsers only (Chrome, Firefox, Safari, Edge latest)
-- **Component Count**: 38 fully functional components (11 form, 8 layout, 9 data display, 5 feedback, 5 navigation)
+- **Component Count**: 39 documented components (11 form, 8 layout, 10 data display, 5 feedback, 5 navigation) and 43 exported component classes including helpers
 - **Theming**: Supports light, dark, and high-contrast modes with system preference detection
 
 ## Code Quality Standards
@@ -711,7 +711,7 @@ Example:
 
 - ✅ Phase 1: Foundation Setup - Nx workspace, libraries, apps configured
 - ✅ Phase 2: Design System & Theming Engine - Three-tier tokens, ThemeService, CssGenerator
-- ✅ Phase 3: Core Component Library - All 38 components implemented and documented
+- ✅ Phase 3: Core Component Library - All 39 documented components implemented and documented
 - ✅ Phase 4: Theme Builder UI - Visual theme creator with real-time preview
 - ✅ Phase 5: Showcase & Documentation Site - Live demos, API docs, examples
 - ✅ Phase 6: Accessibility & Best Practices - WCAG 2.1 AA compliance, keyboard nav

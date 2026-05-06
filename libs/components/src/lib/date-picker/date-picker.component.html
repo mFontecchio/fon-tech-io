@@ -17,7 +17,7 @@
       [ngClass]="datePickerClasses()"
       [value]="internalValue() || ''"
       [placeholder]="placeholder()"
-      [disabled]="disabled()"
+      [disabled]="isDisabled()"
       [required]="required()"
       [attr.min]="min()"
       [attr.max]="max()"
@@ -25,52 +25,50 @@
       [attr.aria-describedby]="computedAriaDescribedBy()"
       [attr.aria-invalid]="hasError()"
       (change)="handleChange($any($event.target).value)"
+      (blur)="handleBlur()"
     />
 
     <button
       type="button"
       class="fui-date-picker-calendar"
-      [disabled]="disabled()"
+      [disabled]="isDisabled()"
       aria-label="Open date picker"
       (click)="openPicker()"
     >
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-        <path d="M4 2V4M12 2V4M2.75 6H13.25M4.25 1.5H11.75C12.7165 1.5 13.5 2.2835 13.5 3.25V12.25C13.5 13.2165 12.7165 14 11.75 14H4.25C3.2835 14 2.5 13.2165 2.5 12.25V3.25C2.5 2.2835 3.2835 1.5 4.25 1.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path
+          d="M4 2V4M12 2V4M2.75 6H13.25M4.25 1.5H11.75C12.7165 1.5 13.5 2.2835 13.5 3.25V12.25C13.5 13.2165 12.7165 14 11.75 14H4.25C3.2835 14 2.5 13.2165 2.5 12.25V3.25C2.5 2.2835 3.2835 1.5 4.25 1.5Z"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
       </svg>
     </button>
 
-    @if (internalValue() && !disabled()) {
-      <button
-        type="button"
-        class="fui-date-picker-clear"
-        aria-label="Clear date"
-        (click)="clear()"
-      >
+    @if (internalValue() && !isDisabled()) {
+      <button type="button" class="fui-date-picker-clear" aria-label="Clear date" (click)="clear()">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path d="M12 4L4 12M4 4L12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path
+            d="M12 4L4 12M4 4L12 12"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
         </svg>
       </button>
     }
   </div>
 
   @if (helperText() && !hasError()) {
-    <div 
-      [id]="helperTextId()" 
-      class="fui-date-picker-helper-text"
-    >
+    <div [id]="helperTextId()" class="fui-date-picker-helper-text">
       {{ helperText() }}
     </div>
   }
 
   @if (hasError()) {
-    <div 
-      [id]="errorId()" 
-      class="fui-date-picker-error-message"
-      role="alert"
-      aria-live="polite"
-    >
+    <div [id]="errorId()" class="fui-date-picker-error-message" role="alert" aria-live="polite">
       {{ errorMessage() }}
     </div>
   }
 </div>
-

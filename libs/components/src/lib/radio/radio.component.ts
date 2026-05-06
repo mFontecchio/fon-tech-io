@@ -9,15 +9,27 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  forwardRef,
   input,
-  output,
   model,
+  output,
   ElementRef,
   viewChild,
 } from '@angular/core';
 import { NgClass } from '@angular/common';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { FormValueAccessorBase } from '../forms/form-value-accessor.base';
 
 export type RadioSize = 'sm' | 'md' | 'lg';
+type RadioSelection = string | undefined;
+
+const UNSET_RADIO_SELECTION = Symbol('unset-radio-selection');
+
+const RADIO_VALUE_ACCESSOR = {
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(() => RadioComponent),
+  multi: true,
+};
 
 @Component({
   selector: 'fui-radio',
@@ -25,17 +37,34 @@ export type RadioSize = 'sm' | 'md' | 'lg';
   templateUrl: './radio.component.html',
   styleUrl: './radio.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [RADIO_VALUE_ACCESSOR],
   host: {
     '[class.fui-radio-wrapper]': 'true',
-    '[class.fui-radio-wrapper--disabled]': 'disabled()',
+    '[class.fui-radio-wrapper--disabled]': 'isDisabled()',
   },
 })
-export class RadioComponent {
+export class RadioComponent extends FormValueAccessorBase<string> {
   /**
-   * Model value - the currently selected value for the radio group
-   * Similar to PrimeNG's [(ngModel)] binding
+   * Explicit selected value for the radio group.
    */
-  readonly modelValue = model<string | undefined>(undefined);
+  readonly selectedValue = input<RadioSelection | typeof UNSET_RADIO_SELECTION>(
+    UNSET_RADIO_SELECTION
+  );
+
+  /**
+   * Selected value change event for the radio group.
+   */
+  readonly selectedValueChange = output<RadioSelection>();
+
+  /**
+   * Legacy model value binding retained for backward compatibility.
+   */
+  readonly modelValue = model<RadioSelection>(undefined);
+
+  /**
+   * Effective disabled state including Angular forms state.
+   */
+  protected readonly isDisabled = computed(() => this.disabled() || this.valueAccessorDisabled());
 
   /**
    * Disabled state
@@ -93,11 +122,19 @@ export class RadioComponent {
   protected readonly radioElement = viewChild<ElementRef<HTMLInputElement>>('radio');
 
   /**
+   * Effective group selection across the new explicit API and the legacy model alias.
+   */
+  protected readonly groupValue = computed<RadioSelection>(() => {
+    const selectedValue = this.selectedValue();
+    return selectedValue === UNSET_RADIO_SELECTION ? this.modelValue() : selectedValue;
+  });
+
+  /**
    * Computed checked state - compares modelValue with this radio's value
    * This is how PrimeNG determines which radio is selected
    */
   protected readonly isChecked = computed(() => {
-    return this.modelValue() === this.value();
+    return this.groupValue() === this.value();
   });
 
   /**
@@ -147,9 +184,13 @@ export class RadioComponent {
     'fui-radio': true,
     [`fui-radio--${this.size()}`]: true,
     'fui-radio--checked': this.isChecked(),
-    'fui-radio--disabled': this.disabled(),
+    'fui-radio--disabled': this.isDisabled(),
     'fui-radio--error': this.hasError(),
   }));
+
+  constructor() {
+    super();
+  }
 
   /**
    * Handle radio change - updates the model value
@@ -158,15 +199,25 @@ export class RadioComponent {
     const target = event.target as HTMLInputElement;
 
     if (target.checked) {
-      this.modelValue.set(this.value());
+      const selectedValue = this.value();
+      this.modelValue.set(selectedValue);
+      this.selectedValueChange.emit(selectedValue);
+      this.emitValueChange(selectedValue);
     }
+  }
+
+  /**
+   * Mark radio as touched for Angular forms.
+   */
+  protected handleBlur(): void {
+    this.markAsTouched();
   }
 
   /**
    * Handle label click
    */
   protected handleLabelClick(event: MouseEvent): void {
-    if (this.disabled()) {
+    if (this.isDisabled()) {
       event.preventDefault();
       return;
     }
@@ -180,5 +231,9 @@ export class RadioComponent {
     if (radio) {
       radio.nativeElement.focus();
     }
+  }
+
+  protected setValue(value: string | null | undefined): void {
+    this.modelValue.set(value ?? undefined);
   }
 }

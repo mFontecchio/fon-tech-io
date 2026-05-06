@@ -3,8 +3,9 @@
   <button
     type="button"
     class="fui-popover-trigger"
-    [attr.aria-haspopup]="true"
+    [attr.aria-haspopup]="'dialog'"
     [attr.aria-expanded]="isOpen()"
+    [attr.aria-controls]="popoverId"
     [attr.disabled]="disabled() ? true : null"
     (click)="handleTriggerClick()"
     (mouseenter)="handleTriggerMouseEnter()"
@@ -15,8 +16,12 @@
 
   <!-- Popover content -->
   <dialog
+    [id]="popoverId"
     [ngClass]="popoverClasses()"
+    role="dialog"
     [attr.open]="isOpen() ? true : null"
+    [attr.aria-labelledby]="title() ? titleId : null"
+    [attr.aria-label]="!title() ? 'Popover' : null"
     [attr.aria-modal]="false"
     [attr.hidden]="!isOpen() ? true : null"
   >
@@ -27,7 +32,7 @@
     <div class="fui-popover-content-wrapper">
       @if (title()) {
         <div class="fui-popover-header">
-          <h3 class="fui-popover-title">{{ title() }}</h3>
+          <h3 class="fui-popover-title" [id]="titleId">{{ title() }}</h3>
           <button
             type="button"
             class="fui-popover-close"
