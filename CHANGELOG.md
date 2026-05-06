@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **README accuracy for Angular 20 consumers**: Corrected standalone component selectors, removed an unsupported theming stylesheet import path, and aligned package guidance with the showcase as the canonical documentation source
 - **Showcase example modernization**: Updated stale toast examples to use `inject()` instead of constructor injection so documentation matches current Angular 20 guidance
 - **Context menu README reconciliation**: Updated `libs/components/src/lib/context-menu/README.md` to use `fui-context-menu` examples, removed outdated `::ng-deep` styling guidance, and aligned snippets with token-based customization practices
+- **Removed unused Nx starter pages**: Deleted the unreferenced `nx-welcome.ts` files from both showcase applications to reduce dead code and avoid confusion during future maintenance
 
 ---
 
