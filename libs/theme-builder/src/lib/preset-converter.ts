@@ -142,6 +142,10 @@ function applyPresetTokens(theme: Theme, tokens: ThemePresetTokens): void {
     theme.semantic.text.primary = value;
   });
 
+  assign('--semantic-text-inverse', (value) => {
+    theme.semantic.text.inverse = value;
+  });
+
   assign('--semantic-text-secondary', (value) => {
     theme.primitive.colors.neutral[600] = value;
     theme.semantic.text.secondary = value;

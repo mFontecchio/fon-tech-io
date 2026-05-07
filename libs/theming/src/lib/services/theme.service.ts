@@ -538,6 +538,7 @@ export class ThemeService {
           family.light?.metadata &&
           family.dark?.metadata
         ) {
+          this.repairStoredThemeFamily(family);
           this._customThemeFamilies.update((families) => {
             const newFamilies = new Map(families);
             newFamilies.set(family.metadata.id, family);
@@ -548,6 +549,53 @@ export class ThemeService {
     } catch (error) {
       console.warn('Failed to load custom theme families from localStorage:', error);
     }
+  }
+
+  /**
+   * Repair a family deserialized from storage to correct known migration issues.
+   *
+   * Historical bug: the preset converter wrote the dark-mode text-primary value into
+   * `primitive.colors.neutral[900]`, causing `--semantic-text-inverse` (which
+   * referenced `var(--primitive-neutral-900)`) to resolve to a light color in dark
+   * mode.  Any family stored before this was corrected will have a near-white inverse
+   * text color, making filled-button labels invisible against light pastel backgrounds.
+   *
+   * Repair logic: if the dark variant's `text.inverse` is still the legacy reference
+   * `var(--primitive-neutral-900)` and the overridden `neutral[900]` primitive is a
+   * light hex color (relative luminance > 0.18), replace it with `#000000`.
+   */
+  private repairStoredThemeFamily(family: ThemeFamily): void {
+    const dark = family.dark;
+    if (!dark?.semantic?.text || !dark?.primitive?.colors?.neutral) {
+      return;
+    }
+
+    const textInverse = dark.semantic.text.inverse;
+    if (textInverse !== 'var(--primitive-neutral-900)') {
+      return;
+    }
+
+    const neutral900 = (dark.primitive.colors.neutral as unknown as Record<string, string>)['900'];
+    if (neutral900 && this.isLightHex(neutral900)) {
+      dark.semantic.text.inverse = '#000000';
+    }
+  }
+
+  /**
+   * Returns true when the hex color has a relative luminance above 0.18,
+   * the threshold used to decide whether inverse text should be dark or light.
+   */
+  private isLightHex(hex: string): boolean {
+    if (!/^#[0-9a-fA-F]{6}$/.test(hex)) {
+      return false;
+    }
+    const r = parseInt(hex.slice(1, 3), 16) / 255;
+    const g = parseInt(hex.slice(3, 5), 16) / 255;
+    const b = parseInt(hex.slice(5, 7), 16) / 255;
+    const toLinear = (c: number): number =>
+      c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+    const lum = 0.2126 * toLinear(r) + 0.7152 * toLinear(g) + 0.0722 * toLinear(b);
+    return lum > 0.18;
   }
 
   /**
