@@ -7,7 +7,8 @@
       [id]="radioId()"
       [name]="name()"
       [value]="value()"
-      [disabled]="disabled()"
+      [checked]="isChecked()"
+      [disabled]="isDisabled()"
       [required]="required()"
       [attr.aria-label]="ariaLabel() || label()"
       [attr.aria-describedby]="computedAriaDescribedBy()"
@@ -15,6 +16,7 @@
       [attr.aria-required]="required()"
       [ngClass]="radioClasses()"
       (change)="handleChange($event)"
+      (blur)="handleBlur()"
     />
 
     <span class="fui-radio-box">

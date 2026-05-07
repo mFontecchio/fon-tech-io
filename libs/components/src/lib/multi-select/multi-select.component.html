@@ -19,7 +19,7 @@
       [attr.aria-expanded]="isOpen()"
       [attr.aria-haspopup]="'listbox'"
       [attr.role]="'combobox'"
-      [attr.tabindex]="disabled() ? -1 : 0"
+      [attr.tabindex]="isDisabled() ? -1 : 0"
       (click)="toggleDropdown()"
       (keydown.space)="$event.preventDefault(); toggleDropdown()"
       (keydown.enter)="$event.preventDefault(); toggleDropdown()"
@@ -34,7 +34,7 @@
                 class="fui-multi-select-tag-remove"
                 [attr.aria-label]="'Remove ' + option.label"
                 (click)="removeOption(option, $event)"
-                [disabled]="disabled()"
+                [disabled]="isDisabled()"
               >
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                   <path
@@ -53,7 +53,7 @@
       </div>
 
       <div class="fui-multi-select-actions">
-        @if (selectedOptions().length > 0 && !disabled()) {
+        @if (selectedOptions().length > 0 && !isDisabled()) {
           <button
             type="button"
             class="fui-multi-select-clear"
@@ -89,7 +89,7 @@
       </div>
     </div>
 
-    @if (isOpen() && !disabled()) {
+    @if (isOpen() && !isDisabled()) {
       <div class="fui-multi-select-dropdown" role="listbox">
         @if (searchable()) {
           <div class="fui-multi-select-search">

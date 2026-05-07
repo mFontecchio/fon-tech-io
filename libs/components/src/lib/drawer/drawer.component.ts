@@ -1,6 +1,6 @@
 /**
  * Drawer Component
- * 
+ *
  * A slide-in panel component that appears from the edge of the screen.
  * Supports left, right, top, and bottom positions with overlay backdrop.
  * Uses native <dialog> element for built-in focus trap and screen reader support.
@@ -101,6 +101,11 @@ export class DrawerComponent implements OnDestroy {
    */
   private originalBodyOverflow?: string;
 
+  /**
+   * Previously focused element before the drawer opened.
+   */
+  private previouslyFocusedElement?: HTMLElement;
+
   private readonly platformId = inject(PLATFORM_ID);
 
   /**
@@ -129,6 +134,7 @@ export class DrawerComponent implements OnDestroy {
         }
 
         if (!dialogEl.open) {
+          this.captureFocusedElement();
           dialogEl.showModal();
         }
 
@@ -149,6 +155,7 @@ export class DrawerComponent implements OnDestroy {
           }
           this.closeTimeout = undefined;
           this.restoreBodyScroll();
+          this.restoreFocus();
         }, 350);
       }
     });
@@ -159,6 +166,7 @@ export class DrawerComponent implements OnDestroy {
       clearTimeout(this.closeTimeout);
     }
     this.restoreBodyScroll();
+    this.restoreFocus();
     if (isPlatformBrowser(this.platformId)) {
       const dialog = this.dialogElement();
       if (dialog?.nativeElement.open) {
@@ -212,5 +220,29 @@ export class DrawerComponent implements OnDestroy {
       this.originalBodyOverflow = undefined;
     }
   }
-}
 
+  /**
+   * Capture the currently focused element so it can be restored on close.
+   */
+  private captureFocusedElement(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    const activeElement = document.activeElement;
+    this.previouslyFocusedElement =
+      activeElement instanceof HTMLElement ? activeElement : undefined;
+  }
+
+  /**
+   * Restore focus to the element that opened the drawer.
+   */
+  private restoreFocus(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    const element = this.previouslyFocusedElement;
+    this.previouslyFocusedElement = undefined;
+
+    if (element?.isConnected) {
+      element.focus();
+    }
+  }
+}

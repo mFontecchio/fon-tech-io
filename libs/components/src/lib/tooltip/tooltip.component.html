@@ -1,7 +1,12 @@
 <div class="fui-tooltip-trigger">
   <ng-content></ng-content>
 
-  <div [ngClass]="tooltipClasses()" role="tooltip" [attr.aria-hidden]="!isVisible()">
+  <div
+    [id]="tooltipId"
+    [ngClass]="tooltipClasses()"
+    role="tooltip"
+    [attr.aria-hidden]="!isVisible()"
+  >
     <div class="fui-tooltip-content">
       {{ text() }}
     </div>

@@ -1,6 +1,6 @@
 /**
  * Input Component
- * 
+ *
  * A themable input component with validation states and full accessibility support.
  * Uses native HTML5 input element with Angular 20 best practices.
  */
@@ -10,6 +10,7 @@ import {
   Component,
   computed,
   effect,
+  forwardRef,
   input,
   linkedSignal,
   output,
@@ -18,24 +19,32 @@ import {
   viewChild,
 } from '@angular/core';
 import { NgClass } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { FormValueAccessorBase } from '../forms/form-value-accessor.base';
 
 export type InputType = 'text' | 'email' | 'tel' | 'url' | 'number' | 'password' | 'search';
 
+const INPUT_VALUE_ACCESSOR = {
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(() => InputComponent),
+  multi: true,
+};
+
 @Component({
   selector: 'fui-input',
-  imports: [NgClass, FormsModule],
+  imports: [NgClass],
   templateUrl: './input.component.html',
   styleUrl: './input.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [INPUT_VALUE_ACCESSOR],
   host: {
     '[class.fui-input-wrapper]': 'true',
-    '[class.fui-input-wrapper--disabled]': 'disabled()',
+    '[class.fui-input-wrapper--disabled]': 'isDisabled()',
     '[class.fui-input-wrapper--error]': 'hasError()',
     '[class.fui-input-wrapper--full-width]': 'fullWidth()',
   },
 })
-export class InputComponent {
+export class InputComponent extends FormValueAccessorBase<string> {
   /**
    * Input type attribute
    */
@@ -177,6 +186,11 @@ export class InputComponent {
   protected readonly isFocused = signal(false);
 
   /**
+   * Effective disabled state including Angular forms state.
+   */
+  protected readonly isDisabled = computed(() => this.disabled() || this.valueAccessorDisabled());
+
+  /**
    * Whether the user has interacted with the field
    */
   protected readonly hasInteracted = signal(false);
@@ -200,7 +214,8 @@ export class InputComponent {
    * Computed error message
    */
   protected readonly displayedErrorMessage = computed(
-    () => this.errorMessage() || (this.hasInteracted() ? this.internalValidationMessage() : undefined)
+    () =>
+      this.errorMessage() || (this.hasInteracted() ? this.internalValidationMessage() : undefined)
   );
 
   /**
@@ -231,19 +246,19 @@ export class InputComponent {
    */
   protected readonly computedAriaDescribedBy = computed(() => {
     const parts: string[] = [];
-    
+
     if (this.ariaDescribedBy()) {
       parts.push(this.ariaDescribedBy()!);
     }
-    
+
     if (this.helperText()) {
       parts.push(this.helperTextId());
     }
-    
+
     if (this.hasError()) {
       parts.push(this.errorId());
     }
-    
+
     return parts.length > 0 ? parts.join(' ') : undefined;
   });
 
@@ -253,7 +268,7 @@ export class InputComponent {
   protected readonly inputClasses = computed(() => ({
     'fui-input': true,
     'fui-input--error': this.hasError(),
-    'fui-input--disabled': this.disabled(),
+    'fui-input--disabled': this.isDisabled(),
     'fui-input--focused': this.isFocused(),
   }));
 
@@ -288,6 +303,8 @@ export class InputComponent {
   );
 
   constructor() {
+    super();
+
     // Re-run validation when constraints or external value changes
     effect(() => {
       this.internalValue();
@@ -319,10 +336,11 @@ export class InputComponent {
   protected handleInput(event: Event): void {
     const target = event.target as HTMLInputElement;
     const newValue = target.value;
-    
+
     this.internalValue.set(newValue);
     this.hasInteracted.set(true);
     this.updateValidationState(target);
+    this.emitValueChange(newValue);
     this.valueChange.emit(newValue);
     this.inputted.emit(event);
   }
@@ -342,7 +360,12 @@ export class InputComponent {
     this.isFocused.set(false);
     this.hasInteracted.set(true);
     this.updateValidationState(event.target as HTMLInputElement | null);
+    this.markAsTouched();
     this.blurred.emit(event);
+  }
+
+  protected setValue(value: string | null | undefined): void {
+    this.internalValue.set(value ?? '');
   }
 
   /**
@@ -353,7 +376,7 @@ export class InputComponent {
     const selectionStart = input?.selectionStart ?? null;
     const selectionEnd = input?.selectionEnd ?? null;
 
-    this.isPasswordVisible.update(isVisible => !isVisible);
+    this.isPasswordVisible.update((isVisible) => !isVisible);
 
     queueMicrotask(() => {
       const resolvedInput = this.inputElement()?.nativeElement;
@@ -376,7 +399,7 @@ export class InputComponent {
   private updateValidationState(inputElement?: HTMLInputElement | null): void {
     const resolvedInput = inputElement ?? this.inputElement()?.nativeElement;
 
-    if (!resolvedInput || this.disabled() || this.readonly()) {
+    if (!resolvedInput || this.isDisabled() || this.readonly()) {
       this.internalValidationMessage.set(undefined);
       return;
     }
@@ -450,4 +473,3 @@ export class InputComponent {
     }
   }
 }
-

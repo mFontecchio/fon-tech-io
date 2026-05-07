@@ -277,22 +277,27 @@ import {
                   name="plan"
                   value="free"
                   label="Free Plan"
-                  [(modelValue)]="selectedPlan"
+                  [(selectedValue)]="selectedPlan"
                 />
-                <fui-radio name="plan" value="pro" label="Pro Plan" [(modelValue)]="selectedPlan" />
+                <fui-radio
+                  name="plan"
+                  value="pro"
+                  label="Pro Plan"
+                  [(selectedValue)]="selectedPlan"
+                />
                 <fui-radio
                   name="plan"
                   value="enterprise"
                   label="Enterprise Plan"
-                  [(modelValue)]="selectedPlan"
+                  [(selectedValue)]="selectedPlan"
                 />
               </div>
             }
             @if (exampleTitle() === 'Radio with Pre-selection') {
               <div class="demo-column">
-                <fui-radio name="size" value="sm" label="Small" [(modelValue)]="selectedSize" />
-                <fui-radio name="size" value="md" label="Medium" [(modelValue)]="selectedSize" />
-                <fui-radio name="size" value="lg" label="Large" [(modelValue)]="selectedSize" />
+                <fui-radio name="size" value="sm" label="Small" [(selectedValue)]="selectedSize" />
+                <fui-radio name="size" value="md" label="Medium" [(selectedValue)]="selectedSize" />
+                <fui-radio name="size" value="lg" label="Large" [(selectedValue)]="selectedSize" />
               </div>
             }
             @if (exampleTitle() === 'Disabled Radio Options') {
@@ -301,20 +306,20 @@ import {
                   name="shipping"
                   value="standard"
                   label="Standard (5-7 days)"
-                  [(modelValue)]="selectedShipping"
+                  [(selectedValue)]="selectedShipping"
                 />
                 <fui-radio
                   name="shipping"
                   value="express"
                   label="Express (2-3 days)"
-                  [(modelValue)]="selectedShipping"
+                  [(selectedValue)]="selectedShipping"
                 />
                 <fui-radio
                   name="shipping"
                   value="overnight"
                   label="Overnight"
                   [disabled]="true"
-                  [(modelValue)]="selectedShipping"
+                  [(selectedValue)]="selectedShipping"
                 />
               </div>
             }
@@ -341,19 +346,19 @@ import {
                   name="payment"
                   value="card"
                   label="Credit/Debit Card"
-                  [(modelValue)]="selectedPayment"
+                  [(selectedValue)]="selectedPayment"
                 />
                 <fui-radio
                   name="payment"
                   value="paypal"
                   label="PayPal"
-                  [(modelValue)]="selectedPayment"
+                  [(selectedValue)]="selectedPayment"
                 />
                 <fui-radio
                   name="payment"
                   value="bank"
                   label="Bank Transfer"
-                  [(modelValue)]="selectedPayment"
+                  [(selectedValue)]="selectedPayment"
                 />
               </div>
             }
@@ -458,8 +463,8 @@ import {
                 label="Price Range"
                 [min]="0"
                 [max]="1000"
-                [value]="200"
-                [valueEnd]="800"
+                [rangeValue]="priceRange()"
+                (rangeValueChange)="priceRange.set($event)"
               />
             }
             @if (exampleTitle() === 'Disabled Slider') {
@@ -1917,6 +1922,7 @@ export class ComponentDemoComponent {
   protected readonly selectedSize = signal<string>('md'); // Pre-selected
   protected readonly selectedShipping = signal<string | undefined>(undefined);
   protected readonly selectedPayment = signal<string>('card'); // Pre-selected
+  protected readonly priceRange = signal<readonly [number, number]>([200, 800]);
 
   /**
    * Table columns definition

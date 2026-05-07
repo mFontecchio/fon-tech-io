@@ -1,7 +1,7 @@
 <div class="fui-input-container">
   @if (label()) {
-    <label 
-      [for]="inputId()" 
+    <label
+      [for]="inputId()"
       class="fui-input-label"
       [class.fui-input-label--required]="required()"
       [class.fui-input-label--disabled]="disabled()"
@@ -17,13 +17,16 @@
     class="fui-input-field-wrapper"
     [class.fui-input-field-wrapper--focused]="isFocused()"
     [class.fui-input-field-wrapper--error]="hasError()"
-    [class.fui-input-field-wrapper--disabled]="disabled()"
+    [class.fui-input-field-wrapper--disabled]="isDisabled()"
     [class.fui-input-field-wrapper--with-action]="shouldShowPasswordToggle()"
   >
-    <div class="fui-input-prefix">@if (prefixIcon()) {
-      <span class="fui-input-icon" aria-hidden="true">{{ prefixIcon() }}</span>
-    }<ng-content select="[prefix]" /></div>
-    
+    <div class="fui-input-prefix">
+      @if (prefixIcon()) {
+        <span class="fui-input-icon" aria-hidden="true">{{ prefixIcon() }}</span>
+      }
+      <ng-content select="[prefix]" />
+    </div>
+
     <input
       #input
       [type]="resolvedInputType()"
@@ -31,7 +34,7 @@
       [name]="name()"
       [value]="internalValue()"
       [placeholder]="placeholder()"
-      [disabled]="disabled()"
+      [disabled]="isDisabled()"
       [readonly]="readonly()"
       [required]="required()"
       [attr.maxlength]="maxLength()"
@@ -47,43 +50,37 @@
       (focus)="handleFocus($event)"
       (blur)="handleBlur($event)"
     />
-    
-    <div class="fui-input-suffix">@if (suffixIcon()) {
-      <span class="fui-input-icon" aria-hidden="true">{{ suffixIcon() }}</span>
-    }<ng-content select="[suffix]" />
 
-    @if (shouldShowPasswordToggle()) {
-      <button
-        type="button"
-        class="fui-input-affix-action fui-input-password-toggle"
-        [disabled]="disabled()"
-        [attr.aria-label]="passwordToggleLabel()"
-        [attr.aria-pressed]="isPasswordVisible()"
-        (click)="togglePasswordVisibility()"
-      >
-        {{ isPasswordVisible() ? 'Hide' : 'Show' }}
-      </button>
-    }</div>
+    <div class="fui-input-suffix">
+      @if (suffixIcon()) {
+        <span class="fui-input-icon" aria-hidden="true">{{ suffixIcon() }}</span>
+      }
+      <ng-content select="[suffix]" />
+
+      @if (shouldShowPasswordToggle()) {
+        <button
+          type="button"
+          class="fui-input-affix-action fui-input-password-toggle"
+          [disabled]="isDisabled()"
+          [attr.aria-label]="passwordToggleLabel()"
+          [attr.aria-pressed]="isPasswordVisible()"
+          (click)="togglePasswordVisibility()"
+        >
+          {{ isPasswordVisible() ? 'Hide' : 'Show' }}
+        </button>
+      }
+    </div>
   </div>
 
   @if (helperText() && !hasError()) {
-    <div 
-      [id]="helperTextId()" 
-      class="fui-input-helper-text"
-    >
+    <div [id]="helperTextId()" class="fui-input-helper-text">
       {{ helperText() }}
     </div>
   }
 
   @if (hasError()) {
-    <div 
-      [id]="errorId()" 
-      class="fui-input-error-message"
-      role="alert"
-      aria-live="polite"
-    >
+    <div [id]="errorId()" class="fui-input-error-message" role="alert" aria-live="polite">
       {{ displayedErrorMessage() }}
     </div>
   }
 </div>
-

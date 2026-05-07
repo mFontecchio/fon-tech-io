@@ -7,8 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **Theme preset WCAG AA contrast compliance**: Corrected 89 color values across all 17 built-in theme presets (Material, Bootstrap, Dark, Minimal, High Contrast, Ocean, Sunset, Frog, Axolotl, Smith, DuPre, Puckett, Xayavong, Greeff, Simpson, Garrett) to ensure every text/surface combination meets WCAG AA 4.5:1 contrast ratio. Changes include darkened tertiary text colors, adjusted feedback palette values (success, warning, error, info) in light modes, and lightened feedback-error values in select dark modes.
+- **Filled button text contrast in dark mode**: Added explicit `--semantic-text-inverse` token to every preset's `darkTokens` block. All 16 presets now set `#000000` as the inverse text color so that filled buttons, which use `--semantic-brand-primary` (a light pastel in dark mode) as their background, render legible dark text. Contrast ratios range from 8.26:1 to 21:1, all well above the WCAG AA 4.5:1 requirement. Light mode presets explicitly set `#ffffff` to maintain consistency.
+- **Preset converter text-inverse mapping**: Added a handler for `--semantic-text-inverse` in `preset-converter.ts` `applyPresetTokens`. Previously the token was present in preset definitions but silently ignored during conversion, causing `theme.semantic.text.inverse` to remain as `var(--primitive-neutral-900)` in converted theme families. Because the `--semantic-text-primary` handler also overwrites `primitive.colors.neutral[900]` with a light value in dark-mode presets, this cascaded into white button text. The handler now explicitly assigns the preset value to `theme.semantic.text.inverse`, which the CSS generator outputs as a concrete hex value rather than a CSS variable reference, resolving the issue in the showcase and any application that applies presets via `ThemeService.setCustomThemeFamily()`.
+- **Migration repair for localStorage-persisted custom theme families**: Added `repairStoredThemeFamily` in `ThemeService` to patch families deserialized from `localStorage` that were stored before the preset-converter bug was resolved. On load, any dark-mode variant whose `text.inverse` is still the legacy `var(--primitive-neutral-900)` reference and whose `primitive.colors.neutral[900]` has been overridden to a light hex color (relative luminance > 0.18) is patched to `#000000`, eliminating the white-text-on-pastel-background defect without discarding user-saved theme data.
+
 ### Added
-- **Expanded component documentation**: Enhanced all 38 components with comprehensive setup, passthrough, and theming metadata. Showcase now includes:
+- **Fuji theme preset**: Added the Fuji built-in preset to the theme builder, a royal purple palette with an elegant serif typographic presence (Cormorant Garamond), refined border radii, and a deep twilight dark-mode surface derived from near-black purple.
+- **Custom brand theme families**: Added Smith, DuPre, Puckett, Xayavong, Greeff, Simpson, and Garrett as built-in theme builder presets, each with paired light and dark variants derived from a single brand hue and a distinct visual treatment ranging from rounded to edgy.
+- **Expanded direct Angular forms support**: `fui-input`, `fui-textarea`, `fui-checkbox`, `fui-switch`, `fui-select`, `fui-date-picker`, `fui-multi-select`, and `fui-radio` now implement `ControlValueAccessor` while preserving their existing explicit input/output bindings or model-based APIs for signal-based and manual state management. `fui-slider` now supports `ControlValueAccessor` in single-value mode while range mode continues to use explicit `valueEnd` / `valueEndChange` bindings.
+- **Radio and slider contract normalization**: `fui-radio` now exposes `selectedValue` / `selectedValueChange` as the preferred explicit group-selection contract while preserving the legacy `modelValue` alias, and `fui-slider` range mode now exposes a tuple-based `rangeValue` / `rangeValueChange` contract while keeping `valueEnd` compatibility.
+- **Modal controlled-state alignment**: Added `openChange` to `fui-modal` so its dismiss interactions follow the same controlled overlay pattern as `fui-drawer`, while preserving the existing `closed` event.
+- **Overlay focus restoration**: `fui-modal` and `fui-drawer` now restore focus to the previously focused trigger element after closing or teardown, aligning runtime behavior with their accessibility guidance.
+- **Menu keyboard focus management**: `fui-menu` now uses roving tabindex, moves focus to the first enabled item on open, keeps submenu focus synchronized, and restores focus to its trigger on close.
+- **Table sortable header accessibility**: `fui-table` sortable columns now use keyboard-focusable header buttons, and the showcase docs/examples now match the actual supported sorting and selection interactions.
+- **Tooltip and popover associations**: `fui-tooltip` now wires `aria-describedby` to its projected trigger while visible, and `fui-popover` now links its trigger and dialog with stable accessibility IDs and dialog semantics.
+- **Expanded component documentation**: Enhanced all 39 documented components with comprehensive setup, passthrough, and theming metadata. Showcase now includes:
   - Installation & Import sections with exact import statements and minimal usage examples for each component
   - Passthroughs documentation listing named content projection slots and native attribute forwarding patterns
   - Design Tokens sections showing all applicable CSS custom properties with descriptions and customization examples
@@ -18,9 +34,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Runtime metadata backfill for all components**: Added `runtime` metadata blocks to every showcase component entry so the Runtime & SSR API section is consistently populated across layout, navigation, data-display, feedback, and form components
 
 ### Fixed
+- **Showcase initial bundle budget**: Moved the global search modal behind a true dynamic import from the header shell so `fuse.js` and the component metadata registry no longer ship in the initial browser bundle. The showcase initial payload dropped below the 500 kB warning budget.
+- **Documentation count alignment**: Updated canonical docs and agent guidance to reflect the current 39 documented showcase components and the broader 43 exported component-class surface that includes helper building blocks.
 - **README accuracy for Angular 20 consumers**: Corrected standalone component selectors, removed an unsupported theming stylesheet import path, and aligned package guidance with the showcase as the canonical documentation source
 - **Showcase example modernization**: Updated stale toast examples to use `inject()` instead of constructor injection so documentation matches current Angular 20 guidance
 - **Context menu README reconciliation**: Updated `libs/components/src/lib/context-menu/README.md` to use `fui-context-menu` examples, removed outdated `::ng-deep` styling guidance, and aligned snippets with token-based customization practices
+- **Removed unused Nx starter pages**: Deleted the unreferenced `nx-welcome.ts` files from both showcase applications to reduce dead code and avoid confusion during future maintenance
 
 ---
 

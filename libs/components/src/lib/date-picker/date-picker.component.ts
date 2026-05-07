@@ -1,6 +1,6 @@
 /**
  * Date Picker Component
- * 
+ *
  * A date picker component with native HTML5 input fallback.
  * Provides a clean, accessible way to select dates.
  */
@@ -10,29 +10,38 @@ import {
   Component,
   computed,
   ElementRef,
+  forwardRef,
   input,
   linkedSignal,
   output,
   viewChild,
 } from '@angular/core';
 import { NgClass } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { FormValueAccessorBase } from '../forms/form-value-accessor.base';
 
 export type DatePickerSize = 'sm' | 'md' | 'lg';
 
+const DATE_PICKER_VALUE_ACCESSOR = {
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(() => DatePickerComponent),
+  multi: true,
+};
+
 @Component({
   selector: 'fui-date-picker',
-  imports: [NgClass, FormsModule],
+  imports: [NgClass],
   templateUrl: './date-picker.component.html',
   styleUrl: './date-picker.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [DATE_PICKER_VALUE_ACCESSOR],
   host: {
     '[class.fui-date-picker-wrapper]': 'true',
-    '[class.fui-date-picker-wrapper--disabled]': 'disabled()',
+    '[class.fui-date-picker-wrapper--disabled]': 'isDisabled()',
     '[class.fui-date-picker-wrapper--full-width]': 'fullWidth()',
   },
 })
-export class DatePickerComponent {
+export class DatePickerComponent extends FormValueAccessorBase<string> {
   /**
    * Selected date value
    */
@@ -114,6 +123,11 @@ export class DatePickerComponent {
   protected readonly internalValue = linkedSignal<string | undefined>(() => this.value());
 
   /**
+   * Effective disabled state including Angular forms state.
+   */
+  protected readonly isDisabled = computed(() => this.disabled() || this.valueAccessorDisabled());
+
+  /**
    * Reference to native date input
    */
   protected readonly inputElement = viewChild<ElementRef<HTMLInputElement>>('input');
@@ -146,15 +160,15 @@ export class DatePickerComponent {
    */
   protected readonly computedAriaDescribedBy = computed(() => {
     const parts: string[] = [];
-    
+
     if (this.helperText()) {
       parts.push(this.helperTextId());
     }
-    
+
     if (this.hasError()) {
       parts.push(this.errorId());
     }
-    
+
     return parts.length > 0 ? parts.join(' ') : undefined;
   });
 
@@ -165,7 +179,7 @@ export class DatePickerComponent {
     'fui-date-picker': true,
     [`fui-date-picker--${this.size()}`]: true,
     'fui-date-picker--error': this.hasError(),
-    'fui-date-picker--disabled': this.disabled(),
+    'fui-date-picker--disabled': this.isDisabled(),
   }));
 
   /**
@@ -173,7 +187,15 @@ export class DatePickerComponent {
    */
   protected handleChange(value: string): void {
     this.internalValue.set(value);
+    this.emitValueChange(value);
     this.valueChange.emit(value);
+  }
+
+  /**
+   * Mark the date picker as touched for Angular forms.
+   */
+  protected handleBlur(): void {
+    this.markAsTouched();
   }
 
   /**
@@ -181,6 +203,8 @@ export class DatePickerComponent {
    */
   protected clear(): void {
     this.internalValue.set(undefined);
+    this.emitValueChange('');
+    this.markAsTouched();
     this.valueChange.emit('');
   }
 
@@ -190,7 +214,7 @@ export class DatePickerComponent {
   protected openPicker(): void {
     const input = this.inputElement()?.nativeElement;
 
-    if (!input || this.disabled()) {
+    if (!input || this.isDisabled()) {
       return;
     }
 
@@ -203,5 +227,8 @@ export class DatePickerComponent {
 
     input.click();
   }
-}
 
+  protected setValue(value: string | null | undefined): void {
+    this.internalValue.set(value ?? undefined);
+  }
+}

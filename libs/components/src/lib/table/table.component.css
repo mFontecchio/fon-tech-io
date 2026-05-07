@@ -75,7 +75,6 @@
 }
 
 .fui-table-cell--sortable {
-  cursor: pointer;
   user-select: none;
   transition: background-color var(--semantic-animation-duration-interactive, 150ms)
     var(--semantic-animation-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
@@ -96,6 +95,25 @@
   display: flex;
   align-items: center;
   gap: var(--primitive-spacing-2);
+}
+
+.fui-table-sort-button {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.fui-table-sort-button:focus-visible {
+  outline: 2px solid var(--semantic-border-focus, var(--semantic-brand-primary));
+  outline-offset: 2px;
 }
 
 .fui-table-sort-icon {

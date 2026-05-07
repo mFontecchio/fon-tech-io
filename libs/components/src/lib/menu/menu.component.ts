@@ -14,6 +14,7 @@ import {
   signal,
   ElementRef,
   inject,
+  viewChild,
 } from '@angular/core';
 import { NgClass } from '@angular/common';
 
@@ -86,6 +87,11 @@ export class MenuComponent {
   protected readonly activeSubmenu = signal<string | null>(null);
 
   /**
+   * Active focus target for roving tabindex.
+   */
+  protected readonly activeItemId = signal<string | null>(null);
+
+  /**
    * Computed CSS classes
    */
   protected readonly menuClasses = computed(() => ({
@@ -95,6 +101,7 @@ export class MenuComponent {
   }));
 
   private elementRef = inject(ElementRef);
+  protected readonly triggerElement = viewChild<ElementRef<HTMLButtonElement>>('trigger');
 
   /**
    * Toggle menu
@@ -107,6 +114,11 @@ export class MenuComponent {
 
     if (newState) {
       this.updatePosition();
+      this.focusFirstRootItem();
+    } else {
+      this.activeSubmenu.set(null);
+      this.activeItemId.set(null);
+      this.focusTrigger();
     }
 
     this.openChange.emit(newState);
@@ -118,7 +130,9 @@ export class MenuComponent {
   protected close(): void {
     this.isOpen.set(false);
     this.activeSubmenu.set(null);
+    this.activeItemId.set(null);
     this.openChange.emit(false);
+    this.focusTrigger();
   }
 
   /**
@@ -129,9 +143,14 @@ export class MenuComponent {
 
     if (item.disabled || item.divider) return;
 
+    this.activeItemId.set(item.id);
+
     if (item.submenu && item.submenu.length > 0) {
       // Toggle submenu
       this.activeSubmenu.set(this.activeSubmenu() === item.id ? null : item.id);
+      if (this.activeSubmenu() === item.id) {
+        this.focusFirstSubmenuItem(item.id);
+      }
     } else {
       // Emit click event and close menu
       this.itemClick.emit(item);
@@ -211,21 +230,27 @@ export class MenuComponent {
           event.key === 'ArrowDown'
             ? (current + 1) % focusable.length
             : (current - 1 + focusable.length) % focusable.length;
-        focusable[next]?.focus();
+        const nextElement = focusable[next];
+        this.activeItemId.set(nextElement?.dataset['itemId'] ?? null);
+        nextElement?.focus();
         break;
       }
       case 'Home': {
         const items = host.querySelectorAll<HTMLElement>(
           '.fui-menu-list > .fui-menu-item:not(.fui-menu-item--disabled)'
         );
-        (items[0] as HTMLElement | undefined)?.focus();
+        const firstItem = items[0] as HTMLElement | undefined;
+        this.activeItemId.set(firstItem?.dataset['itemId'] ?? null);
+        firstItem?.focus();
         break;
       }
       case 'End': {
         const items = host.querySelectorAll<HTMLElement>(
           '.fui-menu-list > .fui-menu-item:not(.fui-menu-item--disabled)'
         );
-        (items[items.length - 1] as HTMLElement | undefined)?.focus();
+        const lastItem = items[items.length - 1] as HTMLElement | undefined;
+        this.activeItemId.set(lastItem?.dataset['itemId'] ?? null);
+        lastItem?.focus();
         break;
       }
       case 'ArrowRight': {
@@ -235,12 +260,7 @@ export class MenuComponent {
         const item = this.items().find((i) => i.id === itemId);
         if (item?.submenu?.length) {
           this.activeSubmenu.set(itemId);
-          requestAnimationFrame(() => {
-            const first = host.querySelector<HTMLElement>(
-              '.fui-menu-item--submenu-open > .fui-menu-submenu .fui-menu-item:not(.fui-menu-item--disabled)'
-            );
-            first?.focus();
-          });
+          this.focusFirstSubmenuItem(itemId);
         }
         break;
       }
@@ -248,11 +268,30 @@ export class MenuComponent {
         if (this.activeSubmenu()) {
           const parentItem = host.querySelector<HTMLElement>('.fui-menu-item--submenu-open');
           this.activeSubmenu.set(null);
+          this.activeItemId.set(parentItem?.dataset['itemId'] ?? null);
           requestAnimationFrame(() => parentItem?.focus());
         }
         break;
       }
     }
+  }
+
+  /**
+   * Keep only the active menu item in the tab order.
+   */
+  protected getItemTabIndex(item: MenuItem): number {
+    if (item.disabled) {
+      return -1;
+    }
+
+    return this.activeItemId() === item.id ? 0 : -1;
+  }
+
+  /**
+   * Sync the active roving item when focus moves.
+   */
+  protected handleItemFocus(itemId: string): void {
+    this.activeItemId.set(itemId);
   }
 
   /**
@@ -298,5 +337,47 @@ export class MenuComponent {
         hostElement.style.setProperty('--fui-menu-right', `${window.innerWidth - rect.right}px`);
         break;
     }
+  }
+
+  /**
+   * Focus the first enabled root menu item after opening.
+   */
+  private focusFirstRootItem(): void {
+    const firstItem = this.items().find((item) => !item.disabled && !item.divider);
+    if (!firstItem) return;
+
+    this.activeItemId.set(firstItem.id);
+    requestAnimationFrame(() => {
+      const host = this.elementRef.nativeElement as HTMLElement;
+      const itemElement = host.querySelector<HTMLElement>(
+        `.fui-menu-list > .fui-menu-item[data-item-id="${firstItem.id}"]`
+      );
+      itemElement?.focus();
+    });
+  }
+
+  /**
+   * Focus the first enabled submenu item for the active parent.
+   */
+  private focusFirstSubmenuItem(parentItemId: string): void {
+    const parentItem = this.items().find((item) => item.id === parentItemId);
+    const firstSubitem = parentItem?.submenu?.find((item) => !item.disabled && !item.divider);
+    if (!firstSubitem) return;
+
+    this.activeItemId.set(firstSubitem.id);
+    requestAnimationFrame(() => {
+      const host = this.elementRef.nativeElement as HTMLElement;
+      const itemElement = host.querySelector<HTMLElement>(
+        `.fui-menu-item--submenu-open > .fui-menu-submenu .fui-menu-item[data-item-id="${firstSubitem.id}"]`
+      );
+      itemElement?.focus();
+    });
+  }
+
+  /**
+   * Restore focus to the trigger after closing.
+   */
+  private focusTrigger(): void {
+    this.triggerElement()?.nativeElement.focus();
   }
 }

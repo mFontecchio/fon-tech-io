@@ -1,6 +1,6 @@
 # UI Component Suite - Components Library
 
-A comprehensive collection of 38 themable, accessible Angular components built with Angular 20+ and signals.
+A comprehensive collection of 39 themable, accessible Angular components built with Angular 20+ and signals.
 
 ## Overview
 
@@ -46,7 +46,7 @@ npm install @ui-suite/components
 - **Stack** - Flexbox layout helper
 - **Grid** - Responsive grid system
 
-### Data Display Components (9)
+### Data Display Components (10)
 
 - **Badge** - Status indicators and counts
 - **Avatar** - User avatars with fallbacks
@@ -57,6 +57,7 @@ npm install @ui-suite/components
 - **Table** - Data table with sorting and selection
 - **List** - Ordered and unordered lists
 - **Code Block** - Syntax-highlighted code display
+- **Carousel** - Composition-based carousel with slide and fade transitions
 
 ### Feedback Components (5)
 
@@ -89,18 +90,13 @@ import { ButtonComponent, RadioComponent } from '@ui-suite/components';
   imports: [ButtonComponent, RadioComponent],
   template: `
     <fui-button (clicked)="handleClick()">Click Me</fui-button>
-    
-    <fui-radio 
-      name="plan" 
-      value="pro" 
-      label="Pro Plan"
-      [(modelValue)]="selectedPlan"
-    />
+
+    <fui-radio name="plan" value="pro" label="Pro Plan" [(selectedValue)]="selectedPlan" />
   `,
 })
 export class ExampleComponent {
   selectedPlan = signal<string>('pro');
-  
+
   handleClick() {
     console.log('Button clicked!');
   }
@@ -119,35 +115,35 @@ Then open `/getting-started/theming` in the showcase for the supported Angular 2
 
 ## Angular Forms Integration
 
-Form-oriented components expose explicit Angular bindings such as `[value]` with `(valueChange)`, `[checked]` with `(checkedChange)`, or `[(modelValue)]` for radio groups.
+Form-oriented components expose explicit Angular bindings such as `[value]` with `(valueChange)`, `[checked]` with `(checkedChange)`, `[(selectedValue)]` for radio groups, and `[(rangeValue)]` for composite slider ranges.
 
-- `fui-input`, `fui-textarea`, `fui-select`, `fui-multi-select`, `fui-slider`, and `fui-date-picker` use explicit input/output bindings.
-- `fui-checkbox` and `fui-switch` use `[checked]` and `(checkedChange)`.
-- `fui-radio` uses `[(modelValue)]` across a group that shares the same `name`.
-- These components do not currently implement Angular `ControlValueAccessor` unless explicitly documented in the showcase.
+- `fui-input`, `fui-textarea`, `fui-checkbox`, `fui-switch`, `fui-select`, `fui-date-picker`, and `fui-multi-select` now implement Angular `ControlValueAccessor` and also preserve their explicit input/output bindings.
+- `fui-slider` implements `ControlValueAccessor` for single-value mode and now exposes `[(rangeValue)]` as the preferred explicit contract for range mode while preserving `valueEnd` / `valueEndChange` for compatibility.
+- `fui-radio` supports Angular `ControlValueAccessor` and now exposes `[(selectedValue)]` as the preferred explicit group contract while keeping `[(modelValue)]` as a backward-compatible alias.
+- Refer to the showcase compatibility tables for the current `ControlValueAccessor`, template-driven, and reactive-forms support level of each control.
 
-If your application relies on `formControlName` or `ngModel`, add a thin adapter directive or wrapper component that bridges your `FormControl` to the component's documented bindings.
+Controls that do not yet implement `ControlValueAccessor` still require a thin adapter directive or wrapper component when used with `formControlName` or `ngModel`.
 
 ## Keyboard Navigation
 
 All interactive components support full keyboard navigation per WAI-ARIA patterns:
 
-| Component | Keys | Behavior |
-|-----------|------|----------|
-| **Tabs** | Arrow keys | Navigate between tabs |
-| **Accordion** | Enter / Space | Toggle panel |
-| **Drawer** | Escape | Close; focus trapped inside while open (native `<dialog>`) |
-| **Modal** | Escape | Close; focus trapped inside |
-| **Context Menu** | ArrowUp / ArrowDown | Navigate items; ArrowRight opens submenu; ArrowLeft closes submenu; Escape closes |
-| **Stepper (horizontal)** | ArrowLeft / ArrowRight | Navigate steps; Home = first; End = last |
-| **Stepper (vertical)** | ArrowUp / ArrowDown | Navigate steps; Home = first; End = last |
-| **Select / Multi-Select** | ArrowUp / ArrowDown | Navigate options; Enter to select |
-| **Date Picker** | Arrow keys | Navigate calendar; Enter to select |
-| **Slider** | ArrowLeft / ArrowRight | Adjust value; Home / End = min / max |
+| Component                 | Keys                   | Behavior                                                                          |
+| ------------------------- | ---------------------- | --------------------------------------------------------------------------------- |
+| **Tabs**                  | Arrow keys             | Navigate between tabs                                                             |
+| **Accordion**             | Enter / Space          | Toggle panel                                                                      |
+| **Drawer**                | Escape                 | Close; focus trapped inside while open (native `<dialog>`)                        |
+| **Modal**                 | Escape                 | Close; focus trapped inside                                                       |
+| **Context Menu**          | ArrowUp / ArrowDown    | Navigate items; ArrowRight opens submenu; ArrowLeft closes submenu; Escape closes |
+| **Stepper (horizontal)**  | ArrowLeft / ArrowRight | Navigate steps; Home = first; End = last                                          |
+| **Stepper (vertical)**    | ArrowUp / ArrowDown    | Navigate steps; Home = first; End = last                                          |
+| **Select / Multi-Select** | ArrowUp / ArrowDown    | Navigate options; Enter to select                                                 |
+| **Date Picker**           | Arrow keys             | Navigate calendar; Enter to select                                                |
+| **Slider**                | ArrowLeft / ArrowRight | Adjust value; Home / End = min / max                                              |
 
 ## Component Documentation
 
-Comprehensive documentation for all 38 components is available in the **Showcase Application** including:
+Comprehensive documentation for all 39 documented components is available in the **Showcase Application** including:
 
 - **Setup & Installation** - Import statements and minimal usage examples for each component
 - **API Reference** - Complete inputs, outputs, and method documentation
@@ -176,6 +172,7 @@ nx serve showcase
 ```
 
 Browse component pages to view:
+
 - Full API with inputs, outputs, and methods
 - Passthroughs for content projection
 - Design tokens and theming examples

@@ -33,6 +33,9 @@ export type PopoverTrigger = 'click' | 'hover';
   },
 })
 export class PopoverComponent {
+  protected readonly popoverId = `fui-popover-${Math.random().toString(36).slice(2, 11)}`;
+  protected readonly titleId = `fui-popover-title-${Math.random().toString(36).slice(2, 11)}`;
+
   /**
    * Popover title
    */

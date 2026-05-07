@@ -1,6 +1,6 @@
 /**
  * Select Component
- * 
+ *
  * A themable select/dropdown component built on native HTML select.
  * Provides enhanced styling while maintaining native behavior.
  */
@@ -9,6 +9,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  forwardRef,
   input,
   linkedSignal,
   output,
@@ -16,7 +17,8 @@ import {
   viewChild,
 } from '@angular/core';
 import { NgClass, KeyValuePipe } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { FormValueAccessorBase } from '../forms/form-value-accessor.base';
 
 export type SelectSize = 'sm' | 'md' | 'lg';
 
@@ -27,19 +29,26 @@ export interface SelectOption {
   group?: string;
 }
 
+const SELECT_VALUE_ACCESSOR = {
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(() => SelectComponent),
+  multi: true,
+};
+
 @Component({
   selector: 'fui-select',
-  imports: [NgClass, FormsModule, KeyValuePipe],
+  imports: [NgClass, KeyValuePipe],
   templateUrl: './select.component.html',
   styleUrl: './select.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [SELECT_VALUE_ACCESSOR],
   host: {
     '[class.fui-select-wrapper]': 'true',
-    '[class.fui-select-wrapper--disabled]': 'disabled()',
+    '[class.fui-select-wrapper--disabled]': 'isDisabled()',
     '[class.fui-select-wrapper--full-width]': 'fullWidth()',
   },
 })
-export class SelectComponent {
+export class SelectComponent extends FormValueAccessorBase<string> {
   /**
    * Select options
    */
@@ -116,6 +125,11 @@ export class SelectComponent {
   protected readonly internalValue = linkedSignal<string | undefined>(() => this.value());
 
   /**
+   * Effective disabled state including Angular forms state.
+   */
+  protected readonly isDisabled = computed(() => this.disabled() || this.valueAccessorDisabled());
+
+  /**
    * Reference to select element
    */
   protected readonly selectElement = viewChild<ElementRef<HTMLSelectElement>>('select');
@@ -148,15 +162,15 @@ export class SelectComponent {
    */
   protected readonly computedAriaDescribedBy = computed(() => {
     const parts: string[] = [];
-    
+
     if (this.helperText()) {
       parts.push(this.helperTextId());
     }
-    
+
     if (this.hasError()) {
       parts.push(this.errorId());
     }
-    
+
     return parts.length > 0 ? parts.join(' ') : undefined;
   });
 
@@ -167,7 +181,7 @@ export class SelectComponent {
     'fui-select': true,
     [`fui-select--${this.size()}`]: true,
     'fui-select--error': this.hasError(),
-    'fui-select--disabled': this.disabled(),
+    'fui-select--disabled': this.isDisabled(),
     'fui-select--has-value': !!this.internalValue(),
   }));
 
@@ -177,15 +191,15 @@ export class SelectComponent {
   protected readonly groupedOptions = computed(() => {
     const options = this.options();
     const grouped = new Map<string | undefined, SelectOption[]>();
-    
-    options.forEach(option => {
+
+    options.forEach((option) => {
       const group = option.group;
       if (!grouped.has(group)) {
         grouped.set(group, []);
       }
       grouped.get(group)!.push(option);
     });
-    
+
     return grouped;
   });
 
@@ -193,7 +207,7 @@ export class SelectComponent {
    * Check if options have groups
    */
   protected readonly hasGroups = computed(() => {
-    return this.options().some(opt => opt.group !== undefined);
+    return this.options().some((opt) => opt.group !== undefined);
   });
 
   /**
@@ -202,9 +216,17 @@ export class SelectComponent {
   protected handleChange(event: Event): void {
     const target = event.target as HTMLSelectElement;
     const newValue = target.value;
-    
+
     this.internalValue.set(newValue);
+    this.emitValueChange(newValue);
     this.valueChange.emit(newValue);
+  }
+
+  /**
+   * Mark the select as touched for Angular forms.
+   */
+  protected handleBlur(): void {
+    this.markAsTouched();
   }
 
   /**
@@ -216,5 +238,8 @@ export class SelectComponent {
       select.nativeElement.focus();
     }
   }
-}
 
+  protected setValue(value: string | null | undefined): void {
+    this.internalValue.set(value ?? undefined);
+  }
+}
