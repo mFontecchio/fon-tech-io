@@ -1603,16 +1603,13 @@ interface EditableThemeFamilyMetadata {
           --semantic-surface-background-secondary-dark,
           #2a2e3f
         );
-        --semantic-surface-background-secondary: var(
-          --semantic-surface-background-secondary-dark,
-          #2a2e3f
-        );
 
         /* Semantic: Text Colors */
         --semantic-text-primary: var(--semantic-text-primary-dark, #e5e7eb);
         --semantic-text-secondary: var(--semantic-text-secondary-dark, #9ca3af);
         --semantic-text-tertiary: var(--semantic-text-tertiary-dark, #6b7280);
         --semantic-text-disabled: var(--semantic-text-disabled-dark, #4b5563);
+        --semantic-text-inverse: var(--semantic-text-inverse-dark, #000000);
 
         /* Semantic: Border Colors */
         --semantic-border-default: var(--semantic-border-default-dark, #374151);
@@ -1961,6 +1958,12 @@ export class ThemeBuilderComponent {
         {
           name: '--semantic-text-tertiary',
           value: this.getComputedToken('--semantic-text-tertiary'),
+          type: 'color',
+          category: 'text',
+        },
+        {
+          name: '--semantic-text-inverse',
+          value: this.getComputedToken('--semantic-text-inverse'),
           type: 'color',
           category: 'text',
         },
@@ -2474,6 +2477,7 @@ export class ThemeBuilderComponent {
       '--semantic-text-primary': theme.semantic.text.primary,
       '--semantic-text-secondary': theme.semantic.text.secondary,
       '--semantic-text-tertiary': theme.semantic.text.tertiary,
+      '--semantic-text-inverse': theme.semantic.text.inverse,
       '--primitive-font-family-sans': theme.primitive.typography.fontFamily.sans,
       '--primitive-font-family-mono': theme.primitive.typography.fontFamily.mono,
       '--primitive-font-size-xs': theme.primitive.typography.fontSize.xs,
