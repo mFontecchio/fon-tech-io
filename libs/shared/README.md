@@ -1,16 +1,16 @@
-# @ui-suite/shared
+# @mfontecchio/shared
 
 Shared utilities and type definitions for the UI Component Suite. Provides color manipulation, typography utilities, and WCAG accessibility helpers.
 
 ## Installation
 
 ```bash
-pnpm add @ui-suite/shared
+pnpm add @mfontecchio/shared
 ```
 
 ## Color Utilities
 
-Import from `@ui-suite/shared`.
+Import from `@mfontecchio/shared`.
 
 ### Types
 
@@ -57,7 +57,7 @@ import {
   getContrastTextColor,
   darkenColor,
   generateColorPalette,
-} from '@ui-suite/shared';
+} from '@mfontecchio/shared';
 
 // Check WCAG compliance
 const result = checkContrast('#3b82f6', '#ffffff', 'AA', 'normal');
@@ -73,7 +73,7 @@ const palette = generateColorPalette('#3b82f6');
 
 ## Typography Utilities
 
-Import from `@ui-suite/shared`.
+Import from `@mfontecchio/shared`.
 
 ### Types
 
@@ -95,7 +95,7 @@ Import from `@ui-suite/shared`.
 ### Usage Example
 
 ```typescript
-import { fluidFontSize, calculateLineHeight } from '@ui-suite/shared';
+import { fluidFontSize, calculateLineHeight } from '@mfontecchio/shared';
 
 const fontSize = fluidFontSize({ min: 16, max: 24 });
 // Returns: "clamp(1rem, 0.8889rem + 0.5556vw, 1.5rem)"

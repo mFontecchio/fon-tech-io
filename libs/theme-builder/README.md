@@ -1,14 +1,14 @@
-# @ui-suite/theme-builder
+# @mfontecchio/theme-builder
 
 Interactive visual theme builder and theme utilities for the UI Component Suite. Includes the full `ThemeBuilderComponent` UI, color utilities, theme presets, and storage helpers.
 
 ## Installation
 
 ```bash
-pnpm add @ui-suite/theme-builder
+pnpm add @mfontecchio/theme-builder
 ```
 
-Dependencies: `@ui-suite/theming`, `@ui-suite/components`, `@ui-suite/shared`
+Dependencies: `@mfontecchio/theming`, `@mfontecchio/components`, `@mfontecchio/shared`
 
 ## ThemeBuilderComponent
 
@@ -20,14 +20,14 @@ A standalone Angular component providing a full interactive theme editor with li
 // app.routes.ts
 {
   path: 'theme-builder',
-  loadComponent: () => import('@ui-suite/theme-builder').then(m => m.ThemeBuilderComponent),
+  loadComponent: () => import('@mfontecchio/theme-builder').then(m => m.ThemeBuilderComponent),
 }
 ```
 
 **Direct import:**
 
 ```typescript
-import { ThemeBuilderComponent } from '@ui-suite/theme-builder';
+import { ThemeBuilderComponent } from '@mfontecchio/theme-builder';
 
 @Component({
   imports: [ThemeBuilderComponent],
@@ -39,8 +39,8 @@ export class MyPage {}
 ## Theme Presets
 
 ```typescript
-import { THEME_PRESETS, ThemePreset, convertPresetToTheme } from '@ui-suite/theme-builder';
-import { Theme } from '@ui-suite/theming';
+import { THEME_PRESETS, ThemePreset, convertPresetToTheme } from '@mfontecchio/theme-builder';
+import { Theme } from '@mfontecchio/theming';
 
 // Pre-configured theme presets (Material, Bootstrap, Dark, Minimal, Ocean, Sunset, etc.)
 const presets: ThemePreset[] = THEME_PRESETS;
@@ -51,11 +51,11 @@ const theme: Theme = convertPresetToTheme(presets[0]);
 
 ## Color Utilities
 
-All color utilities from `@ui-suite/shared` are re-exported for convenience, plus theme-builder-specific helpers:
+All color utilities from `@mfontecchio/shared` are re-exported for convenience, plus theme-builder-specific helpers:
 
 ```typescript
 import {
-  // Re-exported from @ui-suite/shared
+  // Re-exported from @mfontecchio/shared
   getContrastRatio,
   lightenColor,
   darkenColor,
@@ -67,7 +67,7 @@ import {
   getAnalogousColors,
   isValidHexColor,
   generateShades,
-} from '@ui-suite/theme-builder';
+} from '@mfontecchio/theme-builder';
 
 // WCAG compliance
 const ratio = getContrastRatio('#3b82f6', '#ffffff'); // 3.7
@@ -83,7 +83,7 @@ const shades = generateShades('#3b82f6', 5); // 5 shades lighter → darker
 ## Storage Utilities
 
 ```typescript
-import { saveTheme, getSavedThemes, deleteTheme } from '@ui-suite/theme-builder';
+import { saveTheme, getSavedThemes, deleteTheme } from '@mfontecchio/theme-builder';
 
 // Save theme tokens to localStorage
 saveTheme('my-theme', { '--primitive-primary-500': '#0066cc' });
@@ -99,7 +99,7 @@ deleteTheme('my-theme');
 ## CSS Utilities
 
 ```typescript
-import { parseCSSVariables } from '@ui-suite/theme-builder';
+import { parseCSSVariables } from '@mfontecchio/theme-builder';
 
 // Parse CSS custom properties from a CSS string
 const tokens = parseCSSVariables(`:root { --color-primary: #3b82f6; --spacing-4: 1rem; }`);

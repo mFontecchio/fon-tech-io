@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ThemeBuilderComponent } from '@ui-suite/theme-builder';
+import { ThemeBuilderComponent } from '@mfontecchio/theme-builder';
 
 @Component({
   imports: [ThemeBuilderComponent],

@@ -111,7 +111,7 @@ export interface ThemingMetadata {
 export interface SetupMetadata {
   /**
    * Import statement(s) exactly as consumers would write them.
-   * @example "import { ButtonComponent } from '@ui-suite/components';"
+   * @example "import { ButtonComponent } from '@mfontecchio/components';"
    */
   importStatement: string;
   /**

@@ -16,9 +16,9 @@ import {
   generateTypographyCss,
   BREAKPOINTS,
   Breakpoint,
-} from '@ui-suite/shared';
+} from '@mfontecchio/shared';
 
-export { type TypeScaleConfig, type Breakpoint } from '@ui-suite/shared';
+export { type TypeScaleConfig, type Breakpoint } from '@mfontecchio/shared';
 
 @Injectable({
   providedIn: 'root',

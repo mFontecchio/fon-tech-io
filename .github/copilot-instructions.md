@@ -16,10 +16,10 @@ Enterprise-grade Angular 20 component library with 39 documented components and 
 
 ```
 libs/
-├── theming/          # Design system engine (@ui-suite/theming)
-├── shared/           # Utilities & types (@ui-suite/shared)
-├── components/       # 39 documented components (+ helper exports) (@ui-suite/components)
-└── theme-builder/    # Theme creation UI (@ui-suite/theme-builder)
+├── theming/          # Design system engine (@mfontecchio/theming)
+├── shared/           # Utilities & types (@mfontecchio/shared)
+├── components/       # 39 documented components (+ helper exports) (@mfontecchio/components)
+└── theme-builder/    # Theme creation UI (@mfontecchio/theme-builder)
 apps/
 ├── showcase/         # Documentation & demos
 └── theme-builder-app/
@@ -30,9 +30,9 @@ apps/
 ### Import Aliases (tsconfig.base.json)
 
 ```typescript
-import { ThemeService } from '@ui-suite/theming';
-import { ButtonComponent } from '@ui-suite/components';
-import { fluidFontSize } from '@ui-suite/shared';
+import { ThemeService } from '@mfontecchio/theming';
+import { ButtonComponent } from '@mfontecchio/components';
+import { fluidFontSize } from '@mfontecchio/shared';
 ```
 
 ## Critical Design Patterns
@@ -113,7 +113,7 @@ export class ExampleComponent {
 The ThemeService uses signals for reactivity (`libs/theming/src/lib/services/theme.service.ts`):
 
 ```typescript
-import { ThemeService } from '@ui-suite/theming';
+import { ThemeService } from '@mfontecchio/theming';
 
 constructor(private themeService = inject(ThemeService)) {
   // Access current theme (readonly signal)
@@ -140,7 +140,7 @@ constructor(private themeService = inject(ThemeService)) {
 
 The theme builder (`libs/theme-builder/`) is a fully implemented library providing an interactive theme creation UI and utilities:
 
-**Exported from `@ui-suite/theme-builder`**:
+**Exported from `@mfontecchio/theme-builder`**:
 
 - `ThemeBuilderComponent` — Full interactive theme builder UI (selector: `app-theme-builder`)
 - `ThemePreset`, `THEME_PRESETS` — Pre-configured theme presets
@@ -155,7 +155,7 @@ The theme builder (`libs/theme-builder/`) is a fully implemented library providi
 // Lazy-load in routing (recommended)
 {
   path: 'theme-builder',
-  loadComponent: () => import('@ui-suite/theme-builder').then(m => m.ThemeBuilderComponent),
+  loadComponent: () => import('@mfontecchio/theme-builder').then(m => m.ThemeBuilderComponent),
 }
 ```
 
@@ -200,7 +200,7 @@ The theme builder (`libs/theme-builder/`) is a fully implemented library providi
 The CssGeneratorService (`libs/theming/src/lib/services/css-generator.service.ts`) converts theme tokens to CSS custom properties:
 
 ```typescript
-import { CssGeneratorService } from '@ui-suite/theming';
+import { CssGeneratorService } from '@mfontecchio/theming';
 
 constructor(private cssGenerator = inject(CssGeneratorService)) {}
 
@@ -235,8 +235,8 @@ The service flattens nested token objects into kebab-case CSS variables:
 The ThemeGeneratorService (`libs/theming/src/lib/services/theme-generator.service.ts`) automatically generates hover states and ensures optimal text contrast:
 
 ```typescript
-import { ThemeGeneratorService } from '@ui-suite/theming';
-import { getContrastTextColor, generateHoverColor } from '@ui-suite/shared';
+import { ThemeGeneratorService } from '@mfontecchio/theming';
+import { getContrastTextColor, generateHoverColor } from '@mfontecchio/shared';
 
 constructor(private themeGenerator = inject(ThemeGeneratorService)) {}
 
@@ -271,7 +271,7 @@ import {
   generateHoverColor,
   darkenColor,
   lightenColor,
-} from '@ui-suite/shared';
+} from '@mfontecchio/shared';
 
 // Auto-select black or white text for best contrast
 const textColor = getContrastTextColor('#3b82f6'); // Returns '#ffffff'
@@ -442,7 +442,7 @@ pnpm start:theme-builder
 **Method 2: Programmatic Theme Creation**
 
 ```typescript
-import { Theme } from '@ui-suite/theming';
+import { Theme } from '@mfontecchio/theming';
 
 const myCustomTheme: Theme = {
   metadata: {
@@ -491,7 +491,7 @@ effect(() => {
 });
 
 // Test contrast ratios for WCAG compliance
-import { checkContrast } from '@ui-suite/shared';
+import { checkContrast } from '@mfontecchio/shared';
 const contrastRatio = checkContrast(foreground, background);
 console.log('WCAG AA:', contrastRatio >= 4.5); // Text
 console.log('WCAG AAA:', contrastRatio >= 7); // Text
@@ -546,7 +546,7 @@ readonly size = input<ButtonSize>('md');
 Use fluid typography utilities (`libs/shared/src/lib/utils/typography.utils.ts`):
 
 ```typescript
-import { fluidFontSize, calculateLineHeight } from '@ui-suite/shared';
+import { fluidFontSize, calculateLineHeight } from '@mfontecchio/shared';
 
 const fontSize = fluidFontSize({ min: 16, max: 24 }); // Responsive clamp()
 ```

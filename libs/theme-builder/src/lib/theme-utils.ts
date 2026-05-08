@@ -3,10 +3,10 @@
  * Helper functions for theme manipulation and validation
  */
 
-import { parseHex, rgbToHex, hslToRgb, lightenColor, darkenColor, getContrastRatio } from '@ui-suite/shared';
+import { parseHex, rgbToHex, hslToRgb, lightenColor, darkenColor, getContrastRatio } from '@mfontecchio/shared';
 
 // Re-export shared color utilities to eliminate duplication
-export { getContrastRatio, lightenColor, darkenColor } from '@ui-suite/shared';
+export { getContrastRatio, lightenColor, darkenColor } from '@mfontecchio/shared';
 
 const CUSTOM_THEME_STORAGE_KEY = 'custom-themes';
 

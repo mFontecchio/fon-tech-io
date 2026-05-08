@@ -20,10 +20,10 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
-      "@ui-suite/theming": ["libs/theming/src/index.ts"],
-      "@ui-suite/components": ["libs/components/src/index.ts"],
-      "@ui-suite/shared": ["libs/shared/src/index.ts"],
-      "@ui-suite/theme-builder": ["libs/theme-builder/src/index.ts"]
+      "@mfontecchio/theming": ["libs/theming/src/index.ts"],
+      "@mfontecchio/components": ["libs/components/src/index.ts"],
+      "@mfontecchio/shared": ["libs/shared/src/index.ts"],
+      "@mfontecchio/theme-builder": ["libs/theme-builder/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

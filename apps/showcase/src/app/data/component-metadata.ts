@@ -17,7 +17,7 @@ const BUTTON_METADATA: ComponentMetadata = {
     'A themable button component with multiple variants, sizes, and states. Supports loading states and full accessibility.',
   selector: 'fui-button',
   setup: {
-    importStatement: "import { ButtonComponent } from '@ui-suite/components';",
+    importStatement: "import { ButtonComponent } from '@mfontecchio/components';",
     usageSnippet: `<fui-button>Click Me</fui-button>`,
     setupNotes:
       'No additional setup required. Add ButtonComponent to the imports array of your standalone component.',
@@ -245,7 +245,7 @@ const INPUT_METADATA: ComponentMetadata = {
     'A themable text input component with validation states, projected affixes, native validity feedback, and optional password reveal support.',
   selector: 'fui-input',
   setup: {
-    importStatement: "import { InputComponent } from '@ui-suite/components';",
+    importStatement: "import { InputComponent } from '@mfontecchio/components';",
     usageSnippet: `<fui-input label="Email" placeholder="Enter your email" />`,
     setupNotes:
       'No additional setup required. Add InputComponent to the imports array of your standalone component.',
@@ -536,7 +536,7 @@ const TEXTAREA_METADATA: ComponentMetadata = {
   description: 'A multi-line text input component with auto-resize and character counter support.',
   selector: 'fui-textarea',
   setup: {
-    importStatement: "import { TextareaComponent } from '@ui-suite/components';",
+    importStatement: "import { TextareaComponent } from '@mfontecchio/components';",
     usageSnippet: `<fui-textarea label="Message" placeholder="Enter your message" />`,
     setupNotes:
       'No additional setup required. Add TextareaComponent to the imports array of your standalone component.',
@@ -746,7 +746,7 @@ const CHECKBOX_METADATA: ComponentMetadata = {
   description: 'A themable checkbox component with label support and indeterminate state.',
   selector: 'fui-checkbox',
   setup: {
-    importStatement: "import { CheckboxComponent } from '@ui-suite/components';",
+    importStatement: "import { CheckboxComponent } from '@mfontecchio/components';",
     usageSnippet: `<fui-checkbox label="Accept terms and conditions" />`,
     setupNotes:
       'No additional setup required. Add CheckboxComponent to the imports array of your standalone component.',
@@ -902,7 +902,7 @@ const RADIO_METADATA: ComponentMetadata = {
     'A themable radio button component for mutually exclusive selections with explicit group selection bindings and legacy model compatibility.',
   selector: 'fui-radio',
   setup: {
-    importStatement: "import { RadioComponent } from '@ui-suite/components';",
+    importStatement: "import { RadioComponent } from '@mfontecchio/components';",
     usageSnippet: `<fui-radio name="plan" value="free" label="Free Plan" [(selectedValue)]="selectedPlan" />\n<fui-radio name="plan" value="pro" label="Pro Plan" [(selectedValue)]="selectedPlan" />`,
     usageTypescript: `import { signal } from '@angular/core';\n\nexport class MyComponent {\n  protected readonly selectedPlan = signal<string>('free');\n}`,
     setupNotes:
@@ -1133,7 +1133,7 @@ const SWITCH_METADATA: ComponentMetadata = {
   description: 'A toggle switch component for binary on/off states.',
   selector: 'fui-switch',
   setup: {
-    importStatement: "import { SwitchComponent } from '@ui-suite/components';",
+    importStatement: "import { SwitchComponent } from '@mfontecchio/components';",
     usageSnippet: `<fui-switch label="Enable notifications" />`,
     setupNotes:
       'No additional setup required. Add SwitchComponent to the imports array of your standalone component.',
@@ -1287,7 +1287,7 @@ const SELECT_METADATA: ComponentMetadata = {
     'A native HTML select component with enhanced styling, grouped options, helper text, and validation messaging.',
   selector: 'fui-select',
   setup: {
-    importStatement: "import { SelectComponent } from '@ui-suite/components';",
+    importStatement: "import { SelectComponent } from '@mfontecchio/components';",
     usageSnippet: `<fui-select label="Country" [options]="countries" placeholder="Choose a country" />`,
     usageTypescript: `export class MyComponent {\n  protected readonly countries = [\n    { value: 'us', label: 'United States' },\n    { value: 'uk', label: 'United Kingdom' },\n    { value: 'ca', label: 'Canada' },\n  ];\n}`,
     setupNotes:
@@ -1511,7 +1511,7 @@ const MULTI_SELECT_METADATA: ComponentMetadata = {
   description: 'A multi-selection dropdown with chips for selected values.',
   selector: 'fui-multi-select',
   setup: {
-    importStatement: "import { MultiSelectComponent } from '@ui-suite/components';",
+    importStatement: "import { MultiSelectComponent } from '@mfontecchio/components';",
     usageSnippet: `<fui-multi-select label="Skills" [options]="skills" placeholder="Select skills" />`,
     usageTypescript: `export class MyComponent {\n  protected readonly skills = [\n    { value: 'ts', label: 'TypeScript' },\n    { value: 'angular', label: 'Angular' },\n    { value: 'rxjs', label: 'RxJS' },\n  ];\n}`,
     setupNotes:
@@ -1692,7 +1692,7 @@ const SLIDER_METADATA: ComponentMetadata = {
   description: 'A range slider component with single or dual handles for numeric value selection.',
   selector: 'fui-slider',
   setup: {
-    importStatement: "import { SliderComponent } from '@ui-suite/components';",
+    importStatement: "import { SliderComponent } from '@mfontecchio/components';",
     usageSnippet: `<fui-slider label="Volume" [min]="0" [max]="100" [value]="50" />`,
     setupNotes:
       'No additional setup required. Add SliderComponent to the imports array of your standalone component.',
@@ -1863,7 +1863,7 @@ const DATEPICKER_METADATA: ComponentMetadata = {
     'A native HTML date input with a themed trigger button, helper text, and support for min/max validation in ISO date format.',
   selector: 'fui-date-picker',
   setup: {
-    importStatement: "import { DatePickerComponent } from '@ui-suite/components';",
+    importStatement: "import { DatePickerComponent } from '@mfontecchio/components';",
     usageSnippet: `<fui-date-picker label="Start date" placeholder="Select a date" />`,
     setupNotes:
       'No additional setup required. Add DatePickerComponent to the imports array of your standalone component.',
@@ -2092,7 +2092,7 @@ const FILEUPLOAD_METADATA: ComponentMetadata = {
     'A comprehensive file upload component with drag-and-drop support, file type validation, size restrictions, and file preview. Supports both single and multiple file uploads with progress indication.',
   selector: 'fui-file-upload',
   setup: {
-    importStatement: "import { FileUploadComponent } from '@ui-suite/components';",
+    importStatement: "import { FileUploadComponent } from '@mfontecchio/components';",
     usageSnippet: `<fui-file-upload label="Upload documents" />`,
     setupNotes:
       'No additional setup required. Add FileUploadComponent to the imports array of your standalone component.',
@@ -2330,7 +2330,7 @@ const CARD_METADATA: ComponentMetadata = {
     'A versatile container component for grouping related content with optional header and footer.',
   selector: 'fui-card',
   setup: {
-    importStatement: "import { CardComponent } from '@ui-suite/components';",
+    importStatement: "import { CardComponent } from '@mfontecchio/components';",
     usageSnippet: `<fui-card>\n  <div header>Card Title</div>\n  <p>Card content goes here.</p>\n  <div footer>Footer actions</div>\n</fui-card>`,
     setupNotes:
       'No additional setup required. Add CardComponent to the imports array of your standalone component. Use [header] and [footer] attributes to project content into the header and footer slots.',
@@ -2477,7 +2477,7 @@ const MODAL_METADATA: ComponentMetadata = {
     'A dialog overlay component for focused user interactions with backdrop and animations.',
   selector: 'fui-modal',
   setup: {
-    importStatement: "import { ModalComponent } from '@ui-suite/components';",
+    importStatement: "import { ModalComponent } from '@mfontecchio/components';",
     usageSnippet: `<button (click)="isOpen.set(true)">Open Modal</button>\n<fui-modal [open]="isOpen()" title="Hello" (openChange)="isOpen.set($event)">\n  <p>Modal content goes here.</p>\n  <div slot="footer">\n    <fui-button (clicked)="isOpen.set(false)">Close</fui-button>\n  </div>\n</fui-modal>`,
     usageTypescript: `import { signal } from '@angular/core';\n\nexport class MyComponent {\n  protected readonly isOpen = signal(false);\n}`,
     setupNotes:
@@ -2646,7 +2646,7 @@ const TABS_METADATA: ComponentMetadata = {
   description: 'A tabbed interface component for organizing content into separate panels.',
   selector: 'fui-tabs',
   setup: {
-    importStatement: "import { TabsComponent, TabComponent } from '@ui-suite/components';",
+    importStatement: "import { TabsComponent, TabComponent } from '@mfontecchio/components';",
     usageSnippet: `<fui-tabs>\n  <fui-tab label="First">First tab content</fui-tab>\n  <fui-tab label="Second">Second tab content</fui-tab>\n</fui-tabs>`,
     setupNotes:
       'Import both TabsComponent and TabComponent. Both must be in the imports array of your standalone component.',
@@ -2793,7 +2793,7 @@ const ACCORDION_METADATA: ComponentMetadata = {
   description: 'A vertically stacked set of collapsible content panels for organizing information.',
   selector: 'fui-accordion',
   setup: {
-    importStatement: "import { AccordionComponent } from '@ui-suite/components';",
+    importStatement: "import { AccordionComponent } from '@mfontecchio/components';",
     usageSnippet: `<fui-accordion [items]="items" mode="single" />`,
     usageTypescript: `export class MyComponent {\n  protected readonly items = [\n    { title: 'Section 1', content: 'Content for section 1' },\n    { title: 'Section 2', content: 'Content for section 2' },\n  ];\n}`,
     setupNotes:
@@ -2922,7 +2922,7 @@ const DIVIDER_METADATA: ComponentMetadata = {
   description: 'A visual separator for content sections with customizable styles.',
   selector: 'fui-divider',
   setup: {
-    importStatement: "import { DividerComponent } from '@ui-suite/components';",
+    importStatement: "import { DividerComponent } from '@mfontecchio/components';",
     usageSnippet: `<fui-divider />`,
     setupNotes:
       'No additional setup required. Add DividerComponent to the imports array of your standalone component.',
@@ -3032,7 +3032,7 @@ const DRAWER_METADATA: ComponentMetadata = {
     'A slide-in panel component that appears from the edge of the screen for navigation or content.',
   selector: 'fui-drawer',
   setup: {
-    importStatement: "import { DrawerComponent } from '@ui-suite/components';",
+    importStatement: "import { DrawerComponent } from '@mfontecchio/components';",
     usageSnippet: `<button (click)="isOpen.set(true)">Open Drawer</button>\n<fui-drawer [open]="isOpen()" title="Settings" (closed)="isOpen.set(false)">\n  <p>Drawer content goes here.</p>\n  <div footer>\n    <fui-button (clicked)="isOpen.set(false)">Done</fui-button>\n  </div>\n</fui-drawer>`,
     usageTypescript: `import { signal } from '@angular/core';\n\nexport class MyComponent {\n  protected readonly isOpen = signal(false);\n}`,
     setupNotes:
@@ -3218,7 +3218,7 @@ const STACK_METADATA: ComponentMetadata = {
     'A layout component for arranging children in a vertical or horizontal stack with consistent spacing.',
   selector: 'fui-stack',
   setup: {
-    importStatement: "import { StackComponent } from '@ui-suite/components';",
+    importStatement: "import { StackComponent } from '@mfontecchio/components';",
     usageSnippet: `<fui-stack direction="vertical" [spacing]="4">\n  <div>Item 1</div>\n  <div>Item 2</div>\n  <div>Item 3</div>\n</fui-stack>`,
     setupNotes:
       'No additional setup required. Add StackComponent to the imports array of your standalone component.',
@@ -3348,7 +3348,7 @@ const GRID_METADATA: ComponentMetadata = {
   description: 'A responsive grid layout component with customizable columns and gaps.',
   selector: 'fui-grid',
   setup: {
-    importStatement: "import { GridComponent } from '@ui-suite/components';",
+    importStatement: "import { GridComponent } from '@mfontecchio/components';",
     usageSnippet: `<fui-grid [columns]="3" [gap]="4">\n  <div>Column 1</div>\n  <div>Column 2</div>\n  <div>Column 3</div>\n</fui-grid>`,
     setupNotes:
       'No additional setup required. Add GridComponent to the imports array of your standalone component.',
@@ -3471,7 +3471,7 @@ const BADGE_METADATA: ComponentMetadata = {
   description: 'A small label for displaying status, count, or category.',
   selector: 'fui-badge',
   setup: {
-    importStatement: "import { BadgeComponent } from '@ui-suite/components';",
+    importStatement: "import { BadgeComponent } from '@mfontecchio/components';",
     usageSnippet: `<fui-badge variant="primary">New</fui-badge>`,
     setupNotes:
       'No additional setup required. Add BadgeComponent to the imports array of your standalone component.',
@@ -3620,7 +3620,7 @@ const AVATAR_METADATA: ComponentMetadata = {
     'A component for displaying user profile images or initials in a circular container.',
   selector: 'fui-avatar',
   setup: {
-    importStatement: "import { AvatarComponent } from '@ui-suite/components';",
+    importStatement: "import { AvatarComponent } from '@mfontecchio/components';",
     usageSnippet: `<fui-avatar initials="JD" alt="John Doe" size="md" />`,
     setupNotes:
       'No additional setup required. Add AvatarComponent to the imports array of your standalone component.',
@@ -3774,7 +3774,7 @@ const TOOLTIP_METADATA: ComponentMetadata = {
   description: 'A popup that displays contextual information when hovering or focusing an element.',
   selector: 'fui-tooltip',
   setup: {
-    importStatement: "import { TooltipComponent } from '@ui-suite/components';",
+    importStatement: "import { TooltipComponent } from '@mfontecchio/components';",
     usageSnippet: `<button fui-tooltip text="Save your changes">Save</button>`,
     setupNotes:
       'The tooltip is applied as an attribute directive on a host element. Add TooltipComponent to the imports array of your standalone component.',
@@ -3899,7 +3899,7 @@ const CHIP_METADATA: ComponentMetadata = {
   description: 'A compact element for tags, filters, or selections with optional remove action.',
   selector: 'fui-chip',
   setup: {
-    importStatement: "import { ChipComponent } from '@ui-suite/components';",
+    importStatement: "import { ChipComponent } from '@mfontecchio/components';",
     usageSnippet: `<fui-chip label="Angular" variant="primary" />\n<fui-chip label="Removable" [removable]="true" (removed)="onRemove()" />`,
     setupNotes:
       'No additional setup required. Add ChipComponent to the imports array of your standalone component.',
@@ -4049,7 +4049,7 @@ const POPOVER_METADATA: ComponentMetadata = {
     'A floating panel that displays rich content relative to a trigger element, similar to tooltip but interactive.',
   selector: 'fui-popover',
   setup: {
-    importStatement: "import { PopoverComponent } from '@ui-suite/components';",
+    importStatement: "import { PopoverComponent } from '@mfontecchio/components';",
     usageSnippet: `<button [fui-popover]="myPopover" trigger="click">Open Popover</button>\n<ng-template #myPopover>\n  <p>Popover content here.</p>\n</ng-template>`,
     setupNotes:
       'The popover is applied as an attribute directive binding a template reference. Add PopoverComponent to the imports array of your standalone component.',
@@ -4189,7 +4189,7 @@ const PAGINATION_METADATA: ComponentMetadata = {
   description: 'A component for navigating through paginated data with page numbers and controls.',
   selector: 'fui-pagination',
   setup: {
-    importStatement: "import { PaginationComponent } from '@ui-suite/components';",
+    importStatement: "import { PaginationComponent } from '@mfontecchio/components';",
     usageSnippet: `<fui-pagination\n  [total]="100"\n  [pageSize]="10"\n  [page]="currentPage()"\n  (pageChange)="currentPage.set($event)"\n/>`,
     usageTypescript: `import { signal } from '@angular/core';\n\nexport class MyComponent {\n  protected readonly currentPage = signal(1);\n}`,
     setupNotes:
@@ -4353,7 +4353,7 @@ const TABLE_METADATA: ComponentMetadata = {
     'A data table component with sorting, selection, and customizable columns for displaying structured data.',
   selector: 'fui-table',
   setup: {
-    importStatement: "import { TableComponent } from '@ui-suite/components';",
+    importStatement: "import { TableComponent } from '@mfontecchio/components';",
     usageSnippet: `<fui-table [columns]="columns" [data]="rows" />`,
     usageTypescript: `export class MyComponent {\n  protected readonly columns = [\n    { key: 'name', label: 'Name' },\n    { key: 'email', label: 'Email' },\n  ];\n  protected readonly rows = [\n    { name: 'Alice', email: 'alice@example.com' },\n    { name: 'Bob', email: 'bob@example.com' },\n  ];\n}`,
     setupNotes:
@@ -4525,7 +4525,7 @@ const LIST_METADATA: ComponentMetadata = {
   description: 'A component for displaying lists of items with optional interactivity and styling.',
   selector: 'fui-list',
   setup: {
-    importStatement: "import { ListComponent } from '@ui-suite/components';",
+    importStatement: "import { ListComponent } from '@mfontecchio/components';",
     usageSnippet: `<fui-list [items]="items()" />`,
     usageTypescript: `import { signal } from '@angular/core';\n\nexport class MyComponent {\n  protected readonly items = signal([\n    { id: '1', primary: 'First item', secondary: 'Subtitle' },\n    { id: '2', primary: 'Second item', secondary: 'Subtitle' },\n  ]);\n}`,
     setupNotes:
@@ -4667,7 +4667,7 @@ const CAROUSEL_METADATA: ComponentMetadata = {
   selector: 'fui-carousel',
   setup: {
     importStatement:
-      "import { CarouselComponent, CarouselSlideComponent } from '@ui-suite/components';",
+      "import { CarouselComponent, CarouselSlideComponent } from '@mfontecchio/components';",
     usageSnippet: `<fui-carousel ariaLabel="Featured slides">\n  <fui-carousel-slide>\n    <div class="slide-content">Slide 1</div>\n  </fui-carousel-slide>\n  <fui-carousel-slide>\n    <div class="slide-content">Slide 2</div>\n  </fui-carousel-slide>\n</fui-carousel>`,
     setupNotes:
       'Import both CarouselComponent and CarouselSlideComponent. Both must be in the imports array of your standalone component. Slides are projected as fui-carousel-slide children.',
@@ -4899,7 +4899,7 @@ const CODE_BLOCK_METADATA: ComponentMetadata = {
     'A component for displaying formatted code with syntax highlighting, copy-to-clipboard, and download functionality. Supports multiple languages and themes.',
   selector: 'fui-code-block',
   setup: {
-    importStatement: "import { CodeBlockComponent } from '@ui-suite/components';",
+    importStatement: "import { CodeBlockComponent } from '@mfontecchio/components';",
     usageSnippet: `<fui-code-block [code]="snippet" language="typescript" title="example.ts" />`,
     usageTypescript: `export class MyComponent {\n  protected readonly snippet = \`const greeting = 'Hello, world!';\`;\n}`,
     setupNotes:
@@ -5041,7 +5041,7 @@ const ALERT_METADATA: ComponentMetadata = {
   description: 'A component for displaying important messages with different severity levels.',
   selector: 'fui-alert',
   setup: {
-    importStatement: "import { AlertComponent } from '@ui-suite/components';",
+    importStatement: "import { AlertComponent } from '@mfontecchio/components';",
     usageSnippet: `<fui-alert variant="info">Your changes have been saved.</fui-alert>`,
     setupNotes:
       'No additional setup required. Add AlertComponent to the imports array of your standalone component. Content is projected directly inside the element.',
@@ -5156,7 +5156,7 @@ const SPINNER_METADATA: ComponentMetadata = {
   description: 'A loading spinner component to indicate processing or loading states.',
   selector: 'fui-spinner',
   setup: {
-    importStatement: "import { SpinnerComponent } from '@ui-suite/components';",
+    importStatement: "import { SpinnerComponent } from '@mfontecchio/components';",
     usageSnippet: `<fui-spinner />\n<fui-spinner size="lg" color="primary" />`,
     setupNotes:
       'No additional setup required. Add SpinnerComponent to the imports array of your standalone component.',
@@ -5244,7 +5244,7 @@ const PROGRESS_METADATA: ComponentMetadata = {
   description: 'A progress bar component for showing task completion with visual feedback.',
   selector: 'fui-progress',
   setup: {
-    importStatement: "import { ProgressComponent } from '@ui-suite/components';",
+    importStatement: "import { ProgressComponent } from '@mfontecchio/components';",
     usageSnippet: `<fui-progress [value]="75" [showValue]="true" />`,
     setupNotes:
       'No additional setup required. Add ProgressComponent to the imports array of your standalone component.',
@@ -5366,7 +5366,7 @@ const SKELETON_METADATA: ComponentMetadata = {
   description: 'A placeholder component for loading content with animated shimmer effect.',
   selector: 'fui-skeleton',
   setup: {
-    importStatement: "import { SkeletonComponent } from '@ui-suite/components';",
+    importStatement: "import { SkeletonComponent } from '@mfontecchio/components';",
     usageSnippet: `<fui-skeleton variant="text" width="80%" />\n<fui-skeleton variant="circular" width="40px" height="40px" />\n<fui-skeleton variant="rectangular" width="100%" height="120px" />`,
     setupNotes:
       'No additional setup required. Add SkeletonComponent to the imports array of your standalone component.',
@@ -5480,11 +5480,11 @@ const TOAST_METADATA: ComponentMetadata = {
     'A temporary notification component that appears at screen edges for non-intrusive feedback.',
   selector: 'fui-toast',
   setup: {
-    importStatement: "import { ToastComponent, ToastService } from '@ui-suite/components';",
+    importStatement: "import { ToastComponent, ToastService } from '@mfontecchio/components';",
     usageSnippet: `<!-- Place once in your app root or layout component -->
 <fui-toast />`,
     usageTypescript: `import { inject } from '@angular/core';
-import { ToastService } from '@ui-suite/components';
+import { ToastService } from '@mfontecchio/components';
 
 export class MyComponent {
   private readonly toastService = inject(ToastService);
@@ -5565,7 +5565,7 @@ export class MyComponent {
       title: 'Toast Variants',
       description: 'Different semantic toast types',
       typescript: `import { inject } from '@angular/core';
-import { ToastService } from '@ui-suite/components';
+import { ToastService } from '@mfontecchio/components';
 
 private readonly toastService = inject(ToastService);
 
@@ -5628,7 +5628,7 @@ const BREADCRUMB_METADATA: ComponentMetadata = {
     'A navigation component showing the current page location within the site hierarchy.',
   selector: 'fui-breadcrumb',
   setup: {
-    importStatement: "import { BreadcrumbComponent } from '@ui-suite/components';",
+    importStatement: "import { BreadcrumbComponent } from '@mfontecchio/components';",
     usageSnippet: `<fui-breadcrumb [items]="breadcrumbs" />`,
     usageTypescript: `export class MyComponent {
   protected readonly breadcrumbs = [
@@ -5749,7 +5749,7 @@ const MENU_METADATA: ComponentMetadata = {
   description: 'A dropdown menu component with nested submenu support for contextual actions.',
   selector: 'fui-menu',
   setup: {
-    importStatement: "import { MenuComponent } from '@ui-suite/components';",
+    importStatement: "import { MenuComponent } from '@mfontecchio/components';",
     usageSnippet: `<button [fui-menu]="menuItems">Actions</button>`,
     usageTypescript: `export class MyComponent {
   protected readonly menuItems = [
@@ -5886,12 +5886,12 @@ const CONTEXT_MENU_METADATA: ComponentMetadata = {
     'A right-click context menu component with nested submenu support, icons, and keyboard shortcuts.',
   selector: 'fui-context-menu',
   setup: {
-    importStatement: "import { ContextMenuComponent } from '@ui-suite/components';",
+    importStatement: "import { ContextMenuComponent } from '@mfontecchio/components';",
     usageSnippet: `<fui-context-menu [items]="menuItems()" (itemClick)="handleClick($event)">
   <div class="context-area">Right-click anywhere in this area</div>
 </fui-context-menu>`,
     usageTypescript: `import { signal } from '@angular/core';
-import { ContextMenuItem } from '@ui-suite/components';
+import { ContextMenuItem } from '@mfontecchio/components';
 
 export class MyComponent {
   protected readonly menuItems = signal<ContextMenuItem[]>([
@@ -5906,7 +5906,7 @@ export class MyComponent {
 }`,
     additionalImports: ['ContextMenuItem'],
     setupNotes:
-      'Import signal from @angular/core and ContextMenuItem from @ui-suite/components. Add ContextMenuComponent to the imports array of your standalone component.',
+      'Import signal from @angular/core and ContextMenuItem from @mfontecchio/components. Add ContextMenuComponent to the imports array of your standalone component.',
   },
   runtime: {
     supportsSSR: true,
@@ -6094,7 +6094,7 @@ const NAVBAR_METADATA: ComponentMetadata = {
   description: 'A navigation bar component for app-wide navigation with logo and links.',
   selector: 'fui-navbar',
   setup: {
-    importStatement: "import { NavbarComponent } from '@ui-suite/components';",
+    importStatement: "import { NavbarComponent } from '@mfontecchio/components';",
     usageSnippet: `<fui-navbar brand="My App" [links]="navLinks">
   <span brand>My App</span>
   <div actions>
@@ -6236,7 +6236,7 @@ const STEPPER_METADATA: ComponentMetadata = {
   description: 'A component for multi-step processes with progress indication and step navigation.',
   selector: 'fui-stepper',
   setup: {
-    importStatement: "import { StepperComponent } from '@ui-suite/components';",
+    importStatement: "import { StepperComponent } from '@mfontecchio/components';",
     usageSnippet: `<fui-stepper
   [steps]="steps"
   [activeStep]="activeStep()"

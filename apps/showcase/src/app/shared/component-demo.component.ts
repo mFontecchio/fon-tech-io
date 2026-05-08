@@ -5,7 +5,7 @@
 
 import { ChangeDetectionStrategy, Component, input, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ToastService } from '@ui-suite/components';
+import { ToastService } from '@mfontecchio/components';
 import {
   ButtonComponent,
   InputComponent,
@@ -49,7 +49,7 @@ import {
   DividerComponent,
   StackComponent,
   GridComponent,
-} from '@ui-suite/components';
+} from '@mfontecchio/components';
 
 @Component({
   selector: 'app-component-demo',

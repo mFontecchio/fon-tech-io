@@ -70,25 +70,25 @@ jobs:
             mv "$DIST/package.json.tmp" "$DIST/package.json"
           done
 
-      - name: Publish @ui-suite/theming
+      - name: Publish @mfontecchio/theming
         run: npm publish --provenance --access public
         working-directory: dist/libs/theming
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Publish @ui-suite/shared
+      - name: Publish @mfontecchio/shared
         run: npm publish --provenance --access public
         working-directory: dist/libs/shared
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Publish @ui-suite/components
+      - name: Publish @mfontecchio/components
         run: npm publish --provenance --access public
         working-directory: dist/libs/components
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Publish @ui-suite/theme-builder
+      - name: Publish @mfontecchio/theme-builder
         run: npm publish --provenance --access public
         working-directory: dist/libs/theme-builder
         env:

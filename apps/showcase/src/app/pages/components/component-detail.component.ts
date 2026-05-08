@@ -18,8 +18,8 @@ import {
   TabComponent,
   AlertComponent,
   CodeBlockComponent,
-} from '@ui-suite/components';
-import { PropTableComponent } from '../../shared/prop-table.component';
+} from '@mfontecchio/components';
+import { PropTableComponent }from '../../shared/prop-table.component';
 import { ComponentDemoComponent } from '../../shared/component-demo.component';
 import { ResponsivePreviewComponent } from '../../shared/responsive-preview.component';
 import { PassthroughTableComponent } from '../../shared/passthrough-table.component';
@@ -822,7 +822,7 @@ export class ComponentDetailComponent implements OnInit {
       lines.push(
         `// Additional types`,
         ...setup.additionalImports.map(
-          (imp) => `import { ${imp} } from '@ui-suite/components';`
+          (imp) => `import { ${imp} } from '@mfontecchio/components';`
         )
       );
     }

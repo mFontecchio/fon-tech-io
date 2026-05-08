@@ -25,8 +25,8 @@ import {
   BadgeComponent,
   ModalComponent,
   SkeletonComponent,
-} from '@ui-suite/components';
-import { ThemeService, Theme, ThemeFamily, ThemeGeneratorService } from '@ui-suite/theming';
+} from '@mfontecchio/components';
+import { ThemeService, Theme, ThemeFamily, ThemeGeneratorService } from '@mfontecchio/theming';
 import { THEME_PRESETS, ThemePreset } from './theme-presets';
 import { convertPresetToThemeFamily } from './preset-converter';
 import {
@@ -2731,7 +2731,7 @@ export class ThemeBuilderComponent {
 
   protected exportAsTypeScript(): void {
     const themeFamily = JSON.stringify(this.buildEditableThemeFamily(), null, 2);
-    let ts = "import type { ThemeFamily } from '@ui-suite/theming';\n\n";
+    let ts = "import type { ThemeFamily } from '@mfontecchio/theming';\n\n";
     ts += `export const customThemeFamily: ThemeFamily = ${themeFamily};\n`;
 
     this.downloadFile('theme.ts', ts, 'text/typescript');

@@ -1,5 +1,5 @@
 {
-  "name": "@ui-suite/theme-builder",
+  "name": "@mfontecchio/theme-builder",
   "version": "1.0.0",
   "description": "Interactive theme builder UI and utilities for ui-component-suite — visual theme creation with real-time preview",
   "keywords": [
@@ -26,9 +26,9 @@
     "@angular/common": ">=20.0.0",
     "@angular/forms": ">=20.0.0",
     "@angular/router": ">=20.0.0",
-    "@ui-suite/theming": ">=0.1.0",
-    "@ui-suite/shared": ">=0.1.0",
-    "@ui-suite/components": ">=0.1.0"
+    "@mfontecchio/theming": ">=0.1.0",
+    "@mfontecchio/shared": ">=0.1.0",
+    "@mfontecchio/components": ">=0.1.0"
   },
   "publishConfig": {
     "access": "public",

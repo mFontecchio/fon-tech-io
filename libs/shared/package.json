@@ -1,5 +1,5 @@
 {
-  "name": "@ui-suite/shared",
+  "name": "@mfontecchio/shared",
   "version": "1.0.0",
   "description": "Shared utilities and types for ui-component-suite — color utils, typography helpers, and common types",
   "keywords": [

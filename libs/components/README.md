@@ -16,7 +16,7 @@ This library provides production-ready UI components following modern Angular be
 ## Installation
 
 ```bash
-npm install @ui-suite/components
+npm install @mfontecchio/components
 ```
 
 ## Component Categories
@@ -83,7 +83,7 @@ Components are standalone and can be imported directly:
 
 ```typescript
 import { Component, signal } from '@angular/core';
-import { ButtonComponent, RadioComponent } from '@ui-suite/components';
+import { ButtonComponent, RadioComponent } from '@mfontecchio/components';
 
 @Component({
   selector: 'app-example',
@@ -105,7 +105,7 @@ export class ExampleComponent {
 
 ### Setup Theming
 
-Components consume CSS custom properties from `@ui-suite/theming`. Use the showcase theming guide as the source of truth for applying a theme family and generated tokens in Angular applications.
+Components consume CSS custom properties from `@mfontecchio/theming`. Use the showcase theming guide as the source of truth for applying a theme family and generated tokens in Angular applications.
 
 ```bash
 nx serve showcase
@@ -232,6 +232,6 @@ MIT License - see LICENSE file for details
 
 ## Related Libraries
 
-- `@ui-suite/theming` - Design system and theming
-- `@ui-suite/theme-builder` - Interactive theme builder
-- `@ui-suite/shared` - Shared utilities and services
+- `@mfontecchio/theming` - Design system and theming
+- `@mfontecchio/theme-builder` - Interactive theme builder
+- `@mfontecchio/shared` - Shared utilities and services
