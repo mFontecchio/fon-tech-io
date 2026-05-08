@@ -1,5 +1,5 @@
 {
-  "name": "@ui-suite/theming",
+  "name": "@mfontecchio/theming",
   "version": "1.0.0",
   "description": "Design system engine for ui-component-suite — three-tier token system, ThemeService, and CSS generation",
   "keywords": [

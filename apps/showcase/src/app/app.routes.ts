@@ -15,7 +15,7 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'theme-builder',
-    loadComponent: () => import('@ui-suite/theme-builder').then(m => m.ThemeBuilderComponent),
+    loadComponent: () => import('@mfontecchio/theme-builder').then(m => m.ThemeBuilderComponent),
   },
   {
     path: 'getting-started',

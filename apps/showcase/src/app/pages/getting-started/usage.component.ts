@@ -4,7 +4,7 @@
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CardComponent, CodeBlockComponent } from '@ui-suite/components';
+import { CardComponent, CodeBlockComponent } from '@mfontecchio/components';
 
 @Component({
   selector: 'app-usage',
@@ -97,7 +97,7 @@ import { CardComponent, CodeBlockComponent } from '@ui-suite/components';
 })
 export class UsageComponent {
   protected readonly standaloneExample = `import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
-import { ButtonComponent, InputComponent } from '@ui-suite/components';
+import { ButtonComponent, InputComponent } from '@mfontecchio/components';
 
 @Component({
   selector: 'app-account-form',

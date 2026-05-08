@@ -3,7 +3,7 @@
  * Converts preset families to engine-native theme families
  */
 
-import { darkTheme, lightTheme, Theme, ThemeFamily } from '@ui-suite/theming';
+import { darkTheme, lightTheme, Theme, ThemeFamily } from '@mfontecchio/theming';
 import { ThemePreset, ThemePresetTokens } from './theme-presets';
 
 const PRESET_THEME_VERSION = '1.0.0';

@@ -6,7 +6,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { CardComponent } from '@ui-suite/components';
+import { CardComponent } from '@mfontecchio/components';
 
 interface ComponentCategory {
   name: string;

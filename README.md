@@ -19,10 +19,10 @@ This is an Nx monorepo with the following structure:
 ```
 ui-component-suite/
 ├── libs/
-│   ├── components/          # Core component library (@ui-suite/components)
-│   ├── theming/            # Design system & theme engine (@ui-suite/theming)
-│   ├── theme-builder/      # Theme builder UI components (@ui-suite/theme-builder)
-│   └── shared/             # Shared utilities & types (@ui-suite/shared)
+│   ├── components/          # Core component library (@mfontecchio/components)
+│   ├── theming/            # Design system & theme engine (@mfontecchio/theming)
+│   ├── theme-builder/      # Theme builder UI components (@mfontecchio/theme-builder)
+│   └── shared/             # Shared utilities & types (@mfontecchio/shared)
 ├── apps/
 │   ├── showcase/           # Documentation & demo site
 │   └── theme-builder-app/  # Standalone theme builder application

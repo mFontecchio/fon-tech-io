@@ -1,11 +1,11 @@
-# @ui-suite/theming
+# @mfontecchio/theming
 
 Design token system and theme engine for the UI Component Suite. Implements a three-tier token hierarchy (Primitive → Semantic → Component) with full light, dark, and high-contrast theme support.
 
 ## Installation
 
 ```bash
-pnpm add @ui-suite/theming
+pnpm add @mfontecchio/theming
 ```
 
 ## Three-Tier Token System
@@ -72,7 +72,7 @@ var(--animation-easing-spring)    /* cubic-bezier spring */
 The `ThemeService` uses Angular signals for reactive theme state and is SSR-compatible.
 
 ```typescript
-import { ThemeService } from '@ui-suite/theming';
+import { ThemeService } from '@mfontecchio/theming';
 
 @Component({ ... })
 export class MyComponent {
@@ -94,7 +94,7 @@ export class MyComponent {
 Converts theme token objects to CSS custom properties.
 
 ```typescript
-import { CssGeneratorService } from '@ui-suite/theming';
+import { CssGeneratorService } from '@mfontecchio/theming';
 
 const cssGen = inject(CssGeneratorService);
 
@@ -114,7 +114,7 @@ cssGen.applyThemeToElement(theme, elementRef.nativeElement);
 Auto-generates hover states, contrast text colors, and full themes from a single brand color.
 
 ```typescript
-import { ThemeGeneratorService } from '@ui-suite/theming';
+import { ThemeGeneratorService } from '@mfontecchio/theming';
 
 const themeGen = inject(ThemeGeneratorService);
 
@@ -135,7 +135,7 @@ const palette = themeGen.generatePalette('#3b82f6');
 ## Creating a Custom Theme
 
 ```typescript
-import { Theme } from '@ui-suite/theming';
+import { Theme } from '@mfontecchio/theming';
 
 const myTheme: Theme = {
   metadata: {

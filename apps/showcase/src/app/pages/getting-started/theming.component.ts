@@ -7,7 +7,7 @@
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CardComponent, CodeBlockComponent } from '@ui-suite/components';
+import { CardComponent, CodeBlockComponent } from '@mfontecchio/components';
 
 @Component({
   selector: 'app-theming-guide',
@@ -421,7 +421,7 @@ export class ThemingComponent {
 --component-button-border-radius:     var(--primitive-border-radius-md);
 --component-input-padding-x:          var(--primitive-spacing-3);`;
 
-  protected readonly themeFamilyStructure = `import { ThemeFamily } from '@ui-suite/theming';
+  protected readonly themeFamilyStructure = `import { ThemeFamily } from '@mfontecchio/theming';
 
 // A ThemeFamily bundles light and dark variants under shared metadata.
 const family: ThemeFamily = {
@@ -436,7 +436,7 @@ const family: ThemeFamily = {
 };`;
 
   protected readonly serviceBasicsExample = `import { Component, effect, inject } from '@angular/core';
-import { ThemeService } from '@ui-suite/theming';
+import { ThemeService } from '@mfontecchio/theming';
 
 @Component({
   selector: 'app-shell',
@@ -476,7 +476,7 @@ export class ShellComponent {
   // ── Creating a Theme ───────────────────────────────────────────────────────
 
   protected readonly programmaticThemeExample = `import { Component, inject } from '@angular/core';
-import { ThemeService, Theme, lightTheme } from '@ui-suite/theming';
+import { ThemeService, Theme, lightTheme } from '@mfontecchio/theming';
 
 // Start from a base theme and override only what changes.
 const corporateTheme: Theme = {
@@ -515,7 +515,7 @@ export class AppComponent {
 }`;
 
   protected readonly themeFamilyExample = `import { Component, inject } from '@angular/core';
-import { ThemeService, ThemeFamily, lightTheme, darkTheme } from '@ui-suite/theming';
+import { ThemeService, ThemeFamily, lightTheme, darkTheme } from '@mfontecchio/theming';
 
 const brandFamily: ThemeFamily = {
   metadata: {
@@ -546,11 +546,11 @@ export class AppComponent {
 }`;
 
   protected readonly presetThemeExample = `import { Component, inject } from '@angular/core';
-import { ThemeService } from '@ui-suite/theming';
+import { ThemeService } from '@mfontecchio/theming';
 import {
   THEME_PRESETS,
   convertPresetToThemeFamily,
-} from '@ui-suite/theme-builder';
+} from '@mfontecchio/theme-builder';
 
 @Component({ /* ... */ })
 export class AppComponent {
@@ -574,11 +574,11 @@ pnpm start:theme-builder
 # Open http://localhost:4200 in a browser`;
 
   protected readonly importJsonThemeExample = `import { Component, inject } from '@angular/core';
-import { ThemeService } from '@ui-suite/theming';
+import { ThemeService } from '@mfontecchio/theming';
 import {
   convertPresetToThemeFamily,
   normalizeImportedThemeData,
-} from '@ui-suite/theme-builder';
+} from '@mfontecchio/theme-builder';
 
 // Option A: import the exported JSON bundle directly (TypeScript resolveJsonModule).
 import exportedBundle from './my-brand-theme.json';
@@ -618,7 +618,7 @@ export class AppComponent {
   getSavedThemes,
   deleteTheme,
   ThemeFamilyTokenBundle,
-} from '@ui-suite/theme-builder';
+} from '@mfontecchio/theme-builder';
 
 // Persist a theme bundle to localStorage.
 saveTheme('My Brand', bundle);

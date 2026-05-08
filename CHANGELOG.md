@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Renamed all published package scopes from `@ui-suite/*` to `@mfontecchio/*` to align with the npm organization. Affected packages: `@mfontecchio/theming`, `@mfontecchio/shared`, `@mfontecchio/components`, `@mfontecchio/theme-builder`. All internal imports, peer dependencies, tsconfig path aliases, and documentation updated accordingly.
+
 ### Added
 
 - **Brand color theme generator**: Added a "Brand" button to the theme builder toolbar that opens a panel for generating a complete light and dark theme family from a single hex brand color. The generator automatically produces a full 11-shade palette, adjusts semantic hover and active states, and selects contrast-optimized text colors meeting WCAG AA minimum requirements. After generation the accessibility checker opens automatically to display contrast compliance.
@@ -60,7 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2026-05-04
 
 ### Changed
-- **Component selector prefix renamed**: All 43 component selectors, CSS class names, internal CSS custom properties, and template usages have been renamed from the `ui-` prefix to `fui-`. For example, `<ui-button>` is now `<fui-button>`, `.ui-button` is now `.fui-button`, and `--ui-menu-top` is now `--fui-menu-top`. The design token prefix `--ui-suite` and package names `@ui-suite/*` are unchanged.
+- **Component selector prefix renamed**: All 43 component selectors, CSS class names, internal CSS custom properties, and template usages have been renamed from the `ui-` prefix to `fui-`. For example, `<ui-button>` is now `<fui-button>`, `.ui-button` is now `.fui-button`, and `--ui-menu-top` is now `--fui-menu-top`. The design token prefix `--ui-suite` and package names `@mfontecchio/*` are unchanged.
 
 ### Fixed
 - **Strict CSP compliance for `CssGeneratorService`**: Replaced 100+ `element.style.setProperty()` CSSOM calls with a single `<style id="ui-suite-theme">` element injected into `document.head`. The element is reused on subsequent theme changes to avoid DOM churn. Supports Angular's `CSP_NONCE` token — when provided, the nonce is set on the style element so it passes a `style-src 'nonce-...'` policy. Uses `inject(DOCUMENT)` for SSR-compatible DOM access.
@@ -77,7 +81,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - **GitHub Pages deployment workflow**: Added `.github/workflows/deploy-showcase.yml` to build the showcase with a repo-scoped base href (`/ui-component-suite/`) and deploy to GitHub Pages on every push to `main`, using OIDC-based Pages token and a `404.html` redirect for SPA deep-link routing.
 - **CI workflow**: Added `.github/workflows/build-and-test.yml` to lint, build all libraries and the showcase application, and run tests on every push and pull request targeting `main`.
-- **npm publish workflow**: Added `.github/workflows/publish-packages.yml` triggered by GitHub Release tags to build all libraries in dependency order, inject the release version into each package manifest, and publish `@ui-suite/theming`, `@ui-suite/shared`, `@ui-suite/components`, and `@ui-suite/theme-builder` to npmjs.org with OIDC provenance.
+- **npm publish workflow**: Added `.github/workflows/publish-packages.yml` triggered by GitHub Release tags to build all libraries in dependency order, inject the release version into each package manifest, and publish `@mfontecchio/theming`, `@mfontecchio/shared`, `@mfontecchio/components`, and `@mfontecchio/theme-builder` to npmjs.org with OIDC provenance.
 - **Library package manifests**: Added `package.json` to each publishable library (`theming`, `shared`, `components`, `theme-builder`) with package name, description, ESM entry points, peer dependencies, and `publishConfig` for public npm access.
 - **GitHub Pages build configuration**: Added `github-pages` build configuration to `apps/showcase/project.json` with `baseHref: /ui-component-suite/` to correctly resolve static assets at the repository sub-path.
 
@@ -87,7 +91,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - **Theme Family Model**: Moved theming engine, showcase, and theme builder to family-aware light/dark selection
-  - Added first-class `ThemeFamily` support above leaf `Theme` objects in `@ui-suite/theming`
+  - Added first-class `ThemeFamily` support above leaf `Theme` objects in `@mfontecchio/theming`
   - ThemeService now persists selected family and mode separately and switches light/dark within active family
   - Showcase theme switcher now selects families independently from mode, with high-contrast preserved as a special mode
   - Theme builder presets, saved themes, and import/export now use explicit light and dark variants instead of flat token maps
@@ -249,7 +253,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Core configuration files (nx.json, tsconfig.base.json, .eslintrc.json)
 - Package manager configured for pnpm
 - Artifactory registry configuration for private packages
-- Four library projects: @ui-suite/components, @ui-suite/theming, @ui-suite/theme-builder, @ui-suite/shared
+- Four library projects: @mfontecchio/components, @mfontecchio/theming, @mfontecchio/theme-builder, @mfontecchio/shared
 - Two application projects: showcase (documentation site) and theme-builder-app (standalone theme builder)
 - Complete Nx monorepo structure with proper module boundaries
 - Three-tier design token system (primitive, semantic, component tokens)
@@ -321,14 +325,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- **Animation token system** in `@ui-suite/theming`: New `PrimitiveAnimation` interface with duration tokens (`fast: 150ms`, `normal: 250ms`, `slow: 350ms`) and easing tokens (`default: ease-in-out`, `spring: cubic-bezier(0.34, 1.56, 0.64, 1)`) in `libs/theming/src/lib/tokens/primitive-tokens.ts`
+- **Animation token system** in `@mfontecchio/theming`: New `PrimitiveAnimation` interface with duration tokens (`fast: 150ms`, `normal: 250ms`, `slow: 350ms`) and easing tokens (`default: ease-in-out`, `spring: cubic-bezier(0.34, 1.56, 0.64, 1)`) in `libs/theming/src/lib/tokens/primitive-tokens.ts`
 - Semantic animation tokens mapped from primitive animation tokens in `libs/theming/src/lib/tokens/semantic-tokens.ts`
 - All three default themes (light, dark, high-contrast) updated with animation token values in `libs/theming/src/lib/themes/default-themes.ts`
 - `CssGeneratorService` updated to flatten and emit animation CSS custom properties (e.g., `--animation-duration-normal`, `--animation-easing-default`)
 - Context menu component: ArrowUp/ArrowDown item traversal and ArrowRight/ArrowLeft submenu open/close per WAI-ARIA Menu pattern
 - Context menu component: Proper `ngOnDestroy` lifecycle cleanup for Renderer2 listeners
 - Stepper component: ArrowLeft/Right (horizontal orientation), ArrowUp/Down (vertical orientation), Home/End keyboard navigation
-- Theme builder library (`@ui-suite/theme-builder`): Real 2,900-line theme builder implementation moved from showcase app into reusable library; exports `ThemeBuilderComponent`, `ThemePreset`, `THEME_PRESETS`, `convertPresetToTheme`, and theme utilities
+- Theme builder library (`@mfontecchio/theme-builder`): Real 2,900-line theme builder implementation moved from showcase app into reusable library; exports `ThemeBuilderComponent`, `ThemePreset`, `THEME_PRESETS`, `convertPresetToTheme`, and theme utilities
 
 ### Changed
 
@@ -339,9 +343,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - All 38 component CSS files: Replaced hardcoded `0.2s ease-in-out` and `0.3s cubic-bezier(...)` values with animation token CSS variables (`var(--animation-duration-normal)`, `var(--animation-easing-default)`, etc.)
 - Removed unnecessary `CommonModule` imports from components that exclusively use Angular 20 built-in control flow (`@if`, `@for`, `@switch`)
 - Table component CSS: Added `scrollbar-width: thin` and `scrollbar-color` Firefox scrollbar fallback alongside WebKit `::-webkit-scrollbar` rules
-- Theme builder utilities (`libs/theme-builder/src/lib/theme-utils.ts`): Eliminated duplicate `getLuminance`, `hexToRgb`, `rgbToHex`, `lightenColor`, `darkenColor`, `getContrastRatio` implementations; now re-exports from `@ui-suite/shared`
+- Theme builder utilities (`libs/theme-builder/src/lib/theme-utils.ts`): Eliminated duplicate `getLuminance`, `hexToRgb`, `rgbToHex`, `lightenColor`, `darkenColor`, `getContrastRatio` implementations; now re-exports from `@mfontecchio/shared`
 - `ThemeBuilderComponent`: Added `ChangeDetectionStrategy.OnPush`, removed unused `CommonModule` and `FormsModule` imports
-- Showcase app route for theme-builder updated to import from `@ui-suite/theme-builder` library instead of local page file
+- Showcase app route for theme-builder updated to import from `@mfontecchio/theme-builder` library instead of local page file
 
 ### Fixed
 

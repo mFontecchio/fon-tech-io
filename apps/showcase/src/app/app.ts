@@ -7,8 +7,8 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './layout/header.component';
 import { SidebarComponent } from './layout/sidebar.component';
-import { ToastContainerComponent } from '@ui-suite/components';
-import { ThemeService } from '@ui-suite/theming';
+import { ToastContainerComponent } from '@mfontecchio/components';
+import { ThemeService } from '@mfontecchio/theming';
 
 @Component({
   imports: [RouterOutlet, HeaderComponent, SidebarComponent, ToastContainerComponent],

@@ -4,7 +4,7 @@
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CardComponent, CodeBlockComponent } from '@ui-suite/components';
+import { CardComponent, CodeBlockComponent } from '@mfontecchio/components';
 
 @Component({
   selector: 'app-installation',
@@ -117,7 +117,7 @@ export class InstallationComponent {
 pnpm start
 pnpm start:theme-builder`;
 
-  protected readonly consumerInstall = `pnpm add @ui-suite/components @ui-suite/theming @ui-suite/shared`;
+  protected readonly consumerInstall = `pnpm add @mfontecchio/components @mfontecchio/theming @mfontecchio/shared`;
 
   protected readonly nextSteps = `// 1. Open the showcase at http://localhost:4200
 // 2. Browse the Usage guide for standalone imports

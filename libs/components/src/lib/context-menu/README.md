@@ -23,7 +23,7 @@ A context menu component that appears on right-click (contextmenu event). Suppor
 
 ```typescript
 import { Component, signal } from '@angular/core';
-import { ContextMenuComponent, ContextMenuItem } from '@ui-suite/components';
+import { ContextMenuComponent, ContextMenuItem } from '@mfontecchio/components';
 
 @Component({
   selector: 'app-example',

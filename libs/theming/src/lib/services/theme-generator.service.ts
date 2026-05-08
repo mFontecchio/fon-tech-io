@@ -12,7 +12,7 @@ import {
   generateColorPalette,
   parseHex,
   rgbToHex,
-} from '@ui-suite/shared';
+} from '@mfontecchio/shared';
 import { Theme, ThemeMode } from '../tokens/theme.interface';
 import { PrimitiveTokens } from '../tokens/primitive-tokens';
 import { SemanticTokens } from '../tokens/semantic-tokens';

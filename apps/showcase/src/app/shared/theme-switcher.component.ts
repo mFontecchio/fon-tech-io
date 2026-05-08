@@ -5,7 +5,7 @@
 
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ThemeService } from '@ui-suite/theming';
+import { ThemeService } from '@mfontecchio/theming';
 
 interface ThemeFamilyOption {
   id: string;
