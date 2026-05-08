@@ -26,7 +26,7 @@ import {
   ModalComponent,
   SkeletonComponent,
 } from '@ui-suite/components';
-import { ThemeService, Theme, ThemeFamily } from '@ui-suite/theming';
+import { ThemeService, Theme, ThemeFamily, ThemeGeneratorService } from '@ui-suite/theming';
 import { THEME_PRESETS, ThemePreset } from './theme-presets';
 import { convertPresetToThemeFamily } from './preset-converter';
 import {
@@ -211,6 +211,21 @@ interface EditableThemeFamilyMetadata {
                   />
                 </svg>
                 Colors
+              </fui-button>
+              <fui-button variant="outlined" size="sm" (clicked)="toggleBrandColorGenerator()">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z" />
+                </svg>
+                Brand
               </fui-button>
             </div>
           </div>
@@ -467,6 +482,31 @@ interface EditableThemeFamilyMetadata {
                                 </div>
                               </div>
                             </div>
+                            @if (getInlineContrastChecks(token.name).length > 0) {
+                              <div class="inline-contrast-checks">
+                                @for (check of getInlineContrastChecks(token.name); track check.pairLabel) {
+                                  <div class="inline-contrast-check">
+                                    <span class="inline-contrast-label">{{ check.pairLabel }}</span>
+                                    <div class="inline-contrast-badges">
+                                      <span
+                                        class="inline-contrast-badge"
+                                        [class.inline-contrast-badge--aaa]="check.lightLevel === 'AAA'"
+                                        [class.inline-contrast-badge--aa]="check.lightLevel === 'AA'"
+                                        [class.inline-contrast-badge--fail]="check.lightLevel === 'Fail'"
+                                        [title]="'Light: ' + check.lightRatio.toFixed(2) + ':1'"
+                                      >☀ {{ check.lightLevel }}</span>
+                                      <span
+                                        class="inline-contrast-badge"
+                                        [class.inline-contrast-badge--aaa]="check.darkLevel === 'AAA'"
+                                        [class.inline-contrast-badge--aa]="check.darkLevel === 'AA'"
+                                        [class.inline-contrast-badge--fail]="check.darkLevel === 'Fail'"
+                                        [title]="'Dark: ' + check.darkRatio.toFixed(2) + ':1'"
+                                      >☾ {{ check.darkLevel }}</span>
+                                    </div>
+                                  </div>
+                                }
+                              </div>
+                            }
                           </div>
                         }
                       </div>
@@ -858,6 +898,115 @@ interface EditableThemeFamilyMetadata {
                 <p class="hint">Click any color to copy to clipboard</p>
               </div>
             }
+          </fui-card>
+        </div>
+      }
+
+      <!-- Brand Color Theme Generator Panel -->
+      @if (showBrandColorGenerator()) {
+        <div class="utility-panel">
+          <fui-card>
+            <div class="panel-header">
+              <h2>Generate Theme from Brand Color</h2>
+              <fui-button
+                variant="text"
+                size="sm"
+                (clicked)="toggleBrandColorGenerator()"
+                [ariaLabel]="'Close brand color generator'"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </fui-button>
+            </div>
+            <p class="panel-description">
+              Generate a complete light and dark theme from a single brand color. Text colors and
+              hover states are automatically adjusted to meet contrast requirements.
+            </p>
+
+            <div class="brand-generator-controls">
+              <div class="color-input-group">
+                <fui-input
+                  [value]="brandGeneratorColor()"
+                  (valueChange)="brandGeneratorColor.set($event)"
+                  label="Brand Color"
+                  placeholder="#3b82f6"
+                />
+                <div class="color-picker-wrapper">
+                  <label class="color-picker-label" for="brand-color-picker">Pick Color</label>
+                  <input
+                    type="color"
+                    id="brand-color-picker"
+                    class="color-picker-input"
+                    [value]="brandGeneratorColor() || '#3b82f6'"
+                    (input)="brandGeneratorColor.set($any($event.target).value)"
+                  />
+                </div>
+              </div>
+
+              <div class="brand-color-preview">
+                <div
+                  class="brand-color-swatch"
+                  [style.background-color]="brandGeneratorColor()"
+                ></div>
+                <div
+                  class="brand-color-swatch brand-color-swatch--text"
+                  [style.background-color]="brandGeneratorColor()"
+                >
+                  <span>Aa</span>
+                </div>
+              </div>
+
+              <fui-input
+                [value]="brandGeneratorThemeName()"
+                (valueChange)="brandGeneratorThemeName.set($event)"
+                label="Theme Name"
+                placeholder="My Brand Theme"
+              />
+
+              @if (brandGeneratorError()) {
+                <fui-alert variant="error">{{ brandGeneratorError() }}</fui-alert>
+              }
+
+              <fui-button
+                variant="filled"
+                [fullWidth]="true"
+                (clicked)="generateThemeFromBrandColor()"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="icon-inline icon-inline--middle"
+                >
+                  <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z" />
+                </svg>
+                Generate Theme
+              </fui-button>
+            </div>
+
+            <div class="wcag-info">
+              <h4>What gets generated:</h4>
+              <ul>
+                <li>Complete light and dark color palettes from your brand color</li>
+                <li>Automatic hover and active states</li>
+                <li>Contrast-optimized text colors (WCAG AA minimum)</li>
+                <li>All semantic and component tokens are preserved from the current theme</li>
+              </ul>
+            </div>
           </fui-card>
         </div>
       }
@@ -1712,6 +1861,89 @@ interface EditableThemeFamilyMetadata {
         justify-content: flex-end;
       }
 
+      /* Inline contrast badges */
+      .inline-contrast-checks {
+        display: flex;
+        flex-direction: column;
+        gap: var(--primitive-spacing-1);
+        margin-top: var(--primitive-spacing-2);
+      }
+
+      .inline-contrast-check {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--primitive-spacing-2);
+      }
+
+      .inline-contrast-label {
+        font-size: 0.6875rem;
+        color: var(--semantic-text-tertiary);
+        flex: 1;
+        line-height: 1.2;
+      }
+
+      .inline-contrast-badges {
+        display: flex;
+        gap: var(--primitive-spacing-1);
+        flex-shrink: 0;
+      }
+
+      .inline-contrast-badge {
+        font-size: 0.625rem;
+        font-weight: 600;
+        padding: 0.125rem 0.375rem;
+        border-radius: var(--primitive-border-radius-sm);
+        cursor: default;
+        white-space: nowrap;
+      }
+
+      .inline-contrast-badge--aaa {
+        background-color: #dcfce7;
+        color: #166534;
+      }
+
+      .inline-contrast-badge--aa {
+        background-color: #fef9c3;
+        color: #854d0e;
+      }
+
+      .inline-contrast-badge--fail {
+        background-color: #fee2e2;
+        color: #991b1b;
+      }
+
+      /* Brand color generator panel controls */
+      .brand-generator-controls {
+        display: flex;
+        flex-direction: column;
+        gap: var(--primitive-spacing-4);
+      }
+
+      .brand-color-preview {
+        display: flex;
+        gap: var(--primitive-spacing-3);
+        align-items: center;
+      }
+
+      .brand-color-swatch {
+        width: 3rem;
+        height: 3rem;
+        border-radius: var(--primitive-border-radius-md);
+        border: 1px solid var(--semantic-border-default);
+        flex-shrink: 0;
+      }
+
+      .brand-color-swatch--text {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        font-weight: 700;
+        color: #ffffff;
+        mix-blend-mode: difference;
+      }
+
       @media (max-width: 1200px) {
         .theme-builder-layout {
           grid-template-columns: 1fr;
@@ -1805,6 +2037,7 @@ interface EditableThemeFamilyMetadata {
 export class ThemeBuilderComponent {
   // Services
   private readonly themeService = inject(ThemeService);
+  private readonly themeGenerator = inject(ThemeGeneratorService);
 
   // Loading state for skeleton loaders
   protected readonly isInitializing = signal(true);
@@ -1813,6 +2046,7 @@ export class ThemeBuilderComponent {
   protected readonly showSaveModal = signal(false);
   protected readonly showAccessibilityChecker = signal(false);
   protected readonly showColorGenerator = signal(false);
+  protected readonly showBrandColorGenerator = signal(false);
   protected readonly saveThemeName = signal('');
   protected readonly themePresets = THEME_PRESETS;
   protected readonly savedThemes = signal<SavedThemeRecord[]>([]);
@@ -1823,6 +2057,11 @@ export class ThemeBuilderComponent {
     author: 'UI Suite',
     version: '1.0.0',
   });
+
+  // Brand Color Generator
+  protected readonly brandGeneratorColor = signal('#3b82f6');
+  protected readonly brandGeneratorThemeName = signal('My Brand Theme');
+  protected readonly brandGeneratorError = signal('');
 
   protected onPresetChange(event: Event): void {
     const select = event.target as HTMLSelectElement;
@@ -1854,6 +2093,109 @@ export class ThemeBuilderComponent {
   // Color Generator
   protected readonly generatedColors = signal<string[]>([]);
   protected baseColorForGeneration = '#3b82f6';
+
+  // Tracks dark-token mutations so the contrast map reacts to dark edits
+  private readonly darkTokenVersion = signal(0);
+
+  /**
+   * Defines the foreground/background token pairs to check for WCAG contrast.
+   * Each entry represents a meaningful color relationship in the design system.
+   */
+  private readonly CONTRAST_PAIRS: Array<{
+    foreground: string;
+    background: string;
+    label: string;
+  }> = [
+    {
+      foreground: '--semantic-text-primary',
+      background: '--semantic-surface-background',
+      label: 'Primary text / Background',
+    },
+    {
+      foreground: '--semantic-text-primary',
+      background: '--semantic-surface-card',
+      label: 'Primary text / Card',
+    },
+    {
+      foreground: '--semantic-text-secondary',
+      background: '--semantic-surface-background',
+      label: 'Secondary text / Background',
+    },
+    {
+      foreground: '--semantic-brand-primary',
+      background: '--semantic-surface-background',
+      label: 'Brand / Background',
+    },
+    {
+      foreground: '--semantic-text-inverse',
+      background: '--semantic-brand-primary',
+      label: 'Inverse text / Brand',
+    },
+  ];
+
+  /**
+   * Maps each token name to its relevant contrast check results for both
+   * light and dark modes. Reacts to color category changes and dark-token edits.
+   */
+  protected readonly inlineContrastMap = computed(() => {
+    this.colorCategories(); // reactive dependency for light values
+    this.darkTokenVersion(); // reactive dependency for dark values
+
+    const getLightValue = (tokenName: string): string => {
+      const cats = this.colorCategories();
+      for (const cat of cats) {
+        const tok = cat.tokens.find((t) => t.name === tokenName);
+        if (tok) return tok.value;
+      }
+      return '';
+    };
+
+    const getDarkValue = (tokenName: string): string => {
+      const stored = document.documentElement.style.getPropertyValue(`${tokenName}-dark`).trim();
+      return stored || getLightValue(tokenName);
+    };
+
+    const map = new Map<string, Array<{
+      pairLabel: string;
+      lightRatio: number;
+      lightLevel: string;
+      darkRatio: number;
+      darkLevel: string;
+    }>>();
+
+    for (const pair of this.CONTRAST_PAIRS) {
+      const lightFg = getLightValue(pair.foreground);
+      const lightBg = getLightValue(pair.background);
+      const darkFg = getDarkValue(pair.foreground);
+      const darkBg = getDarkValue(pair.background);
+
+      const isValidHex = (v: string) => /^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/.test(v);
+
+      if (!isValidHex(lightFg) || !isValidHex(lightBg) || !isValidHex(darkFg) || !isValidHex(darkBg)) {
+        continue;
+      }
+
+      const lightRatio = getContrastRatio(lightFg, lightBg);
+      const darkRatio = getContrastRatio(darkFg, darkBg);
+
+      const entry = {
+        pairLabel: pair.label,
+        lightRatio,
+        lightLevel: getWCAGLevel(lightRatio, 'normal'),
+        darkRatio,
+        darkLevel: getWCAGLevel(darkRatio, 'normal'),
+      };
+
+      // Both the foreground and background tokens receive the badge
+      for (const tokenName of [pair.foreground, pair.background]) {
+        const existing = map.get(tokenName) ?? [];
+        existing.push(entry);
+        map.set(tokenName, existing);
+      }
+    }
+
+    return map;
+  });
 
   // Theme tokens organized by category
   protected readonly colorCategories = signal<ThemeCategory[]>([
@@ -2805,6 +3147,7 @@ export class ThemeBuilderComponent {
     this.showAccessibilityChecker.update((v) => !v);
     if (this.showAccessibilityChecker()) {
       this.showColorGenerator.set(false);
+      this.showBrandColorGenerator.set(false);
       this.updateAccessibilityChecks();
     }
   }
@@ -2916,6 +3259,9 @@ export class ThemeBuilderComponent {
     // Apply to document root
     document.documentElement.style.setProperty(darkTokenName, value);
 
+    // Invalidate the contrast map for dark values
+    this.darkTokenVersion.update((v) => v + 1);
+
     // Record in history
     if (oldValue !== value) {
       this.addToHistory(darkTokenName, oldValue, value);
@@ -2930,11 +3276,86 @@ export class ThemeBuilderComponent {
     this.showColorGenerator.update((v) => !v);
     if (this.showColorGenerator()) {
       this.showAccessibilityChecker.set(false);
+      this.showBrandColorGenerator.set(false);
       // Force re-render of child components after animation starts
       setTimeout(() => {
         this.baseColorForGeneration = this.baseColorForGeneration || '#3b82f6';
       }, 0);
     }
+  }
+
+  // Brand Color Generator Methods
+  protected toggleBrandColorGenerator(): void {
+    this.showBrandColorGenerator.update((v) => !v);
+    if (this.showBrandColorGenerator()) {
+      this.showAccessibilityChecker.set(false);
+      this.showColorGenerator.set(false);
+      this.brandGeneratorError.set('');
+    }
+  }
+
+  /**
+   * Generate a complete theme family from the current brand color input.
+   * Both light and dark variants are generated and loaded into the editor.
+   * The accessibility checker opens automatically after generation.
+   */
+  protected generateThemeFromBrandColor(): void {
+    const color = this.brandGeneratorColor();
+    const themeName = this.brandGeneratorThemeName().trim() || 'My Brand Theme';
+
+    if (!/^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/.test(color)) {
+      this.brandGeneratorError.set('Please enter a valid hex color (e.g., #3b82f6).');
+      return;
+    }
+
+    this.brandGeneratorError.set('');
+
+    // Resolve base themes — fall back to the registered default if no active family
+    const currentFamily = this.themeService.currentThemeFamily();
+    const defaultFamily = this.themeService.getThemeFamily('default');
+    const lightBase: Theme | undefined = currentFamily?.light ?? defaultFamily?.light;
+    const darkBase: Theme | undefined = currentFamily?.dark ?? defaultFamily?.dark;
+
+    if (!lightBase || !darkBase) {
+      this.brandGeneratorError.set('Could not resolve a base theme. Please try resetting the theme first.');
+      return;
+    }
+
+    const lightTheme = this.themeGenerator.createThemeFromBrandColor(color, 'light', themeName, lightBase);
+    const darkTheme = this.themeGenerator.createThemeFromBrandColor(color, 'dark', themeName, darkBase);
+
+    // Extract the editor-tracked tokens from both generated themes
+    const lightTokens = this.extractTokensFromTheme(lightTheme);
+    const darkTokens = this.extractTokensFromTheme(darkTheme);
+
+    const bundle = createThemeFamilyTokenBundle(themeName, lightTokens, darkTokens, {
+      id: this.toThemeId(themeName),
+      description: `Generated from brand color ${color}`,
+      author: this.editableThemeFamilyMetadata().author,
+      version: '1.0.0',
+    });
+
+    this.applyImportedThemeBundle(bundle);
+
+    // Switch to light preview and open the accessibility checker
+    this.setPreviewMode('light');
+    this.showBrandColorGenerator.set(false);
+    this.showAccessibilityChecker.set(true);
+    this.updateAccessibilityChecks();
+  }
+
+  /**
+   * Returns the inline contrast checks for a given token name.
+   * Used in the template to show WCAG badges next to color inputs.
+   */
+  protected getInlineContrastChecks(tokenName: string): Array<{
+    pairLabel: string;
+    lightRatio: number;
+    lightLevel: string;
+    darkRatio: number;
+    darkLevel: string;
+  }> {
+    return this.inlineContrastMap().get(tokenName) ?? [];
   }
 
   protected generateComplementary(): void {
