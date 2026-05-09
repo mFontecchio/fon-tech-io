@@ -53,6 +53,7 @@ Thumbs.db
 .angular
 .cursor
 .github/prompts
+.github/copilot-instructions.md
 
 documentation
 .specstory
