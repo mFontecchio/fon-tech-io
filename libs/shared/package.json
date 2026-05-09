@@ -29,10 +29,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/mFontecchio/ui-component-suite.git",
+    "url": "https://github.com/mFontecchio/fon-tech-io.git",
     "directory": "libs/shared"
   },
-  "homepage": "https://mfontecchio.github.io/ui-component-suite",
+  "homepage": "https://mfontecchio.github.io/fon-tech-io",
   "bugs": {
     "url": "https://github.com/mFontecchio/ui-component-suite/issues"
   }
