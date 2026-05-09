@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Migrated GitHub Pages deployment from a cross-repository push model to a native GitHub Actions Pages deployment. The showcase is now deployed directly from this repository using `actions/configure-pages`, `actions/upload-pages-artifact`, and `actions/deploy-pages`, eliminating the dependency on the `mFontecchio/fon-tech-io` public mirror repository and the `PUBLIC_REPO_DEPLOY_TOKEN` personal access token. The deploy workflow is split into a `build` job and a dedicated `deploy` job with `pages: write` and `id-token: write` permissions scoped to only the deploy job.
+
+- Removed `.github/prompts/` from `.gitignore`. AI-authored planning documents in that directory are now tracked in source control.
+
+### Added
+
+- **Community health files**: Added `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `.github/CODEOWNERS`, `.github/PULL_REQUEST_TEMPLATE.md`, `.github/ISSUE_TEMPLATE/bug_report.md`, and `.github/ISSUE_TEMPLATE/feature_request.md` to establish contribution standards, security reporting procedures, and reviewer assignment for the public repository.
+
+- **Dependabot configuration**: Added `.github/dependabot.yml` to enable weekly automated dependency update pull requests for npm packages (grouped by Angular, Nx, and testing ecosystems) and GitHub Actions, with major version bumps excluded from automated updates.
+
+### Changed
+
 - Renamed all published package scopes from `@ui-suite/*` to `@mfontecchio/*` to align with the npm organization. Affected packages: `@mfontecchio/theming`, `@mfontecchio/shared`, `@mfontecchio/components`, `@mfontecchio/theme-builder`. All internal imports, peer dependencies, tsconfig path aliases, and documentation updated accordingly.
 
 ### Added
