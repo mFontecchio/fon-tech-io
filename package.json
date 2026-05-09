@@ -52,7 +52,7 @@
     "@nx/js": "22.7.1",
     "@nx/web": "22.7.1",
     "@nx/workspace": "22.7.1",
-    "@schematics/angular": "20.3.10",
+    "@schematics/angular": "20.3.25",
     "@swc-node/register": "~1.9.1",
     "@swc/core": "~1.15.1",
     "@swc/helpers": "~0.5.11",
