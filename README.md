@@ -1,6 +1,16 @@
 # UI Component Suite
 
+[![Release](https://img.shields.io/github/v/release/mFontecchio/ui-component-suite)](https://github.com/mFontecchio/ui-component-suite/releases)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+[![Angular](https://img.shields.io/badge/Angular-20-red)](https://angular.dev)
+[![pnpm](https://img.shields.io/badge/package%20manager-pnpm-orange)](https://pnpm.io)
+
 Enterprise-grade Angular 20 component library with full theming support, accessibility compliance, and HTML5-first design principles.
+
+## Live Showcase
+
+Browse the full component catalog, API documentation, and live demos:
+**[https://mfontecchio.github.io/fon-tech-io/](https://mfontecchio.github.io/fon-tech-io/)**
 
 ## Overview
 
@@ -33,8 +43,8 @@ ui-component-suite/
 
 ### Prerequisites
 
-- Node.js 18+ or 20+
-- pnpm 8+
+- Node.js 24+
+- pnpm 10+
 
 ### Installation
 
@@ -67,29 +77,29 @@ pnpm e2e
 
 ## Features
 
-### Components (30+)
+### Components (39)
 
-#### Form Components
+#### Form Components (11)
 - Button, Input, Textarea, Select
 - Checkbox, Radio, Switch
-- Slider, Date Picker, File Upload
+- Multi-Select, Slider, Date Picker, File Upload
 
-#### Layout Components
+#### Layout Components (8)
 - Card, Modal, Drawer
 - Accordion, Tabs, Divider
 - Grid, Stack
 
-#### Data Display
+#### Data Display Components (10)
 - Table, List, Badge, Chip
 - Avatar, Tooltip, Popover
-- Pagination
+- Pagination, Code Block, Carousel
 
-#### Feedback
-- Alert, Toast, Progress Bar
+#### Feedback Components (5)
+- Alert, Toast, Progress
 - Spinner, Skeleton
 
-#### Navigation
-- Breadcrumb, Menu
+#### Navigation Components (5)
+- Breadcrumb, Menu, Context Menu
 - Navbar, Stepper
 
 ### Theming System
@@ -115,6 +125,7 @@ Comprehensive documentation is available in the `/documentation` folder:
 
 - [Architecture](./documentation/ARCHITECTURE.md)
 - [Design System](./documentation/DESIGN_SYSTEM.md)
+- [Compatibility](./documentation/COMPATIBILITY.md)
 - [Contributing](./documentation/CONTRIBUTING.md)
 - [Changelog](./CHANGELOG.md)
 

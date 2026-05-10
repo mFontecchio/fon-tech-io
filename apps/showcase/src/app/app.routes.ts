@@ -34,6 +34,10 @@ export const appRoutes: Route[] = [
     loadComponent: () => import('./pages/getting-started/theming.component').then(m => m.ThemingComponent),
   },
   {
+    path: 'getting-started/compatibility',
+    loadComponent: () => import('./pages/getting-started/compatibility.component').then(m => m.CompatibilityComponent),
+  },
+  {
     path: '**',
     redirectTo: '',
   },

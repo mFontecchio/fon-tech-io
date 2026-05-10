@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **Angular-aligned versioning**: Adopted Angular-aligned versioning for all four published packages (`@mfontecchio/components`, `@mfontecchio/theming`, `@mfontecchio/shared`, `@mfontecchio/theme-builder`). The MAJOR version now tracks the Angular major (MAJOR = Angular major, MINOR = features, PATCH = fixes), matching the convention used by Angular Material and CDK. All packages bumped from `1.0.0` to `20.0.0`. Inter-library peer dependency ranges updated from `>=0.1.0` to `>=20.0.0`. Root workspace version updated to `20.0.0`.
+- **Compatibility documentation updated**: `documentation/COMPATIBILITY.md` and the showcase `/getting-started/compatibility` page updated to reflect the `20.x` version line, document the versioning scheme, and explain the MAJOR/MINOR/PATCH semantics. The showcase page now includes a visual breakdown of the versioning convention.
+
+### Changed
+
+- Updated root `README.md` with GitHub release, license, Angular, and pnpm badges; added live showcase link (`https://mfontecchio.github.io/fon-tech-io/`); corrected component count to 39; added missing components (Multi-Select, Code Block, Carousel, Context Menu) to their respective categories; renamed "Progress Bar" to "Progress" and updated Node.js prerequisite to 24+; added link to `documentation/COMPATIBILITY.md`.
+- Updated `libs/components/README.md` installation command from `npm install` to `pnpm add` for consistency with all other library READMEs.
+
+### Added
+
+- **Angular version compatibility matrix**: Added `documentation/COMPATIBILITY.md` as the canonical reference for which package versions are compatible with which versions of Angular, TypeScript, and Node.js. Added a live compatibility page to the showcase at `/getting-started/compatibility` backed by a single data file (`apps/showcase/src/app/data/compatibility.data.ts`). Added the page to the sidebar navigation and the Getting Started overview card grid.
+
+### Changed
+
 - Migrated GitHub Pages deployment from a cross-repository push model to a native GitHub Actions Pages deployment. The showcase is now deployed directly from this repository using `actions/configure-pages`, `actions/upload-pages-artifact`, and `actions/deploy-pages`, eliminating the dependency on the `mFontecchio/fon-tech-io` public mirror repository and the `PUBLIC_REPO_DEPLOY_TOKEN` personal access token. The deploy workflow is split into a `build` job and a dedicated `deploy` job with `pages: write` and `id-token: write` permissions scoped to only the deploy job.
 
 - Removed `.github/prompts/` from `.gitignore`. AI-authored planning documents in that directory are now tracked in source control.

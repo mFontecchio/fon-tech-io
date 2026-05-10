@@ -487,6 +487,7 @@ export class SidebarComponent {
     { label: 'Installation', path: '/getting-started/installation' },
     { label: 'Usage', path: '/getting-started/usage' },
     { label: 'Theming', path: '/getting-started/theming' },
+    { label: 'Compatibility', path: '/getting-started/compatibility' },
   ];
 
   protected readonly toolItems: NavItem[] = [{ label: 'Theme Builder', path: '/theme-builder' }];

@@ -16,7 +16,7 @@ This library provides production-ready UI components following modern Angular be
 ## Installation
 
 ```bash
-npm install @mfontecchio/components
+pnpm add @mfontecchio/components
 ```
 
 ## Component Categories
