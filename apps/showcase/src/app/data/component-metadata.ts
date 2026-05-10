@@ -2790,14 +2790,18 @@ const ACCORDION_METADATA: ComponentMetadata = {
   id: 'accordion',
   name: 'Accordion',
   category: 'layout',
-  description: 'A vertically stacked set of collapsible content panels for organizing information.',
+  description:
+    'A vertically stacked set of collapsible content panels for organizing information. Supports single or multiple expansion modes and composable styling flags for card, flush, and list presentations.',
   selector: 'fui-accordion',
   setup: {
-    importStatement: "import { AccordionComponent } from '@mfontecchio/components';",
-    usageSnippet: `<fui-accordion [items]="items" mode="single" />`,
-    usageTypescript: `export class MyComponent {\n  protected readonly items = [\n    { title: 'Section 1', content: 'Content for section 1' },\n    { title: 'Section 2', content: 'Content for section 2' },\n  ];\n}`,
+    importStatement:
+      "import { AccordionComponent, AccordionItemComponent } from '@mfontecchio/components';",
+    usageSnippet: `<fui-accordion>
+  <fui-accordion-item title="Section 1">Content for section 1</fui-accordion-item>
+  <fui-accordion-item title="Section 2">Content for section 2</fui-accordion-item>
+</fui-accordion>`,
     setupNotes:
-      'No additional setup required. Add AccordionComponent to the imports array of your standalone component.',
+      'Add both AccordionComponent and AccordionItemComponent to the imports array of your standalone component.',
   },
   runtime: {
     supportsSSR: true,
@@ -2808,55 +2812,95 @@ const ACCORDION_METADATA: ComponentMetadata = {
     {
       name: 'mode',
       type: "'single' | 'multiple'",
-      description: 'Expansion mode (single allows one, multiple allows many)',
+      description: 'Expansion mode. Single allows one panel open at a time; multiple allows many.',
       defaultValue: "'single'",
     },
     {
       name: 'expanded',
       type: 'number[]',
-      description: 'Array of expanded item indices',
+      description: 'Array of item indices that should be expanded on initialisation.',
       defaultValue: '[]',
+    },
+    {
+      name: 'bordered',
+      type: 'boolean',
+      description:
+        'Whether to render a border and border-radius around the entire accordion container. Set to false for flush or nav-list contexts.',
+      defaultValue: 'true',
+    },
+    {
+      name: 'highlightExpanded',
+      type: 'boolean',
+      description:
+        'Whether to apply a background tint and brand-coloured chevron to the currently expanded item header. Set to false for minimal or list contexts.',
+      defaultValue: 'true',
+    },
+    {
+      name: 'dividers',
+      type: 'boolean',
+      description:
+        'Whether to render separator lines between accordion items. Set to false for a fully plain expandable list.',
+      defaultValue: 'true',
     },
   ],
   outputs: [
     {
       name: 'expandedChange',
       type: 'number[]',
-      description: 'Emitted when expansion state changes',
+      description: 'Emitted when the expansion state changes, carrying the updated index array.',
     },
   ],
   passthroughs: [
     {
-      name: 'Panel body content',
+      name: 'fui-accordion-item',
       type: 'slot',
-      selector: '(default inside accordion panel)',
+      selector: 'fui-accordion-item',
       description:
-        'When items are passed as an array, the content field provides panel text. For richer content, use the accordion in composition mode.',
-      optional: true,
+        'One or more AccordionItemComponent children projected as content. Each item declares its title and disabled state as inputs; body content is projected inside the item tag.',
+      optional: false,
     },
   ],
   theming: {
     tokens: [
-      { token: '--semantic-surface-card', description: 'Accordion panel background.' },
-      { token: '--semantic-border-default', description: 'Border between accordion items.' },
-      { token: '--semantic-border-subtle', description: 'Separator between header and body.' },
-      { token: '--semantic-brand-primary', description: 'Expand/collapse icon accent color.' },
+      {
+        token: '--semantic-surface-card',
+        description:
+          'Header and panel background. Applied when bordered or highlightExpanded is true.',
+      },
+      {
+        token: '--semantic-border-default',
+        description: 'Outer container border color. Applied when bordered is true.',
+      },
+      {
+        token: '--semantic-border-subtle',
+        description: 'Separator line between items. Applied when dividers is true.',
+      },
+      {
+        token: '--semantic-brand-primary',
+        description:
+          'Expanded chevron icon accent color. Applied when highlightExpanded is true.',
+      },
+      {
+        token: '--semantic-surface-background-secondary',
+        description:
+          'Expanded header hover and highlight background. Applied when highlightExpanded is true.',
+      },
       {
         token: '--semantic-animation-duration-component',
         description: 'Panel open/close animation duration.',
       },
       {
         token: '--primitive-border-radius-md',
-        description: 'Corner radius of each accordion item.',
+        description: 'Corner radius of the outer container. Applied when bordered is true.',
       },
     ],
     customizationNotes:
-      'Override --semantic-brand-primary to change the indicator accent. Scope token overrides to a parent element.',
+      'Override --semantic-brand-primary to change the expanded-icon accent. The bordered, highlightExpanded, and dividers inputs allow structural visual changes without token overrides. Scope any token overrides to a parent element to avoid unintended global impact.',
   },
   examples: [
     {
-      title: 'Single Mode Accordion',
-      description: 'Only one panel open at a time',
+      title: 'Default Card Accordion',
+      description: 'Standard bordered accordion with a single panel open at a time.',
       template: `<fui-accordion mode="single">
   <fui-accordion-item title="Personal Information">
     <p>Name, email, and contact details.</p>
@@ -2870,49 +2914,85 @@ const ACCORDION_METADATA: ComponentMetadata = {
 </fui-accordion>`,
     },
     {
-      title: 'Multiple Mode Accordion',
-      description: 'Multiple panels can be open simultaneously',
+      title: 'Multiple Expansion',
+      description: 'Multiple panels can be open simultaneously.',
       template: `<fui-accordion mode="multiple">
-  <fui-accordion-item title="FAQ 1">Answer to question 1</fui-accordion-item>
-  <fui-accordion-item title="FAQ 2">Answer to question 2</fui-accordion-item>
-  <fui-accordion-item title="FAQ 3">Answer to question 3</fui-accordion-item>
+  <fui-accordion-item title="What is included?">Full component library with theming support.</fui-accordion-item>
+  <fui-accordion-item title="How do I install it?">Run pnpm add @mfontecchio/components.</fui-accordion-item>
+  <fui-accordion-item title="Is SSR supported?">Yes, all components are SSR-compatible.</fui-accordion-item>
 </fui-accordion>`,
     },
     {
-      title: 'Pre-expanded Accordion',
-      description: 'Accordion with default expanded items',
+      title: 'Pre-expanded Items',
+      description: 'Accordion with items open by default.',
       template: `<fui-accordion [expanded]="[0]">
-  <fui-accordion-item title="Getting Started">Welcome guide content</fui-accordion-item>
-  <fui-accordion-item title="Advanced Features">Advanced topics</fui-accordion-item>
+  <fui-accordion-item title="Getting Started">Welcome guide content.</fui-accordion-item>
+  <fui-accordion-item title="Advanced Features">Advanced configuration topics.</fui-accordion-item>
+</fui-accordion>`,
+    },
+    {
+      title: 'Flush / Borderless',
+      description:
+        'Removes the outer border. Useful when the accordion sits inside an existing card or panel surface.',
+      template: `<fui-accordion [bordered]="false">
+  <fui-accordion-item title="Billing">Manage your payment methods.</fui-accordion-item>
+  <fui-accordion-item title="Subscriptions">View active plans.</fui-accordion-item>
+</fui-accordion>`,
+    },
+    {
+      title: 'Expandable Navigation List',
+      description:
+        'All styling flags disabled — renders a plain expandable list ideal for nested navigation groups or sidebar menus.',
+      template: `<fui-accordion
+  mode="multiple"
+  [bordered]="false"
+  [highlightExpanded]="false"
+  [dividers]="false"
+>
+  <fui-accordion-item title="Components">
+    <nav class="sidebar-nav">
+      <a href="/components/button" class="sidebar-nav__link">Button</a>
+      <a href="/components/input" class="sidebar-nav__link">Input</a>
+    </nav>
+  </fui-accordion-item>
+  <fui-accordion-item title="Getting Started">
+    <nav class="sidebar-nav">
+      <a href="/getting-started/installation" class="sidebar-nav__link">Installation</a>
+      <a href="/getting-started/theming" class="sidebar-nav__link">Theming</a>
+    </nav>
+  </fui-accordion-item>
 </fui-accordion>`,
     },
   ],
   accessibility: {
     ariaSupport: [
       'role="region" on accordion panels',
-      'aria-expanded indicates panel state',
-      'aria-controls links header to panel',
-      'aria-labelledby links panel to header',
+      'aria-expanded on header buttons indicates panel state',
+      'aria-controls links each header button to its panel',
+      'aria-labelledby links each panel back to its header',
+      'disabled items carry the disabled attribute and are skipped by keyboard navigation',
     ],
     keyboardNavigation: [
-      { key: 'Enter/Space', description: 'Toggle panel expansion' },
-      { key: 'Arrow Down', description: 'Move to next header' },
-      { key: 'Arrow Up', description: 'Move to previous header' },
-      { key: 'Home', description: 'Move to first header' },
-      { key: 'End', description: 'Move to last header' },
+      { key: 'Enter / Space', description: 'Toggle panel expansion' },
+      { key: 'Arrow Down', description: 'Move focus to next header' },
+      { key: 'Arrow Up', description: 'Move focus to previous header' },
+      { key: 'Home', description: 'Move focus to first header' },
+      { key: 'End', description: 'Move focus to last header' },
     ],
     screenReaderNotes:
-      'Panel states (expanded/collapsed) and content announced. Header buttons clearly labeled.',
+      'Panel expanded/collapsed state and body content are announced on toggle. Header buttons carry descriptive labels. Disabled items are announced as unavailable.',
   },
   bestPractices: [
-    'Use for FAQs, settings sections, and content organization',
-    'Keep panel titles concise and descriptive',
-    'Use single mode for mutually exclusive content',
-    'Use multiple mode for independent content sections',
-    'Limit to 5-7 panels for best UX',
-    'Ensure first panel has meaningful default content',
-    'Avoid nesting accordions within accordions',
+    'Use for FAQs, settings sections, and progressive disclosure of content',
+    'Keep panel titles concise and descriptive — they are the primary navigation affordance',
+    'Use single mode for mutually exclusive content sections',
+    'Use multiple mode for independent content sections that users may compare',
+    'Use [bordered]="false" when embedding the accordion inside an existing card or panel',
+    'Use [highlightExpanded]="false" [dividers]="false" [bordered]="false" for sidebar navigation groups',
+    'Limit to 5–7 panels for best user experience; split longer sets into separate sections',
+    'Avoid nesting accordions within accordions — prefer tabs or a flat list instead',
   ],
+  relatedComponents: ['tabs', 'list', 'navbar'],
 };
 
 const DIVIDER_METADATA: ComponentMetadata = {

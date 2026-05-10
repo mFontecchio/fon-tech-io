@@ -5,7 +5,7 @@
 
 import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { AccordionComponent, AccordionItemComponent } from '@mfontecchio/components';
 
 interface NavItem {
   label: string;
@@ -16,13 +16,12 @@ interface NavItem {
 interface NavCategory {
   label: string;
   items: NavItem[];
-  expanded: boolean;
 }
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, AccordionComponent, AccordionItemComponent],
   host: {
     '(document:keydown.escape)': 'handleEscape()',
   },
@@ -69,53 +68,37 @@ interface NavCategory {
         </nav>
 
         <!-- Components by Category -->
-        @for (category of categories(); track category.label; let categoryIndex = $index) {
-          <nav class="nav-section">
-            <button
-              type="button"
-              class="nav-section-title expandable"
-              (click)="toggleCategory(category)"
-              [attr.aria-expanded]="category.expanded"
-              [attr.aria-controls]="'nav-category-' + categoryIndex"
-            >
-              <span>{{ category.label }}</span>
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                [class.rotated]="category.expanded"
-              >
-                <polyline points="6 9 12 15 18 9" />
-              </svg>
-            </button>
+        <nav aria-label="Component categories">
+          <fui-accordion
+            mode="multiple"
+            [bordered]="false"
+            [highlightExpanded]="false"
+            [dividers]="false"
+            [expanded]="initialExpanded"
+          >
+            @for (category of categories; track category.label) {
+              <fui-accordion-item [title]="category.label">
+                <div class="nav-items nav-items--indented">
+                  @for (item of category.items; track item.path) {
+                    <a
+                      [routerLink]="item.path"
+                      routerLinkActive="active"
+                      class="nav-link"
+                      (click)="handleNavigationSelection()"
+                    >
+                      @if (item.icon) {
+                        <span class="nav-icon">{{ item.icon }}</span>
+                      }
+                      {{ item.label }}
+                    </a>
+                  }
+                </div>
+              </fui-accordion-item>
+            }
+          </fui-accordion>
+        </nav>
 
-            <div
-              class="nav-items-shell"
-              [class.nav-items-shell--expanded]="category.expanded"
-              [id]="'nav-category-' + categoryIndex"
-            >
-              <div class="nav-items">
-                @for (item of category.items; track item.path) {
-                  <a
-                    [routerLink]="item.path"
-                    routerLinkActive="active"
-                    class="nav-link"
-                    (click)="handleNavigationSelection()"
-                  >
-                    @if (item.icon) {
-                      <span class="nav-icon">{{ item.icon }}</span>
-                    }
-                    {{ item.label }}
-                  </a>
-                }
-              </div>
-            </div>
-          </nav>
-        }
-
-        <!-- Theme Builder -->
+        <!-- Tools -->
         <nav class="nav-section">
           <h3 class="nav-section-title">Tools</h3>
           <div class="nav-items">
@@ -194,49 +177,10 @@ interface NavCategory {
         cursor: default;
       }
 
-      .nav-section-title.expandable {
-        cursor: pointer;
-        width: 100%;
-        padding: var(--primitive-spacing-2);
-        border-radius: var(--primitive-border-radius-md);
-        transition:
-          background-color var(--animation-duration-fast) var(--animation-easing-default),
-          color var(--animation-duration-fast) var(--animation-easing-default);
-      }
-
-      .nav-section-title.expandable:hover {
-        background-color: var(--semantic-surface-background-secondary);
-        color: var(--semantic-text-primary);
-      }
-
-      .nav-section-title svg {
-        flex-shrink: 0;
-        transition: transform var(--animation-duration-fast) var(--animation-easing-default);
-      }
-
-      .nav-section-title svg.rotated {
-        transform: rotate(180deg);
-      }
-
-      .nav-section-title.expandable:focus-visible,
       .nav-link:focus-visible,
       .sidebar-overlay:focus-visible {
         outline: 2px solid var(--semantic-border-focus);
         outline-offset: 2px;
-      }
-
-      .nav-items-shell {
-        display: grid;
-        grid-template-rows: 0fr;
-        opacity: 0.5;
-        transition:
-          grid-template-rows var(--animation-duration-normal) var(--animation-easing-default),
-          opacity var(--animation-duration-fast) var(--animation-easing-default);
-      }
-
-      .nav-items-shell--expanded {
-        grid-template-rows: 1fr;
-        opacity: 1;
       }
 
       .nav-items {
@@ -245,6 +189,10 @@ interface NavCategory {
         gap: var(--primitive-spacing-1);
         min-height: 0;
         overflow: hidden;
+      }
+
+      .nav-items--indented {
+        padding-bottom: var(--primitive-spacing-2);
       }
 
       .nav-link {
@@ -284,16 +232,6 @@ interface NavCategory {
 
       .sidebar-overlay {
         display: none;
-      }
-
-      @keyframes sidebar-overlay-in {
-        from {
-          opacity: 0;
-        }
-
-        to {
-          opacity: 1;
-        }
       }
 
       @media (max-width: 1024px) {
@@ -375,9 +313,6 @@ interface NavCategory {
       @media (prefers-reduced-motion: reduce) {
         .app-sidebar,
         .sidebar-content,
-        .nav-section-title.expandable,
-        .nav-section-title svg,
-        .nav-items-shell,
         .nav-link,
         .sidebar-overlay {
           transition: none;
@@ -411,10 +346,9 @@ export class SidebarComponent {
     { label: 'Getting Started', path: '/getting-started' },
   ];
 
-  protected readonly categories = signal<NavCategory[]>([
+  protected readonly categories: NavCategory[] = [
     {
       label: 'Form Components',
-      expanded: true,
       items: [
         { label: 'Button', path: '/components/form/button' },
         { label: 'Input', path: '/components/form/input' },
@@ -431,7 +365,6 @@ export class SidebarComponent {
     },
     {
       label: 'Layout Components',
-      expanded: true,
       items: [
         { label: 'Card', path: '/components/layout/card' },
         { label: 'Modal', path: '/components/layout/modal' },
@@ -445,7 +378,6 @@ export class SidebarComponent {
     },
     {
       label: 'Data Display',
-      expanded: true,
       items: [
         { label: 'Badge', path: '/components/data-display/badge' },
         { label: 'Avatar', path: '/components/data-display/avatar' },
@@ -461,7 +393,6 @@ export class SidebarComponent {
     },
     {
       label: 'Feedback',
-      expanded: true,
       items: [
         { label: 'Alert', path: '/components/feedback/alert' },
         { label: 'Spinner', path: '/components/feedback/spinner' },
@@ -472,7 +403,6 @@ export class SidebarComponent {
     },
     {
       label: 'Navigation',
-      expanded: true,
       items: [
         { label: 'Breadcrumb', path: '/components/navigation/breadcrumb' },
         { label: 'Menu', path: '/components/navigation/menu' },
@@ -481,9 +411,11 @@ export class SidebarComponent {
         { label: 'Stepper', path: '/components/navigation/stepper' },
       ],
     },
-  ]);
+  ];
 
-  protected readonly gettingStartedItems = [
+  protected readonly initialExpanded: number[] = this.categories.map((_, i) => i);
+
+  protected readonly gettingStartedItems: NavItem[] = [
     { label: 'Installation', path: '/getting-started/installation' },
     { label: 'Usage', path: '/getting-started/usage' },
     { label: 'Theming', path: '/getting-started/theming' },
@@ -491,16 +423,6 @@ export class SidebarComponent {
   ];
 
   protected readonly toolItems: NavItem[] = [{ label: 'Theme Builder', path: '/theme-builder' }];
-
-  protected toggleCategory(category: NavCategory): void {
-    this.categories.update((categories) =>
-      categories.map((currentCategory) =>
-        currentCategory.label === category.label
-          ? { ...currentCategory, expanded: !currentCategory.expanded }
-          : currentCategory
-      )
-    );
-  }
 
   protected handleNavigationSelection(): void {
     if (this.mobileNavigationOpen()) {

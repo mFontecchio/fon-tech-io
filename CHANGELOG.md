@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Accordion component — `bordered`, `highlightExpanded`, `dividers` inputs**: Three new boolean inputs allow mix-and-match composition of the accordion's visual style. `bordered` (default `true`) controls the outer container border and border-radius. `highlightExpanded` (default `true`) controls the expanded-header background tint and brand-coloured chevron. `dividers` (default `true`) controls the separator lines between items. All flags default to `true`, preserving full backward compatibility with existing usage. Setting all three to `false` renders a plain expandable list suitable for nested navigation groups.
+- **Accordion showcase documentation updated**: API reference corrected to show the `<fui-accordion-item>` content-children pattern (removing the erroneous `[items]` array example). Three new inputs documented with defaults, descriptions, and usage guidance. Two new code examples added — flush/borderless and expandable navigation list. Best practices and theming token tables updated to reflect modifier-class architecture.
+
 ### Changed
 
 - **Angular-aligned versioning**: Adopted Angular-aligned versioning for all four published packages (`@mfontecchio/components`, `@mfontecchio/theming`, `@mfontecchio/shared`, `@mfontecchio/theme-builder`). The MAJOR version now tracks the Angular major (MAJOR = Angular major, MINOR = features, PATCH = fixes), matching the convention used by Angular Material and CDK. All packages bumped from `1.0.0` to `20.0.0`. Inter-library peer dependency ranges updated from `>=0.1.0` to `>=20.0.0`. Root workspace version updated to `20.0.0`.

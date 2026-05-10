@@ -1024,7 +1024,7 @@ import {
 
           <!-- ACCORDION DEMOS -->
           @case ('accordion') {
-            @if (exampleTitle() === 'Single Mode Accordion') {
+            @if (exampleTitle() === 'Default Card Accordion') {
               <fui-accordion mode="single">
                 <fui-accordion-item title="What is your return policy?">
                   <p>We offer a 30-day return policy on all items.</p>
@@ -1037,23 +1037,52 @@ import {
                 </fui-accordion-item>
               </fui-accordion>
             }
-            @if (exampleTitle() === 'Multiple Mode Accordion') {
+            @if (exampleTitle() === 'Multiple Expansion') {
               <fui-accordion mode="multiple">
-                <fui-accordion-item title="Section 1">
-                  <p>Content for section 1.</p>
+                <fui-accordion-item title="What is included?">
+                  <p>Full component library with theming support.</p>
                 </fui-accordion-item>
-                <fui-accordion-item title="Section 2">
-                  <p>Content for section 2.</p>
+                <fui-accordion-item title="How do I install it?">
+                  <p>Run pnpm add @mfontecchio/components.</p>
+                </fui-accordion-item>
+                <fui-accordion-item title="Is SSR supported?">
+                  <p>Yes, all components are SSR-compatible.</p>
                 </fui-accordion-item>
               </fui-accordion>
             }
-            @if (exampleTitle() === 'Pre-expanded Accordion') {
+            @if (exampleTitle() === 'Pre-expanded Items') {
               <fui-accordion [expanded]="[0]">
-                <fui-accordion-item title="First Item (Expanded)">
-                  <p>This item is expanded by default.</p>
+                <fui-accordion-item title="Getting Started">
+                  <p>Welcome guide content.</p>
                 </fui-accordion-item>
-                <fui-accordion-item title="Second Item">
-                  <p>This item starts collapsed.</p>
+                <fui-accordion-item title="Advanced Features">
+                  <p>Advanced configuration topics.</p>
+                </fui-accordion-item>
+              </fui-accordion>
+            }
+            @if (exampleTitle() === 'Flush / Borderless') {
+              <fui-accordion [bordered]="false">
+                <fui-accordion-item title="Billing">
+                  <p>Manage your payment methods.</p>
+                </fui-accordion-item>
+                <fui-accordion-item title="Subscriptions">
+                  <p>View active plans.</p>
+                </fui-accordion-item>
+              </fui-accordion>
+            }
+            @if (exampleTitle() === 'Expandable Navigation List') {
+              <fui-accordion mode="multiple" [bordered]="false" [highlightExpanded]="false" [dividers]="false">
+                <fui-accordion-item title="Components">
+                  <nav class="demo-accordion-nav">
+                    <a href="/components/button" class="demo-accordion-nav__link">Button</a>
+                    <a href="/components/input" class="demo-accordion-nav__link">Input</a>
+                  </nav>
+                </fui-accordion-item>
+                <fui-accordion-item title="Getting Started">
+                  <nav class="demo-accordion-nav">
+                    <a href="/getting-started/installation" class="demo-accordion-nav__link">Installation</a>
+                    <a href="/getting-started/theming" class="demo-accordion-nav__link">Theming</a>
+                  </nav>
                 </fui-accordion-item>
               </fui-accordion>
             }
@@ -1566,6 +1595,26 @@ Sample text for editing</textarea
       }
 
       .demo-drawer-nav__link:hover {
+        background: var(--semantic-surface-background-secondary);
+      }
+
+      .demo-accordion-nav {
+        display: flex;
+        flex-direction: column;
+        gap: var(--primitive-spacing-2);
+        padding: var(--primitive-spacing-1) 0;
+      }
+
+      .demo-accordion-nav__link {
+        padding: var(--primitive-spacing-2) var(--primitive-spacing-3);
+        text-decoration: none;
+        color: var(--semantic-text-primary);
+        border-radius: var(--component-button-border-radius, 4px);
+        transition: background var(--animation-duration-normal, 250ms)
+          var(--animation-easing-default, ease-in-out);
+      }
+
+      .demo-accordion-nav__link:hover {
         background: var(--semantic-surface-background-secondary);
       }
 
