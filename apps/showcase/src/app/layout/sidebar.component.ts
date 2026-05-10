@@ -389,6 +389,7 @@ export class SidebarComponent {
         { label: 'List', path: '/components/data-display/list' },
         { label: 'Carousel', path: '/components/data-display/carousel' },
         { label: 'Code Block', path: '/components/data-display/code-block' },
+        { label: 'Chart', path: '/components/data-display/chart' },
       ],
     },
     {

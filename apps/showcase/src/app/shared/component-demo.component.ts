@@ -49,6 +49,7 @@ import {
   DividerComponent,
   StackComponent,
   GridComponent,
+  ChartComponent,
 } from '@mfontecchio/components';
 
 @Component({
@@ -97,6 +98,7 @@ import {
     DividerComponent,
     StackComponent,
     GridComponent,
+    ChartComponent,
   ],
   template: `
     <div class="component-demo">
@@ -1559,6 +1561,73 @@ Sample text for editing</textarea
             }
           }
 
+          <!-- CHART DEMOS -->
+          @case ('chart') {
+            @if (exampleTitle() === 'Bar Chart') {
+              <div class="chart-demo-wrap">
+                <fui-chart
+                  type="bar"
+                  [datasets]="chartBarDatasets"
+                  [labels]="chartMonths"
+                  ariaLabel="Revenue vs Costs — first half of 2025"
+                />
+              </div>
+            }
+            @if (exampleTitle() === 'Line Chart (smooth)') {
+              <div class="chart-demo-wrap">
+                <fui-chart
+                  type="line"
+                  [datasets]="chartLineDatasets"
+                  [labels]="chartWeeks"
+                  [options]="{ smooth: true, yAxisLabel: 'Users' }"
+                  ariaLabel="Weekly active users — Q1 2025"
+                />
+              </div>
+            }
+            @if (exampleTitle() === 'Area Chart') {
+              <div class="chart-demo-wrap">
+                <fui-chart
+                  type="area"
+                  [datasets]="chartAreaDatasets"
+                  [labels]="chartQuarters"
+                  [options]="{ yAxisLabel: 'GB' }"
+                  ariaLabel="Storage usage by tier — 2024"
+                />
+              </div>
+            }
+            @if (exampleTitle() === 'Pie Chart') {
+              <div class="chart-demo-wrap">
+                <fui-chart
+                  type="pie"
+                  [datasets]="chartPieDatasets"
+                  [labels]="chartSegments"
+                  ariaLabel="Market share by product — 2025"
+                />
+              </div>
+            }
+            @if (exampleTitle() === 'Donut Chart') {
+              <div class="chart-demo-wrap">
+                <fui-chart
+                  type="donut"
+                  [datasets]="chartDonutDatasets"
+                  [labels]="chartCategories"
+                  [options]="{ donutThickness: 0.65 }"
+                  ariaLabel="Budget allocation — 2025"
+                />
+              </div>
+            }
+            @if (exampleTitle() === 'Scatter Plot') {
+              <div class="chart-demo-wrap">
+                <fui-chart
+                  type="scatter"
+                  [datasets]="chartScatterDatasets"
+                  [labels]="[]"
+                  ariaLabel="Height vs Weight correlation — sample population"
+                />
+              </div>
+            }
+          }
+
           @default {
             <div class="demo-placeholder">
               <p>Live demo coming soon for this example</p>
@@ -1888,6 +1957,13 @@ Sample text for editing</textarea
         text-align: center;
         padding: 3rem 2rem;
         color: var(--semantic-text-secondary);
+      }
+
+      /* Chart demo styles */
+      .chart-demo-wrap {
+        width: 100%;
+        max-width: 640px;
+        padding: var(--primitive-spacing-4);
       }
     `,
   ],
@@ -2251,4 +2327,56 @@ export class ExampleComponent {}`);
     console.log('Context menu item clicked:', item);
     this.toastService.info(`Action: ${item.label}`);
   }
+
+  // ---------------------------------------------------------------------------
+  // Chart demo data
+  // ---------------------------------------------------------------------------
+
+  protected readonly chartMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+  protected readonly chartWeeks = ['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7', 'W8'];
+  protected readonly chartQuarters = ['Q1', 'Q2', 'Q3', 'Q4'];
+  protected readonly chartSegments = ['Product A', 'Product B', 'Product C', 'Other'];
+  protected readonly chartCategories = ['Engineering', 'Marketing', 'Sales', 'Operations'];
+
+  protected readonly chartBarDatasets = [
+    { label: 'Revenue', data: [120, 340, 280, 450, 390, 510] },
+    { label: 'Costs',   data: [80,  210, 190, 300, 250, 340] },
+  ];
+
+  protected readonly chartLineDatasets = [
+    { label: 'Mobile',  data: [400, 430, 448, 470, 540, 580, 690, 790] },
+    { label: 'Desktop', data: [620, 610, 630, 670, 700, 720, 750, 780] },
+  ];
+
+  protected readonly chartAreaDatasets = [
+    { label: 'Hot storage',  data: [40,  55,  70,  85],  color: 'primary' as const },
+    { label: 'Cold storage', data: [120, 130, 145, 160], color: 'secondary' as const },
+  ];
+
+  protected readonly chartPieDatasets = [
+    { label: 'Market share', data: [45, 28, 18, 9] },
+  ];
+
+  protected readonly chartDonutDatasets = [
+    { label: 'Budget', data: [35, 25, 20, 20] },
+  ];
+
+  protected readonly chartScatterDatasets = [
+    {
+      label: 'Group A',
+      data: [
+        { x: 165, y: 68 }, { x: 172, y: 75 }, { x: 180, y: 82 },
+        { x: 158, y: 60 }, { x: 175, y: 78 }, { x: 170, y: 72 },
+        { x: 168, y: 65 }, { x: 182, y: 88 }, { x: 161, y: 63 },
+      ],
+    },
+    {
+      label: 'Group B',
+      data: [
+        { x: 155, y: 52 }, { x: 162, y: 59 }, { x: 170, y: 66 },
+        { x: 148, y: 48 }, { x: 165, y: 62 }, { x: 158, y: 55 },
+        { x: 172, y: 69 }, { x: 153, y: 50 },
+      ],
+    },
+  ];
 }

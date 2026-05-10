@@ -6451,6 +6451,230 @@ protected currentStep = signal(0);`,
 };
 
 // ============================================================================
+// CHART COMPONENT
+// ============================================================================
+
+const CHART_METADATA: ComponentMetadata = {
+  id: 'chart',
+  name: 'Chart',
+  category: 'data-display',
+  description:
+    'A zero-dependency chart component supporting line, bar, area, pie, donut, and scatter types. SVG-rendered for most types (fully accessible, crisp at any DPI) with Canvas used for high-density scatter plots. Responsive, theme-aware, and WCAG 2.1 AA compliant.',
+  selector: 'fui-chart',
+  setup: {
+    importStatement: "import { ChartComponent } from '@mfontecchio/components';",
+    usageSnippet: `<fui-chart
+  type="bar"
+  [datasets]="revenueData"
+  [labels]="months"
+  ariaLabel="Monthly revenue for 2025"
+/>`,
+    usageTypescript: `export class MyComponent {
+  protected readonly months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+  protected readonly revenueData = [
+    { label: 'Revenue', data: [120, 340, 280, 450, 390, 510] },
+  ];
+}`,
+    additionalImports: ['ChartDataset', 'ChartOptions'],
+    setupNotes:
+      'Add ChartComponent to the imports array of your standalone component. The chart automatically sizes itself to the width of its container using ResizeObserver.',
+  },
+  runtime: {
+    supportsSSR: false,
+    requiresBrowserAPIs: true,
+    notes: [
+      'ResizeObserver is used to track container width — not available in SSR environments.',
+      'Canvas-based scatter charts require a browser rendering context.',
+      'Guard usage in SSR apps with isPlatformBrowser() or render inside a client-only route.',
+    ],
+  },
+  inputs: [
+    {
+      name: 'type',
+      type: "'line' | 'bar' | 'area' | 'pie' | 'donut' | 'scatter'",
+      description: 'Chart type determining rendering strategy and geometry',
+      defaultValue: "'bar'",
+    },
+    {
+      name: 'datasets',
+      type: 'readonly ChartDataset[]',
+      description: 'Array of data series. Each dataset has a label, data array, and optional color.',
+      required: true,
+    },
+    {
+      name: 'labels',
+      type: 'readonly string[]',
+      description:
+        'Category labels for the X axis (line, bar, area, pie, donut). Used in the accessible data table for scatter charts.',
+      required: true,
+    },
+    {
+      name: 'options',
+      type: 'ChartOptions',
+      description: 'Optional chart configuration — all fields have sensible defaults.',
+      defaultValue: '{}',
+    },
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      description: 'Accessible description of the chart rendered in the figcaption and figure aria-label.',
+      required: true,
+    },
+  ],
+  outputs: [],
+  theming: {
+    tokens: [
+      { token: '--semantic-border-default', description: 'Grid line color.' },
+      { token: '--semantic-text-secondary', description: 'Axis tick label color.' },
+      { token: '--semantic-surface-overlay', description: 'Tooltip background color.' },
+      { token: '--semantic-brand-primary', description: 'Default first dataset color.' },
+      { token: '--primitive-font-size-xs', description: 'Tick label and tooltip label font size.' },
+      { token: '--primitive-border-radius-md', description: 'Tooltip border radius.' },
+      { token: '--primitive-shadow-lg', description: 'Tooltip drop shadow.' },
+      { token: '--animation-duration-fast', description: 'Bar hover and tooltip animation duration.' },
+      { token: '--animation-easing-default', description: 'Bar hover and tooltip animation easing.' },
+    ],
+    customizationNotes:
+      'Override semantic and primitive tokens on a scoped ancestor to retheme chart elements. The color palette can be customised per-dataset via the color field on ChartDataset.',
+  },
+  examples: [
+    {
+      title: 'Bar Chart',
+      description: 'Grouped bar chart comparing two data series across six months',
+      template: `<fui-chart
+  type="bar"
+  [datasets]="barDatasets"
+  [labels]="months"
+  ariaLabel="Revenue vs Costs — first half of 2025"
+/>`,
+      typescript: `export class MyComponent {
+  protected readonly months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+  protected readonly barDatasets = [
+    { label: 'Revenue', data: [120, 340, 280, 450, 390, 510] },
+    { label: 'Costs',   data: [80,  210, 190, 300, 250, 340] },
+  ];
+}`,
+    },
+    {
+      title: 'Line Chart (smooth)',
+      description: 'Smooth line chart with cubic bezier curves',
+      template: `<fui-chart
+  type="line"
+  [datasets]="lineDatasets"
+  [labels]="weeks"
+  [options]="{ smooth: true, yAxisLabel: 'Users' }"
+  ariaLabel="Weekly active users — Q1 2025"
+/>`,
+      typescript: `export class MyComponent {
+  protected readonly weeks = ['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7', 'W8'];
+  protected readonly lineDatasets = [
+    { label: 'Mobile', data: [400, 430, 448, 470, 540, 580, 690, 790] },
+    { label: 'Desktop', data: [620, 610, 630, 670, 700, 720, 750, 780] },
+  ];
+}`,
+    },
+    {
+      title: 'Area Chart',
+      description: 'Filled area chart showing composition over time',
+      template: `<fui-chart
+  type="area"
+  [datasets]="areaDatasets"
+  [labels]="quarters"
+  [options]="{ yAxisLabel: 'GB' }"
+  ariaLabel="Storage usage by tier — 2024"
+/>`,
+      typescript: `export class MyComponent {
+  protected readonly quarters = ['Q1', 'Q2', 'Q3', 'Q4'];
+  protected readonly areaDatasets = [
+    { label: 'Hot storage',  data: [40, 55, 70, 85], color: 'primary' },
+    { label: 'Cold storage', data: [120, 130, 145, 160], color: 'secondary' },
+  ];
+}`,
+    },
+    {
+      title: 'Pie Chart',
+      description: 'Proportional pie chart from a single dataset',
+      template: `<fui-chart
+  type="pie"
+  [datasets]="pieDatasets"
+  [labels]="segments"
+  ariaLabel="Market share by product — 2025"
+/>`,
+      typescript: `export class MyComponent {
+  protected readonly segments = ['Product A', 'Product B', 'Product C', 'Other'];
+  protected readonly pieDatasets = [
+    { label: 'Market share', data: [45, 28, 18, 9] },
+  ];
+}`,
+    },
+    {
+      title: 'Donut Chart',
+      description: 'Donut variant with configurable inner radius',
+      template: `<fui-chart
+  type="donut"
+  [datasets]="donutDatasets"
+  [labels]="categories"
+  [options]="{ donutThickness: 0.65 }"
+  ariaLabel="Budget allocation — 2025"
+/>`,
+      typescript: `export class MyComponent {
+  protected readonly categories = ['Engineering', 'Marketing', 'Sales', 'Operations'];
+  protected readonly donutDatasets = [
+    { label: 'Budget', data: [35, 25, 20, 20] },
+  ];
+}`,
+    },
+    {
+      title: 'Scatter Plot',
+      description: 'High-density scatter plot rendered on Canvas',
+      template: `<fui-chart
+  type="scatter"
+  [datasets]="scatterDatasets"
+  [labels]="[]"
+  ariaLabel="Height vs Weight correlation — sample population"
+/>`,
+      typescript: `export class MyComponent {
+  protected readonly scatterDatasets = [
+    {
+      label: 'Group A',
+      data: [
+        { x: 165, y: 68 }, { x: 172, y: 75 }, { x: 180, y: 82 },
+        { x: 158, y: 60 }, { x: 175, y: 78 }, { x: 170, y: 72 },
+      ],
+    },
+  ];
+}`,
+    },
+  ],
+  accessibility: {
+    ariaSupport: [
+      'role="figure" wraps the entire chart',
+      'aria-label on figure from the ariaLabel input',
+      'aria-hidden="true" on SVG/Canvas prevents screen reader traversal of graphics',
+      'aria-live="polite" on tooltip announces value changes',
+      'Visually hidden <table> provides full data access to screen readers',
+      'figcaption is visually hidden but read by screen readers',
+    ],
+    keyboardNavigation: [
+      { key: 'Tab', description: 'Focus legend toggle buttons to show/hide datasets' },
+      { key: 'Enter / Space', description: 'Toggle dataset visibility when a legend button is focused' },
+    ],
+    screenReaderNotes:
+      'All data is available via a visually hidden semantic table. The chart graphic itself is hidden from the accessibility tree. Tooltip content is announced via aria-live when focus-based navigation is added.',
+  },
+  bestPractices: [
+    'Always provide a descriptive ariaLabel so screen readers understand chart purpose',
+    'For SSR apps, guard with isPlatformBrowser() — ResizeObserver requires a browser environment',
+    'Prefer named color aliases (primary, success, danger) over raw hex values for theme compatibility',
+    'Use the legend to hide non-essential series rather than rendering separate charts',
+    'Set yMin to 0 when comparing absolute quantities to avoid misleading proportions',
+    'Keep dataset count below 8 for readability; use a table for dense data',
+    'Provide a data table alternative adjacent to the chart for maximum accessibility',
+  ],
+  relatedComponents: ['table', 'card', 'skeleton'],
+};
+
+// ============================================================================
 // METADATA REGISTRY
 // ============================================================================
 
@@ -6499,6 +6723,8 @@ const COMPONENT_METADATA_MAP = new Map<string, ComponentMetadata>([
   ['context-menu', CONTEXT_MENU_METADATA],
   ['navbar', NAVBAR_METADATA],
   ['stepper', STEPPER_METADATA],
+  // Chart Components
+  ['chart', CHART_METADATA],
 ]);
 
 /**

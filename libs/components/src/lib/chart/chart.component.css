@@ -1,0 +1,122 @@
+/**
+ * Chart component styles.
+ * All values use design tokens — no hardcoded colors, spacing, or animation values.
+ */
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+/* ── Figure wrapper ── */
+
+.fui-chart {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+/* ── SVG ── */
+
+.fui-chart__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* Grid lines */
+.fui-chart__grid-line {
+  stroke: var(--semantic-border-default);
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+  opacity: 0.5;
+}
+
+/* Axis tick labels */
+.fui-chart__tick-label {
+  font-family: var(--primitive-font-family-sans);
+  font-size: var(--primitive-font-size-xs);
+  fill: var(--semantic-text-secondary);
+}
+
+.fui-chart__tick-label--y {
+  text-anchor: end;
+  dominant-baseline: middle;
+}
+
+.fui-chart__tick-label--x {
+  text-anchor: middle;
+  dominant-baseline: auto;
+}
+
+/* Series elements */
+
+.fui-chart__line,
+.fui-chart__area-line {
+  transition: opacity var(--animation-duration-fast) var(--animation-easing-default);
+}
+
+.fui-chart__area-fill {
+  transition: opacity var(--animation-duration-fast) var(--animation-easing-default);
+}
+
+.fui-chart__bar {
+  transition:
+    fill var(--animation-duration-fast) var(--animation-easing-default),
+    opacity var(--animation-duration-fast) var(--animation-easing-default);
+}
+
+.fui-chart__bar:hover {
+  opacity: 0.85;
+}
+
+.fui-chart__slice {
+  transition:
+    opacity var(--animation-duration-fast) var(--animation-easing-default),
+    transform var(--animation-duration-fast) var(--animation-easing-default);
+  transform-origin: center;
+}
+
+.fui-chart__slice:hover {
+  opacity: 0.9;
+}
+
+/* ── Canvas ── */
+
+.fui-chart__canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* ── Screen reader table ── */
+
+.fui-chart__sr-table {
+  /* Visually hidden but accessible */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Figure caption ── */
+
+.fui-chart__caption {
+  /* Visually hidden but accessible */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

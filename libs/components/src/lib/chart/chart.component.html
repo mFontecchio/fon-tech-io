@@ -1,0 +1,195 @@
+<!--
+  ChartComponent template.
+
+  Branches on chart type:
+  - Cartesian (line/bar/area): SVG with axes, grid, and data series
+  - Polar (pie/donut): SVG arcs centered in viewBox
+  - Scatter: Canvas element with imperative draw via effect()
+
+  A visually hidden <table> is always rendered for screen reader accessibility.
+-->
+
+<figure class="fui-chart" role="figure" [attr.aria-label]="ariaLabel()">
+
+  @if (isDimensioned()) {
+
+    <!-- ── SVG branch: line, bar, area, pie, donut ── -->
+    @if (isSvgChart()) {
+      <svg
+        class="fui-chart__svg"
+        [attr.viewBox]="viewBox()"
+        [attr.width]="containerWidth()"
+        [attr.height]="containerHeight()"
+        aria-hidden="true"
+        (pointermove)="handleSvgPointerMove($event)"
+        (pointerleave)="handlePointerLeave()"
+      >
+        <defs>
+          <!-- Clip path to keep series within drawing area -->
+          <clipPath id="fui-chart-clip">
+            <rect
+              [attr.x]="0"
+              [attr.y]="0"
+              [attr.width]="containerWidth()"
+              [attr.height]="containerHeight()"
+            />
+          </clipPath>
+        </defs>
+
+        <!-- ── Cartesian: axes and grid ── -->
+        @if (isCartesian()) {
+
+          <!-- Y-axis grid lines and labels -->
+          @for (tick of yTicks(); track tick.value) {
+            <g class="fui-chart__grid-row">
+              <line
+                [attr.x1]="0"
+                [attr.x2]="containerWidth()"
+                [attr.y1]="tick.y"
+                [attr.y2]="tick.y"
+                class="fui-chart__grid-line"
+              />
+              <text
+                [attr.x]="0"
+                [attr.y]="tick.y"
+                class="fui-chart__tick-label fui-chart__tick-label--y"
+              >{{ tick.label }}</text>
+            </g>
+          }
+
+          <!-- X-axis labels -->
+          @for (lbl of xLabels(); track lbl.label) {
+            <text
+              [attr.x]="lbl.x"
+              [attr.y]="containerHeight() - 4"
+              class="fui-chart__tick-label fui-chart__tick-label--x"
+            >{{ lbl.label }}</text>
+          }
+
+          <!-- ── Line chart ── -->
+          @if (type() === 'line') {
+            <g clip-path="url(#fui-chart-clip)">
+              @for (path of linePaths(); track $index; let i = $index) {
+                <path
+                  [attr.d]="path.d"
+                  [attr.stroke]="colors()[i]"
+                  [attr.stroke-dasharray]="getDashPattern(i)"
+                  fill="none"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="fui-chart__line"
+                />
+              }
+            </g>
+          }
+
+          <!-- ── Area chart ── -->
+          @if (type() === 'area') {
+            <g clip-path="url(#fui-chart-clip)">
+              @for (paths of areaPaths(); track $index; let i = $index) {
+                <!-- Area fill first, then line on top -->
+                <path
+                  [attr.d]="paths.area"
+                  [attr.fill]="colors()[i]"
+                  fill-opacity="0.15"
+                  stroke="none"
+                  class="fui-chart__area-fill"
+                />
+                <path
+                  [attr.d]="paths.line"
+                  [attr.stroke]="colors()[i]"
+                  [attr.stroke-dasharray]="getDashPattern(i)"
+                  fill="none"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="fui-chart__area-line"
+                />
+              }
+            </g>
+          }
+
+          <!-- ── Bar chart ── -->
+          @if (type() === 'bar') {
+            <g clip-path="url(#fui-chart-clip)">
+              @for (bar of barRects(); track bar.datasetIndex + '_' + bar.pointIndex) {
+                <rect
+                  [attr.x]="bar.x + SVG_PADDING.left"
+                  [attr.y]="bar.y + SVG_PADDING.top"
+                  [attr.width]="bar.width"
+                  [attr.height]="bar.height"
+                  [attr.fill]="colors()[bar.datasetIndex]"
+                  rx="2"
+                  class="fui-chart__bar"
+                />
+              }
+            </g>
+          }
+
+        }
+
+        <!-- ── Polar: pie / donut ── -->
+        @if (isPolar()) {
+          <g>
+            @for (slice of pieSlices(); track slice.label) {
+              <path
+                [attr.d]="slice.path"
+                [attr.fill]="slice.color"
+                class="fui-chart__slice"
+              />
+            }
+          </g>
+        }
+
+      </svg>
+
+      <!-- Floating tooltip overlay -->
+      <fui-chart-tooltip [state]="tooltipState()" />
+    }
+
+    <!-- ── Canvas branch: scatter ── -->
+    @if (!isSvgChart()) {
+      <canvas
+        #chartCanvas
+        class="fui-chart__canvas"
+        [attr.width]="containerWidth()"
+        [attr.height]="containerHeight()"
+        aria-hidden="true"
+      ></canvas>
+    }
+
+  }
+
+  <!-- ── Legend ── -->
+  @if (resolvedOptions().showLegend && datasets().length > 1) {
+    <fui-chart-legend
+      [items]="datasets()"
+      (hiddenChange)="handleLegendChange($event)"
+    />
+  }
+
+  <!-- ── Accessible data table (visually hidden) ── -->
+  <table class="fui-chart__sr-table" aria-label="Chart data">
+    <thead>
+      <tr>
+        <th scope="col">Category</th>
+        @for (ds of datasets(); track ds.label) {
+          <th scope="col">{{ ds.label }}</th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for (label of labels(); track label; let i = $index) {
+        <tr>
+          <th scope="row">{{ label }}</th>
+          @for (ds of datasets(); track ds.label) {
+            <td>{{ ds.data[i] }}</td>
+          }
+        </tr>
+      }
+    </tbody>
+  </table>
+
+  <figcaption class="fui-chart__caption">{{ ariaLabel() }}</figcaption>
+</figure>
