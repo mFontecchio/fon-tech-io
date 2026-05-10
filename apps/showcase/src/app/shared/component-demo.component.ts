@@ -49,6 +49,7 @@ import {
   DividerComponent,
   StackComponent,
   GridComponent,
+  ChartComponent,
 } from '@mfontecchio/components';
 
 @Component({
@@ -97,6 +98,7 @@ import {
     DividerComponent,
     StackComponent,
     GridComponent,
+    ChartComponent,
   ],
   template: `
     <div class="component-demo">
@@ -1024,7 +1026,7 @@ import {
 
           <!-- ACCORDION DEMOS -->
           @case ('accordion') {
-            @if (exampleTitle() === 'Single Mode Accordion') {
+            @if (exampleTitle() === 'Default Card Accordion') {
               <fui-accordion mode="single">
                 <fui-accordion-item title="What is your return policy?">
                   <p>We offer a 30-day return policy on all items.</p>
@@ -1037,23 +1039,52 @@ import {
                 </fui-accordion-item>
               </fui-accordion>
             }
-            @if (exampleTitle() === 'Multiple Mode Accordion') {
+            @if (exampleTitle() === 'Multiple Expansion') {
               <fui-accordion mode="multiple">
-                <fui-accordion-item title="Section 1">
-                  <p>Content for section 1.</p>
+                <fui-accordion-item title="What is included?">
+                  <p>Full component library with theming support.</p>
                 </fui-accordion-item>
-                <fui-accordion-item title="Section 2">
-                  <p>Content for section 2.</p>
+                <fui-accordion-item title="How do I install it?">
+                  <p>Run pnpm add @mfontecchio/components.</p>
+                </fui-accordion-item>
+                <fui-accordion-item title="Is SSR supported?">
+                  <p>Yes, all components are SSR-compatible.</p>
                 </fui-accordion-item>
               </fui-accordion>
             }
-            @if (exampleTitle() === 'Pre-expanded Accordion') {
+            @if (exampleTitle() === 'Pre-expanded Items') {
               <fui-accordion [expanded]="[0]">
-                <fui-accordion-item title="First Item (Expanded)">
-                  <p>This item is expanded by default.</p>
+                <fui-accordion-item title="Getting Started">
+                  <p>Welcome guide content.</p>
                 </fui-accordion-item>
-                <fui-accordion-item title="Second Item">
-                  <p>This item starts collapsed.</p>
+                <fui-accordion-item title="Advanced Features">
+                  <p>Advanced configuration topics.</p>
+                </fui-accordion-item>
+              </fui-accordion>
+            }
+            @if (exampleTitle() === 'Flush / Borderless') {
+              <fui-accordion [bordered]="false">
+                <fui-accordion-item title="Billing">
+                  <p>Manage your payment methods.</p>
+                </fui-accordion-item>
+                <fui-accordion-item title="Subscriptions">
+                  <p>View active plans.</p>
+                </fui-accordion-item>
+              </fui-accordion>
+            }
+            @if (exampleTitle() === 'Expandable Navigation List') {
+              <fui-accordion mode="multiple" [bordered]="false" [highlightExpanded]="false" [dividers]="false">
+                <fui-accordion-item title="Components">
+                  <nav class="demo-accordion-nav">
+                    <a href="/components/button" class="demo-accordion-nav__link">Button</a>
+                    <a href="/components/input" class="demo-accordion-nav__link">Input</a>
+                  </nav>
+                </fui-accordion-item>
+                <fui-accordion-item title="Getting Started">
+                  <nav class="demo-accordion-nav">
+                    <a href="/getting-started/installation" class="demo-accordion-nav__link">Installation</a>
+                    <a href="/getting-started/theming" class="demo-accordion-nav__link">Theming</a>
+                  </nav>
                 </fui-accordion-item>
               </fui-accordion>
             }
@@ -1530,6 +1561,73 @@ Sample text for editing</textarea
             }
           }
 
+          <!-- CHART DEMOS -->
+          @case ('chart') {
+            @if (exampleTitle() === 'Bar Chart') {
+              <div class="chart-demo-wrap">
+                <fui-chart
+                  type="bar"
+                  [datasets]="chartBarDatasets"
+                  [labels]="chartMonths"
+                  ariaLabel="Revenue vs Costs — first half of 2025"
+                />
+              </div>
+            }
+            @if (exampleTitle() === 'Line Chart (smooth)') {
+              <div class="chart-demo-wrap">
+                <fui-chart
+                  type="line"
+                  [datasets]="chartLineDatasets"
+                  [labels]="chartWeeks"
+                  [options]="{ smooth: true, yAxisLabel: 'Users' }"
+                  ariaLabel="Weekly active users — Q1 2025"
+                />
+              </div>
+            }
+            @if (exampleTitle() === 'Area Chart') {
+              <div class="chart-demo-wrap">
+                <fui-chart
+                  type="area"
+                  [datasets]="chartAreaDatasets"
+                  [labels]="chartQuarters"
+                  [options]="{ yAxisLabel: 'GB' }"
+                  ariaLabel="Storage usage by tier — 2024"
+                />
+              </div>
+            }
+            @if (exampleTitle() === 'Pie Chart') {
+              <div class="chart-demo-wrap">
+                <fui-chart
+                  type="pie"
+                  [datasets]="chartPieDatasets"
+                  [labels]="chartSegments"
+                  ariaLabel="Market share by product — 2025"
+                />
+              </div>
+            }
+            @if (exampleTitle() === 'Donut Chart') {
+              <div class="chart-demo-wrap">
+                <fui-chart
+                  type="donut"
+                  [datasets]="chartDonutDatasets"
+                  [labels]="chartCategories"
+                  [options]="{ donutThickness: 0.65 }"
+                  ariaLabel="Budget allocation — 2025"
+                />
+              </div>
+            }
+            @if (exampleTitle() === 'Scatter Plot') {
+              <div class="chart-demo-wrap">
+                <fui-chart
+                  type="scatter"
+                  [datasets]="chartScatterDatasets"
+                  [labels]="[]"
+                  ariaLabel="Height vs Weight correlation — sample population"
+                />
+              </div>
+            }
+          }
+
           @default {
             <div class="demo-placeholder">
               <p>Live demo coming soon for this example</p>
@@ -1566,6 +1664,26 @@ Sample text for editing</textarea
       }
 
       .demo-drawer-nav__link:hover {
+        background: var(--semantic-surface-background-secondary);
+      }
+
+      .demo-accordion-nav {
+        display: flex;
+        flex-direction: column;
+        gap: var(--primitive-spacing-2);
+        padding: var(--primitive-spacing-1) 0;
+      }
+
+      .demo-accordion-nav__link {
+        padding: var(--primitive-spacing-2) var(--primitive-spacing-3);
+        text-decoration: none;
+        color: var(--semantic-text-primary);
+        border-radius: var(--component-button-border-radius, 4px);
+        transition: background var(--animation-duration-normal, 250ms)
+          var(--animation-easing-default, ease-in-out);
+      }
+
+      .demo-accordion-nav__link:hover {
         background: var(--semantic-surface-background-secondary);
       }
 
@@ -1839,6 +1957,13 @@ Sample text for editing</textarea
         text-align: center;
         padding: 3rem 2rem;
         color: var(--semantic-text-secondary);
+      }
+
+      /* Chart demo styles */
+      .chart-demo-wrap {
+        width: 100%;
+        max-width: 640px;
+        padding: var(--primitive-spacing-4);
       }
     `,
   ],
@@ -2202,4 +2327,58 @@ export class ExampleComponent {}`);
     console.log('Context menu item clicked:', item);
     this.toastService.info(`Action: ${item.label}`);
   }
+
+  // ---------------------------------------------------------------------------
+  // Chart demo data
+  // ---------------------------------------------------------------------------
+
+  protected readonly chartMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+  protected readonly chartWeeks = ['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7', 'W8'];
+  protected readonly chartQuarters = ['Q1', 'Q2', 'Q3', 'Q4'];
+  protected readonly chartSegments = ['Product A', 'Product B', 'Product C', 'Other'];
+  protected readonly chartCategories = ['Engineering', 'Marketing', 'Sales', 'Operations'];
+
+  protected readonly chartBarDatasets = [
+    { label: 'Revenue', data: [120, 340, 280, 450, 390, 510], color: 'primary' as const },
+    { label: 'Costs',   data: [80,  210, 190, 300, 250, 340], color: 'danger' as const },
+  ];
+
+  protected readonly chartLineDatasets = [
+    { label: 'Mobile',  data: [400, 430, 448, 470, 540, 580, 690, 790], color: 'primary' as const },
+    { label: 'Desktop', data: [620, 610, 630, 670, 700, 720, 750, 780], color: 'success' as const },
+  ];
+
+  protected readonly chartAreaDatasets = [
+    { label: 'Hot storage',  data: [40,  55,  70,  85],  color: 'warning' as const },
+    { label: 'Cold storage', data: [120, 130, 145, 160], color: 'primary' as const },
+  ];
+
+  protected readonly chartPieDatasets = [
+    { label: 'Market share', data: [45, 28, 18, 9] },
+  ];
+
+  protected readonly chartDonutDatasets = [
+    { label: 'Budget', data: [35, 25, 20, 20] },
+  ];
+
+  protected readonly chartScatterDatasets = [
+    {
+      label: 'Group A',
+      color: 'primary' as const,
+      data: [
+        { x: 165, y: 68 }, { x: 172, y: 75 }, { x: 180, y: 82 },
+        { x: 158, y: 60 }, { x: 175, y: 78 }, { x: 170, y: 72 },
+        { x: 168, y: 65 }, { x: 182, y: 88 }, { x: 161, y: 63 },
+      ],
+    },
+    {
+      label: 'Group B',
+      color: 'success' as const,
+      data: [
+        { x: 155, y: 52 }, { x: 162, y: 59 }, { x: 170, y: 66 },
+        { x: 148, y: 48 }, { x: 165, y: 62 }, { x: 158, y: 55 },
+        { x: 172, y: 69 }, { x: 153, y: 50 },
+      ],
+    },
+  ];
 }

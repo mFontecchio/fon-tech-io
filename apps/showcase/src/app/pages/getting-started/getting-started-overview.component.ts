@@ -49,6 +49,16 @@ import { CardComponent } from '@mfontecchio/components';
             </p>
           </fui-card>
         </a>
+
+        <a routerLink="/getting-started/compatibility" class="guide-card">
+          <fui-card>
+            <h2>Compatibility</h2>
+            <p>
+              See which package versions are compatible with each version of Angular, TypeScript,
+              and Node.js.
+            </p>
+          </fui-card>
+        </a>
       </div>
     </div>
   `,

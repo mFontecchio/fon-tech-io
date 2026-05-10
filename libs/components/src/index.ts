@@ -52,3 +52,9 @@ export * from './lib/menu/menu.component';
 export * from './lib/context-menu/context-menu.component';
 export * from './lib/navbar/navbar.component';
 export * from './lib/stepper/stepper.component';
+
+// Chart Components
+export * from './lib/chart/chart.component';
+export * from './lib/chart/chart-legend.component';
+export * from './lib/chart/chart-tooltip.component';
+export * from './lib/chart/chart.types';

@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [20.1.0] - 2026-05-10
+
+### Added
+
+- **Chart component (`fui-chart`)**: Zero-dependency chart system supporting line, bar, area, pie, donut, and scatter chart types. Renders line, bar, and area charts via SVG for crisp scaling at any resolution; scatter plots via Canvas 2D with HiDPI support. All geometry is derived through Angular 20 `computed()` signals; theme tokens are resolved at runtime so charts respond to light, dark, and custom themes automatically. Includes `ChartTooltipComponent` (floating data-point overlay, CSP-compliant position via CSS custom properties) and `ChartLegendComponent` (dataset toggle with `aria-pressed` support). WCAG 1.4.1 compliant — each line series carries a distinct SVG `stroke-dasharray` pattern so color is never the sole visual differentiator. A visually hidden `<table>` is always rendered for screen reader data access. Exported from `@mfontecchio/components` as `ChartComponent`, `ChartLegendComponent`, `ChartTooltipComponent`, and full chart type definitions.
+
+- **Accordion component — `bordered`, `highlightExpanded`, `dividers` inputs**: Three new boolean inputs allow mix-and-match composition of the accordion's visual style. `bordered` (default `true`) controls the outer container border and border-radius. `highlightExpanded` (default `true`) controls the expanded-header background tint and brand-coloured chevron. `dividers` (default `true`) controls the separator lines between items. All flags default to `true`, preserving full backward compatibility with existing usage. Setting all three to `false` renders a plain expandable list suitable for nested navigation groups.
+- **Accordion showcase documentation updated**: API reference corrected to show the `<fui-accordion-item>` content-children pattern (removing the erroneous `[items]` array example). Three new inputs documented with defaults, descriptions, and usage guidance. Two new code examples added — flush/borderless and expandable navigation list. Best practices and theming token tables updated to reflect modifier-class architecture.
+
+### Changed
+
+- **Angular-aligned versioning**: Adopted Angular-aligned versioning for all four published packages (`@mfontecchio/components`, `@mfontecchio/theming`, `@mfontecchio/shared`, `@mfontecchio/theme-builder`). The MAJOR version now tracks the Angular major (MAJOR = Angular major, MINOR = features, PATCH = fixes), matching the convention used by Angular Material and CDK. All packages bumped from `1.0.0` to `20.0.0`. Inter-library peer dependency ranges updated from `>=0.1.0` to `>=20.0.0`. Root workspace version updated to `20.0.0`.
+- **Compatibility documentation updated**: `documentation/COMPATIBILITY.md` and the showcase `/getting-started/compatibility` page updated to reflect the `20.x` version line, document the versioning scheme, and explain the MAJOR/MINOR/PATCH semantics. The showcase page now includes a visual breakdown of the versioning convention.
+
+### Changed
+
+- Updated root `README.md` with GitHub release, license, Angular, and pnpm badges; added live showcase link (`https://mfontecchio.github.io/fon-tech-io/`); corrected component count to 39; added missing components (Multi-Select, Code Block, Carousel, Context Menu) to their respective categories; renamed "Progress Bar" to "Progress" and updated Node.js prerequisite to 24+; added link to `documentation/COMPATIBILITY.md`.
+- Updated `libs/components/README.md` installation command from `npm install` to `pnpm add` for consistency with all other library READMEs.
+
+### Added
+
+- **Angular version compatibility matrix**: Added `documentation/COMPATIBILITY.md` as the canonical reference for which package versions are compatible with which versions of Angular, TypeScript, and Node.js. Added a live compatibility page to the showcase at `/getting-started/compatibility` backed by a single data file (`apps/showcase/src/app/data/compatibility.data.ts`). Added the page to the sidebar navigation and the Getting Started overview card grid.
+
 ### Changed
 
 - Migrated GitHub Pages deployment from a cross-repository push model to a native GitHub Actions Pages deployment. The showcase is now deployed directly from this repository using `actions/configure-pages`, `actions/upload-pages-artifact`, and `actions/deploy-pages`, eliminating the dependency on the `mFontecchio/fon-tech-io` public mirror repository and the `PUBLIC_REPO_DEPLOY_TOKEN` personal access token. The deploy workflow is split into a `build` job and a dedicated `deploy` job with `pages: write` and `id-token: write` permissions scoped to only the deploy job.

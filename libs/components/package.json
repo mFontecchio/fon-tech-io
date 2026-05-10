@@ -1,6 +1,6 @@
 {
   "name": "@mfontecchio/components",
-  "version": "1.0.0",
+  "version": "20.1.0",
   "description": "Enterprise-grade Angular 20 component library — 38 UI components with full theming and accessibility support",
   "keywords": [
     "angular",
@@ -25,8 +25,8 @@
     "@angular/core": ">=20.0.0",
     "@angular/common": ">=20.0.0",
     "@angular/forms": ">=20.0.0",
-    "@mfontecchio/theming": ">=0.1.0",
-    "@mfontecchio/shared": ">=0.1.0"
+    "@mfontecchio/theming": ">=20.0.0",
+    "@mfontecchio/shared": ">=20.0.0"
   },
   "publishConfig": {
     "access": "public",

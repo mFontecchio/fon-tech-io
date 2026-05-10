@@ -2790,14 +2790,18 @@ const ACCORDION_METADATA: ComponentMetadata = {
   id: 'accordion',
   name: 'Accordion',
   category: 'layout',
-  description: 'A vertically stacked set of collapsible content panels for organizing information.',
+  description:
+    'A vertically stacked set of collapsible content panels for organizing information. Supports single or multiple expansion modes and composable styling flags for card, flush, and list presentations.',
   selector: 'fui-accordion',
   setup: {
-    importStatement: "import { AccordionComponent } from '@mfontecchio/components';",
-    usageSnippet: `<fui-accordion [items]="items" mode="single" />`,
-    usageTypescript: `export class MyComponent {\n  protected readonly items = [\n    { title: 'Section 1', content: 'Content for section 1' },\n    { title: 'Section 2', content: 'Content for section 2' },\n  ];\n}`,
+    importStatement:
+      "import { AccordionComponent, AccordionItemComponent } from '@mfontecchio/components';",
+    usageSnippet: `<fui-accordion>
+  <fui-accordion-item title="Section 1">Content for section 1</fui-accordion-item>
+  <fui-accordion-item title="Section 2">Content for section 2</fui-accordion-item>
+</fui-accordion>`,
     setupNotes:
-      'No additional setup required. Add AccordionComponent to the imports array of your standalone component.',
+      'Add both AccordionComponent and AccordionItemComponent to the imports array of your standalone component.',
   },
   runtime: {
     supportsSSR: true,
@@ -2808,55 +2812,95 @@ const ACCORDION_METADATA: ComponentMetadata = {
     {
       name: 'mode',
       type: "'single' | 'multiple'",
-      description: 'Expansion mode (single allows one, multiple allows many)',
+      description: 'Expansion mode. Single allows one panel open at a time; multiple allows many.',
       defaultValue: "'single'",
     },
     {
       name: 'expanded',
       type: 'number[]',
-      description: 'Array of expanded item indices',
+      description: 'Array of item indices that should be expanded on initialisation.',
       defaultValue: '[]',
+    },
+    {
+      name: 'bordered',
+      type: 'boolean',
+      description:
+        'Whether to render a border and border-radius around the entire accordion container. Set to false for flush or nav-list contexts.',
+      defaultValue: 'true',
+    },
+    {
+      name: 'highlightExpanded',
+      type: 'boolean',
+      description:
+        'Whether to apply a background tint and brand-coloured chevron to the currently expanded item header. Set to false for minimal or list contexts.',
+      defaultValue: 'true',
+    },
+    {
+      name: 'dividers',
+      type: 'boolean',
+      description:
+        'Whether to render separator lines between accordion items. Set to false for a fully plain expandable list.',
+      defaultValue: 'true',
     },
   ],
   outputs: [
     {
       name: 'expandedChange',
       type: 'number[]',
-      description: 'Emitted when expansion state changes',
+      description: 'Emitted when the expansion state changes, carrying the updated index array.',
     },
   ],
   passthroughs: [
     {
-      name: 'Panel body content',
+      name: 'fui-accordion-item',
       type: 'slot',
-      selector: '(default inside accordion panel)',
+      selector: 'fui-accordion-item',
       description:
-        'When items are passed as an array, the content field provides panel text. For richer content, use the accordion in composition mode.',
-      optional: true,
+        'One or more AccordionItemComponent children projected as content. Each item declares its title and disabled state as inputs; body content is projected inside the item tag.',
+      optional: false,
     },
   ],
   theming: {
     tokens: [
-      { token: '--semantic-surface-card', description: 'Accordion panel background.' },
-      { token: '--semantic-border-default', description: 'Border between accordion items.' },
-      { token: '--semantic-border-subtle', description: 'Separator between header and body.' },
-      { token: '--semantic-brand-primary', description: 'Expand/collapse icon accent color.' },
+      {
+        token: '--semantic-surface-card',
+        description:
+          'Header and panel background. Applied when bordered or highlightExpanded is true.',
+      },
+      {
+        token: '--semantic-border-default',
+        description: 'Outer container border color. Applied when bordered is true.',
+      },
+      {
+        token: '--semantic-border-subtle',
+        description: 'Separator line between items. Applied when dividers is true.',
+      },
+      {
+        token: '--semantic-brand-primary',
+        description:
+          'Expanded chevron icon accent color. Applied when highlightExpanded is true.',
+      },
+      {
+        token: '--semantic-surface-background-secondary',
+        description:
+          'Expanded header hover and highlight background. Applied when highlightExpanded is true.',
+      },
       {
         token: '--semantic-animation-duration-component',
         description: 'Panel open/close animation duration.',
       },
       {
         token: '--primitive-border-radius-md',
-        description: 'Corner radius of each accordion item.',
+        description: 'Corner radius of the outer container. Applied when bordered is true.',
       },
     ],
     customizationNotes:
-      'Override --semantic-brand-primary to change the indicator accent. Scope token overrides to a parent element.',
+      'Override --semantic-brand-primary to change the expanded-icon accent. The bordered, highlightExpanded, and dividers inputs allow structural visual changes without token overrides. Scope any token overrides to a parent element to avoid unintended global impact.',
   },
   examples: [
     {
-      title: 'Single Mode Accordion',
-      description: 'Only one panel open at a time',
+      title: 'Default Card Accordion',
+      description: 'Standard bordered accordion with a single panel open at a time.',
       template: `<fui-accordion mode="single">
   <fui-accordion-item title="Personal Information">
     <p>Name, email, and contact details.</p>
@@ -2870,49 +2914,85 @@ const ACCORDION_METADATA: ComponentMetadata = {
 </fui-accordion>`,
     },
     {
-      title: 'Multiple Mode Accordion',
-      description: 'Multiple panels can be open simultaneously',
+      title: 'Multiple Expansion',
+      description: 'Multiple panels can be open simultaneously.',
       template: `<fui-accordion mode="multiple">
-  <fui-accordion-item title="FAQ 1">Answer to question 1</fui-accordion-item>
-  <fui-accordion-item title="FAQ 2">Answer to question 2</fui-accordion-item>
-  <fui-accordion-item title="FAQ 3">Answer to question 3</fui-accordion-item>
+  <fui-accordion-item title="What is included?">Full component library with theming support.</fui-accordion-item>
+  <fui-accordion-item title="How do I install it?">Run pnpm add @mfontecchio/components.</fui-accordion-item>
+  <fui-accordion-item title="Is SSR supported?">Yes, all components are SSR-compatible.</fui-accordion-item>
 </fui-accordion>`,
     },
     {
-      title: 'Pre-expanded Accordion',
-      description: 'Accordion with default expanded items',
+      title: 'Pre-expanded Items',
+      description: 'Accordion with items open by default.',
       template: `<fui-accordion [expanded]="[0]">
-  <fui-accordion-item title="Getting Started">Welcome guide content</fui-accordion-item>
-  <fui-accordion-item title="Advanced Features">Advanced topics</fui-accordion-item>
+  <fui-accordion-item title="Getting Started">Welcome guide content.</fui-accordion-item>
+  <fui-accordion-item title="Advanced Features">Advanced configuration topics.</fui-accordion-item>
+</fui-accordion>`,
+    },
+    {
+      title: 'Flush / Borderless',
+      description:
+        'Removes the outer border. Useful when the accordion sits inside an existing card or panel surface.',
+      template: `<fui-accordion [bordered]="false">
+  <fui-accordion-item title="Billing">Manage your payment methods.</fui-accordion-item>
+  <fui-accordion-item title="Subscriptions">View active plans.</fui-accordion-item>
+</fui-accordion>`,
+    },
+    {
+      title: 'Expandable Navigation List',
+      description:
+        'All styling flags disabled — renders a plain expandable list ideal for nested navigation groups or sidebar menus.',
+      template: `<fui-accordion
+  mode="multiple"
+  [bordered]="false"
+  [highlightExpanded]="false"
+  [dividers]="false"
+>
+  <fui-accordion-item title="Components">
+    <nav class="sidebar-nav">
+      <a href="/components/button" class="sidebar-nav__link">Button</a>
+      <a href="/components/input" class="sidebar-nav__link">Input</a>
+    </nav>
+  </fui-accordion-item>
+  <fui-accordion-item title="Getting Started">
+    <nav class="sidebar-nav">
+      <a href="/getting-started/installation" class="sidebar-nav__link">Installation</a>
+      <a href="/getting-started/theming" class="sidebar-nav__link">Theming</a>
+    </nav>
+  </fui-accordion-item>
 </fui-accordion>`,
     },
   ],
   accessibility: {
     ariaSupport: [
       'role="region" on accordion panels',
-      'aria-expanded indicates panel state',
-      'aria-controls links header to panel',
-      'aria-labelledby links panel to header',
+      'aria-expanded on header buttons indicates panel state',
+      'aria-controls links each header button to its panel',
+      'aria-labelledby links each panel back to its header',
+      'disabled items carry the disabled attribute and are skipped by keyboard navigation',
     ],
     keyboardNavigation: [
-      { key: 'Enter/Space', description: 'Toggle panel expansion' },
-      { key: 'Arrow Down', description: 'Move to next header' },
-      { key: 'Arrow Up', description: 'Move to previous header' },
-      { key: 'Home', description: 'Move to first header' },
-      { key: 'End', description: 'Move to last header' },
+      { key: 'Enter / Space', description: 'Toggle panel expansion' },
+      { key: 'Arrow Down', description: 'Move focus to next header' },
+      { key: 'Arrow Up', description: 'Move focus to previous header' },
+      { key: 'Home', description: 'Move focus to first header' },
+      { key: 'End', description: 'Move focus to last header' },
     ],
     screenReaderNotes:
-      'Panel states (expanded/collapsed) and content announced. Header buttons clearly labeled.',
+      'Panel expanded/collapsed state and body content are announced on toggle. Header buttons carry descriptive labels. Disabled items are announced as unavailable.',
   },
   bestPractices: [
-    'Use for FAQs, settings sections, and content organization',
-    'Keep panel titles concise and descriptive',
-    'Use single mode for mutually exclusive content',
-    'Use multiple mode for independent content sections',
-    'Limit to 5-7 panels for best UX',
-    'Ensure first panel has meaningful default content',
-    'Avoid nesting accordions within accordions',
+    'Use for FAQs, settings sections, and progressive disclosure of content',
+    'Keep panel titles concise and descriptive — they are the primary navigation affordance',
+    'Use single mode for mutually exclusive content sections',
+    'Use multiple mode for independent content sections that users may compare',
+    'Use [bordered]="false" when embedding the accordion inside an existing card or panel',
+    'Use [highlightExpanded]="false" [dividers]="false" [bordered]="false" for sidebar navigation groups',
+    'Limit to 5–7 panels for best user experience; split longer sets into separate sections',
+    'Avoid nesting accordions within accordions — prefer tabs or a flat list instead',
   ],
+  relatedComponents: ['tabs', 'list', 'navbar'],
 };
 
 const DIVIDER_METADATA: ComponentMetadata = {
@@ -6371,6 +6451,230 @@ protected currentStep = signal(0);`,
 };
 
 // ============================================================================
+// CHART COMPONENT
+// ============================================================================
+
+const CHART_METADATA: ComponentMetadata = {
+  id: 'chart',
+  name: 'Chart',
+  category: 'data-display',
+  description:
+    'A zero-dependency chart component supporting line, bar, area, pie, donut, and scatter types. SVG-rendered for most types (fully accessible, crisp at any DPI) with Canvas used for high-density scatter plots. Responsive, theme-aware, and WCAG 2.1 AA compliant.',
+  selector: 'fui-chart',
+  setup: {
+    importStatement: "import { ChartComponent } from '@mfontecchio/components';",
+    usageSnippet: `<fui-chart
+  type="bar"
+  [datasets]="revenueData"
+  [labels]="months"
+  ariaLabel="Monthly revenue for 2025"
+/>`,
+    usageTypescript: `export class MyComponent {
+  protected readonly months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+  protected readonly revenueData = [
+    { label: 'Revenue', data: [120, 340, 280, 450, 390, 510] },
+  ];
+}`,
+    additionalImports: ['ChartDataset', 'ChartOptions'],
+    setupNotes:
+      'Add ChartComponent to the imports array of your standalone component. The chart automatically sizes itself to the width of its container using ResizeObserver.',
+  },
+  runtime: {
+    supportsSSR: false,
+    requiresBrowserAPIs: true,
+    notes: [
+      'ResizeObserver is used to track container width — not available in SSR environments.',
+      'Canvas-based scatter charts require a browser rendering context.',
+      'Guard usage in SSR apps with isPlatformBrowser() or render inside a client-only route.',
+    ],
+  },
+  inputs: [
+    {
+      name: 'type',
+      type: "'line' | 'bar' | 'area' | 'pie' | 'donut' | 'scatter'",
+      description: 'Chart type determining rendering strategy and geometry',
+      defaultValue: "'bar'",
+    },
+    {
+      name: 'datasets',
+      type: 'readonly ChartDataset[]',
+      description: 'Array of data series. Each dataset has a label, data array, and optional color.',
+      required: true,
+    },
+    {
+      name: 'labels',
+      type: 'readonly string[]',
+      description:
+        'Category labels for the X axis (line, bar, area, pie, donut). Used in the accessible data table for scatter charts.',
+      required: true,
+    },
+    {
+      name: 'options',
+      type: 'ChartOptions',
+      description: 'Optional chart configuration — all fields have sensible defaults.',
+      defaultValue: '{}',
+    },
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      description: 'Accessible description of the chart rendered in the figcaption and figure aria-label.',
+      required: true,
+    },
+  ],
+  outputs: [],
+  theming: {
+    tokens: [
+      { token: '--semantic-border-default', description: 'Grid line color.' },
+      { token: '--semantic-text-secondary', description: 'Axis tick label color.' },
+      { token: '--semantic-surface-overlay', description: 'Tooltip background color.' },
+      { token: '--semantic-brand-primary', description: 'Default first dataset color.' },
+      { token: '--primitive-font-size-xs', description: 'Tick label and tooltip label font size.' },
+      { token: '--primitive-border-radius-md', description: 'Tooltip border radius.' },
+      { token: '--primitive-shadow-lg', description: 'Tooltip drop shadow.' },
+      { token: '--animation-duration-fast', description: 'Bar hover and tooltip animation duration.' },
+      { token: '--animation-easing-default', description: 'Bar hover and tooltip animation easing.' },
+    ],
+    customizationNotes:
+      'Override semantic and primitive tokens on a scoped ancestor to retheme chart elements. The color palette can be customised per-dataset via the color field on ChartDataset.',
+  },
+  examples: [
+    {
+      title: 'Bar Chart',
+      description: 'Grouped bar chart comparing two data series across six months',
+      template: `<fui-chart
+  type="bar"
+  [datasets]="barDatasets"
+  [labels]="months"
+  ariaLabel="Revenue vs Costs — first half of 2025"
+/>`,
+      typescript: `export class MyComponent {
+  protected readonly months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+  protected readonly barDatasets = [
+    { label: 'Revenue', data: [120, 340, 280, 450, 390, 510] },
+    { label: 'Costs',   data: [80,  210, 190, 300, 250, 340] },
+  ];
+}`,
+    },
+    {
+      title: 'Line Chart (smooth)',
+      description: 'Smooth line chart with cubic bezier curves',
+      template: `<fui-chart
+  type="line"
+  [datasets]="lineDatasets"
+  [labels]="weeks"
+  [options]="{ smooth: true, yAxisLabel: 'Users' }"
+  ariaLabel="Weekly active users — Q1 2025"
+/>`,
+      typescript: `export class MyComponent {
+  protected readonly weeks = ['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7', 'W8'];
+  protected readonly lineDatasets = [
+    { label: 'Mobile', data: [400, 430, 448, 470, 540, 580, 690, 790] },
+    { label: 'Desktop', data: [620, 610, 630, 670, 700, 720, 750, 780] },
+  ];
+}`,
+    },
+    {
+      title: 'Area Chart',
+      description: 'Filled area chart showing composition over time',
+      template: `<fui-chart
+  type="area"
+  [datasets]="areaDatasets"
+  [labels]="quarters"
+  [options]="{ yAxisLabel: 'GB' }"
+  ariaLabel="Storage usage by tier — 2024"
+/>`,
+      typescript: `export class MyComponent {
+  protected readonly quarters = ['Q1', 'Q2', 'Q3', 'Q4'];
+  protected readonly areaDatasets = [
+    { label: 'Hot storage',  data: [40, 55, 70, 85], color: 'primary' },
+    { label: 'Cold storage', data: [120, 130, 145, 160], color: 'secondary' },
+  ];
+}`,
+    },
+    {
+      title: 'Pie Chart',
+      description: 'Proportional pie chart from a single dataset',
+      template: `<fui-chart
+  type="pie"
+  [datasets]="pieDatasets"
+  [labels]="segments"
+  ariaLabel="Market share by product — 2025"
+/>`,
+      typescript: `export class MyComponent {
+  protected readonly segments = ['Product A', 'Product B', 'Product C', 'Other'];
+  protected readonly pieDatasets = [
+    { label: 'Market share', data: [45, 28, 18, 9] },
+  ];
+}`,
+    },
+    {
+      title: 'Donut Chart',
+      description: 'Donut variant with configurable inner radius',
+      template: `<fui-chart
+  type="donut"
+  [datasets]="donutDatasets"
+  [labels]="categories"
+  [options]="{ donutThickness: 0.65 }"
+  ariaLabel="Budget allocation — 2025"
+/>`,
+      typescript: `export class MyComponent {
+  protected readonly categories = ['Engineering', 'Marketing', 'Sales', 'Operations'];
+  protected readonly donutDatasets = [
+    { label: 'Budget', data: [35, 25, 20, 20] },
+  ];
+}`,
+    },
+    {
+      title: 'Scatter Plot',
+      description: 'High-density scatter plot rendered on Canvas',
+      template: `<fui-chart
+  type="scatter"
+  [datasets]="scatterDatasets"
+  [labels]="[]"
+  ariaLabel="Height vs Weight correlation — sample population"
+/>`,
+      typescript: `export class MyComponent {
+  protected readonly scatterDatasets = [
+    {
+      label: 'Group A',
+      data: [
+        { x: 165, y: 68 }, { x: 172, y: 75 }, { x: 180, y: 82 },
+        { x: 158, y: 60 }, { x: 175, y: 78 }, { x: 170, y: 72 },
+      ],
+    },
+  ];
+}`,
+    },
+  ],
+  accessibility: {
+    ariaSupport: [
+      'role="figure" wraps the entire chart',
+      'aria-label on figure from the ariaLabel input',
+      'aria-hidden="true" on SVG/Canvas prevents screen reader traversal of graphics',
+      'aria-live="polite" on tooltip announces value changes',
+      'Visually hidden <table> provides full data access to screen readers',
+      'figcaption is visually hidden but read by screen readers',
+    ],
+    keyboardNavigation: [
+      { key: 'Tab', description: 'Focus legend toggle buttons to show/hide datasets' },
+      { key: 'Enter / Space', description: 'Toggle dataset visibility when a legend button is focused' },
+    ],
+    screenReaderNotes:
+      'All data is available via a visually hidden semantic table. The chart graphic itself is hidden from the accessibility tree. Tooltip content is announced via aria-live when focus-based navigation is added.',
+  },
+  bestPractices: [
+    'Always provide a descriptive ariaLabel so screen readers understand chart purpose',
+    'For SSR apps, guard with isPlatformBrowser() — ResizeObserver requires a browser environment',
+    'Prefer named color aliases (primary, success, danger) over raw hex values for theme compatibility',
+    'Use the legend to hide non-essential series rather than rendering separate charts',
+    'Set yMin to 0 when comparing absolute quantities to avoid misleading proportions',
+    'Keep dataset count below 8 for readability; use a table for dense data',
+    'Provide a data table alternative adjacent to the chart for maximum accessibility',
+  ],
+  relatedComponents: ['table', 'card', 'skeleton'],
+};
+
+// ============================================================================
 // METADATA REGISTRY
 // ============================================================================
 
@@ -6419,6 +6723,8 @@ const COMPONENT_METADATA_MAP = new Map<string, ComponentMetadata>([
   ['context-menu', CONTEXT_MENU_METADATA],
   ['navbar', NAVBAR_METADATA],
   ['stepper', STEPPER_METADATA],
+  // Chart Components
+  ['chart', CHART_METADATA],
 ]);
 
 /**

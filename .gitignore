@@ -54,6 +54,7 @@ Thumbs.db
 .cursor
 .github/prompts
 .github/copilot-instructions.md
+.github/llms-full.txt
 
 documentation
 .specstory
