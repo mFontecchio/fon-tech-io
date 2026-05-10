@@ -7,7 +7,7 @@
  */
 
 import type { ChartDataset, ChartPoint, ChartScale } from './chart.types';
-import { resolveDatasetColors, getDashPattern } from './chart-color.utils';
+import { resolveDatasetColors } from './chart-color.utils';
 import { valueToPixel } from './chart-scale.utils';
 
 /** Point radius for scatter plot dots (in logical pixels). */
@@ -62,8 +62,12 @@ export function drawScatter(
   const drawWidth = canvasWidth - CANVAS_PADDING.left - CANVAS_PADDING.right;
   const drawHeight = canvasHeight - CANVAS_PADDING.top - CANVAS_PADDING.bottom;
 
-  drawAxes(ctx, xScale, yScale, drawWidth, drawHeight);
-  drawGridLines(ctx, yScale, drawWidth, drawHeight);
+  // Resolve theme-aware colors before any draw calls (Canvas 2D cannot read CSS vars directly)
+  const textColor = resolveCanvasColor(ctx.canvas, 'var(--semantic-text-secondary)');
+  const gridColor = resolveCanvasColor(ctx.canvas, 'var(--semantic-border-default)');
+
+  drawAxes(ctx, xScale, yScale, drawWidth, drawHeight, textColor);
+  drawGridLines(ctx, yScale, drawWidth, drawHeight, gridColor);
   drawScatterPoints(ctx, datasets, xScale, yScale, drawWidth, drawHeight);
 }
 
@@ -75,13 +79,14 @@ function drawAxes(
   xScale: ChartScale,
   yScale: ChartScale,
   drawWidth: number,
-  drawHeight: number
+  drawHeight: number,
+  textColor: string
 ): void {
   ctx.save();
   ctx.translate(CANVAS_PADDING.left, CANVAS_PADDING.top);
 
   // Y-axis ticks and labels
-  ctx.fillStyle = 'var(--semantic-text-secondary)';
+  ctx.fillStyle = textColor;
   ctx.font = '11px system-ui, sans-serif';
   ctx.textAlign = 'right';
   ctx.textBaseline = 'middle';
@@ -110,11 +115,13 @@ function drawGridLines(
   ctx: CanvasRenderingContext2D,
   yScale: ChartScale,
   drawWidth: number,
-  drawHeight: number
+  drawHeight: number,
+  gridColor: string
 ): void {
   ctx.save();
   ctx.translate(CANVAS_PADDING.left, CANVAS_PADDING.top);
-  ctx.strokeStyle = 'rgba(128,128,128,0.15)';
+  ctx.strokeStyle = gridColor;
+  ctx.globalAlpha = 0.4;
   ctx.lineWidth = 1;
 
   for (const tick of yScale.ticks) {
@@ -149,7 +156,8 @@ function drawScatterPoints(
   ctx.translate(CANVAS_PADDING.left, CANVAS_PADDING.top);
 
   for (let dsIdx = 0; dsIdx < datasets.length; dsIdx++) {
-    const ds = datasets[dsIdx]!;
+    const ds = datasets[dsIdx];
+    if (!ds) continue;
     const color = computedColors[dsIdx] ?? '#6366f1';
     const points = ds.data as readonly ChartPoint[];
 

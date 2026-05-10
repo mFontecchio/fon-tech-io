@@ -13,9 +13,9 @@ import type { ChartColorAlias, ChartDataset } from './chart.types';
  */
 const COLOR_ALIAS_MAP: Record<ChartColorAlias, string> = {
   primary: 'var(--semantic-brand-primary)',
-  success: 'var(--semantic-status-success)',
-  warning: 'var(--semantic-status-warning)',
-  danger: 'var(--semantic-status-error)',
+  success: 'var(--semantic-feedback-success)',
+  warning: 'var(--semantic-feedback-warning)',
+  danger: 'var(--semantic-feedback-error)',
   secondary: 'var(--semantic-brand-secondary)',
   muted: 'var(--semantic-text-secondary)',
 };
@@ -26,11 +26,11 @@ const COLOR_ALIAS_MAP: Record<ChartColorAlias, string> = {
  */
 export const DEFAULT_PALETTE: readonly string[] = [
   'var(--semantic-brand-primary)',
-  'var(--semantic-status-success)',
-  'var(--semantic-status-warning)',
-  'var(--semantic-status-error)',
+  'var(--semantic-feedback-success)',
+  'var(--semantic-feedback-warning)',
+  'var(--semantic-feedback-error)',
   'var(--semantic-brand-secondary)',
-  'var(--semantic-text-secondary)',
+  'var(--semantic-feedback-info)',
 ];
 
 /**

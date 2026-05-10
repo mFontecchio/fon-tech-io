@@ -28,7 +28,7 @@ import type { ChartTooltipState } from './chart.types';
               <span
                 class="fui-chart-tooltip__swatch"
                 [attr.aria-hidden]="true"
-                [attr.data-color]="item.color"
+                [style.background-color]="item.color"
               ></span>
               <span class="fui-chart-tooltip__dataset">{{ item.datasetLabel }}</span>
               <span class="fui-chart-tooltip__value">{{ item.value }}</span>
@@ -52,7 +52,7 @@ import type { ChartTooltipState } from './chart.types';
         left: var(--fui-tooltip-x, 0px);
         top: var(--fui-tooltip-y, 0px);
         transform: translate(-50%, calc(-100% - var(--primitive-spacing-2)));
-        background-color: var(--semantic-surface-overlay);
+        background-color: var(--semantic-surface-elevated);
         border: 1px solid var(--semantic-border-default);
         border-radius: var(--primitive-border-radius-md);
         box-shadow: var(--primitive-shadow-lg);
@@ -101,7 +101,6 @@ import type { ChartTooltipState } from './chart.types';
         height: 8px;
         border-radius: 50%;
         flex-shrink: 0;
-        background-color: var(--fui-swatch-color, var(--semantic-brand-primary));
       }
 
       .fui-chart-tooltip__dataset {

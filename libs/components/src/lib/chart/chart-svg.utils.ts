@@ -8,7 +8,6 @@
 
 import type { ChartDataset, ChartPieSlice, ChartBarRect, ChartScale } from './chart.types';
 import { valueToPixel } from './chart-scale.utils';
-import { resolveDatasetColors } from './chart-color.utils';
 
 // ---------------------------------------------------------------------------
 // Padding constants used across SVG chart types
@@ -99,13 +98,17 @@ export function buildAreaPath(
  */
 function buildCatmullRomPath(points: ReadonlyArray<{ x: number; y: number }>): string {
   const tension = 0.4;
-  let d = `M ${points[0]!.x.toFixed(2)},${points[0]!.y.toFixed(2)}`;
+  const first = points[0];
+  if (!first) return '';
+  let d = `M ${first.x.toFixed(2)},${first.y.toFixed(2)}`;
 
   for (let i = 0; i < points.length - 1; i++) {
-    const p0 = points[Math.max(i - 1, 0)]!;
-    const p1 = points[i]!;
-    const p2 = points[i + 1]!;
-    const p3 = points[Math.min(i + 2, points.length - 1)]!;
+    const p0 = points[Math.max(i - 1, 0)] ?? points[0];
+    const p1 = points[i] ?? points[0];
+    const p2 = points[i + 1] ?? points[points.length - 1];
+    const p3 = points[Math.min(i + 2, points.length - 1)] ?? points[points.length - 1];
+
+    if (!p0 || !p1 || !p2 || !p3) continue;
 
     const cp1x = p1.x + (p2.x - p0.x) * tension;
     const cp1y = p1.y + (p2.y - p0.y) * tension;
@@ -149,11 +152,12 @@ export function buildBarRects(
   const rects: ChartBarRect[] = [];
 
   for (let dsIdx = 0; dsIdx < datasets.length; dsIdx++) {
-    const ds = datasets[dsIdx]!;
+    const ds = datasets[dsIdx];
+    if (!ds) continue;
     const data = ds.data as readonly number[];
 
     for (let ptIdx = 0; ptIdx < data.length; ptIdx++) {
-      const value = data[ptIdx]!;
+      const value = data[ptIdx] ?? 0;
       const groupX = (ptIdx / labelCount) * width + barPadding;
       const barX = groupX + dsIdx * barWidth;
       const barY = valueToPixel(value, scale, height, true);
@@ -201,36 +205,27 @@ export function buildPieSlices(
   const ds = datasets[0];
   if (!ds) return [];
 
-  const colors = resolveDatasetColors(datasets.length > 1 ? datasets : [
-    // For single-dataset pie/donut, generate colors per slice
-    ...labels.map((label, i) => ({
-      label,
-      data: [1],
-      color: undefined as string | undefined,
-    }))
-  ]);
-
-  const data = ds.data as readonly number[];
-  const total = data.reduce((sum, v) => sum + Math.abs(v as number), 0);
-  if (total === 0) return [];
-
-  const sliceColors = labels.map((_, i) => {
+  const sliceColors = labels.map((_label, idx) => {
     const DEFAULT_PALETTE = [
       'var(--semantic-brand-primary)',
-      'var(--semantic-status-success)',
-      'var(--semantic-status-warning)',
-      'var(--semantic-status-error)',
+      'var(--semantic-feedback-success)',
+      'var(--semantic-feedback-warning)',
+      'var(--semantic-feedback-error)',
       'var(--semantic-brand-secondary)',
-      'var(--semantic-text-secondary)',
+      'var(--semantic-feedback-info)',
     ];
-    return DEFAULT_PALETTE[i % DEFAULT_PALETTE.length] as string;
+    return DEFAULT_PALETTE[idx % DEFAULT_PALETTE.length] as string;
   });
+
+  const data = ds.data as readonly number[];
+  const total = data.reduce((sum, v) => sum + Math.abs(v), 0);
+  if (total === 0) return [];
 
   const slices: ChartPieSlice[] = [];
   let startAngle = -Math.PI / 2; // start at 12 o'clock
 
   for (let i = 0; i < data.length; i++) {
-    const value = Math.abs(data[i] as number);
+    const value = Math.abs(data[i] ?? 0);
     const percentage = (value / total) * 100;
     const sweepAngle = (value / total) * 2 * Math.PI;
     const endAngle = startAngle + sweepAngle;

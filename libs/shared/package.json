@@ -1,6 +1,6 @@
 {
   "name": "@mfontecchio/shared",
-  "version": "20.0.0",
+  "version": "20.1.0",
   "description": "Shared utilities and types for ui-component-suite — color utils, typography helpers, and common types",
   "keywords": [
     "angular",

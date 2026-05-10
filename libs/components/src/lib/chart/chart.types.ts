@@ -149,7 +149,7 @@ export interface ChartOptions {
  * Resolved options with all defaults applied.
  * Used internally after merging consumer-provided options with defaults.
  */
-export interface ResolvedChartOptions extends Required<ChartOptions> {}
+export type ResolvedChartOptions = Required<ChartOptions>;
 
 /**
  * Computed scale information for a single axis.

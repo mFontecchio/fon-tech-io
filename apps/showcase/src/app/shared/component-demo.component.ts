@@ -2339,18 +2339,18 @@ export class ExampleComponent {}`);
   protected readonly chartCategories = ['Engineering', 'Marketing', 'Sales', 'Operations'];
 
   protected readonly chartBarDatasets = [
-    { label: 'Revenue', data: [120, 340, 280, 450, 390, 510] },
-    { label: 'Costs',   data: [80,  210, 190, 300, 250, 340] },
+    { label: 'Revenue', data: [120, 340, 280, 450, 390, 510], color: 'primary' as const },
+    { label: 'Costs',   data: [80,  210, 190, 300, 250, 340], color: 'danger' as const },
   ];
 
   protected readonly chartLineDatasets = [
-    { label: 'Mobile',  data: [400, 430, 448, 470, 540, 580, 690, 790] },
-    { label: 'Desktop', data: [620, 610, 630, 670, 700, 720, 750, 780] },
+    { label: 'Mobile',  data: [400, 430, 448, 470, 540, 580, 690, 790], color: 'primary' as const },
+    { label: 'Desktop', data: [620, 610, 630, 670, 700, 720, 750, 780], color: 'success' as const },
   ];
 
   protected readonly chartAreaDatasets = [
-    { label: 'Hot storage',  data: [40,  55,  70,  85],  color: 'primary' as const },
-    { label: 'Cold storage', data: [120, 130, 145, 160], color: 'secondary' as const },
+    { label: 'Hot storage',  data: [40,  55,  70,  85],  color: 'warning' as const },
+    { label: 'Cold storage', data: [120, 130, 145, 160], color: 'primary' as const },
   ];
 
   protected readonly chartPieDatasets = [
@@ -2364,6 +2364,7 @@ export class ExampleComponent {}`);
   protected readonly chartScatterDatasets = [
     {
       label: 'Group A',
+      color: 'primary' as const,
       data: [
         { x: 165, y: 68 }, { x: 172, y: 75 }, { x: 180, y: 82 },
         { x: 158, y: 60 }, { x: 175, y: 78 }, { x: 170, y: 72 },
@@ -2372,6 +2373,7 @@ export class ExampleComponent {}`);
     },
     {
       label: 'Group B',
+      color: 'success' as const,
       data: [
         { x: 155, y: 52 }, { x: 162, y: 59 }, { x: 170, y: 66 },
         { x: 148, y: 48 }, { x: 165, y: 62 }, { x: 158, y: 55 },

@@ -7,7 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [20.1.0] - 2026-05-10
+
 ### Added
+
+- **Chart component (`fui-chart`)**: Zero-dependency chart system supporting line, bar, area, pie, donut, and scatter chart types. Renders line, bar, and area charts via SVG for crisp scaling at any resolution; scatter plots via Canvas 2D with HiDPI support. All geometry is derived through Angular 20 `computed()` signals; theme tokens are resolved at runtime so charts respond to light, dark, and custom themes automatically. Includes `ChartTooltipComponent` (floating data-point overlay, CSP-compliant position via CSS custom properties) and `ChartLegendComponent` (dataset toggle with `aria-pressed` support). WCAG 1.4.1 compliant — each line series carries a distinct SVG `stroke-dasharray` pattern so color is never the sole visual differentiator. A visually hidden `<table>` is always rendered for screen reader data access. Exported from `@mfontecchio/components` as `ChartComponent`, `ChartLegendComponent`, `ChartTooltipComponent`, and full chart type definitions.
 
 - **Accordion component — `bordered`, `highlightExpanded`, `dividers` inputs**: Three new boolean inputs allow mix-and-match composition of the accordion's visual style. `bordered` (default `true`) controls the outer container border and border-radius. `highlightExpanded` (default `true`) controls the expanded-header background tint and brand-coloured chevron. `dividers` (default `true`) controls the separator lines between items. All flags default to `true`, preserving full backward compatibility with existing usage. Setting all three to `false` renders a plain expandable list suitable for nested navigation groups.
 - **Accordion showcase documentation updated**: API reference corrected to show the `<fui-accordion-item>` content-children pattern (removing the erroneous `[items]` array example). Three new inputs documented with defaults, descriptions, and usage guidance. Two new code examples added — flush/borderless and expandable navigation list. Best practices and theming token tables updated to reflect modifier-class architecture.

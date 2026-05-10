@@ -8,11 +8,13 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   input,
   output,
   signal,
 } from '@angular/core';
 import type { ChartDataset } from './chart.types';
+import { DEFAULT_PALETTE } from './chart-color.utils';
 
 @Component({
   selector: 'fui-chart-legend',
@@ -32,7 +34,7 @@ import type { ChartDataset } from './chart.types';
             <span
               class="fui-chart-legend__swatch"
               aria-hidden="true"
-              [attr.data-color-index]="i"
+              [style.background-color]="resolvedColors()[i]"
             ></span>
             <span class="fui-chart-legend__label">{{ item.label }}</span>
           </button>
@@ -90,7 +92,6 @@ import type { ChartDataset } from './chart.types';
         height: 12px;
         border-radius: 2px;
         flex-shrink: 0;
-        background-color: var(--fui-legend-swatch-color, var(--semantic-brand-primary));
       }
 
       .fui-chart-legend__label {
@@ -104,10 +105,24 @@ export class ChartLegendComponent {
   /** Dataset array from the parent chart. */
   readonly items = input.required<readonly ChartDataset[]>();
 
+  /**
+   * Resolved color strings for each dataset, pre-computed by the parent
+   * ChartComponent so swatches always reflect the active theme.
+   */
+  readonly colors = input<readonly string[]>([]);
+
   /** Emits the set of currently hidden dataset indices on each toggle. */
   readonly hiddenChange = output<readonly number[]>();
 
   protected readonly hiddenIndices = signal<readonly number[]>([]);
+
+  /** Per-item color with fallback to default palette when colors not supplied. */
+  protected readonly resolvedColors = computed<readonly string[]>(() => {
+    const supplied = this.colors();
+    return this.items().map(
+      (_, i) => supplied[i] ?? (DEFAULT_PALETTE[i % DEFAULT_PALETTE.length] as string)
+    );
+  });
 
   protected toggleDataset(index: number): void {
     const current = this.hiddenIndices();
