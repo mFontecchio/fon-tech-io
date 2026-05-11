@@ -1,6 +1,6 @@
 {
   "name": "@mfontecchio/theme-builder",
-  "version": "20.1.0",
+  "version": "20.2.0",
   "description": "Interactive theme builder UI and utilities for ui-component-suite — visual theme creation with real-time preview",
   "keywords": [
     "angular",

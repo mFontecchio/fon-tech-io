@@ -50,6 +50,8 @@ import {
   StackComponent,
   GridComponent,
   ChartComponent,
+  DockComponent,
+  DockItemComponent,
 } from '@mfontecchio/components';
 
 @Component({
@@ -99,6 +101,8 @@ import {
     StackComponent,
     GridComponent,
     ChartComponent,
+    DockComponent,
+    DockItemComponent,
   ],
   template: `
     <div class="component-demo">
@@ -1628,6 +1632,58 @@ Sample text for editing</textarea
             }
           }
 
+          <!-- DOCK DEMOS -->
+          @case ('dock') {
+            @if (exampleTitle() === 'Bottom Dock') {
+              <div class="dock-demo-wrap">
+                <div class="dock-demo-screen"></div>
+                <fui-dock position="bottom">
+                  <fui-dock-item ariaLabel="Home" [active]="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                  </fui-dock-item>
+                  <fui-dock-item ariaLabel="Search">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                  </fui-dock-item>
+                  <fui-dock-item ariaLabel="Profile" [badge]="3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  </fui-dock-item>
+                </fui-dock>
+              </div>
+            }
+            @if (exampleTitle() === 'Left-Side Dock (Vertical)') {
+              <div class="dock-demo-wrap dock-demo-wrap--vertical">
+                <fui-dock position="left">
+                  <fui-dock-item ariaLabel="Dashboard" [active]="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                  </fui-dock-item>
+                  <fui-dock-item ariaLabel="Files">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                  </fui-dock-item>
+                  <fui-dock-item ariaLabel="Settings">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                  </fui-dock-item>
+                </fui-dock>
+                <div class="dock-demo-screen"></div>
+              </div>
+            }
+            @if (exampleTitle() === 'With Badge and Disabled Item') {
+              <div class="dock-demo-wrap">
+                <div class="dock-demo-screen"></div>
+                <fui-dock position="bottom">
+                  <fui-dock-item ariaLabel="Inbox" [badge]="12">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+                  </fui-dock-item>
+                  <fui-dock-item ariaLabel="Notifications" [badge]="99">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                  </fui-dock-item>
+                  <fui-dock-item ariaLabel="Offline" [disabled]="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/><path d="M10.71 5.05A16 16 0 0 1 22.56 9"/><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+                  </fui-dock-item>
+                </fui-dock>
+              </div>
+            }
+          }
+
           @default {
             <div class="demo-placeholder">
               <p>Live demo coming soon for this example</p>
@@ -1964,6 +2020,34 @@ Sample text for editing</textarea
         width: 100%;
         max-width: 640px;
         padding: var(--primitive-spacing-4);
+      }
+
+      .dock-demo-wrap {
+        position: relative;
+        width: 100%;
+        height: 220px;
+        border: 1px solid var(--semantic-border-subtle);
+        border-radius: var(--primitive-border-radius-md);
+        overflow: hidden;
+        transform: translateZ(0);
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .dock-demo-wrap--vertical {
+        height: 300px;
+        width: 260px;
+        flex-direction: row;
+      }
+
+      .dock-demo-screen {
+        flex: 1;
+        background-color: var(--semantic-surface-background);
+        background-image:
+          radial-gradient(circle, var(--semantic-border-subtle) 1px, transparent 1px);
+        background-size: 20px 20px;
+        border-radius: inherit;
       }
     `,
   ],

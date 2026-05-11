@@ -410,6 +410,7 @@ export class SidebarComponent {
         { label: 'Context Menu', path: '/components/navigation/context-menu' },
         { label: 'Navbar', path: '/components/navigation/navbar' },
         { label: 'Stepper', path: '/components/navigation/stepper' },
+        { label: 'Dock', path: '/components/navigation/dock' },
       ],
     },
   ];
