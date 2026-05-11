@@ -4,6 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 [![Angular](https://img.shields.io/badge/Angular-20-red)](https://angular.dev)
 [![pnpm](https://img.shields.io/badge/package%20manager-pnpm-orange)](https://pnpm.io)
+[![npm downloads](https://img.shields.io/npm/dm/@mfontecchio/components?style=flat-square)](https://www.npmjs.com/package/@mfontecchio/components)
 
 Enterprise-grade Angular 20 component library with full theming support, accessibility compliance, and HTML5-first design principles.
 
@@ -80,25 +81,30 @@ pnpm e2e
 ### Components (39)
 
 #### Form Components (11)
+
 - Button, Input, Textarea, Select
 - Checkbox, Radio, Switch
 - Multi-Select, Slider, Date Picker, File Upload
 
 #### Layout Components (8)
+
 - Card, Modal, Drawer
 - Accordion, Tabs, Divider
 - Grid, Stack
 
 #### Data Display Components (10)
+
 - Table, List, Badge, Chip
 - Avatar, Tooltip, Popover
 - Pagination, Code Block, Carousel
 
 #### Feedback Components (5)
+
 - Alert, Toast, Progress
 - Spinner, Skeleton
 
 #### Navigation Components (5)
+
 - Breadcrumb, Menu, Context Menu
 - Navbar, Stepper
 
@@ -113,6 +119,7 @@ Three-tier design token architecture:
 ### Theme Builder
 
 Visual theme creation tool with:
+
 - Real-time component preview
 - Color palette generator
 - Typography editor
@@ -152,4 +159,3 @@ MIT
 ## Contributing
 
 Contributions are welcome! Please read our [Contributing Guide](./documentation/CONTRIBUTING.md) for details.
-
