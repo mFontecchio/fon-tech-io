@@ -188,6 +188,43 @@ export interface CarouselTokens {
 }
 
 /**
+ * Dock component tokens
+ */
+export interface DockTokens {
+  background: string;
+  border: string;
+  padding: string;
+  gap: string;
+  /** Floating offset from the viewport edge. */
+  margin: string;
+  zIndex: number;
+  item: {
+    size: string;
+    iconSize: string;
+    padding: string;
+    borderRadius: string;
+    color: string;
+    activeColor: string;
+    hoverBackground: string;
+    disabledOpacity: string;
+  };
+  activeIndicator: {
+    color: string;
+    size: string;
+  };
+  badge: {
+    background: string;
+    color: string;
+    size: string;
+    fontSize: string;
+  };
+  label: {
+    fontSize: string;
+    color: string;
+  };
+}
+
+/**
  * Complete component token interface
  */
 export interface ComponentTokens {
@@ -199,6 +236,7 @@ export interface ComponentTokens {
   badge: BadgeTokens;
   table: TableTokens;
   carousel: CarouselTokens;
+  dock: DockTokens;
 }
 
 /**
@@ -359,6 +397,38 @@ export const defaultComponentTokens: ComponentTokens = {
     indicatorActiveBackground: 'var(--semantic-brand-primary)',
     thumbnailBorder: 'var(--semantic-border-subtle)',
     thumbnailActiveBorder: 'var(--semantic-brand-primary)',
+  },
+  dock: {
+    background: 'var(--semantic-surface-card)',
+    border: 'var(--semantic-border-subtle)',
+    padding: 'var(--primitive-spacing-4)',
+    gap: 'var(--primitive-spacing-3)',
+    margin: 'var(--primitive-spacing-4)',
+    zIndex: 100,
+    item: {
+      size: '3.5rem',
+      iconSize: '1.5rem',
+      padding: 'var(--primitive-spacing-3)',
+      borderRadius: 'var(--primitive-border-radius-lg)',
+      color: 'var(--semantic-text-secondary)',
+      activeColor: 'var(--semantic-brand-primary)',
+      hoverBackground: 'var(--semantic-state-hover)',
+      disabledOpacity: '0.4',
+    },
+    activeIndicator: {
+      color: 'var(--semantic-brand-primary)',
+      size: '4px',
+    },
+    badge: {
+      background: 'var(--semantic-feedback-error)',
+      color: 'var(--semantic-text-inverse)',
+      size: '1.125rem',
+      fontSize: 'var(--primitive-font-size-xs)',
+    },
+    label: {
+      fontSize: 'var(--primitive-font-size-xs)',
+      color: 'var(--semantic-text-secondary)',
+    },
   },
 };
 

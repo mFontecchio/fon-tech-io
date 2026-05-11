@@ -22,7 +22,7 @@ interface ComponentCategory {
   template: `
     <div class="components-overview">
       <h1>Components</h1>
-      <p class="subtitle">Browse all 39 components organized by category</p>
+      <p class="subtitle">Browse all 40 components organized by category</p>
 
       <div class="categories-grid">
         @for (category of categories; track category.name) {
@@ -128,7 +128,7 @@ export class ComponentsOverviewComponent {
     {
       name: 'Navigation',
       description: 'Help users navigate through your app',
-      count: 5,
+      count: 6,
       link: '/components/navigation/breadcrumb',
     },
   ];

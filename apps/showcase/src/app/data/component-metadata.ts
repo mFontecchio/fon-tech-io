@@ -6451,6 +6451,264 @@ protected currentStep = signal(0);`,
 };
 
 // ============================================================================
+// DOCK COMPONENT
+// ============================================================================
+
+const DOCK_METADATA: ComponentMetadata = {
+  id: 'dock',
+  name: 'Dock',
+  category: 'navigation',
+  description:
+    'A taskbar-style navigation bar fixed to a viewport edge. Supports top, right, bottom, and left positions with automatic horizontal/vertical layout switching. Items accept projected icon content, labels, badge bubbles, and an active indicator.',
+  selector: 'fui-dock',
+  setup: {
+    importStatement:
+      "import { DockComponent, DockItemComponent } from '@mfontecchio/components';",
+    usageSnippet: `<fui-dock position="bottom">
+  <fui-dock-item label="Home" [active]="true">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+      <polyline points="9 22 9 12 15 12 15 22"/>
+    </svg>
+  </fui-dock-item>
+  <fui-dock-item label="Search">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="11" cy="11" r="8"/>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </svg>
+  </fui-dock-item>
+  <fui-dock-item label="Profile" [badge]="3">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+      <circle cx="12" cy="7" r="4"/>
+    </svg>
+  </fui-dock-item>
+</fui-dock>`,
+    setupNotes:
+      'Add both DockComponent and DockItemComponent to the imports array of your standalone component. Project icon content as the default slot of each fui-dock-item.',
+  },
+  runtime: {
+    supportsSSR: false,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Uses position: fixed — document.activeElement is accessed for keyboard navigation focus tracking.',
+      'Guard usage in SSR apps with isPlatformBrowser() or render inside a client-only route.',
+    ],
+  },
+  inputs: [
+    {
+      name: 'position',
+      type: "'top' | 'right' | 'bottom' | 'left'",
+      description: 'Viewport edge the dock attaches to. Determines horizontal or vertical layout.',
+      defaultValue: "'bottom'",
+    },
+  ],
+  outputs: [],
+  passthroughs: [
+    {
+      name: 'default',
+      type: 'slot',
+      selector: '',
+      description: 'Icon content rendered inside the dock item button.',
+      optional: true,
+    },
+  ],
+  theming: {
+    tokens: [
+      {
+        token: '--component-dock-background',
+        description: 'Dock bar background color.',
+      },
+      {
+        token: '--component-dock-border-color',
+        description: 'Dock bar border color.',
+      },
+      {
+        token: '--component-dock-padding',
+        description: 'Inner padding of the dock bar.',
+      },
+      {
+        token: '--component-dock-gap',
+        description: 'Gap between dock items.',
+      },
+      {
+        token: '--component-dock-border-radius',
+        description: 'Border radius of the dock bar.',
+      },
+      {
+        token: '--component-dock-item-size',
+        description: 'Width and height of each item button.',
+      },
+      {
+        token: '--component-dock-item-icon-size',
+        description: 'Icon area size within each item.',
+      },
+      {
+        token: '--component-dock-item-color',
+        description: 'Default icon and label color.',
+      },
+      {
+        token: '--component-dock-item-color-active',
+        description: 'Icon and label color when the item is active.',
+      },
+      {
+        token: '--component-dock-item-color-hover',
+        description: 'Icon and label color on hover.',
+      },
+      {
+        token: '--component-dock-item-color-disabled',
+        description: 'Icon and label color when the item is disabled.',
+      },
+      {
+        token: '--component-dock-item-bg-hover',
+        description: 'Item button background on hover.',
+      },
+      {
+        token: '--component-dock-item-bg-active',
+        description: 'Item button background when active.',
+      },
+      {
+        token: '--component-dock-item-border-radius',
+        description: 'Border radius of each item button.',
+      },
+      {
+        token: '--component-dock-item-label-size',
+        description: 'Font size of the item label.',
+      },
+      {
+        token: '--component-dock-indicator-color',
+        description: 'Color of the active item indicator dot.',
+      },
+      {
+        token: '--component-dock-indicator-size',
+        description: 'Size of the active item indicator dot.',
+      },
+      {
+        token: '--component-dock-badge-background',
+        description: 'Badge bubble background color.',
+      },
+      {
+        token: '--component-dock-badge-color',
+        description: 'Badge bubble text color.',
+      },
+    ],
+    customizationNotes:
+      'Override --component-dock-background and --component-dock-border-color to restyle the bar. Use --component-dock-item-color-active and --component-dock-indicator-color to change active item branding. Scope overrides to a parent element for section-specific dock themes.',
+  },
+  examples: [
+    {
+      title: 'Bottom Dock',
+      description: 'Default bottom-edge dock with three items',
+      template: `<fui-dock position="bottom">
+  <fui-dock-item label="Home" [active]="true">
+    <!-- project your SVG or icon component here -->
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+      <polyline points="9 22 9 12 15 12 15 22"/>
+    </svg>
+  </fui-dock-item>
+  <fui-dock-item label="Search">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="11" cy="11" r="8"/>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </svg>
+  </fui-dock-item>
+  <fui-dock-item label="Profile" [badge]="3">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+      <circle cx="12" cy="7" r="4"/>
+    </svg>
+  </fui-dock-item>
+</fui-dock>`,
+    },
+    {
+      title: 'Left-Side Dock (Vertical)',
+      description: 'Vertical dock attached to the left viewport edge',
+      template: `<fui-dock position="left">
+  <fui-dock-item label="Dashboard" [active]="true">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="3" y="3" width="7" height="7"/>
+      <rect x="14" y="3" width="7" height="7"/>
+      <rect x="14" y="14" width="7" height="7"/>
+      <rect x="3" y="14" width="7" height="7"/>
+    </svg>
+  </fui-dock-item>
+  <fui-dock-item label="Files">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+    </svg>
+  </fui-dock-item>
+  <fui-dock-item label="Settings">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="3"/>
+      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+    </svg>
+  </fui-dock-item>
+</fui-dock>`,
+    },
+    {
+      title: 'With Badge and Disabled Item',
+      description: 'Dock with a notification badge and a disabled item',
+      template: `<fui-dock position="bottom">
+  <fui-dock-item label="Inbox" [badge]="12">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/>
+      <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+    </svg>
+  </fui-dock-item>
+  <fui-dock-item label="Notifications" [badge]="99">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+      <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+    </svg>
+  </fui-dock-item>
+  <fui-dock-item label="Offline" [disabled]="true">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <line x1="1" y1="1" x2="23" y2="23"/>
+      <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/>
+      <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/>
+      <path d="M10.71 5.05A16 16 0 0 1 22.56 9"/>
+      <path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/>
+      <path d="M8.53 16.11a6 6 0 0 1 6.95 0"/>
+      <line x1="12" y1="20" x2="12.01" y2="20"/>
+    </svg>
+  </fui-dock-item>
+</fui-dock>`,
+    },
+  ],
+  accessibility: {
+    ariaSupport: [
+      'role="toolbar" on the dock container',
+      'aria-label="Application dock" on the container',
+      'aria-orientation set to "horizontal" or "vertical" based on position',
+      'aria-label on each item button (ariaLabel input or label fallback)',
+      'aria-pressed="true" when an item is active',
+      'aria-disabled="true" on disabled items',
+    ],
+    keyboardNavigation: [
+      { key: 'Tab', description: 'Enter and exit the dock toolbar' },
+      { key: 'ArrowLeft / ArrowRight', description: 'Move between items in horizontal docks' },
+      { key: 'ArrowUp / ArrowDown', description: 'Move between items in vertical docks' },
+      { key: 'Home', description: 'Move focus to the first enabled item' },
+      { key: 'End', description: 'Move focus to the last enabled item' },
+      { key: 'Enter / Space', description: 'Activate the focused item' },
+    ],
+    screenReaderNotes:
+      'The dock is announced as a toolbar with horizontal or vertical orientation. Each item\'s active and disabled state is announced. Badge values are rendered in visually hidden text for screen readers.',
+  },
+  bestPractices: [
+    'Limit dock items to 5-7 for usability — more items reduce tap target size',
+    'Always provide descriptive labels; use ariaLabel for items with icon-only content',
+    'Use the active input to reflect current navigation state',
+    'Reserve badge values for notifications and counters, not status indicators',
+    'Consider a left/right dock for desktop-primary experiences and bottom for mobile',
+    'Test keyboard navigation — focus should move smoothly through all enabled items',
+    'Guard the component in SSR apps with isPlatformBrowser()',
+  ],
+  relatedComponents: ['navbar', 'tabs', 'menu'],
+};
+
+// ============================================================================
 // CHART COMPONENT
 // ============================================================================
 
@@ -6723,6 +6981,7 @@ const COMPONENT_METADATA_MAP = new Map<string, ComponentMetadata>([
   ['context-menu', CONTEXT_MENU_METADATA],
   ['navbar', NAVBAR_METADATA],
   ['stepper', STEPPER_METADATA],
+  ['dock', DOCK_METADATA],
   // Chart Components
   ['chart', CHART_METADATA],
 ]);

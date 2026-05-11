@@ -52,6 +52,9 @@ export * from './lib/menu/menu.component';
 export * from './lib/context-menu/context-menu.component';
 export * from './lib/navbar/navbar.component';
 export * from './lib/stepper/stepper.component';
+export * from './lib/dock/dock.component';
+export * from './lib/dock/dock-item.component';
+export * from './lib/dock/dock.types';
 
 // Chart Components
 export * from './lib/chart/chart.component';

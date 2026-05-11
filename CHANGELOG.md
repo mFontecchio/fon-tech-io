@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [20.2.0] - 2026-05-10
+
+### Added
+
+- **Dock component (`fui-dock` + `fui-dock-item`)**: A taskbar-style navigation bar fixed to a viewport edge. Supports `top`, `right`, `bottom`, and `left` positions with automatic horizontal/vertical layout switching. Child items accept projected icon content, a text label, an optional badge bubble (numbers above 99 display as `"99+"`), and an active indicator rendered as a CSS `::after` dot. Full ARIA toolbar keyboard navigation with `ArrowLeft`/`ArrowRight` (horizontal), `ArrowUp`/`ArrowDown` (vertical), `Home`, and `End` support. Exported from `@mfontecchio/components` as `DockComponent`, `DockItemComponent`, and `DockPosition`. All 19 design tokens defined in the theming system under `--component-dock-*`. Icon-only mode supported by omitting the `label` input; frosted-glass floating appearance with spring-easing icon scale on hover.
+
+### Fixed
+
+- **Dock component — animation CSS variable names**: Corrected transition declarations in `dock-item.component.css` from the non-existent `--animation-duration-normal` and `--animation-easing-default` to the correct semantic tier names `--semantic-animation-duration-interactive` and `--semantic-animation-easing-default`. The spring-easing icon scale animation (`--primitive-animation-easing-spring`) already used the correct name and was unchanged.
+- **Dock item — box-sizing corrected to `border-box`**: The `.fui-dock-item` button previously used the default `box-sizing: content-box`, causing padding to be added on top of the `--component-dock-item-size` value and making each button significantly larger than the token implied. Setting `box-sizing: border-box` ensures the item occupies exactly the dimensions specified by the size token, with padding contained within it.
+- **Dock component — CSS variable fallbacks added**: All layout-critical CSS properties in `dock.component.css` and `dock-item.component.css` now carry hardcoded pixel/rem fallback values. Previously, an unresolved CSS custom property (due to ThemeService initialization timing or a stale build cache) would silently collapse the dock layout to zero gap and zero padding, making items appear crammed together.
+
 ## [20.1.0] - 2026-05-10
 
 ### Added

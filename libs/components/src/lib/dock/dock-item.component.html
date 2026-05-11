@@ -1,0 +1,25 @@
+<button
+  #button
+  type="button"
+  class="fui-dock-item"
+  [class.fui-dock-item--active]="active()"
+  [class.fui-dock-item--disabled]="disabled()"
+  [class.fui-dock-item--vertical]="isVertical()"
+  [disabled]="disabled()"
+  [attr.aria-label]="effectiveAriaLabel()"
+  [attr.aria-current]="active() ? 'true' : null"
+  [attr.aria-disabled]="disabled() ? 'true' : null"
+  (click)="handleClick($event)"
+>
+  <span class="fui-dock-item__icon">
+    <ng-content></ng-content>
+  </span>
+
+  @if (label()) {
+    <span class="fui-dock-item__label">{{ label() }}</span>
+  }
+
+  @if (displayBadge()) {
+    <span class="fui-dock-item__badge" aria-hidden="true">{{ displayBadge() }}</span>
+  }
+</button>
