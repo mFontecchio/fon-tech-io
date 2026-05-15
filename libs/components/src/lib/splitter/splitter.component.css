@@ -1,0 +1,147 @@
+/**
+ * Splitter Component Styles
+ *
+ * Uses design tokens from the theming system.
+ */
+
+:host {
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+/* Orientation */
+
+:host(.fui-splitter--horizontal) {
+  flex-direction: row;
+}
+
+:host(.fui-splitter--vertical) {
+  flex-direction: column;
+}
+
+/* Panels */
+
+.fui-splitter__panel {
+  overflow: auto;
+  min-width: 0;
+  min-height: 0;
+}
+
+.fui-splitter__panel--first {
+  flex: 0 0 auto;
+}
+
+.fui-splitter__panel--second {
+  flex: 1 1 0;
+}
+
+/* Handle track */
+
+.fui-splitter__handle {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--component-splitter-track-color, var(--semantic-border-default));
+  position: relative;
+  z-index: 1;
+  outline: none;
+  transition:
+    background-color var(--semantic-animation-duration-interactive)
+    var(--semantic-animation-easing-default);
+}
+
+:host(.fui-splitter--horizontal) .fui-splitter__handle {
+  width: var(--component-splitter-handle-size, 5px);
+  height: 100%;
+  cursor: col-resize;
+}
+
+:host(.fui-splitter--vertical) .fui-splitter__handle {
+  height: var(--component-splitter-handle-size, 5px);
+  width: 100%;
+  cursor: row-resize;
+}
+
+.fui-splitter__handle:hover,
+:host(.fui-splitter--dragging) .fui-splitter__handle {
+  background-color: var(--component-splitter-handle-hover-color, var(--semantic-brand-primary));
+}
+
+.fui-splitter__handle:focus-visible {
+  outline: 2px solid var(--semantic-state-focus-ring, var(--semantic-brand-primary));
+  outline-offset: 2px;
+  background-color: var(--component-splitter-handle-hover-color, var(--semantic-brand-primary));
+}
+
+/* Grip bar inside the handle */
+
+.fui-splitter__handle-bar {
+  border-radius: var(--primitive-border-radius-full, 9999px);
+  background-color: var(--component-splitter-bar-color, var(--semantic-text-tertiary, var(--semantic-text-secondary)));
+  opacity: 0.6;
+  pointer-events: none;
+  transition: opacity var(--semantic-animation-duration-interactive)
+    var(--semantic-animation-easing-default);
+}
+
+:host(.fui-splitter--horizontal) .fui-splitter__handle-bar {
+  width: var(--component-splitter-bar-thickness, 2px);
+  height: var(--component-splitter-bar-length, 28px);
+}
+
+:host(.fui-splitter--vertical) .fui-splitter__handle-bar {
+  width: var(--component-splitter-bar-length, 28px);
+  height: var(--component-splitter-bar-thickness, 2px);
+}
+
+.fui-splitter__handle:hover .fui-splitter__handle-bar,
+:host(.fui-splitter--dragging) .fui-splitter__handle .fui-splitter__handle-bar {
+  opacity: 1;
+  background-color: var(--semantic-surface-card, #fff);
+}
+
+/* Disabled state */
+
+:host(.fui-splitter--disabled) .fui-splitter__handle {
+  cursor: not-allowed;
+  pointer-events: none;
+  opacity: 0.45;
+}
+
+/* Prevent text selection while dragging */
+
+:host(.fui-splitter--dragging) {
+  user-select: none;
+}
+
+/* REQUIRED: Reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  .fui-splitter__handle,
+  .fui-splitter__handle-bar {
+    transition: none;
+  }
+}
+
+/* REQUIRED: High contrast */
+
+@media (prefers-contrast: more) {
+  .fui-splitter__handle {
+    background-color: ButtonText;
+  }
+
+  :host(.fui-splitter--horizontal) .fui-splitter__handle {
+    width: 3px;
+  }
+
+  :host(.fui-splitter--vertical) .fui-splitter__handle {
+    height: 3px;
+  }
+
+  .fui-splitter__handle:focus-visible {
+    outline-width: 3px;
+  }
+}

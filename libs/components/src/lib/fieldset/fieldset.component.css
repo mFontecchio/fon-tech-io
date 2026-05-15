@@ -1,0 +1,118 @@
+/**
+ * Fieldset Component Styles
+ *
+ * Uses design tokens from the theming system.
+ */
+
+:host {
+  display: block;
+}
+
+/* Native fieldset reset + themed frame */
+
+.fui-fieldset__frame {
+  margin: 0;
+  padding: var(--component-fieldset-padding, var(--primitive-spacing-4));
+  border: var(--component-fieldset-border-width, 1px) solid
+    var(--component-fieldset-border-color, var(--semantic-border-default));
+  border-radius: var(--component-fieldset-border-radius, var(--primitive-border-radius-lg, 8px));
+  background-color: var(--component-fieldset-background, transparent);
+  transition: border-color var(--semantic-animation-duration-interactive)
+    var(--semantic-animation-easing-default);
+}
+
+/* Legend */
+
+.fui-fieldset__legend {
+  padding: 0 var(--primitive-spacing-2);
+  font-size: var(--component-fieldset-legend-font-size, var(--primitive-font-size-sm));
+  font-weight: var(--component-fieldset-legend-font-weight, var(--primitive-font-weight-semibold));
+  color: var(--component-fieldset-legend-color, var(--semantic-text-primary));
+  line-height: 1;
+}
+
+.fui-fieldset__legend-text {
+  display: inline;
+}
+
+/* Toggle button */
+
+.fui-fieldset__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--primitive-spacing-1);
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  outline: none;
+  transition: color var(--semantic-animation-duration-interactive)
+    var(--semantic-animation-easing-default);
+}
+
+.fui-fieldset__toggle:hover {
+  color: var(--semantic-brand-primary);
+}
+
+.fui-fieldset__toggle:focus-visible {
+  outline: 2px solid var(--semantic-state-focus-ring, var(--semantic-brand-primary));
+  outline-offset: 2px;
+  border-radius: var(--primitive-border-radius-sm, 4px);
+}
+
+.fui-fieldset__toggle:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Chevron icon */
+
+.fui-fieldset__chevron {
+  flex-shrink: 0;
+  transition: transform var(--semantic-animation-duration-interactive)
+    var(--semantic-animation-easing-default);
+}
+
+:host(.fui-fieldset--collapsed) .fui-fieldset__chevron {
+  transform: rotate(-90deg);
+}
+
+/* Content region */
+
+.fui-fieldset__content {
+  padding-top: var(--primitive-spacing-4);
+}
+
+/* Disabled state */
+
+:host(.fui-fieldset--disabled) .fui-fieldset__frame {
+  opacity: 0.6;
+}
+
+:host(.fui-fieldset--disabled) {
+  cursor: not-allowed;
+}
+
+/* REQUIRED: Reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  .fui-fieldset__frame,
+  .fui-fieldset__toggle,
+  .fui-fieldset__chevron {
+    transition: none;
+  }
+}
+
+/* REQUIRED: High contrast */
+
+@media (prefers-contrast: more) {
+  .fui-fieldset__frame {
+    border-width: 2px;
+  }
+
+  .fui-fieldset__toggle:focus-visible {
+    outline-width: 3px;
+  }
+}

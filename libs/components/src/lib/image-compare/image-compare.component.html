@@ -1,0 +1,52 @@
+<img
+  class="fui-image-compare__img fui-image-compare__img--after"
+  [src]="afterSrc()"
+  [alt]="afterAlt()"
+  draggable="false"
+/>
+<img
+  class="fui-image-compare__img fui-image-compare__img--before"
+  [src]="beforeSrc()"
+  [alt]="beforeAlt()"
+  draggable="false"
+  [style.clip-path]="beforeClipPath()"
+/>
+<div
+  class="fui-image-compare__divider"
+  [style.--fui-image-compare-pos]="positionPercent()"
+  aria-hidden="true"
+>
+  <div class="fui-image-compare__handle">
+    @if (orientation() === 'horizontal') {
+      <svg
+        class="fui-image-compare__handle-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <polyline points="11 17 6 12 11 7" />
+        <polyline points="13 17 18 12 13 7" />
+      </svg>
+    } @else {
+      <svg
+        class="fui-image-compare__handle-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <polyline points="17 11 12 6 7 11" />
+        <polyline points="17 13 12 18 7 13" />
+      </svg>
+    }
+  </div>
+</div>
+<span class="fui-image-compare__label fui-image-compare__label--before" aria-hidden="true">Before</span>
+<span class="fui-image-compare__label fui-image-compare__label--after" aria-hidden="true">After</span>

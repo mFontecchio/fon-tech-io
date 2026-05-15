@@ -19,6 +19,7 @@ import {
   SliderComponent,
   DatePickerComponent,
   FileUploadComponent,
+  FieldsetComponent,
   CardComponent,
   ModalComponent,
   TabsComponent,
@@ -52,6 +53,8 @@ import {
   ChartComponent,
   DockComponent,
   DockItemComponent,
+  ImageCompareComponent,
+  SplitterComponent,
 } from '@mfontecchio/components';
 
 @Component({
@@ -70,6 +73,7 @@ import {
     SliderComponent,
     DatePickerComponent,
     FileUploadComponent,
+    FieldsetComponent,
     CardComponent,
     ModalComponent,
     TabsComponent,
@@ -103,6 +107,8 @@ import {
     ChartComponent,
     DockComponent,
     DockItemComponent,
+    ImageCompareComponent,
+    SplitterComponent,
   ],
   template: `
     <div class="component-demo">
@@ -606,6 +612,47 @@ import {
                   [maxSize]="10485760"
                 />
               </div>
+            }
+          }
+
+          <!-- FIELDSET DEMOS -->
+          @case ('fieldset') {
+            @if (exampleTitle() === 'Basic Usage') {
+              <fui-fieldset legend="Personal Info">
+                <div class="demo-column">
+                  <fui-input label="First name" placeholder="Jane" />
+                  <fui-input label="Last name" placeholder="Doe" />
+                </div>
+              </fui-fieldset>
+            }
+            @if (exampleTitle() === 'Collapsible') {
+              <fui-fieldset legend="Advanced Options" [collapsible]="true">
+                <div class="demo-column">
+                  <fui-input label="API Key" placeholder="Enter your API key" />
+                  <fui-input label="Endpoint" placeholder="https://api.example.com" />
+                </div>
+              </fui-fieldset>
+            }
+            @if (exampleTitle() === 'Initially Collapsed') {
+              <fui-fieldset legend="Optional Details" [collapsible]="true" [collapsed]="true">
+                <fui-textarea label="Notes" placeholder="Any additional notes..." />
+              </fui-fieldset>
+            }
+            @if (exampleTitle() === 'Disabled State') {
+              <fui-fieldset legend="Billing Address" [collapsible]="true" [disabled]="true">
+                <div class="demo-column">
+                  <fui-input label="Street" placeholder="123 Main St" />
+                  <fui-input label="City" placeholder="New York" />
+                </div>
+              </fui-fieldset>
+            }
+            @if (exampleTitle() === 'Non-collapsible') {
+              <fui-fieldset legend="Security">
+                <div class="demo-column">
+                  <fui-input label="Current password" type="password" />
+                  <fui-input label="New password" type="password" />
+                </div>
+              </fui-fieldset>
             }
           }
 
@@ -1681,6 +1728,108 @@ Sample text for editing</textarea
                   </fui-dock-item>
                 </fui-dock>
               </div>
+            }
+          }
+
+          <!-- IMAGE COMPARE DEMOS -->
+          @case ('image-compare') {
+            @if (exampleTitle() === 'Basic Usage') {
+              <fui-image-compare
+                beforeSrc="https://picsum.photos/seed/before/800/450"
+                afterSrc="https://picsum.photos/seed/after/800/450"
+                beforeAlt="Original photo"
+                afterAlt="Edited photo"
+                style="border-radius: 0.5rem;"
+              />
+            }
+            @if (exampleTitle() === 'Custom Initial Position') {
+              <fui-image-compare
+                beforeSrc="https://picsum.photos/seed/before/800/450"
+                afterSrc="https://picsum.photos/seed/after/800/450"
+                [position]="25"
+                style="border-radius: 0.5rem;"
+              />
+            }
+            @if (exampleTitle() === 'Vertical Orientation') {
+              <fui-image-compare
+                beforeSrc="https://picsum.photos/seed/before/800/450"
+                afterSrc="https://picsum.photos/seed/after/800/450"
+                orientation="vertical"
+                style="border-radius: 0.5rem;"
+              />
+            }
+            @if (exampleTitle() === 'Disabled State') {
+              <fui-image-compare
+                beforeSrc="https://picsum.photos/seed/before/800/450"
+                afterSrc="https://picsum.photos/seed/after/800/450"
+                [position]="30"
+                [disabled]="true"
+                style="border-radius: 0.5rem;"
+              />
+            }
+          }
+
+          <!-- SPLITTER DEMOS -->
+          @case ('splitter') {
+            @if (exampleTitle() === 'Basic Usage') {
+              <fui-splitter style="height: 240px; width: 100%; border: 1px solid var(--semantic-border-default); border-radius: var(--primitive-border-radius-md, 6px);">
+                <div first style="padding: 1rem; height: 100%; overflow: auto;">
+                  <strong>Left Panel</strong>
+                  <p style="color: var(--semantic-text-secondary); margin-top: 0.5rem;">Drag the handle to resize. Use Arrow keys when the handle is focused.</p>
+                </div>
+                <div second style="padding: 1rem; height: 100%; overflow: auto;">
+                  <strong>Right Panel</strong>
+                  <p style="color: var(--semantic-text-secondary); margin-top: 0.5rem;">Shift+Arrow moves in 10% increments. Home/End snaps to min/max.</p>
+                </div>
+              </fui-splitter>
+            }
+            @if (exampleTitle() === 'Vertical Orientation') {
+              <fui-splitter orientation="vertical" style="height: 320px; width: 100%; border: 1px solid var(--semantic-border-default); border-radius: var(--primitive-border-radius-md, 6px);">
+                <div first style="padding: 1rem;">
+                  <strong>Top Panel</strong>
+                  <p style="color: var(--semantic-text-secondary); margin-top: 0.5rem;">Drag the horizontal handle to resize vertically.</p>
+                </div>
+                <div second style="padding: 1rem;">
+                  <strong>Bottom Panel</strong>
+                  <p style="color: var(--semantic-text-secondary); margin-top: 0.5rem;">Use Arrow Up/Down to resize with the keyboard.</p>
+                </div>
+              </fui-splitter>
+            }
+            @if (exampleTitle() === 'Custom Initial Sizes') {
+              <fui-splitter [sizes]="[30, 70]" style="height: 240px; width: 100%; border: 1px solid var(--semantic-border-default); border-radius: var(--primitive-border-radius-md, 6px);">
+                <div first style="padding: 1rem; height: 100%; overflow: auto;">
+                  <strong>Narrow (30%)</strong>
+                  <p style="color: var(--semantic-text-secondary); margin-top: 0.5rem;">Sidebar</p>
+                </div>
+                <div second style="padding: 1rem; height: 100%; overflow: auto;">
+                  <strong>Wide (70%)</strong>
+                  <p style="color: var(--semantic-text-secondary); margin-top: 0.5rem;">Main content area</p>
+                </div>
+              </fui-splitter>
+            }
+            @if (exampleTitle() === 'Minimum Size Constraint') {
+              <fui-splitter [minSize]="20" style="height: 240px; width: 100%; border: 1px solid var(--semantic-border-default); border-radius: var(--primitive-border-radius-md, 6px);">
+                <div first style="padding: 1rem; height: 100%; overflow: auto;">
+                  <strong>Min 20%</strong>
+                  <p style="color: var(--semantic-text-secondary); margin-top: 0.5rem;">Cannot be dragged below 20%.</p>
+                </div>
+                <div second style="padding: 1rem; height: 100%; overflow: auto;">
+                  <strong>Min 20%</strong>
+                  <p style="color: var(--semantic-text-secondary); margin-top: 0.5rem;">Neither panel collapses past 20%.</p>
+                </div>
+              </fui-splitter>
+            }
+            @if (exampleTitle() === 'Disabled State') {
+              <fui-splitter [disabled]="true" style="height: 240px; width: 100%; border: 1px solid var(--semantic-border-default); border-radius: var(--primitive-border-radius-md, 6px);">
+                <div first style="padding: 1rem; height: 100%; overflow: auto;">
+                  <strong>Read-only left</strong>
+                  <p style="color: var(--semantic-text-secondary); margin-top: 0.5rem;">Handle is visible but not interactive.</p>
+                </div>
+                <div second style="padding: 1rem; height: 100%; overflow: auto;">
+                  <strong>Read-only right</strong>
+                  <p style="color: var(--semantic-text-secondary); margin-top: 0.5rem;">Drag and keyboard resize are suppressed.</p>
+                </div>
+              </fui-splitter>
             }
           }
 

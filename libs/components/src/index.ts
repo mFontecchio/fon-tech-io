@@ -10,6 +10,7 @@ export * from './lib/multi-select/multi-select.component';
 export * from './lib/slider/slider.component';
 export * from './lib/date-picker/date-picker.component';
 export * from './lib/file-upload/file-upload.component';
+export * from './lib/fieldset/fieldset.component';
 
 // Layout Components
 export * from './lib/card/card.component';
@@ -20,10 +21,12 @@ export * from './lib/accordion/accordion.component';
 export * from './lib/accordion/accordion-item.component';
 export * from './lib/divider/divider.component';
 export * from './lib/drawer/drawer.component';
+export * from './lib/splitter/splitter.component';
 export * from './lib/stack/stack.component';
 export * from './lib/grid/grid.component';
 
 // Data Display Components
+export * from './lib/image-compare/image-compare.component';
 export * from './lib/badge/badge.component';
 export * from './lib/avatar/avatar.component';
 export * from './lib/tooltip/tooltip.component';

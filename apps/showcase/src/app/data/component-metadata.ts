@@ -2318,6 +2318,180 @@ const FILEUPLOAD_METADATA: ComponentMetadata = {
   ],
 };
 
+const FIELDSET_METADATA: ComponentMetadata = {
+  id: 'fieldset',
+  name: 'Fieldset',
+  category: 'form',
+  description:
+    'Groups related form fields or content under a titled border frame with an optional collapsible toggle.',
+  selector: 'fui-fieldset',
+  setup: {
+    importStatement: "import { FieldsetComponent } from '@mfontecchio/components';",
+    usageSnippet: `<fui-fieldset legend="Personal Info">
+  <fui-input label="First name" />
+  <fui-input label="Last name" />
+</fui-fieldset>`,
+    setupNotes:
+      'No additional setup required. Add FieldsetComponent to the imports array of your standalone component. The legend input is required.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: false,
+    notes: [
+      'Uses native <fieldset> and <legend> semantics — fully SSR-compatible.',
+      'No browser-only APIs are needed; the toggle is a simple state flip.',
+    ],
+  },
+  inputs: [
+    {
+      name: 'legend',
+      type: 'string',
+      description: 'Required title text displayed in the fieldset border frame.',
+    },
+    {
+      name: 'collapsible',
+      type: 'boolean',
+      description:
+        'When true, a toggle button is rendered inside the legend so the content can be collapsed or expanded.',
+      defaultValue: 'false',
+    },
+    {
+      name: 'collapsed',
+      type: 'boolean',
+      description:
+        'Controlled collapsed state. Combine with (collapsedChange) for two-way binding. When not bound, the component manages its own state.',
+      defaultValue: 'false',
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      description:
+        'When true, disables the toggle button, visually dims the fieldset, and propagates the native disabled attribute to form elements inside.',
+      defaultValue: 'false',
+    },
+  ],
+  outputs: [
+    {
+      name: 'collapsedChange',
+      type: 'boolean',
+      description:
+        'Emitted when the user clicks the toggle button, carrying the new collapsed state (true = collapsed).',
+    },
+  ],
+  passthroughs: [
+    {
+      name: 'Default content',
+      type: 'slot',
+      selector: '(default)',
+      description: 'Any content projected into the fieldset body — typically form inputs.',
+      optional: false,
+    },
+  ],
+  theming: {
+    tokens: [
+      {
+        token: '--component-fieldset-border-color',
+        description: 'Color of the border frame.',
+      },
+      {
+        token: '--component-fieldset-border-width',
+        description: 'Thickness of the border frame.',
+      },
+      {
+        token: '--component-fieldset-border-radius',
+        description: 'Corner radius of the border frame.',
+      },
+      {
+        token: '--component-fieldset-padding',
+        description: 'Inner padding of the fieldset frame.',
+      },
+      {
+        token: '--component-fieldset-background',
+        description: 'Background color of the fieldset frame.',
+      },
+      {
+        token: '--component-fieldset-legend-font-size',
+        description: 'Font size of the legend text.',
+      },
+      {
+        token: '--component-fieldset-legend-font-weight',
+        description: 'Font weight of the legend text.',
+      },
+      {
+        token: '--component-fieldset-legend-color',
+        description: 'Text color of the legend.',
+      },
+    ],
+    customizationNotes:
+      'Override component tokens on a scoped ancestor element. Avoid ::ng-deep.',
+  },
+  examples: [
+    {
+      title: 'Basic Usage',
+      description: 'Simple grouping of related form fields.',
+      template: `<fui-fieldset legend="Personal Info">
+  <fui-input label="First name" placeholder="Jane" />
+  <fui-input label="Last name" placeholder="Doe" />
+</fui-fieldset>`,
+    },
+    {
+      title: 'Collapsible',
+      description: 'Toggle button in the legend collapses and expands the content.',
+      template: `<fui-fieldset legend="Advanced Options" [collapsible]="true">
+  <fui-input label="API Key" placeholder="Enter your API key" />
+  <fui-input label="Endpoint" placeholder="https://api.example.com" />
+</fui-fieldset>`,
+    },
+    {
+      title: 'Initially Collapsed',
+      description: 'Fieldset starts collapsed; user must click to reveal content.',
+      template: `<fui-fieldset legend="Optional Details" [collapsible]="true" [collapsed]="true">
+  <fui-textarea label="Notes" placeholder="Any additional notes..." />
+</fui-fieldset>`,
+    },
+    {
+      title: 'Disabled State',
+      description:
+        'Disables the toggle button and propagates disabled to all native form elements inside.',
+      template: `<fui-fieldset legend="Billing Address" [collapsible]="true" [disabled]="true">
+  <fui-input label="Street" placeholder="123 Main St" />
+  <fui-input label="City" placeholder="New York" />
+</fui-fieldset>`,
+    },
+    {
+      title: 'Non-collapsible',
+      description: 'Standard static fieldset without any toggle — same semantics as native HTML.',
+      template: `<fui-fieldset legend="Security">
+  <fui-input label="Current password" type="password" />
+  <fui-input label="New password" type="password" />
+</fui-fieldset>`,
+    },
+  ],
+  accessibility: {
+    ariaSupport: [
+      'Native <fieldset> and <legend> semantics for browser and screen reader grouping',
+      'aria-expanded on the toggle button reflects open/collapsed state',
+      'aria-controls links the toggle button to the content region by ID',
+      'Native disabled attribute propagated to child form elements via fieldset',
+    ],
+    keyboardNavigation: [
+      { key: 'Tab', description: 'Move focus to the toggle button' },
+      { key: 'Enter / Space', description: 'Toggle collapse / expand' },
+    ],
+    screenReaderNotes:
+      'The legend is announced as the group label. When collapsible, the toggle button announces its label and expanded state. Content changes are reflected via hidden attribute without a live region announcement.',
+  },
+  bestPractices: [
+    'Use fieldset to semantically group related form controls — do not use it as a generic visual card.',
+    'Keep the legend text concise (2–5 words); it is read before every field inside by some screen readers.',
+    'Enable collapsible for optional or advanced sections that most users can skip.',
+    'Start optional sections as collapsed ([collapsed]="true") to reduce visual noise on initial load.',
+    'Avoid deeply nesting fieldsets; two levels maximum is a common accessibility guideline.',
+    'Do not disable a fieldset to hide validation errors — use individual field error messages instead.',
+  ],
+  relatedComponents: ['accordion', 'card'],
+};
+
 // ============================================================================
 // LAYOUT COMPONENTS
 // ============================================================================
@@ -3538,6 +3712,191 @@ const GRID_METADATA: ComponentMetadata = {
     'Ensure grid items have meaningful content',
     'Use for card layouts, image galleries, product grids',
   ],
+};
+
+const SPLITTER_METADATA: ComponentMetadata = {
+  id: 'splitter',
+  name: 'Splitter',
+  category: 'layout',
+  description:
+    'Divides a container into two resizable panels separated by a draggable handle. Supports horizontal and vertical orientations with pointer drag and full keyboard accessibility.',
+  selector: 'fui-splitter',
+  setup: {
+    importStatement: "import { SplitterComponent } from '@mfontecchio/components';",
+    usageSnippet: `<fui-splitter style="height: 300px;">
+  <div first>First Panel</div>
+  <div second>Second Panel</div>
+</fui-splitter>`,
+    setupNotes:
+      'Project content into the first and second panels using the [first] and [second] attribute selectors. Give the host element an explicit height (or place it inside a sized container) so the panels have room to render.',
+  },
+  runtime: {
+    supportsSSR: true,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Static markup and initial sizing are SSR-compatible.',
+      'Pointer-drag interactions use document event listeners which require a browser environment and are guarded by isPlatformBrowser.',
+    ],
+  },
+  inputs: [
+    {
+      name: 'orientation',
+      type: "'horizontal' | 'vertical'",
+      description:
+        "Layout axis. 'horizontal' places panels side by side; 'vertical' stacks them top to bottom.",
+      defaultValue: "'horizontal'",
+    },
+    {
+      name: 'sizes',
+      type: '[number, number]',
+      description:
+        'Initial panel sizes as a percentage tuple [firstPanel, secondPanel]. Values should sum to 100.',
+      defaultValue: '[50, 50]',
+    },
+    {
+      name: 'minSize',
+      type: 'number',
+      description:
+        'Minimum size (in percent) for each panel. Prevents either panel from collapsing below this threshold.',
+      defaultValue: '10',
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      description: 'When true, dragging and keyboard resizing are disabled.',
+      defaultValue: 'false',
+    },
+  ],
+  outputs: [
+    {
+      name: 'sizesChange',
+      type: '[number, number]',
+      description:
+        'Emitted after each drag move or keyboard step with the updated [firstPanelPercent, secondPanelPercent] tuple.',
+    },
+  ],
+  passthroughs: [
+    {
+      name: 'First panel',
+      type: 'slot',
+      selector: '[first]',
+      description: 'Content projected into the first (left or top) panel.',
+      optional: false,
+    },
+    {
+      name: 'Second panel',
+      type: 'slot',
+      selector: '[second]',
+      description: 'Content projected into the second (right or bottom) panel.',
+      optional: false,
+    },
+  ],
+  theming: {
+    tokens: [
+      {
+        token: '--component-splitter-handle-size',
+        description: 'Width (horizontal) or height (vertical) of the draggable handle track.',
+      },
+      {
+        token: '--component-splitter-track-color',
+        description: 'Default background color of the handle track.',
+      },
+      {
+        token: '--component-splitter-handle-hover-color',
+        description: 'Background color of the handle track on hover and while dragging.',
+      },
+      {
+        token: '--component-splitter-bar-color',
+        description: 'Color of the grip bar rendered inside the handle track.',
+      },
+      {
+        token: '--component-splitter-bar-thickness',
+        description: 'Thickness of the grip bar.',
+      },
+      {
+        token: '--component-splitter-bar-length',
+        description: 'Length of the grip bar.',
+      },
+    ],
+    customizationNotes:
+      'Override component tokens on a scoped ancestor element. Use --component-splitter-handle-size to adjust the clickable area of the divider without affecting panel sizes.',
+  },
+  examples: [
+    {
+      title: 'Basic Usage',
+      description: 'Horizontal splitter with two equal panels.',
+      template: `<fui-splitter style="height: 240px;">
+  <div first style="padding: 1rem;">
+    <strong>Left Panel</strong>
+    <p>Drag the handle to resize.</p>
+  </div>
+  <div second style="padding: 1rem;">
+    <strong>Right Panel</strong>
+    <p>Use Arrow keys when the handle is focused.</p>
+  </div>
+</fui-splitter>`,
+    },
+    {
+      title: 'Vertical Orientation',
+      description: 'Stacked top/bottom panels with a horizontal handle.',
+      template: `<fui-splitter orientation="vertical" style="height: 320px;">
+  <div first style="padding: 1rem;">Top Panel</div>
+  <div second style="padding: 1rem;">Bottom Panel</div>
+</fui-splitter>`,
+    },
+    {
+      title: 'Custom Initial Sizes',
+      description: 'Start with a 30/70 split instead of the default 50/50.',
+      template: `<fui-splitter [sizes]="[30, 70]" style="height: 240px;">
+  <div first style="padding: 1rem;">Narrow</div>
+  <div second style="padding: 1rem;">Wide</div>
+</fui-splitter>`,
+    },
+    {
+      title: 'Minimum Size Constraint',
+      description: 'Neither panel can be dragged below 20% of the container.',
+      template: `<fui-splitter [minSize]="20" style="height: 240px;">
+  <div first style="padding: 1rem;">Min 20%</div>
+  <div second style="padding: 1rem;">Min 20%</div>
+</fui-splitter>`,
+    },
+    {
+      title: 'Disabled State',
+      description: 'Handle is visible but drag and keyboard resize are suppressed.',
+      template: `<fui-splitter [disabled]="true" style="height: 240px;">
+  <div first style="padding: 1rem;">Read-only left</div>
+  <div second style="padding: 1rem;">Read-only right</div>
+</fui-splitter>`,
+    },
+  ],
+  accessibility: {
+    ariaSupport: [
+      'role="separator" on the handle element',
+      'aria-orientation reflects the current orientation',
+      'aria-valuenow reflects the current first-panel percentage',
+      'aria-valuemin reflects the minSize input',
+      'aria-valuemax reflects 100 minus minSize',
+      'aria-label="Resize panels" on the handle',
+    ],
+    keyboardNavigation: [
+      { key: 'Arrow Right / Arrow Down', description: 'Increase first-panel size by 1%' },
+      { key: 'Shift + Arrow Right / Down', description: 'Increase first-panel size by 10%' },
+      { key: 'Arrow Left / Arrow Up', description: 'Decrease first-panel size by 1%' },
+      { key: 'Shift + Arrow Left / Up', description: 'Decrease first-panel size by 10%' },
+      { key: 'Home', description: 'Collapse first panel to its minimum size' },
+      { key: 'End', description: 'Expand first panel to its maximum size' },
+    ],
+    screenReaderNotes:
+      'The handle is announced as a separator with its current position as a percentage value. Arrow key changes update aria-valuenow immediately.',
+  },
+  bestPractices: [
+    'Always give the host element an explicit height or place it inside a sized flex/grid container.',
+    'Set minSize to a value large enough so users cannot accidentally collapse panels to an unusable size.',
+    'Use orientation="vertical" for editor-style top/bottom splits such as source and preview panes.',
+    'Listen to sizesChange and persist the split ratio in user preferences for a consistent experience across sessions.',
+    'Avoid placing heavy content (large images, videos) directly in panels without lazy-loading; the splitter itself is lightweight.',
+  ],
+  relatedComponents: ['divider', 'grid', 'stack'],
 };
 
 // ============================================================================
@@ -5108,6 +5467,196 @@ export class ExampleComponent {}\`);`,
     'Supported languages: TypeScript, JavaScript, HTML, CSS, SCSS, JSON',
     'Component automatically adapts colors to current theme (Light/Dark/High-Contrast)',
   ],
+};
+
+const IMAGE_COMPARE_METADATA: ComponentMetadata = {
+  id: 'image-compare',
+  name: 'Image Compare',
+  category: 'data-display',
+  description:
+    'A before/after image comparison slider. Drag or use keyboard to reveal more of either image. Supports horizontal and vertical split orientations.',
+  selector: 'fui-image-compare',
+  setup: {
+    importStatement: "import { ImageCompareComponent } from '@mfontecchio/components';",
+    usageSnippet: `<fui-image-compare
+  beforeSrc="/before.jpg"
+  afterSrc="/after.jpg"
+  beforeAlt="Before retouching"
+  afterAlt="After retouching"
+/>`,
+    setupNotes:
+      'No additional setup required. Add ImageCompareComponent to the imports array of your standalone component. Provide absolute image URLs or relative paths served by your application.',
+  },
+  runtime: {
+    supportsSSR: false,
+    requiresBrowserAPIs: true,
+    notes: [
+      'Uses PointerEvents and getBoundingClientRect() for drag interaction — not available in server-side rendering contexts.',
+      'Guard usage with isPlatformBrowser() when rendering in SSR environments.',
+    ],
+  },
+  inputs: [
+    {
+      name: 'beforeSrc',
+      type: 'string',
+      description: 'URL of the "before" image (left / top half).',
+      required: true,
+    },
+    {
+      name: 'afterSrc',
+      type: 'string',
+      description: 'URL of the "after" image (right / bottom half).',
+      required: true,
+    },
+    {
+      name: 'beforeAlt',
+      type: 'string',
+      description: 'Accessible alt text for the before image.',
+      defaultValue: "'Before'",
+    },
+    {
+      name: 'afterAlt',
+      type: 'string',
+      description: 'Accessible alt text for the after image.',
+      defaultValue: "'After'",
+    },
+    {
+      name: 'position',
+      type: 'number',
+      description: 'Initial divider position as a percentage (0–100).',
+      defaultValue: '50',
+    },
+    {
+      name: 'orientation',
+      type: "'horizontal' | 'vertical'",
+      description:
+        'Axis along which the divider moves. `horizontal` splits left/right; `vertical` splits top/bottom.',
+      defaultValue: "'horizontal'",
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      description: 'Disables all pointer and keyboard interactions.',
+      defaultValue: 'false',
+    },
+    {
+      name: 'ariaLabel',
+      type: 'string | undefined',
+      description:
+        'Override the default ARIA label on the host slider element. Defaults to "Image comparison slider".',
+      defaultValue: 'undefined',
+    },
+  ],
+  outputs: [
+    {
+      name: 'positionChange',
+      type: 'number',
+      description:
+        'Emitted whenever the divider position changes. Value is the position rounded to the nearest integer (0–100).',
+    },
+  ],
+  passthroughs: [],
+  theming: {
+    tokens: [
+      {
+        token: '--component-image-compare-border-radius',
+        description: 'Border radius of the component container.',
+      },
+      {
+        token: '--component-image-compare-divider-width',
+        description: 'Width (horizontal) or height (vertical) of the divider line.',
+      },
+      {
+        token: '--component-image-compare-divider-color',
+        description: 'Color of the divider line and handle border.',
+      },
+      {
+        token: '--component-image-compare-handle-size',
+        description: 'Diameter of the circular drag handle.',
+      },
+      {
+        token: '--component-image-compare-handle-bg',
+        description: 'Background fill of the drag handle.',
+      },
+      {
+        token: '--component-image-compare-handle-color',
+        description: 'Icon stroke color inside the drag handle.',
+      },
+      {
+        token: '--semantic-brand-primary',
+        description: 'Fallback color for the divider and handle when component tokens are not set.',
+      },
+    ],
+    customizationNotes:
+      'Override component tokens on a scoped ancestor element. For example: .my-context { --component-image-compare-divider-color: hotpink; }. Avoid ::ng-deep.',
+  },
+  examples: [
+    {
+      title: 'Basic Usage',
+      description: 'Side-by-side horizontal comparison with default 50/50 split.',
+      template: `<fui-image-compare
+  beforeSrc="https://picsum.photos/seed/before/800/450"
+  afterSrc="https://picsum.photos/seed/after/800/450"
+  beforeAlt="Original photo"
+  afterAlt="Edited photo"
+/>`,
+    },
+    {
+      title: 'Custom Initial Position',
+      description: 'Start the divider at 25% to emphasize the "after" image.',
+      template: `<fui-image-compare
+  beforeSrc="https://picsum.photos/seed/before/800/450"
+  afterSrc="https://picsum.photos/seed/after/800/450"
+  [position]="25"
+/>`,
+    },
+    {
+      title: 'Vertical Orientation',
+      description: 'Split the images top/bottom instead of left/right.',
+      template: `<fui-image-compare
+  beforeSrc="https://picsum.photos/seed/before/800/450"
+  afterSrc="https://picsum.photos/seed/after/800/450"
+  orientation="vertical"
+/>`,
+    },
+    {
+      title: 'Disabled State',
+      description: 'Divider is locked; pointer and keyboard interactions are suppressed.',
+      template: `<fui-image-compare
+  beforeSrc="https://picsum.photos/seed/before/800/450"
+  afterSrc="https://picsum.photos/seed/after/800/450"
+  [position]="30"
+  [disabled]="true"
+/>`,
+    },
+  ],
+  accessibility: {
+    ariaSupport: [
+      'role="slider" on the host element',
+      'aria-valuenow reflects current divider position (0–100)',
+      'aria-valuemin="0" and aria-valuemax="100"',
+      'aria-orientation set to "horizontal" or "vertical"',
+      'aria-valuetext provides human-readable description ("50% of before image visible")',
+      'aria-label defaults to "Image comparison slider"; overridable via ariaLabel input',
+    ],
+    keyboardNavigation: [
+      { key: 'Arrow Right / Arrow Down', description: 'Move divider +1% (horizontal / vertical)' },
+      { key: 'Arrow Left / Arrow Up', description: 'Move divider -1% (horizontal / vertical)' },
+      { key: 'Shift + Arrow', description: 'Move divider ±10%' },
+      { key: 'Home', description: 'Move divider to 0%' },
+      { key: 'End', description: 'Move divider to 100%' },
+    ],
+    screenReaderNotes:
+      'The component exposes a slider role so screen readers announce the current position percentage. aria-valuetext narrates "X% of before image visible" for clearer context. Before/after labels in the corners are decorative and hidden from the accessibility tree via aria-hidden.',
+  },
+  bestPractices: [
+    'Provide meaningful alt text for both images to support screen readers',
+    'Use aspect-ratio CSS or explicit height on the host to control component dimensions',
+    'Prefer horizontal orientation unless the images have a top/bottom distinction',
+    'Avoid placing the component inside scroll containers without testing touch behavior',
+    'For SSR apps, guard rendering with isPlatformBrowser() or render lazily on the client',
+  ],
+  relatedComponents: ['carousel', 'card'],
 };
 
 // ============================================================================
@@ -6942,6 +7491,7 @@ const COMPONENT_METADATA_MAP = new Map<string, ComponentMetadata>([
   ['input', INPUT_METADATA],
   ['textarea', TEXTAREA_METADATA],
   ['checkbox', CHECKBOX_METADATA],
+  ['fieldset', FIELDSET_METADATA],
   ['radio', RADIO_METADATA],
   ['switch', SWITCH_METADATA],
   ['select', SELECT_METADATA],
@@ -6956,6 +7506,7 @@ const COMPONENT_METADATA_MAP = new Map<string, ComponentMetadata>([
   ['accordion', ACCORDION_METADATA],
   ['divider', DIVIDER_METADATA],
   ['drawer', DRAWER_METADATA],
+  ['splitter', SPLITTER_METADATA],
   ['stack', STACK_METADATA],
   ['grid', GRID_METADATA],
   // Data Display Components
@@ -6969,6 +7520,7 @@ const COMPONENT_METADATA_MAP = new Map<string, ComponentMetadata>([
   ['list', LIST_METADATA],
   ['carousel', CAROUSEL_METADATA],
   ['code-block', CODE_BLOCK_METADATA],
+  ['image-compare', IMAGE_COMPARE_METADATA],
   // Feedback Components
   ['alert', ALERT_METADATA],
   ['spinner', SPINNER_METADATA],

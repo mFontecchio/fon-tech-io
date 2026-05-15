@@ -1,0 +1,42 @@
+<fieldset class="fui-fieldset__frame" [attr.disabled]="disabled() ? true : null">
+  <legend class="fui-fieldset__legend">
+    @if (collapsible()) {
+      <button
+        type="button"
+        class="fui-fieldset__toggle"
+        [attr.aria-expanded]="!isCollapsed()"
+        [attr.aria-controls]="contentId"
+        [disabled]="disabled()"
+        (click)="handleToggle()"
+      >
+        <span class="fui-fieldset__legend-text">{{ legend() }}</span>
+        <svg
+          class="fui-fieldset__chevron"
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M4 6L8 10L12 6"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+    } @else {
+      <span class="fui-fieldset__legend-text">{{ legend() }}</span>
+    }
+  </legend>
+
+  <div
+    class="fui-fieldset__content"
+    [id]="contentId"
+    [hidden]="collapsible() && isCollapsed()"
+  >
+    <ng-content />
+  </div>
+</fieldset>

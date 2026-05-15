@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Added `fui-fieldset` component — groups related form fields under a titled border frame with an optional collapsible toggle, native `<fieldset>`/`<legend>` semantics, controlled/uncontrolled collapsed state via `linkedSignal`, and `aria-expanded` / `aria-controls` wiring.
+- Added `fui-splitter` component — divides a container into two resizable panels with a draggable handle, supporting horizontal and vertical orientations, configurable minimum panel sizes, keyboard navigation (Arrow keys ±1%, Shift+Arrow ±10%, Home/End), full ARIA separator semantics, and pointer-cancel cleanup.
+- Added `fui-image-compare` component — a before/after image comparison slider with draggable divider, horizontal/vertical orientations, keyboard navigation (Arrow keys ±1%, Shift+Arrow ±10%, Home/End), full ARIA slider semantics, and `touch-action: none` for reliable mobile drag.
+
 ## [20.2.0] - 2026-05-10
 
 ### Added

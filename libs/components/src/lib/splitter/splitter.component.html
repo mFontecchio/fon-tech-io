@@ -1,0 +1,22 @@
+<div class="fui-splitter__panel fui-splitter__panel--first" [style.flex-basis]="firstSizePct()">
+  <ng-content select="[first]" />
+</div>
+
+<div
+  class="fui-splitter__handle"
+  role="separator"
+  [attr.tabindex]="disabled() ? '-1' : '0'"
+  [attr.aria-valuenow]="roundedFirst()"
+  [attr.aria-valuemin]="minSize()"
+  [attr.aria-valuemax]="ariaMax()"
+  [attr.aria-orientation]="orientation()"
+  aria-label="Resize panels"
+  (pointerdown)="handlePointerDown($event)"
+  (keydown)="handleKeyDown($event)"
+>
+  <div class="fui-splitter__handle-bar"></div>
+</div>
+
+<div class="fui-splitter__panel fui-splitter__panel--second">
+  <ng-content select="[second]" />
+</div>

@@ -149,8 +149,6 @@ Pull requests that do not follow this process or do not pass CI checks will not 
 4. Add a demo page in `apps/showcase/src/app/pages/components/`
 5. Update `CHANGELOG.md`
 
-Refer to the [Architecture Guide](.github/copilot-instructions.md) for full implementation details.
-
 ---
 
 ## License
